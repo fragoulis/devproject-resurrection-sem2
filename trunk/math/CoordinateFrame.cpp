@@ -1,0 +1,76 @@
+#include "CoordinateFrame.h"
+#include "Matrix44.h"
+
+CoordinateFrame::CoordinateFrame()
+{
+	m_origin.set(0.0f, 0.0f, 0.0f);
+	m_rotation.clear();
+}
+CoordinateFrame::CoordinateFrame(const Point3& p, const Rotation& r)
+{
+	m_origin = p;
+	m_rotation = r;
+}
+
+CoordinateFrame::~CoordinateFrame()
+{
+}
+
+
+Matrix44 CoordinateFrame::getMatrix() const
+{
+	return m_rotation.getMatrix() *
+		Matrix44(1.0f, 0.0f, 0.0f, m_origin.getX(),
+		         0.0f, 1.0f, 0.0f, m_origin.getY(),
+				 0.0f, 0.0f, 1.0f, m_origin.getZ(),
+				 0.0f, 0.0f, 0.0f, 1.0f);
+}
+
+Matrix44 CoordinateFrame::getReverseMatrix() const
+{
+	return 
+		Matrix44(1.0f, 0.0f, 0.0f, m_origin.getX(),
+		         0.0f, 1.0f, 0.0f, m_origin.getY(),
+				 0.0f, 0.0f, 1.0f, m_origin.getZ(),
+				 0.0f, 0.0f, 0.0f, 1.0f)
+		* m_rotation.getMatrix();
+}
+
+
+void CoordinateFrame::move(const Vector3& v)
+{
+	m_origin += v;
+}
+
+void CoordinateFrame::rotate(const Vector3& axis, float angle)
+{
+	m_rotation.rotate(axis, angle);
+}
+
+void CoordinateFrame::rotate(const Vector3& angle)
+{
+	m_rotation.rotate(angle);
+}
+
+
+void CoordinateFrame::transform(Vector3& v) const
+{
+	m_rotation.applyTo(v);
+}
+
+void CoordinateFrame::transform(Point3& p) const
+{
+	p -= m_origin.getVector();
+	m_rotation.applyTo(p);
+}
+
+void CoordinateFrame::reverseTransform(Vector3& v) const
+{
+	m_rotation.applyReverseTo(v);
+}
+
+void CoordinateFrame::reverseTransform(Point3& p) const
+{
+	m_rotation.applyReverseTo(p);
+	p += m_origin.getVector();
+}
