@@ -1,27 +1,45 @@
 #pragma once
+#include <cassert>
 
-template< class T >
+template<class T>
 class Singleton
 {
 public:
+    //! Returns the object but also checks if the object exists
+    static T& _Instance()
+    {
+        if( 0 == pInstance ) {  
+            pInstance = new T;
+        }
 
-	T& instance() { return s_instance; }
+        return *pInstance;
+    }
 
-	T& safeInstance() {
-		if (!s_instance) s_instance = new T;
-		return s_instance;
-	}
+    //! Returns the object
+    static T& Instance() {
+        assert(pInstance);
+        return *pInstance;
+    }
 
-
+    //! Destroys the object
+    static void Destroy()
+    {
+        delete pInstance;
+        pInstance = 0;
+    }
+    
 protected:
-	Singleton() { }
-	~Singleton() { }
+    // Declare constructor, copy constructor,
+    // assignment operator and destructor protected
+    Singleton() {}
+    Singleton(const Singleton&);
+    Singleton& operator= (const Singleton&);
+    virtual ~Singleton() = 0 {}
 
-private:
-	Singleton(const Singleton&);
+    //! The object's unique instance
+    static T* pInstance;
 
-	static T* s_instance;
-};
+}; // end Singleton
 
-template< class T >
-T* Singleton< T >::s_instance = 0;
+template<class T>
+T* Singleton<T>::pInstance = 0;
