@@ -6,7 +6,7 @@
 /// [ a2, a5, a8 ]
 
 
-class Matrix33 //: public ISerializable
+class Matrix33
 {
 public:
 	Matrix33();

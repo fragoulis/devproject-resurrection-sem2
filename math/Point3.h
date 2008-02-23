@@ -1,8 +1,8 @@
 #pragma once
-#include "../utility/ISerializable.h"
+#include <iosfwd>
 #include "Vector3.h"
 
-class Point3 : public ISerializable
+class Point3
 {
 public:
 	Point3() { }
@@ -33,11 +33,14 @@ public:
 
 	const float* cfp() const { return m_vector.cfp(); }
 
-	virtual std::istream& read(std::istream& is);
-	virtual std::ostream& write(std::ostream& os) const;
+	std::istream& read(std::istream& is);
+	std::ostream& write(std::ostream& os) const;
 
 	Point3& operator += (const Vector3& rhs) { add(rhs); return *this; }
 	Point3& operator -= (const Vector3& rhs) { subtract(rhs); return *this; }
+
+	std::istream& operator >> (std::istream& is) { return read(is); }
+	std::ostream& operator << (std::ostream& os) const { return write(os); }
 
 private:
 	Vector3 m_vector;

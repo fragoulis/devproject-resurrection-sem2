@@ -1,11 +1,11 @@
 #pragma once
 #include "../utility/ObjectReferenceMap.h"
+#include "../utility/Singleton.h"
 class IController;
 
-class ControllerManager
+class ControllerManager : public Singleton< ControllerManager >
 {
 public:
-	static ControllerManager& instance() { return s_instance; }
 
 	IController* getActiveController() const { return m_activeController; }
 	IController* findController(const std::string& name) { return m_controllers.findObjectReference(name); }
@@ -25,8 +25,6 @@ private:
 
 	IController* m_activeController;
 
-
-	static ControllerManager s_instance;
 
 	ControllerManager();
 	~ControllerManager();

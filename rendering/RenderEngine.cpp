@@ -21,5 +21,3 @@ void RenderEngine::render(Graphics &g) const
 	for (RendererList::const_iterator i = m_activeRenderers.begin(); i != m_activeRenderers.end(); ++i)
 		(*i)->render(g);
 }
-
-RenderEngine RenderEngine::s_instance;

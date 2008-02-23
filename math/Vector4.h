@@ -1,8 +1,8 @@
 #pragma once
-#include "../utility/ISerializable.h"
+#include <iosfwd>
 class Matrix44;
 
-class Vector4 : public ISerializable
+class Vector4
 {
 public:
 	Vector4() { }
@@ -37,14 +37,17 @@ public:
 
 	const float* cfp() const { return m_components; }
 
-	virtual std::istream& read(std::istream& is);
-	virtual std::ostream& write(std::ostream& os) const;
+	std::istream& read(std::istream& is);
+	std::ostream& write(std::ostream& os) const;
 
 
 	Vector4& operator += (const Vector4& rhs) { add(rhs); return *this; }
 	Vector4& operator -= (const Vector4& rhs) { subtract(rhs); return *this; }
 	Vector4& operator *= (float rhs) { multiply(rhs); return *this; }
 	Vector4& operator *= (const Matrix44& rhs) { multiply(rhs); return *this; }
+
+	std::istream& operator >> (std::istream& is) { return read(is); }
+	std::ostream& operator << (std::ostream& os) const { return write(os); }
 
 private:
 	float m_components[4];
