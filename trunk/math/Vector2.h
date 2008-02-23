@@ -1,8 +1,8 @@
 #pragma once
-#include "../utility/ISerializable.h"
+#include <iosfwd>
 class Matrix22;
 
-class Vector2 : public ISerializable
+class Vector2
 {
 public:
 	Vector2() { }
@@ -33,13 +33,15 @@ public:
 
 	const float* cfp() const { return m_components; }
 
-	virtual std::istream& read(std::istream& is);
-	virtual std::ostream& write(std::ostream& os) const;
-
+	std::istream& read(std::istream& is);
+	std::ostream& write(std::ostream& os) const;
 
 	Vector2& operator += (const Vector2& rhs) { add(rhs); return *this; }
 	Vector2& operator -= (const Vector2& rhs) { subtract(rhs); return *this; }
 	Vector2& operator *= (float rhs) { multiply(rhs); return *this; }
+
+	std::istream& operator >> (std::istream& is) { return read(is); }
+	std::ostream& operator << (std::ostream& os) const { return write(os); }
 
 private:
 	float m_components[2];

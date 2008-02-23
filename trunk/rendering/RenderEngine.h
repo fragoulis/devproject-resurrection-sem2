@@ -1,14 +1,13 @@
 #pragma once
 #include "../utility/ObjectReferenceMap.h"
+#include "../utility/Singleton.h"
 #include <vector>
 class Graphics;
 class IRenderer;
 
-class RenderEngine
+class RenderEngine : public Singleton< RenderEngine >
 {
 public:
-	static RenderEngine& instance() { return s_instance; }
-
 	IRenderer* findRenderer(const std::string& name) { return m_renderers.findObjectReference(name); }
 
 	void addRenderer(const std::string& name, IRenderer* r) { m_renderers.addObjectReference(r, name); }
@@ -30,8 +29,6 @@ private:
 	typedef std::vector<IRenderer*> RendererList;
 	RendererList m_activeRenderers;
 
-
-	static RenderEngine s_instance;
 
 	RenderEngine();
 	~RenderEngine();

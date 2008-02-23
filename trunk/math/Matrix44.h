@@ -7,7 +7,7 @@
 /// [ a3, a7, a11, a15 ]
 
 
-class Matrix44 //: public ISerializable
+class Matrix44
 {
 public:
 	Matrix44();

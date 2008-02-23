@@ -27,6 +27,3 @@ void ControllerManager::update()
 	if (m_activeController != NULL) m_activeController->update();
 }
 
-
-
-ControllerManager ControllerManager::s_instance;

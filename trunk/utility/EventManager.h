@@ -1,13 +1,9 @@
 #pragma once
 #include <list>
 
-// Problem: don't know how to do templated singletons
-// Sad face: have to put static in .cpp for every event type
-// made a macro for it to make it easier
 
 #define SIMPLE_EVENT_TYPE(name) class name { };
 #define EVENT_TYPE(name, type) class name : public EventType<type> { };
-#define REGISTER_EVENT(EventData) EventManager::EventManagerImpl<EventData> EventManager::EventManagerImpl<EventData>::s_instance;
 
 template< typename EventData >
 class EventListener
@@ -109,3 +105,5 @@ private:
 	~EventManager() { }
 };
 
+template< class EventData >
+EventManager::EventManagerImpl<EventData> EventManager::EventManagerImpl<EventData>::s_instance;
