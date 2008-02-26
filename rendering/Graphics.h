@@ -1,6 +1,10 @@
 #pragma once
 
-
+/**
+ * Graphics is used to encapsulate OpenGL.
+ * Please try to not call OpenGL directly,
+ * but use this class instead.
+ */
 class Graphics
 {
 public:

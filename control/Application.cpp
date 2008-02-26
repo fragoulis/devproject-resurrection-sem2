@@ -22,6 +22,9 @@ bool Application :: init()
 
 	// this blocks the loading screen from showing
 	// should fire a new thread that does some loadController and loadRenderers
+	// but that doesn't work cuz loading needs rendering context
+	// so need to rethink how controllers and renderers and stuff are loaded and managed
+	// will see
 	cm.activateController("game");
 
 	return true;
@@ -30,6 +33,10 @@ bool Application :: init()
 void Application :: destroy()
 {
 	ControllerManager::safeInstance().unloadAllControllers();
+	RenderEngine::safeInstance().unloadAllRenderers();
+
+	ControllerManager::destroy();
+	RenderEngine::destroy();
 }
 
 void Application :: render(Graphics& g) const
