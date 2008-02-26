@@ -1,9 +1,19 @@
 #pragma once
 #include <list>
 
+// TODO: find a way to use strings as data passing it as const &
+// fuck it for now :)
 
 #define SIMPLE_EVENT_TYPE(name) class name { };
-#define EVENT_TYPE(name, type) class name : public EventType<type> { };
+#define EVENT_TYPE(name, type) \
+	class name { \
+	public: \
+		name(type t) : m_t(t) { } \
+		inline type getData() { return m_t; } \
+	private: \
+		type m_t; \
+	};
+
 
 template< typename EventData >
 class EventListener
@@ -18,9 +28,10 @@ template< typename T >
 class EventType
 {
 public:
-	EventType(const T& t) : m_t(t) { }
+	EventType(T t) : m_t(t) { }
 	inline T getData() { return m_t; }
 private:
+	EventType() { }
 	T m_t;
 };
 

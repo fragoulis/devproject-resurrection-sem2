@@ -16,4 +16,6 @@ public:
 
 private:
 	Terrain* m_terrain;
+
+	// Put any extra data that is needed goes here
 };
