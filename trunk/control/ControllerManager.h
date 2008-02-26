@@ -27,7 +27,7 @@ public:
 	void unloadAllControllers();
 
 	//! Sends update to active controller
-	void update();
+	void update(float dt);
 
 
 private:

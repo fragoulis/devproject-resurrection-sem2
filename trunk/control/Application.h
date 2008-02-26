@@ -18,7 +18,7 @@ public:
 	void render(Graphics& g) const;
 
 	//! Updates stuffz!
-	void update();
+	void update(float dt);
 
 	//! Tells the application to close
 	void quit() { m_wantToQuit = true; }

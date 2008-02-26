@@ -24,7 +24,7 @@ void LoadingController :: deactivate()
 	re.deactivateAllRenderers();
 }
 
-void LoadingController :: update()
+void LoadingController :: update(float dt)
 {
 	// animate the loading screen!
 	// maybe do that in the renderer itself

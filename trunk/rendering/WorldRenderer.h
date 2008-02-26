@@ -14,6 +14,7 @@ public:
 	virtual ~WorldRenderer();
 
 	virtual void render(Graphics& g) const;
+	virtual void update(float dt);
 
 private:
 	TerrainRenderer m_terrainRenderer;

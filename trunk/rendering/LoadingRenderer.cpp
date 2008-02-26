@@ -13,3 +13,7 @@ void LoadingRenderer :: render(Graphics& g) const
 {
 	// Render loading screen
 }
+
+void LoadingRenderer :: update( float dt )
+{
+}

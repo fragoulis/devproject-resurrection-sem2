@@ -43,7 +43,8 @@ void Application :: render(Graphics& g) const
 {
 	RenderEngine::instance().render(g);
 }
-void Application :: update()
+void Application :: update(float dt)
 {
-	ControllerManager::instance().update();
+	ControllerManager::instance().update(dt);
+	RenderEngine::instance().update(dt);
 }
