@@ -28,7 +28,7 @@ void GameController :: deactivate()
 	// deactivate controls, but leaves renderers alone
 }
 
-void GameController :: update()
+void GameController :: update(float dt)
 {
 	// not much to do here!
 }

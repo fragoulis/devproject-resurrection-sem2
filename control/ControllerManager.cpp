@@ -64,9 +64,9 @@ void ControllerManager :: activateController(IController* c)
 	m_activeController->activate();
 }
 
-void ControllerManager::update()
+void ControllerManager::update(float dt)
 {
-	m_activeController->update();
+	m_activeController->update(dt);
 }
 
 class EmptyController : public IController
@@ -76,7 +76,7 @@ public:
 	virtual ~EmptyController() { }
 	virtual void activate() { }
 	virtual void deactivate() { }
-	virtual void update() { }
+	virtual void update(float dt) { }
 };
 
 IController* ControllerManager::createController(const std::string &name) const

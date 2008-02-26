@@ -72,6 +72,12 @@ void RenderEngine :: render(Graphics &g) const
 		(*i)->render(g);
 }
 
+void RenderEngine :: update ( float dt )
+{
+	for (RendererList::const_iterator i = m_activeRenderers.begin(); i != m_activeRenderers.end(); ++i)
+		(*i)->update(dt);
+}
+
 IRenderer* RenderEngine :: createRenderer(const std::string& name) const
 {
 	if (name == "world") return new WorldRenderer();

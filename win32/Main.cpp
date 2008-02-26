@@ -1,5 +1,6 @@
 #include <windows.h>
 #include "Window.h"
+#include "Win32Timer.h"
 #include "../control/Application.h"
 #include "../rendering/Graphics.h"
 
@@ -30,12 +31,13 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 
 	if (!Application.init()) return false;
+	Win32Timer timer;
 
 	while (inLoop)
 	{
 		//see if there are any windows messages, and if so process and
 		//remove them
-		while (PeekMessage(&winMsg,NULL,0,0,PM_REMOVE))
+		while (PeekMessage(&winMsg, NULL, 0, 0, PM_REMOVE))
 		{
 			switch (winMsg.message)
 			{
@@ -49,7 +51,7 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 					break;
 			}
 		}
-		Application.update();
+		Application.update(float(timer.getDeltatime())); // bleh
 		inLoop = inLoop && !Application.wantToQuit();
 
 		// Can add window data to g to allow things like printing text

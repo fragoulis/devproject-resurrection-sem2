@@ -25,6 +25,7 @@ public:
 	//! renders all active renderers, in the order they were activated
 	void render(Graphics& g) const;
 
+	void update(float dt);
 
 
 

@@ -10,7 +10,7 @@ public:
 
 	virtual void activate();
 	virtual void deactivate();
-	virtual void update();
+	virtual void update(float dt);
 
 private:
 };
