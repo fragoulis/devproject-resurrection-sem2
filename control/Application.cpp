@@ -3,6 +3,7 @@
 #include "GameController.h"
 #include "../GameLogic/GameLogic.h"
 #include "../rendering/RenderEngine.h"
+#include "Input.h"
 
 
 Application :: Application() : m_wantToQuit(false)
@@ -48,4 +49,5 @@ void Application :: update(float dt)
 {
 	ControllerManager::instance().update(dt);
 	RenderEngine::instance().update(dt);
+	Input::instance().update();
 }
