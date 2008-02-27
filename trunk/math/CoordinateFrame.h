@@ -12,8 +12,8 @@ public:
 	CoordinateFrame(const Point3& p, const Rotation& r);
 	~CoordinateFrame();
 
-	Point3 getOrigin() const { return m_origin; }
-	Rotation getRotation() const { return m_rotation; }
+	const Point3& getOrigin() const { return m_origin; }
+	const Rotation& getRotation() const { return m_rotation; }
 	Vector3 getRotationAxis() const { return m_rotation.getAxis(); }
 	float getRotationAngle() const { return m_rotation.getAngle(); }
 	Matrix44 getMatrix() const;

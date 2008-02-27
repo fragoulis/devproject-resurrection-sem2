@@ -20,6 +20,9 @@ public:
 	float get(int row, int column) const { return m_components[row + column * 3]; }
 	void set(int index, float value) { m_components[index] = value; }
 	void set(int row, int column, float value) { m_components[row + column * 3] = value; }
+	void set(float f11, float f21, float f31,
+		     float f12, float f22, float f32,
+			 float f13, float f23, float f33);
 
 	void loadIdentity();
 	
@@ -27,8 +30,8 @@ public:
 	void multiply(float f);
 	void postMultiply(const Matrix33& m); /// (this)(m)
 	//void preMultiply(const Matrix33& m); /// (m)(this)
-	//float determinant() const;
-	//void invert();
+	float determinant() const;
+	void invert();
 	//void transpose(); // not implemented
 
 	const float* cfp() const { return m_components; }

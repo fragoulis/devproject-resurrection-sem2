@@ -18,7 +18,7 @@ public:
 	float getAngle() const;
 	Matrix44 getMatrix() const;
 	Matrix44 getReverseMatrix() const;
-	Quaternion getQuaternion() const { return m_q; }
+	const Quaternion& getQuaternion() const { return m_q; }
 
 	void clear();
 	void set(const Vector3& axis, float angle);

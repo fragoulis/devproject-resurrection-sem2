@@ -94,21 +94,23 @@ float Matrix44::determinant() const
 
 void Matrix44::invert()
 {
-	set(0,0, get(1,2)*get(2,3)*get(3,1)-get(1,3)*get(2,2)*get(3,1)+get(1,3)*get(2,1)*get(3,2)-get(1,1)*get(2,3)*get(3,2)- get(1,2)*get(2,1)*get(3,3)+get(1,1)*get(2,2)*get(3,3));
-	set(0,1, get(0,3)*get(2,2)*get(3,1)-get(0,2)*get(2,3)*get(3,1)-get(0,3)*get(2,1)*get(3,2)+get(0,1)*get(2,3)*get(3,2)+ get(0,2)*get(2,1)*get(3,3)-get(0,1)*get(2,2)*get(3,3));
-	set(0,2, get(0,2)*get(1,3)*get(3,1)-get(0,3)*get(1,2)*get(3,1)+get(0,3)*get(1,1)*get(3,2)-get(0,1)*get(1,3)*get(3,2)- get(0,2)*get(1,1)*get(3,3)+get(0,1)*get(1,2)*get(3,3));
-	set(0,3, get(0,3)*get(1,2)*get(2,1)-get(0,2)*get(1,3)*get(2,1)-get(0,3)*get(1,1)*get(2,2)+get(0,1)*get(1,3)*get(2,2)+ get(0,2)*get(1,1)*get(2,3)-get(0,1)*get(1,2)*get(2,3));
-	set(1,0, get(1,3)*get(2,2)*get(3,0)-get(1,2)*get(2,3)*get(3,0)-get(1,3)*get(2,0)*get(3,2)+get(1,0)*get(2,3)*get(3,2)+ get(1,2)*get(2,0)*get(3,3)-get(1,0)*get(2,2)*get(3,3));
-	set(1,1, get(0,2)*get(2,3)*get(3,0)-get(0,3)*get(2,2)*get(3,0)+get(0,3)*get(2,0)*get(3,2)-get(0,0)*get(2,3)*get(3,2)- get(0,2)*get(2,0)*get(3,3)+get(0,0)*get(2,2)*get(3,3));
-	set(1,2, get(0,3)*get(1,2)*get(3,0)-get(0,2)*get(1,3)*get(3,0)-get(0,3)*get(1,0)*get(3,2)+get(0,0)*get(1,3)*get(3,2)+ get(0,2)*get(1,0)*get(3,3)-get(0,0)*get(1,2)*get(3,3));
-	set(1,3, get(0,2)*get(1,3)*get(2,0)-get(0,3)*get(1,2)*get(2,0)+get(0,3)*get(1,0)*get(2,2)-get(0,0)*get(1,3)*get(2,2)- get(0,2)*get(1,0)*get(2,3)+get(0,0)*get(1,2)*get(2,3));
-	set(2,0, get(1,1)*get(2,3)*get(3,0)-get(1,3)*get(2,1)*get(3,0)+get(1,3)*get(2,0)*get(3,1)-get(1,0)*get(2,3)*get(3,1)- get(1,1)*get(2,0)*get(3,3)+get(1,0)*get(2,1)*get(3,3));
-	set(2,1, get(0,3)*get(2,1)*get(3,0)-get(0,1)*get(2,3)*get(3,0)-get(0,3)*get(2,0)*get(3,1)+get(0,0)*get(2,3)*get(3,1)+ get(0,1)*get(2,0)*get(3,3)-get(0,0)*get(2,1)*get(3,3));
-	set(2,2, get(0,1)*get(1,3)*get(3,0)-get(0,3)*get(1,1)*get(3,0)+get(0,3)*get(1,0)*get(3,1)-get(0,0)*get(1,3)*get(3,1)- get(0,1)*get(1,0)*get(3,3)+get(0,0)*get(1,1)*get(3,3));
-	set(2,3, get(0,3)*get(1,1)*get(2,0)-get(0,1)*get(1,3)*get(2,0)-get(0,3)*get(1,0)*get(2,1)+get(0,0)*get(1,3)*get(2,1)+ get(0,1)*get(1,0)*get(2,3)-get(0,0)*get(1,1)*get(2,3));
-	set(3,0, get(1,2)*get(2,1)*get(3,0)-get(1,1)*get(2,2)*get(3,0)-get(1,2)*get(2,0)*get(3,1)+get(1,0)*get(2,2)*get(3,1)+ get(1,1)*get(2,0)*get(3,2)-get(1,0)*get(2,1)*get(3,2));
-	set(3,1, get(0,1)*get(2,2)*get(3,0)-get(0,2)*get(2,1)*get(3,0)+get(0,2)*get(2,0)*get(3,1)-get(0,0)*get(2,2)*get(3,1)- get(0,1)*get(2,0)*get(3,2)+get(0,0)*get(2,1)*get(3,2));
-	set(3,2, get(0,2)*get(1,1)*get(3,0)-get(0,1)*get(1,2)*get(3,0)-get(0,2)*get(1,0)*get(3,1)+get(0,0)*get(1,2)*get(3,1)+ get(0,1)*get(1,0)*get(3,2)-get(0,0)*get(1,1)*get(3,2));
-	set(3,3, get(0,1)*get(1,2)*get(2,0)-get(0,2)*get(1,1)*get(2,0)+get(0,2)*get(1,0)*get(2,1)-get(0,0)*get(1,2)*get(2,1)- get(0,1)*get(1,0)*get(2,2)+get(0,0)*get(1,1)*get(2,2));
-	multiply(1 / determinant());
+	// bugged ofc: need to make a new Matrix44!
+
+	//set(0,0, get(1,2)*get(2,3)*get(3,1)-get(1,3)*get(2,2)*get(3,1)+get(1,3)*get(2,1)*get(3,2)-get(1,1)*get(2,3)*get(3,2)- get(1,2)*get(2,1)*get(3,3)+get(1,1)*get(2,2)*get(3,3));
+	//set(0,1, get(0,3)*get(2,2)*get(3,1)-get(0,2)*get(2,3)*get(3,1)-get(0,3)*get(2,1)*get(3,2)+get(0,1)*get(2,3)*get(3,2)+ get(0,2)*get(2,1)*get(3,3)-get(0,1)*get(2,2)*get(3,3));
+	//set(0,2, get(0,2)*get(1,3)*get(3,1)-get(0,3)*get(1,2)*get(3,1)+get(0,3)*get(1,1)*get(3,2)-get(0,1)*get(1,3)*get(3,2)- get(0,2)*get(1,1)*get(3,3)+get(0,1)*get(1,2)*get(3,3));
+	//set(0,3, get(0,3)*get(1,2)*get(2,1)-get(0,2)*get(1,3)*get(2,1)-get(0,3)*get(1,1)*get(2,2)+get(0,1)*get(1,3)*get(2,2)+ get(0,2)*get(1,1)*get(2,3)-get(0,1)*get(1,2)*get(2,3));
+	//set(1,0, get(1,3)*get(2,2)*get(3,0)-get(1,2)*get(2,3)*get(3,0)-get(1,3)*get(2,0)*get(3,2)+get(1,0)*get(2,3)*get(3,2)+ get(1,2)*get(2,0)*get(3,3)-get(1,0)*get(2,2)*get(3,3));
+	//set(1,1, get(0,2)*get(2,3)*get(3,0)-get(0,3)*get(2,2)*get(3,0)+get(0,3)*get(2,0)*get(3,2)-get(0,0)*get(2,3)*get(3,2)- get(0,2)*get(2,0)*get(3,3)+get(0,0)*get(2,2)*get(3,3));
+	//set(1,2, get(0,3)*get(1,2)*get(3,0)-get(0,2)*get(1,3)*get(3,0)-get(0,3)*get(1,0)*get(3,2)+get(0,0)*get(1,3)*get(3,2)+ get(0,2)*get(1,0)*get(3,3)-get(0,0)*get(1,2)*get(3,3));
+	//set(1,3, get(0,2)*get(1,3)*get(2,0)-get(0,3)*get(1,2)*get(2,0)+get(0,3)*get(1,0)*get(2,2)-get(0,0)*get(1,3)*get(2,2)- get(0,2)*get(1,0)*get(2,3)+get(0,0)*get(1,2)*get(2,3));
+	//set(2,0, get(1,1)*get(2,3)*get(3,0)-get(1,3)*get(2,1)*get(3,0)+get(1,3)*get(2,0)*get(3,1)-get(1,0)*get(2,3)*get(3,1)- get(1,1)*get(2,0)*get(3,3)+get(1,0)*get(2,1)*get(3,3));
+	//set(2,1, get(0,3)*get(2,1)*get(3,0)-get(0,1)*get(2,3)*get(3,0)-get(0,3)*get(2,0)*get(3,1)+get(0,0)*get(2,3)*get(3,1)+ get(0,1)*get(2,0)*get(3,3)-get(0,0)*get(2,1)*get(3,3));
+	//set(2,2, get(0,1)*get(1,3)*get(3,0)-get(0,3)*get(1,1)*get(3,0)+get(0,3)*get(1,0)*get(3,1)-get(0,0)*get(1,3)*get(3,1)- get(0,1)*get(1,0)*get(3,3)+get(0,0)*get(1,1)*get(3,3));
+	//set(2,3, get(0,3)*get(1,1)*get(2,0)-get(0,1)*get(1,3)*get(2,0)-get(0,3)*get(1,0)*get(2,1)+get(0,0)*get(1,3)*get(2,1)+ get(0,1)*get(1,0)*get(2,3)-get(0,0)*get(1,1)*get(2,3));
+	//set(3,0, get(1,2)*get(2,1)*get(3,0)-get(1,1)*get(2,2)*get(3,0)-get(1,2)*get(2,0)*get(3,1)+get(1,0)*get(2,2)*get(3,1)+ get(1,1)*get(2,0)*get(3,2)-get(1,0)*get(2,1)*get(3,2));
+	//set(3,1, get(0,1)*get(2,2)*get(3,0)-get(0,2)*get(2,1)*get(3,0)+get(0,2)*get(2,0)*get(3,1)-get(0,0)*get(2,2)*get(3,1)- get(0,1)*get(2,0)*get(3,2)+get(0,0)*get(2,1)*get(3,2));
+	//set(3,2, get(0,2)*get(1,1)*get(3,0)-get(0,1)*get(1,2)*get(3,0)-get(0,2)*get(1,0)*get(3,1)+get(0,0)*get(1,2)*get(3,1)+ get(0,1)*get(1,0)*get(3,2)-get(0,0)*get(1,1)*get(3,2));
+	//set(3,3, get(0,1)*get(1,2)*get(2,0)-get(0,2)*get(1,1)*get(2,0)+get(0,2)*get(1,0)*get(2,1)-get(0,0)*get(1,2)*get(2,1)- get(0,1)*get(1,0)*get(2,2)+get(0,0)*get(1,1)*get(2,2));
+	//multiply(1 / determinant());
 }

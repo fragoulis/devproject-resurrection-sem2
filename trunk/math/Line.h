@@ -11,8 +11,8 @@ public:
 	Line(const Point3& p, const Vector3& v) : m_point(p), m_vector(v) { }
 	~Line() { }
 
-	const Point3 getPoint() const { return m_point; }
-	const Vector3 getVector() const { return m_vector; }
+	const Point3& getPoint() const { return m_point; }
+	const Vector3& getVector() const { return m_vector; }
 
 	void transform(const CoordinateFrame& cf);
 	void reverseTransform(const CoordinateFrame& cf);
