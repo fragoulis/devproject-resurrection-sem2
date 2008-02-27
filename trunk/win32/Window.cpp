@@ -3,6 +3,7 @@
 #include <gl\glu.h>
 //#include <gl\glext.h>
 #include "Window.h"
+#include "../control/Input.h"
 
 #pragma comment(lib, "opengl32.lib")
 
@@ -23,7 +24,7 @@
 
 
 bool active;		//if the window is active, and should be draw to
-bool keys[256];		//array of keys
+//bool keys[256];		//array of keys
 
 //declearation for wndproc, ill get onto this later
 LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -31,6 +32,8 @@ LRESULT	CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
 bool Window::createWindow(const char* title,int width,int height,bool fullscreen)
 {
+	// make sure input singleton exists
+	Input::safeInstance();
 
 	Window::fullscreen = fullscreen;	//set the window's fullscreen flag
 	Window::hinstance = GetModuleHandle(NULL);	//get an instance for the window
@@ -216,6 +219,8 @@ void Window::destroyWindow()
 	}
 
 	UnregisterClass(WINDOW_CLASS, Window::hinstance);
+
+	Input::destroy();
 }
 
 LRESULT	CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
@@ -236,14 +241,18 @@ LRESULT	CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		//a key has been pressed down, the key is the wParam
 		//keys[wParam] = true;
+		Input::instance().onKeyDown(int(wParam));
 		return 0;
 
 	case WM_KEYUP:
 		//the opposite of keydown
 		//keys[wParam] = false;
+		Input::instance().onKeyUp(int(wParam));
 		return 0;
 
-	//TODO: get the mouse input
+	case WM_MOUSEMOVE :
+		Input::instance().onMouseMove(LOWORD(lParam), HIWORD(lParam));
+		return 0;
 	}
 
 	// ignore all unhandled message

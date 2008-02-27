@@ -37,6 +37,7 @@ void Application :: destroy()
 
 	ControllerManager::destroy();
 	RenderEngine::destroy();
+	GameLogic::destroy();
 }
 
 void Application :: render(Graphics& g) const
