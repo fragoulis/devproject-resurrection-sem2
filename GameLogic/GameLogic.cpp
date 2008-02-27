@@ -1,17 +1,17 @@
-#include "GameplayLogic.h"
+#include "GameLogic.h"
 #include "Terrain.h"
 #include "Playership.h"
 
-GameplayLogic::GameplayLogic() : m_terrain(NULL), m_playership(NULL)
+GameLogic::GameLogic() : m_terrain(NULL), m_playership(NULL)
 {
 }
 
-GameplayLogic::~GameplayLogic()
+GameLogic::~GameLogic()
 {
 }
 
 
-void GameplayLogic :: loadLevel(const std::string& id)
+void GameLogic :: loadLevel(const std::string& id)
 {
 	// should have gotten unload before this
 	assert(m_terrain == NULL);
@@ -26,7 +26,7 @@ void GameplayLogic :: loadLevel(const std::string& id)
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 }
 
-void GameplayLogic :: unloadLevel()
+void GameLogic :: unloadLevel()
 {
 	EventManager::instance().fireEvent(Level_Unload());
 	despawnTerrain();
@@ -35,7 +35,7 @@ void GameplayLogic :: unloadLevel()
 
 
 
-void GameplayLogic :: despawnTerrain()
+void GameLogic :: despawnTerrain()
 {
 	if (m_terrain != NULL) {
 		delete m_terrain;
@@ -43,7 +43,7 @@ void GameplayLogic :: despawnTerrain()
 	}
 }
 
-void GameplayLogic :: despawnPlayer()
+void GameLogic :: despawnPlayer()
 {
 	if (m_playership != NULL) {
 		delete m_playership;

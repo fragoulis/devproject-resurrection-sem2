@@ -1,6 +1,6 @@
 #include "GameController.h"
 #include "../rendering/RenderEngine.h"
-#include "../GameplayLogic/GameplayLogic.h"
+#include "../GameLogic/GameLogic.h"
 
 GameController :: GameController()
 {
@@ -20,7 +20,7 @@ void GameController :: activate()
 	// Hack to get things working
 	// TODO: think about control flow to fix this
 
-	GameplayLogic::safeInstance().loadLevel("level1");
+	GameLogic::safeInstance().loadLevel("level1");
 }
 
 void GameController :: deactivate()
