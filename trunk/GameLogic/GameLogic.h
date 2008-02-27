@@ -14,7 +14,7 @@ EVENT_TYPE(Terrain_Changed, Terrain*);
 EVENT_TYPE(Player_Spawned, Playership*);
 
 
-class GameplayLogic : public Singleton< GameplayLogic >
+class GameLogic : public Singleton< GameLogic >
 {
 public:
 
@@ -30,7 +30,7 @@ private:
 	void despawnTerrain();
 	void despawnPlayer();
 
-	friend Singleton< GameplayLogic >;
-	GameplayLogic();
-	~GameplayLogic();
+	friend Singleton< GameLogic >;
+	GameLogic();
+	~GameLogic();
 };

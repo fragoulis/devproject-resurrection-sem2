@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ControllerManager.h"
 #include "GameController.h"
-#include "../GameplayLogic/GameplayLogic.h"
+#include "../GameLogic/GameLogic.h"
 #include "../rendering/RenderEngine.h"
 #include "Input.h"
 
@@ -38,7 +38,7 @@ void Application :: destroy()
 
 	ControllerManager::destroy();
 	RenderEngine::destroy();
-	GameplayLogic::destroy();
+	GameLogic::destroy();
 }
 
 void Application :: render(Graphics& g) const
