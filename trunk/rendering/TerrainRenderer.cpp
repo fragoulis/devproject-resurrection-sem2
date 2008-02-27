@@ -1,5 +1,5 @@
 #include "TerrainRenderer.h"
-#include "../GameLogic/Terrain.h"
+#include "../GameplayLogic/Terrain.h"
 
 TerrainRenderer :: TerrainRenderer()
 {
