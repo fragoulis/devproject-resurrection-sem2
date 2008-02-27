@@ -11,7 +11,6 @@ GameLogic::~GameLogic()
 }
 
 
-
 void GameLogic :: loadLevel(const std::string& id)
 {
 	// should have gotten unload before this
