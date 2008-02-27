@@ -1,6 +1,6 @@
 #pragma once
 #include "../utility/EventManager.h"
-#include "../GameplayLogic/GameplayLogic.h"
+#include "../GameLogic/GameplayLogic.h"
 class Terrain;
 class Graphics;
 
