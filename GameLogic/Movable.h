@@ -7,10 +7,10 @@ public:
 	Movable();
 	virtual ~Movable();
 
-	Vector3 getVelocity() const { return m_velocity; }
+	const Vector3& getVelocity() const { return m_velocity; }
 	void setVelocity(const Vector3& v) { m_velocity = v; }
 
-	Vector3 getAngularVelocity() const { return m_angularVelocity; }
+	const Vector3& getAngularVelocity() const { return m_angularVelocity; }
 	void setAngularVelocity(const Vector3& v) { m_angularVelocity = v; }
 
 

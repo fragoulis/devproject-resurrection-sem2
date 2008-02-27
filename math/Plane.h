@@ -12,7 +12,7 @@ public:
 	Plane(const Point3& p1, const Point3& p2, const Point3& p3);
 	~Plane();
 
-	Vector3 getNormal() { return m_normal; }
+	const Vector3& getNormal() { return m_normal; }
 	float getD() { return m_d; }
 
 	bool onBackside(const Point3& point) const;
