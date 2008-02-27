@@ -1,7 +1,7 @@
 #include "Application.h"
 #include "ControllerManager.h"
 #include "GameController.h"
-#include "../GameLogic/GameplayLogic.h"
+#include "../GameplayLogic/GameplayLogic.h"
 #include "../rendering/RenderEngine.h"
 #include "Input.h"
 

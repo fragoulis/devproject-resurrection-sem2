@@ -1,6 +1,6 @@
 #include "GameController.h"
 #include "../rendering/RenderEngine.h"
-#include "../GameLogic/GameplayLogic.h"
+#include "../GameplayLogic/GameplayLogic.h"
 
 GameController :: GameController()
 {
