@@ -28,6 +28,7 @@ private:
 
 
 	void despawnTerrain();
+	void despawnPlayer();
 
 	friend Singleton< GameLogic >;
 	GameLogic();
