@@ -3,7 +3,7 @@
 #pragma once
 #pragma comment (lib, "openal32")
 #pragma comment (lib, "alut")
-#include "../Singleton.h"
+#include "../../utility/Singleton.h"
 #include <vector>
 #include <map>
 

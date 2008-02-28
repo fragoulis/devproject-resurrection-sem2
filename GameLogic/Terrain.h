@@ -1,19 +1,28 @@
 #pragma once
 #include <string>
 
+class Model;
+
 class Terrain
 {
 public:
-	Terrain(const std::string& id) : m_id(id) { }
+	Terrain(const std::string& id);
 	~Terrain();
 
 	const std::string& getID() { return m_id; }
 
-	// TODO: write this method
-	// float getHeight(float x, float y);
-
+	float getHeight(float x, float z);	// z is always negative since the terrain volume min & max is :
+										// min = 0,0,0
+										// max = xzscale * dim, ymax, -xzscale * dim
+	
+	void fillData(float * heights,const float xzscale,const float ymax,const unsigned dim);
+	
 private:
 	std::string m_id;
 
-	// TODO: store height data
+	// The below stuff consider the terrain heights as a dim*dim array of floats
+	float		m_terrainXZScale;		// The scale of the terrain in X & Z axes
+	float		m_terrainYMax;			// The maximum value in Y axis
+	float	  * m_terrainHeights;		// an array with dim*dim heights, created/destroyed per level load/unload
+	unsigned	m_terrainDim;			// the dimension of the terrain
 };

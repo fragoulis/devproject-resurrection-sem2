@@ -69,6 +69,7 @@ public :
 	bool getOptionNormalizeFloat() const;
 
 	Texture * getTexture(const std::string& fname) ;// Should search a texture, or try to load it
+	void deleteTexture(const std::string& fname);   // delete a texture from the templates
 	const std::string& getTextureDir() const;
 
 	static void init(const ParserSection * parsec);
