@@ -20,7 +20,7 @@ public:
 	const Vector3& getLightDir() const {return m_lightDir;}
 	void setLightDir(const Vector3& ld) {m_lightDir.set(ld.getX(),ld.getY(),ld.getZ());}
 	Camera * getCamera() {return m_camera;}
-	void newCamera(Camera *& cam);		// the argument must be new-d before passing
+	void newCamera(Camera * cam);		// the argument must be new-d before passing
 
 private:
 
