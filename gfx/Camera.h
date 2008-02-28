@@ -24,6 +24,7 @@ public:
 	void yaw(float angle);
 	void slide(float delU, float delV, float delN);
 	void setPerspective(float vAng, float asp, float nearD, float farD);
+	virtual void update(const float dt) {}
 
 	const Vector3 &getEye() const {return eye;};
 	const Vector3 &getLookAt() const {return n;};
