@@ -77,7 +77,7 @@ float Vector2::dot(const Vector2& v) const
 
 float Vector2::angle(const Vector2& v) const
 {
-	return acos(max(min(dot(v), 1.0f), -1.0f));
+	return acos(max(min(dot(v), 1.0f), 0.0f));
 }
 
 
