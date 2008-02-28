@@ -5,6 +5,7 @@ class Enemyship : public Spaceship
 {
 public:
 	Enemyship();
+	Enemyship(int type) : m_type(type) { }
 	virtual ~Enemyship();
 
 	int getType() const { return m_type; }

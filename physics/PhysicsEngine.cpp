@@ -3,6 +3,7 @@
 #include "../GameLogic/Rigidbody.h"
 #include "../GameLogic/Spaceship.h"
 #include "../GameLogic/Playership.h"
+#include "../GameLogic/Enemyship.h"
 
 const float EARTH_GRAVITY = 9.81f;
 
@@ -29,6 +30,12 @@ void PhysicsEngine :: onEvent( Player_Spawned& ps )
 
 void PhysicsEngine :: update( float dt )
 {
+	updatePhysics(dt);
+	checkCollisions();
+}
+
+void PhysicsEngine :: updatePhysics( float dt )
+{
 	for (MovableList::iterator i = m_movables.begin(); i != m_movables.end(); ++i)
 	{
 		updateMovable(*i, dt);
@@ -44,7 +51,6 @@ void PhysicsEngine :: update( float dt )
 		updateSpaceship(*i, dt);
 	}
 }
-
 
 void PhysicsEngine :: updateMovable( Movable* m, float dt )
 {
@@ -104,4 +110,40 @@ void PhysicsEngine :: getSpaceshipForcesAndMoments( Spaceship* s, Vector3& force
 	// add force pointing in target direction
 	ThrusterData td = s->getThrusterData();
 	forces += td.factor * td.power * td.direction;
+}
+
+
+
+void PhysicsEngine :: checkCollisions()
+{
+	checkCircleCollisions(m_playerships, m_enemyships);
+}
+
+template< typename T1, typename T2 >
+void PhysicsEngine :: checkCircleCollisions(std::list<T1*>& list1, std::list<T2*>& list2)
+{
+	typedef std::list<T1*> List1;
+	typedef std::list<T2*> List2;
+	
+	for (List1::iterator i = list1.begin(); i != list1.end(); ++i)
+	{
+		T1* t1 = *i;
+		Point3 pos1 = t1->getPosition();
+		pos1.setZ(0.0f);
+		float r1 = t1->getRadius();
+		for (List2::iterator j = list2.begin(); j != list2.end(); ++j)
+		{
+			T2* t2 = *j;
+			Point3 pos2 = t2->getPosition();
+			pos2.setZ(0.0f);
+			float r2 = t2->getRadius();
+			float distance = pos1.distance(pos2) - (r1 + r2);
+			if (distance < 0.0f) {
+				Vector3 normal = pos1 - pos2;
+				normal.normalize();
+				Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
+				EventManager::instance().fireEvent(Collision<T1, T2>(t1, t2, colpos, normal));
+			}
+		}
+	}
 }
