@@ -1,5 +1,5 @@
 #include "Spawnpoint.h"
-#include "GameLogic.h"
+#include "../GameLogic.h"
 
 Spawnpoint :: Spawnpoint()
 {

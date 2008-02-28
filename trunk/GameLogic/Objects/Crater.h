@@ -1,5 +1,5 @@
 #pragma once
-#include "WorldObject.h"
+#include "../WorldObject.h"
 
 class Crater : public WorldObject
 {

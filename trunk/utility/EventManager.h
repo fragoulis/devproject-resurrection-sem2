@@ -1,26 +1,60 @@
 #pragma once
 #include <list>
 
-// TODO: find a way to use strings as data passing it as const &
-// fuck it for now :)
-
-#define SIMPLE_EVENT_TYPE(name) class name { };
-#define EVENT_TYPE(name, type) \
-	class name { \
-	public: \
-		name(type t) : m_t(t) { } \
-		inline type getData() { return m_t; } \
-	private: \
-		type m_t; \
-	};
-
-
 template< typename EventData >
 class EventListener
 {
 public:
 	virtual void onEvent(EventData& eventdata) = 0;
 };
+
+
+// Macros for quickly creating events
+
+#define SIMPLE_EVENT(name) class name { };
+#define EVENT_WITH_POINTER(name, type) \
+	class name { \
+	public: \
+		name(type* t) : m_t(t) { } \
+		type* getPointer() { return m_t; } \
+	private: \
+		type* m_t; \
+	};
+
+#define EVENT_WITH_VALUE(name, type) \
+	class name { \
+	public: \
+		name(const type& t) : m_t(t) { } \
+		const type& getValue() { return m_t; } \
+	private: \
+		type m_t; \
+	};
+
+#define EVENT_WITH_POINTER_AND_VALUE(name, ptype, vtype) \
+	class name { \
+	public: \
+		name(ptype* pt, const vtype& vt) : m_pt(pt), m_vt(vt) { } \
+		ptype* getPointer() { return m_pt; } \
+		const vtype& getValue() { return m_vt; }  \
+	private: \
+		ptype* m_pt; \
+		vtype m_vt; \
+	};
+
+#define EVENT_WITH_POINTER_AND_2VALUES(name, ptype, vtype1, vtype2) \
+	class name { \
+	public: \
+		name(ptype* pt, const vtype1& vt1, const vtype2& vt2) : m_pt(pt), m_vt1(vt1), m_vt2(vt2) { } \
+		ptype* getPointer() { return m_pt; } \
+		const vtype1& getValue1() { return m_vt1; }  \
+		const vtype2& getValue2() { return m_vt2; }  \
+	private: \
+		ptype* m_pt; \
+		vtype1 m_vt1; \
+		vtype2 m_vt2; \
+	};
+
+
 
 
 // for making events, see macros above

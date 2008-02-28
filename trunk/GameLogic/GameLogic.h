@@ -1,6 +1,7 @@
 #pragma once
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
+#include "../physics/PhysicsEvents.h"
 #include <string>
 #include <list>
 class Terrain;
@@ -11,23 +12,18 @@ class Crater;
 class Ebomb;
 
 
-EVENT_TYPE(Level_Load, std::string);
-SIMPLE_EVENT_TYPE(Level_Unload);
-EVENT_TYPE(Terrain_Changed, Terrain*);
-EVENT_TYPE(Player_Spawned, Playership*);
-EVENT_TYPE(Enemy_Spawned, Enemyship*);
-
-
-class GameLogic : public Singleton< GameLogic >
+class GameLogic :
+	public Singleton< GameLogic >,
+	public EventListener< Collision_Player_Enemy >
 {
 public:
 
 	void loadLevel(const std::string& id);
 	void unloadLevel();
-
+	void spawnEnemies(int count, int type);  // Spawnpoints has a tiny bit of game logic in it!
 	void update(float dt);
 
-	void spawnEnemies(int count, int type);
+	void onEvent(Collision_Player_Enemy&);
 
 private:
 

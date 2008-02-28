@@ -5,7 +5,7 @@ class Terrain
 {
 public:
 	Terrain(const std::string& id) : m_id(id) { }
-	~Terrain();
+	~Terrain() { }
 
 	const std::string& getID() { return m_id; }
 
