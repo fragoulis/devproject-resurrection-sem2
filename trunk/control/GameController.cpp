@@ -20,7 +20,7 @@ void GameController :: activate()
 	// Hack to get things working
 	// TODO: think about control flow to fix this
 
-	GameLogic::safeInstance().loadLevel("level1");
+	GameLogic::safeInstance().loadLevel("TestLevel");
 }
 
 void GameController :: deactivate()

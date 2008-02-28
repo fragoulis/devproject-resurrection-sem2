@@ -19,6 +19,7 @@ public :
 	~ModelMgr();
 
 	Model * getModel(const std::string& fname,const unsigned usage_hint = GL_STATIC_DRAW);  // Search if it exists, else load
+	const std::string& getModelDir() const {return m_modelDir;}
 
 	void init(const ParserSection * parsec);
 

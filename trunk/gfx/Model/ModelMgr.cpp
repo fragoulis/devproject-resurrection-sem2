@@ -8,6 +8,10 @@ using namespace std;
 void ModelMgr :: init(const ParserSection * parsec)
 {
 	m_modelDir = parsec->getVal("ModelDir");
+	vector<string> modnames = parsec->getValVector("PersistentModels");
+	for(size_t i=0;i<modnames.size();++i)
+		getModel(modnames[i]);
+
 }
 
 ModelMgr :: ~ModelMgr()

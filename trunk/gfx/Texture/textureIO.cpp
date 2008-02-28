@@ -86,3 +86,13 @@ Texture * TextureIO :: getTexture(const std::string& fname)
 			return _textureTemplates[i];
 	return loadImage(fname);
 }
+
+void TextureIO :: deleteTexture(const std::string& fname)
+{
+	for(vector<Texture *>::iterator it = _textureTemplates.begin();
+		it!= _textureTemplates.end();
+		++it)
+		if((*it)->getName() == fname)
+			_textureTemplates.erase(it);
+	return;
+}
