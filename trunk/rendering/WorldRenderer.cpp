@@ -23,6 +23,7 @@ void WorldRenderer :: render(Graphics& g) const
 
 void WorldRenderer :: update( float dt )
 {
+	m_camera->update(dt);
 }
 
 void WorldRenderer :: newCamera(Camera * cam)
