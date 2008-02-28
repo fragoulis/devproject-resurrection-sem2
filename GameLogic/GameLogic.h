@@ -2,7 +2,7 @@
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
 #include <string>
-#include <vector>
+#include <list>
 class Terrain;
 class Playership;
 class Enemyship;
@@ -24,7 +24,9 @@ public:
 private:
 	Terrain* m_terrain;
 	Playership* m_playership;
-	std::vector<Enemyship*> m_enemyships;
+
+	typedef std::list<Enemyship*> EnemyshipList;
+	EnemyshipList m_enemyships;
 
 
 	void despawnTerrain();

@@ -91,7 +91,7 @@ float Vector3::dot(const Vector3& v) const
 
 float Vector3::angle(const Vector3& v) const
 {
-	return acos(max(min(dot(v), 1.0f), 0.0f));
+	return acos(max(min(dot(v), 1.0f), -1.0f));
 }
 
 void Vector3::cross(const Vector3 &rhs)
