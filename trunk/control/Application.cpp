@@ -26,12 +26,6 @@ bool Application :: init()
 	// but that doesn't work cuz loading needs rendering context
 	// so need to rethink how controllers and renderers and stuff are loaded and managed
 	// will see
-
-	/*
-		Init global application / rendering resources, jump to load level "TestLevel"
-	*/
-
-	RenderEngine::safeInstance().allocateResources("./resources/config.ini");
 	cm.activateController("game");
 
 	return true;
@@ -43,7 +37,6 @@ void Application :: destroy()
 	RenderEngine::safeInstance().unloadAllRenderers();
 
 	ControllerManager::destroy();
-	RenderEngine::instance().freeResources();
 	RenderEngine::destroy();
 	GameLogic::destroy();
 }
