@@ -8,6 +8,9 @@ class Camera;
  * Renders the world!
  *
  */
+
+
+
 class WorldRenderer : public IRenderer
 {
 public:
