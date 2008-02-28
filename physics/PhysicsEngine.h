@@ -46,4 +46,6 @@ private:
 	// can't be arsed to write the type of ForcesAndMomentsFunction :)
 	template< typename T, typename ForcesAndMomentsFunction >
 	void integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
+
+	friend Singleton< PhysicsEngine >;
 };
