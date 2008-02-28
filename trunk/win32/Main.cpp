@@ -3,6 +3,7 @@
 #include "Win32Timer.h"
 #include "../control/Application.h"
 #include "../rendering/Graphics.h"
+#pragma warning( disable : 4996 )
 
 
 
@@ -89,7 +90,7 @@ int main(int ac,char *av[])
     buf[0]=0;
     for(i=1; i<ac; i++)
     {
-        strcat(buf,av[i]);
+        strcat_s(buf,av[i]);
         strcat(buf," ");
     }
 
