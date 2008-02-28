@@ -1,9 +1,10 @@
 #include "PhysicsEngine.h"
+#include "PhysicsEvents.h"
 #include "../GameLogic/Movable.h"
 #include "../GameLogic/Rigidbody.h"
 #include "../GameLogic/Spaceship.h"
-#include "../GameLogic/Playership.h"
-#include "../GameLogic/Enemyship.h"
+#include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
+#include "../GameLogic/Objects/Enemyship.h"    // needed to convert to Spaceship*
 
 const float EARTH_GRAVITY = 9.81f;
 
@@ -18,12 +19,12 @@ PhysicsEngine :: ~PhysicsEngine()
 
 void PhysicsEngine :: onEvent( Terrain_Changed& tc )
 {
-	m_terrain = tc.getData();
+	m_terrain = tc.getPointer();
 }
 
 void PhysicsEngine :: onEvent( Player_Spawned& ps )
 {
-	m_spaceships.push_back(ps.getData());
+	m_spaceships.push_back(ps.getPointer());
 }
 
 

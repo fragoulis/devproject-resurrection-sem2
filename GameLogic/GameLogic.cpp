@@ -1,10 +1,11 @@
 #include "GameLogic.h"
-#include "Terrain.h"
-#include "Playership.h"
-#include "Enemyship.h"
-#include "Spawnpoint.h"
-#include "Crater.h"
-#include "Ebomb.h"
+#include "GameEvents.h"
+#include "Objects/Terrain.h"
+#include "Objects/Playership.h"
+#include "Objects/Enemyship.h"
+#include "Objects/Spawnpoint.h"
+#include "Objects/Crater.h"
+#include "Objects/Ebomb.h"
 
 GameLogic :: GameLogic() : m_terrain(NULL), m_playership(NULL)
 {
@@ -12,6 +13,26 @@ GameLogic :: GameLogic() : m_terrain(NULL), m_playership(NULL)
 
 GameLogic :: ~GameLogic()
 {
+}
+
+void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
+{
+	Playership* player = coldata.getObject1();
+	Enemyship* enemy = coldata.getObject2();
+
+	EnergyType type = enemy->getEnergyType();
+	int energy = player->getEnergy(type);
+	int colpower = enemy->getCollisionPower();
+	energy -= colpower;
+
+	if (energy <= 0) {
+		// TODO: reset player to some position, set it to invulnerable for a few sec
+		EventManager::instance().fireEvent(Player_Destroyed(player, type));
+	}
+	else {
+		player->setEnergy(type, energy);
+		EventManager::instance().fireEvent(Player_Drained(player, type, colpower));
+	}
 }
 
 void GameLogic :: update(float dt)
@@ -27,6 +48,8 @@ void GameLogic :: loadLevel(const std::string& id)
 {
 	// should have gotten unload before this
 	assert(m_terrain == NULL);
+	assert(m_playership == NULL);
+	assert(m_enemyships.empty());
 
 	EventManager::instance().fireEvent(Level_Load(id));
 

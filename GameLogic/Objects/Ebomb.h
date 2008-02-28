@@ -1,5 +1,5 @@
 #pragma once
-#include "Rigidbody.h"
+#include "../Rigidbody.h"
 
 class Ebomb : public Rigidbody
 {

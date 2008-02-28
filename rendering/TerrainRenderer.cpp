@@ -1,5 +1,5 @@
 #include "TerrainRenderer.h"
-#include "../GameLogic/Terrain.h"
+#include "../GameLogic/Objects/Terrain.h"
 
 TerrainRenderer :: TerrainRenderer()
 {
@@ -18,7 +18,7 @@ void TerrainRenderer :: render(Graphics& g) const
 
 void TerrainRenderer :: onEvent(Terrain_Changed& tc)
 {
-	m_terrain = tc.getData();
+	m_terrain = tc.getPointer();
 	const std::string& id = m_terrain->getID();
 
 	// Do some magic to load VBOs or whatever
