@@ -1,19 +1,15 @@
 #pragma once
 #include "Rigidbody.h"
 
-class Thruster
+
+struct ThrusterData
 {
-public:
-	const Point3 getPosition() const { return m_position; }
-	float getPower() const { return m_power; }
-
-	void setPosition(const Point3& p) { m_position = p; }
-	void setPower(float p) { m_power = p; }
-
-private:
-	Point3 m_position;
-	float m_power;
+	float factor;
+	float power;
+	Vector3 direction;
+	float rotationSpeed;
 };
+
 
 
 class Spaceship : public Rigidbody
@@ -22,16 +18,27 @@ public:
 	Spaceship();
 	virtual ~Spaceship();
 
-	float getThrusterFactor() const { return m_thrusterFactor; }
-	void setThrusterFactor(float f) { m_thrusterFactor = f; }
 
-	const Thruster& getLeftThruster() const { return m_leftThruster; }
-	const Thruster& getRightThruster() const { return m_rightThruster; }
-	void setLeftThruster(const Thruster& t) { m_leftThruster = t; }
-	void setRightThruster(const Thruster& t) { m_rightThruster = t; }
+	const ThrusterData& getThrusterData() const { return m_thrusterData; }
+	void setThrusterData(ThrusterData& td) { m_thrusterData = td; }
+
+
+	//float getThrusterFactor() const { return m_thrusterFactor; }
+	//void setThrusterFactor(float f) { m_thrusterFactor = f; }
+
+	//float getThrusterPower() const { return m_thrusterPower; }
+	//void setThrusterPower(float f) { m_thrusterPower = f; }
+
+	//const Vector3& getTargetDirection() const { return m_targetDirection; }
+	//void setTargetDirection(const Vector3& t) { m_targetDirection = t; }
+
+	
+	//const Thruster& getLeftThruster() const { return m_leftThruster; }
+	//const Thruster& getRightThruster() const { return m_rightThruster; }
+	//void setLeftThruster(const Thruster& t) { m_leftThruster = t; }
+	//void setRightThruster(const Thruster& t) { m_rightThruster = t; }
 
 private:
 
-	float m_thrusterFactor;
-	Thruster m_leftThruster, m_rightThruster;
+	ThrusterData m_thrusterData;
 };

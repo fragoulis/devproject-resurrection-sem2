@@ -18,8 +18,8 @@ struct GravityData
 struct LiftData
 {
 	float factor;
-	float variance;
-	float power;
+	//float variance; // maybe later!
+	//float power;
 };
 
 
