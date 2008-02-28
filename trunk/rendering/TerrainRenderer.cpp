@@ -147,3 +147,22 @@ void TerrainRenderer :: onEvent(Terrain_Changed& tc)
 
 	// set a camera at the center of the terrain looking down
 }
+
+void TerrainRenderer :: addShadowCaster(const CoordinateModel& model)
+{
+		m_shadowCasters.push_back(model);
+}
+
+void TerrainRenderer :: removeShadowCaster(const CoordinateModel& model)
+{
+	std::vector<CoordinateModel>::iterator it = m_shadowCasters.begin();
+	while(it != m_shadowCasters.end())
+	{
+		if(it->coordframe == model.coordframe)
+			if(it->model == model.model)
+			{
+				m_shadowCasters.erase(it);
+				break;
+			}
+	}
+}
