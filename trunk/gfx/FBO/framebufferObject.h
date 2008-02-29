@@ -42,7 +42,7 @@
 #ifndef UCDAVIS_FRAMEBUFFER_OBJECT_H
 #define UCDAVIS_FRAMEBUFFER_OBJECT_H
 
-#include <glee.h>
+#include <gl/glee.h>
 #include <iostream>
 
 typedef unsigned int GLenum;

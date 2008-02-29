@@ -1,5 +1,5 @@
 #pragma once
-#include <glee.h>
+#include <gl/glee.h>
 #include "../../gfxutils/MemManager/MemMgr_AnyData.h"
 #include "TextureIO.h"
 #include "TextureMgr.h"

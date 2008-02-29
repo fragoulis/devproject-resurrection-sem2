@@ -1,6 +1,6 @@
 #include <math.h>
 #include "../Math/Vector3.h"
-#include <glee.h>
+#include <gl/glee.h>
 #include <gl/gl.h>
 #include <gl/glu.h>
 

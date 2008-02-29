@@ -3,7 +3,7 @@
 #include <string>
 #include <sstream>
 #include <assert.h>
-#include <glee.h>
+#include <gl/glee.h>
 
 #ifdef _DEBUG
 #define CHECK_GL_ERROR() CheckGLError(__FILE__, __LINE__)

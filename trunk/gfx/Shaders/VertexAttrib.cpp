@@ -1,5 +1,5 @@
 #include "../Shaders/VertexAttrib.h"
-#include <glee.h>
+#include <gl/glee.h>
 #include <string>
 #include <assert.h>
 #include "../../gfxutils/ConfParser/ParserSection.h"

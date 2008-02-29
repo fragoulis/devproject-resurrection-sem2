@@ -5,7 +5,7 @@
 #include <string>
 #include <cstdio>
 #include <iostream>
-#include <glee.h>
+#include <gl/glee.h>
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include <ddraw.h>
 

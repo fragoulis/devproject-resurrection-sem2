@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glee.h>
+#include <gl/glee.h>
 #include <vector>
 #include "../../gfxutils/Misc/defines.h"
 #include <assert.h>

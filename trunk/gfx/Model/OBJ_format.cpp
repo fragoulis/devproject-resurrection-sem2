@@ -2,7 +2,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <glee.h>
+#include <gl/glee.h>
 #include "ModelMgr.h"
 #include "Model.h"
 #include "../VBO/vbo.h"

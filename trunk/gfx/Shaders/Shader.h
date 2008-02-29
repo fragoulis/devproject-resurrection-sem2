@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <string>
-#include <glee.h>
+#include <gl/glee.h>
 #include "../../gfxutils/Misc/defines.h"
 #include "../../gfxutils/Misc/utils.h"
 #include "../Shaders/VertexAttrib.h"

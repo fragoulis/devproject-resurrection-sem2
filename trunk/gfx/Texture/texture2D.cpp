@@ -3,7 +3,7 @@
 #include "../../gfxutils/Misc/defines.h"
 #include <string>
 #include <windows.h>
-#include <glee.h>
+#include <gl/glee.h>
 #include <GL/glu.h>
 #include <iostream>
 
