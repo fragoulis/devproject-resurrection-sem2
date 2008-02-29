@@ -140,7 +140,8 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 			v_str = triad1.substr(0,pos1);
 			vt_str = triad1.substr(pos1+1,pos2 - pos1 - 1);
 			vn_str = triad1.substr(pos2+1,triad1.size() - pos2 - 1);
-			
+#pragma warning( push )	
+#pragma warning( disable : 4244 )	
 			v.setX(atoi(v_str.c_str()) - 1);
 			if(!vt_str.empty())
 				vt.setX(atoi(vt_str.c_str()) - 1);
@@ -201,6 +202,7 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 				objm._groups[current_material]._vnfaces.push_back(vn.getY());
 				objm._groups[current_material]._vnfaces.push_back(vn.getZ());
 			}
+#pragma warning ( pop )
 		}	
 	}
 	// Make sure that it's an all-or-nothing situation for tex & norms
