@@ -5,7 +5,8 @@
 #include <algorithm>
 class Graphics;
 class IRenderer;
-
+class ConfParser;
+class ParserSection;
 
 class RenderEngine : public Singleton< RenderEngine >
 {
@@ -27,7 +28,16 @@ public:
 
 	void update(float dt);
 
+	// initialize all managers & init stuff
+	void allocateResources(const std::string& configfile);
+	// destroy managers & free allocated stuff
+	void freeResources();
+	// get a section
+	const ParserSection * getParserSection(const std::string& secname) const;
 
+	// viewport getset
+	void setViewport(int x,int y,int width, int height);
+	void getViewport(int vp[4]) const;
 
 
 private:
@@ -36,6 +46,10 @@ private:
 
 	typedef std::vector<IRenderer*> RendererList;
 	RendererList m_activeRenderers;
+
+	ConfParser * m_confParser;
+
+	int m_viewport[4];
 
 
 	// helper functions
