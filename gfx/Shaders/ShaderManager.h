@@ -4,7 +4,7 @@
 #include <string>
 #include "../Shaders/Shader.h"
 #include "../Shaders/VertexAttrib.h"
-#include <glee.h>
+#include <gl/glee.h>
 
 /*
 	ShaderManager : 

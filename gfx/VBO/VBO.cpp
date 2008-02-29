@@ -1,6 +1,6 @@
 #include "../VBO/vbo.h"
 #include "../Shaders/ShaderManager.h"
-#include <glee.h>
+#include <gl/glee.h>
 #include <sstream>
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))

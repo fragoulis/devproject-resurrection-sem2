@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glee.h>
+#include <gl/glee.h>
 
 //opengl color utility class
 class Color {

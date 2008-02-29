@@ -1,6 +1,6 @@
 #include "../Misc/utils.h"
 #include <string>
-#include <glee.h>
+#include <gl/glee.h>
 #include <GL/glu.h>
 #include <iostream>
 

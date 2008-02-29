@@ -1,6 +1,6 @@
 #pragma once
 
-#include <glee.h>
+#include <gl/glee.h>
 #include "../../utility/Singleton.h"
 #include <string>
 #include <vector>
