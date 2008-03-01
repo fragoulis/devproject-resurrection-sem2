@@ -1,6 +1,17 @@
 #pragma once
 #include "../utility/singleton.h"
 
+#define INPUT_FIRES_EVENTS 1
+
+#ifdef INPUT_FIRES_EVENTS
+	#include "../utility/EventManager.h"
+	EVENT_WITH_VALUE(Key_GoingDown, int);
+	EVENT_WITH_VALUE(Mouse_GoingDown, int);
+#endif
+
+
+
+
 /**
  * Provides an interface for OS specific code to send keyboard/mouse data to the game
  * Provies an interface for the game to retrieve keyboard/mouse data
