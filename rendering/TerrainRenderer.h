@@ -1,6 +1,5 @@
 #pragma once
 #include "../utility/EventManager.h"
-#include "../GameLogic/GameLogic.h"
 #include "../GameLogic/GameEvents.h"
 #include "CoordinateModel.h"
 

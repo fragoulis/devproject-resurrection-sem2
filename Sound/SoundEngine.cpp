@@ -5,6 +5,7 @@
 
 SoundEngine :: SoundEngine()
 {
+	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 	EventManager::instance().registerEventListener< Player_Drained >(this);
 }
