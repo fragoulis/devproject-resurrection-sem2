@@ -13,4 +13,4 @@ EVENT_WITH_POINTER(Terrain_Changed, Terrain);
 EVENT_WITH_POINTER(Player_Spawned, Playership);
 EVENT_WITH_POINTER(Enemy_Spawned, Enemyship);
 EVENT_WITH_POINTER_AND_VALUE(Player_Destroyed, Playership, EnergyType);
-EVENT_WITH_POINTER_AND_2VALUES(Player_Drained, Playership, EnergyType, int);
+EVENT_WITH_POINTER_AND_2VALUES(Player_Drained, Playership, EnergyType, int); // int is amount of energy drained

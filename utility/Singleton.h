@@ -9,14 +9,21 @@ public:
 	//! Returns the object but also checks if the object exists
     static T& safeInstance()
     {
-        if (s_instance == NULL) s_instance = new T;
+        if (s_instance == NULL) create();
 		return *s_instance;
 	}
 
 	//! Returns the object
 	static T& instance() {
-		assert(s_instance);
+		assert(s_instance != NULL);
 		return *s_instance;
+	}
+
+	//! Creates the object
+	static void create()
+	{
+		assert(s_instance == NULL);
+		s_instance = new T;
 	}
 
     //! Destroys the object
