@@ -253,6 +253,23 @@ LRESULT	CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 	case WM_MOUSEMOVE :
 		Input::instance().onMouseMove(LOWORD(lParam), HIWORD(lParam));
 		return 0;
+
+	case WM_LBUTTONDOWN :
+		Input::instance().onMouseDown(1);
+		return 0;
+
+	case WM_LBUTTONUP :
+		Input::instance().onMouseUp(1);
+		return 0;
+
+	case WM_RBUTTONDOWN :
+		Input::instance().onMouseDown(2);
+		return 0;
+
+	case WM_RBUTTONUP :
+		Input::instance().onMouseUp(2);
+		return 0;
+
 	}
 
 	// ignore all unhandled message

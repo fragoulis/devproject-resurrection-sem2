@@ -1,7 +1,16 @@
 #pragma once
 #include "../utility/singleton.h"
 
-
+/**
+ * Provides an interface for OS specific code to send keyboard/mouse data to the game
+ * Provies an interface for the game to retrieve keyboard/mouse data
+ *
+ * Mouse buttons are numbered:
+ * 1 - left
+ * 2 - right
+ *
+ * Extra numbers can be used for additional mouse buttons.
+ */
 class Input : public Singleton< Input >
 {
 public:
@@ -17,9 +26,16 @@ public:
 	void onKeyUp(int key) { m_keyDown[key] = false; }
 
 	void onMouseMove(int x, int y);
+	void onMouseDown(int button) { onKeyDown(button); }
+	void onMouseUp(int button) { onKeyUp(button); }
 
 	int getMouseX() const { return m_mouseX; }
 	int getMouseY() const { return m_mouseY; }
+
+	bool isMouseButtonGoingDown(int button) const { isKeyGoingDown(button); }
+	bool isMouseButtonDown(int button) const { isKeyDown(button); }
+	bool isMouseButtonGoingUp(int button) const { isKeyGoingUp(button); }
+	bool isMouseButtonUp(int button) const { isKeyUp(button); }
 
 	void update();
 
