@@ -6,7 +6,7 @@ WorldRenderer :: WorldRenderer()
 {
 	m_camera = new Camera();
 	m_camera->setPerspective(30, 1.0f, 10.0f, 10000.0f);
-	m_camera->setPosition(Vector3(256, 1200, -256), Vector3(256, 0, -256), Vector3(0,0,-1));
+	m_camera->setPosition(Vector3(64, 300, -64), Vector3(64, 0, -64), Vector3(0,0,-1));
 }
 
 WorldRenderer :: ~WorldRenderer()
