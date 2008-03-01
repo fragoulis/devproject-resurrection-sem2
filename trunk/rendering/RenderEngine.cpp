@@ -15,19 +15,21 @@
 using namespace std;
 
 
-RenderEngine :: RenderEngine()
-:m_confParser(0)
+RenderEngine :: RenderEngine() : m_confParser(0)
 {
 	setViewport(0,0,800,600);
 }
 
 RenderEngine :: ~RenderEngine()
 {
+	// TODO: when we implement a loading screen, remove this
+	onApplicationUnload();
 }
 
-void RenderEngine :: allocateResources(const std::string& configfile)
+void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 {
-	m_confParser = new ConfParser(configfile);
+	// TODO: remove m_confParser entirely and read global data now, from ps
+	m_confParser = new ConfParser("./config/config.ini");
 
 	MemMgrRaw::init(m_confParser->getSection("MemManager:RawData"));
 	TextureMgr::init(m_confParser->getSection("Texture"));
@@ -36,7 +38,7 @@ void RenderEngine :: allocateResources(const std::string& configfile)
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
 }
 
-void RenderEngine :: freeResources()
+void RenderEngine :: onApplicationUnload()
 {
 	ModelMgr::destroy();
 	VBOMgr::destroy();
@@ -44,8 +46,7 @@ void RenderEngine :: freeResources()
 	TextureMgr::destroy();
 	MemMgrRaw::destroy();
 
-	if(m_confParser)
-		delete m_confParser;
+	if (m_confParser != 0) delete m_confParser;
 }
 
 void RenderEngine :: activateRenderer(const std::string& name)
