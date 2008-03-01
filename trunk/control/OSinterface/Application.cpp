@@ -5,6 +5,7 @@
 #include "../../GameLogic/GameLogic.h"
 #include "../../rendering/RenderEngine.h"
 #include "../../sound/SoundEngine.h"
+#include "../../AI/AIEngine.h"
 #include "Input.h"
 
 
@@ -32,8 +33,10 @@ bool Application :: init()
 	ConfParser cp("./config/config.txt");
 	const ParserSection& ps = cp.rootSection();
 
+	GameLogic::safeInstance().onApplicationLoad(ps);
 	SoundEngine::safeInstance().onApplicationLoad(ps);
 	RenderEngine::safeInstance().onApplicationLoad(ps);
+	AIEngine::safeInstance().onApplicationLoad(ps);
 
 	cm.activateController("game");
 
@@ -49,6 +52,7 @@ void Application :: destroy()
 	ControllerManager::safeInstance().unloadAllControllers();
 	RenderEngine::safeInstance().unloadAllRenderers();
 
+	AIEngine::destroy();
 	SoundEngine::destroy();
 	ControllerManager::destroy();
 	RenderEngine::destroy();
@@ -63,6 +67,7 @@ void Application :: render(Graphics& g) const
 void Application :: update(float dt)
 {
 	ControllerManager::instance().update(dt);
+	AIEngine::instance().update(dt);
 	RenderEngine::instance().update(dt);
 	Input::instance().update();
 }

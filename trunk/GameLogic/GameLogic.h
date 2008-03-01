@@ -4,6 +4,7 @@
 #include "../physics/PhysicsEvents.h"
 #include <string>
 #include <list>
+class ParserSection;
 class Terrain;
 class Playership;
 class Enemyship;
@@ -17,6 +18,10 @@ class GameLogic :
 	public EventListener< Collision_Player_Enemy >
 {
 public:
+
+	//! Called by Application startup.
+	void onApplicationLoad(const ParserSection&);
+	void onApplicationUnload();
 
 	void loadLevel(const std::string& id);
 	void unloadLevel();

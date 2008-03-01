@@ -14,7 +14,21 @@ GameLogic :: GameLogic() : m_terrain(NULL), m_playership(NULL)
 
 GameLogic :: ~GameLogic()
 {
+	// TODO: when we implement a loading screen, remove this
+	onApplicationUnload();
 }
+
+void GameLogic :: onApplicationLoad(const ParserSection& ps)
+{
+	// TODO: read ParserSection for info and load data from disk
+}
+
+void GameLogic :: onApplicationUnload()
+{
+	// TODO: delete allocated memory
+}
+
+
 
 void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 {
