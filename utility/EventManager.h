@@ -30,6 +30,15 @@ public:
 		type m_t; \
 	};
 
+#define EVENT_WITH_CONST_REFERENCE(name, type) \
+	class name { \
+	public: \
+		name(const type& t) : m_t(t) { } \
+		const type& getValue() { return m_t; } \
+	private: \
+		const type& m_t; \
+	};
+
 #define EVENT_WITH_POINTER_AND_VALUE(name, ptype, vtype) \
 	class name { \
 	public: \
