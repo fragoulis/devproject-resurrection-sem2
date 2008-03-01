@@ -11,7 +11,7 @@ public:
 	//! Initializes the application. Should be called before the first update
 	bool init(); // returns false on failure
 
-	//! Frees memory. Should be called after the last update
+	//! Frees memory. Should be called after the last update.
 	void destroy();
 
 	//! Renders stuffz!
@@ -19,11 +19,4 @@ public:
 
 	//! Updates stuffz!
 	void update(float dt);
-
-	//! Tells the application to close
-	void quit() { m_wantToQuit = true; }
-	bool wantToQuit() { return m_wantToQuit; }
-
-private:
-	bool m_wantToQuit;
 };

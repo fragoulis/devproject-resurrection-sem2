@@ -3,7 +3,7 @@
 #include <gl\glu.h>
 //#include <gl\glext.h>
 #include "Window.h"
-#include "../control/Input.h"
+#include "../OSinterface/Input.h"
 
 #pragma comment(lib, "opengl32.lib")
 
