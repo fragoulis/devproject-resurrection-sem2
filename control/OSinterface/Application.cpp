@@ -33,8 +33,8 @@ bool Application :: init()
 	const ParserSection& ps = cp.rootSection();
 
 	SoundEngine::safeInstance().onApplicationLoad(ps);
+	RenderEngine::safeInstance().onApplicationLoad(ps);
 
-	RenderEngine::safeInstance().allocateResources("./config/config.ini");
 	cm.activateController("game");
 
 	return true;

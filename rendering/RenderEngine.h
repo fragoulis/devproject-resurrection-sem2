@@ -11,6 +11,12 @@ class ParserSection;
 class RenderEngine : public Singleton< RenderEngine >
 {
 public:
+
+	//! Called by Application class on startup.
+	void onApplicationLoad(const ParserSection&);
+	void onApplicationUnload();
+
+
 	//! activate a renderer. If it's not loaded yet, loads it.
 	void activateRenderer(const std::string& name);
 	void deactivateRenderer(const std::string& name);
@@ -28,10 +34,6 @@ public:
 
 	void update(float dt);
 
-	// initialize all managers & init stuff
-	void allocateResources(const std::string& configfile);
-	// destroy managers & free allocated stuff
-	void freeResources();
 	// get a section
 	const ParserSection * getParserSection(const std::string& secname) const;
 
