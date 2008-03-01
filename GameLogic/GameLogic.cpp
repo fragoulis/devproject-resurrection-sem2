@@ -52,7 +52,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	assert(m_playership == NULL);
 	assert(m_enemyships.empty());
 
-	ConfParser cp(std::string("./resources/") + id + ".txt");
+	ConfParser cp(std::string("./config/") + id + ".txt");
 	const ParserSection& ps = cp.rootSection();
 
 	EventManager::instance().fireEvent(Level_Load(ps));
