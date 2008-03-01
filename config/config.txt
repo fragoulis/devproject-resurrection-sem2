@@ -1,0 +1,11 @@
+#
+# This is the new application level configuration file
+# In here we can make references to other files
+# Or add global settings
+#
+# This file is loaded at application startup by the Application class
+# It is passed to each engine with a call to XXXEngine::onApplicationLoad(ParserSection&);
+#
+
+[TestSection]
+Testvar = "weee"

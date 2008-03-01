@@ -1,16 +1,17 @@
 #include <windows.h>
 #include "Window.h"
+#include "Win32Interface.h"
 #include "Win32Timer.h"
-#include "../control/Application.h"
-#include "../rendering/Graphics.h"
+#include "../OSinterface/Application.h"
+#include "../../rendering/Graphics.h"
 #pragma warning( disable : 4996 )
 
+#pragma warning( push )
+#pragma warning( disable : 4005 )
 #define _CRT_SECURE_NO_DEPRECATE
+#pragma warning( pop )
 
 #include <stdio.h>
-
-Window GLWindow;
-Application Application;
 
 #ifndef ZeroMemory
 	//for compilers that dont have ZeroMemory define it as memset
@@ -22,6 +23,15 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 {
 	MSG winMsg;	//the window's message struct
 	ZeroMemory(&winMsg,sizeof(MSG));	//fill with 0's
+
+	// Create some variables
+	Window GLWindow;
+	Application Application;
+	Win32Timer timer;
+	Win32Interface Win32Interface;
+
+	IOSInterface::setInstance(&Win32Interface);
+
 
 	bool inLoop = true;
 
@@ -36,7 +46,6 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 
 	if (!Application.init()) return false;
-	Win32Timer timer;
 
 	while (inLoop)
 	{
@@ -57,7 +66,6 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 			}
 		}
 		Application.update(float(timer.getDeltatime())); // bleh
-		inLoop = inLoop && !Application.wantToQuit();
 
 		// Can add window data to g to allow things like printing text
 		Graphics g;

@@ -1,10 +1,10 @@
 #pragma once
-#include "../utility/singleton.h"
+#include "../../utility/singleton.h"
 
 #define INPUT_FIRES_EVENTS 1
 
 #ifdef INPUT_FIRES_EVENTS
-	#include "../utility/EventManager.h"
+	#include "../../utility/EventManager.h"
 	EVENT_WITH_VALUE(Key_GoingDown, int);
 	EVENT_WITH_VALUE(Mouse_GoingDown, int);
 #endif

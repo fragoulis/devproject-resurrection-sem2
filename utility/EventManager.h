@@ -34,7 +34,7 @@ public:
 	class name { \
 	public: \
 		name(const type& t) : m_t(t) { } \
-		const type& getValue() { return m_t; } \
+		const type& getReference() { return m_t; } \
 	private: \
 		const type& m_t; \
 	};

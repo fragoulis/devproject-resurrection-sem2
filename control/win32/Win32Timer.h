@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility/Exception.h"
+#include "../../utility/Exception.h"
 #pragma warning( disable: 4290 )
 
 class Win32Timer
