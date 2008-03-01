@@ -26,7 +26,7 @@ bool Application :: init()
 	// but that doesn't work cuz loading needs rendering context
 	// so need to rethink how controllers and renderers and stuff are loaded and managed
 	// will see
-	RenderEngine::safeInstance().allocateResources("./resources/config.ini");
+	RenderEngine::safeInstance().allocateResources("./config/config.ini");
 	cm.activateController("game");
 
 	return true;
