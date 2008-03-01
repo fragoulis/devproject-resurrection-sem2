@@ -18,6 +18,7 @@ Application :: ~Application()
 
 bool Application :: init()
 {
+	SoundEngine::create();
 	ControllerManager& cm = ControllerManager::safeInstance();
 	cm.activateController("loading");
 
