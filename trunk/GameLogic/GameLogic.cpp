@@ -6,6 +6,7 @@
 #include "Objects/Spawnpoint.h"
 #include "Objects/Crater.h"
 #include "Objects/Ebomb.h"
+#include "../gfxutils/ConfParser/ConfParser.h"
 
 GameLogic :: GameLogic() : m_terrain(NULL), m_playership(NULL)
 {
@@ -51,7 +52,10 @@ void GameLogic :: loadLevel(const std::string& id)
 	assert(m_playership == NULL);
 	assert(m_enemyships.empty());
 
-	EventManager::instance().fireEvent(Level_Load(id));
+	ConfParser cp(std::string("./resources/") + id + ".txt");
+	const ParserSection& ps = cp.rootSection();
+
+	EventManager::instance().fireEvent(Level_Load(ps));
 
 	// TODO: load level data, get terrain id from that
 	m_terrain = new Terrain(id);

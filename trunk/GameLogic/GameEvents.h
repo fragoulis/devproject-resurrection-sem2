@@ -5,8 +5,9 @@
 class Playership;
 class Enemyship;
 class Terrain;
+class ParserSection;
 
-EVENT_WITH_VALUE(Level_Load, std::string);
+EVENT_WITH_CONST_REFERENCE(Level_Load, ParserSection);
 SIMPLE_EVENT(Level_Unload);
 EVENT_WITH_POINTER(Terrain_Changed, Terrain);
 EVENT_WITH_POINTER(Player_Spawned, Playership);
