@@ -105,7 +105,21 @@ const std::vector<std::string> ParserSection :: getValVector(const std::string& 
 	for(unsigned i=0;i<_data.size();++i)
 		if(_data[i]._tag == tag)
 			return _data[i]._val;
+
 	return vector<string>();
+}
+
+bool ParserSection :: valExists(const std::string& tag) const
+{
+	// For each tag/val
+	for(unsigned i=0;i<_data.size();++i)
+		if(_data[i]._tag == tag)
+		{
+			// assert there is only 1 value & return
+			assert(_data[i]._val.size() == 1);
+			return true;
+		}
+	return false;
 }
 
 std::vector<std::string> ParserSection :: _getSectionHier(const std::string& section_block)

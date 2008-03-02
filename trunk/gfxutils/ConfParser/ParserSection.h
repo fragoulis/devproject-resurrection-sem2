@@ -42,6 +42,8 @@ class ParserSection
 	const std::string getVal(const std::string& tag) const;					// get first value
 	const std::vector<std::string> getValVector(const std::string& tag) const;	// get all values
 
+	bool valExists(const std::string& tag) const; // check if value exists
+
 	void addVal(const std::string& tag,const std::string& val);			// adds a value
 	void addChild(const std::string& name);								// adds a child
 
