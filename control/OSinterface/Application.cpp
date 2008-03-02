@@ -6,6 +6,8 @@
 #include "../../rendering/RenderEngine.h"
 #include "../../sound/SoundEngine.h"
 #include "../../AI/AIEngine.h"
+#include "../../Physics/PhysicsEngine.h"
+#include "../../GameLogic/EnemyTypes.h"
 #include "Input.h"
 
 
@@ -33,10 +35,12 @@ bool Application :: init()
 	ConfParser cp("./config/config.txt");
 	const ParserSection& ps = cp.rootSection();
 
+	EnemyTypes::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
 	SoundEngine::safeInstance().onApplicationLoad(ps);
 	RenderEngine::safeInstance().onApplicationLoad(ps);
 	AIEngine::safeInstance().onApplicationLoad(ps);
+	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
 	cm.activateController("game");
 
@@ -52,6 +56,8 @@ void Application :: destroy()
 	ControllerManager::safeInstance().unloadAllControllers();
 	RenderEngine::safeInstance().unloadAllRenderers();
 
+	EnemyTypes::destroy();
+	PhysicsEngine::destroy();
 	AIEngine::destroy();
 	SoundEngine::destroy();
 	ControllerManager::destroy();

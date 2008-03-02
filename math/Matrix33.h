@@ -10,6 +10,7 @@ class Matrix33
 {
 public:
 	Matrix33();
+	Matrix33(float diagonal); // all 0, diagonal = i
 	Matrix33(const float components[9]);
 	Matrix33(float f11, float f21, float f31,
 		     float f12, float f22, float f32,

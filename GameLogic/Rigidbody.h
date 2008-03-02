@@ -1,6 +1,7 @@
 #pragma once
 #include "Movable.h"
 #include "../math/Matrix33.h"
+class ParserSection;
 
 
 
@@ -44,6 +45,7 @@ public:
 	void setGravityData(const GravityData& g) { m_gravity = g; }
 	void setLiftData(const LiftData& l) { m_lift = l; }
 
+	void loadSettings(const ParserSection& ps);
 
 private:
 	float m_mass;

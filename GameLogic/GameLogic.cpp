@@ -8,7 +8,7 @@
 #include "Objects/Ebomb.h"
 #include "../gfxutils/ConfParser/ConfParser.h"
 
-GameLogic :: GameLogic() : m_terrain(NULL), m_playership(NULL)
+GameLogic :: GameLogic() : m_terrain(0), m_playership(0)
 {
 }
 
@@ -108,7 +108,7 @@ void GameLogic :: unloadLevel()
 	deleteList(m_ebombs);
 }
 
-void GameLogic :: spawnEnemies(int count, int type)
+void GameLogic :: spawnEnemies( int count, int type )
 {
 	for (int i = 0; i < count; i++)
 	{
@@ -118,3 +118,9 @@ void GameLogic :: spawnEnemies(int count, int type)
 	}
 }
 
+
+void GameLogic :: setPlayerDirection( const Vector3& v )
+{
+	assert(m_playership != 0);
+	m_playership->setThrusterDirection(v);
+}

@@ -25,7 +25,8 @@ public:
 
 	void loadLevel(const std::string& id);
 	void unloadLevel();
-	void spawnEnemies(int count, int type);  // Spawnpoints has a tiny bit of game logic in it!
+	void spawnEnemies(int count, int type);  // Spawnpoint has a tiny bit of game logic in it!
+	void setPlayerDirection(const Vector3& v);
 	void update(float dt);
 
 	void onEvent(Collision_Player_Enemy&);
