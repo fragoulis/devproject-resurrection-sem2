@@ -1,6 +1,8 @@
 #include "GameController.h"
 #include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
+#include "../AI/AIEngine.h"
+#include "../physics/PhysicsEngine.h"
 
 GameController :: GameController()
 {
@@ -30,5 +32,8 @@ void GameController :: deactivate()
 
 void GameController :: update(float dt)
 {
-	// not much to do here!
+	GameLogic::instance().update(dt);
+	AIEngine::instance().update(dt);
+	PhysicsEngine::instance().update(dt);
+	RenderEngine::instance().update(dt);
 }
