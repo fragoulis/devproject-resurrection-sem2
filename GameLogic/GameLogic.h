@@ -40,10 +40,13 @@ private:
 
 	Terrain* m_terrain;
 	Playership* m_playership;
+	Playership* m_playershipPrototype;
 	EnemyshipList m_enemyships;
 	SpawnpointList m_spawnpoints;
 	CraterList m_craters;
 	EbombList m_ebombs;
+
+	void _deleteLevelData();
 
 	friend Singleton< GameLogic >;
 	GameLogic();
