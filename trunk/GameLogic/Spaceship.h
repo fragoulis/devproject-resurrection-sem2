@@ -1,10 +1,12 @@
 #pragma once
 #include "Rigidbody.h"
+class ParserSection;
 
 struct ThrusterData
 {
 	float factor;
 	float power;
+	float maxPower;
 	Vector3 direction;
 };
 
@@ -18,8 +20,19 @@ public:
 	const ThrusterData& getThrusterData() const { return m_thrusterData; }
 	void setThrusterData(const ThrusterData& td) { m_thrusterData = td; }
 
+	const Vector3& getThrusterDirection() const { return m_thrusterData.direction; }
+	void setThrusterDirection(const Vector3& d) { m_thrusterData.direction = d; }
+
+	float getThrusterFactor() const { return m_thrusterData.factor; }
+	void setThrusterFactor(float f) { m_thrusterData.factor = f; }
+
+	float getThrusterPower() const { return m_thrusterData.power; }
+	void setThrusterPower(float p) { m_thrusterData.power = p; }
+
 	float getRadius() const { return m_radius; }
 	void setRadius(float r) { m_radius = r; }
+
+	void loadSettings(const ParserSection& ps);
 
 private:
 	ThrusterData m_thrusterData;

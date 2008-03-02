@@ -2,6 +2,12 @@
 
 Input::Input()
 {
+	for (int i = 0; i < NUM_KEYS; i++)
+	{
+		m_keyDown[i] = false;
+		m_keyState[i] = UP;
+		m_previousKeyState[i] = UP;
+	}
 }
 
 Input::~Input()
@@ -33,10 +39,10 @@ void Input :: update()
 		if (m_previousKeyState[i] == GOING_UP || m_previousKeyState[i] == UP)
 		{
 			if (m_keyDown[i]) {
-				m_keyState[i] = UP;
+				m_keyState[i] = GOING_DOWN;
 			}
 			else {
-				m_keyState[i] = GOING_DOWN;
+				m_keyState[i] = UP;
 #ifdef INPUT_FIRES_EVENTS
 				if (i < 3) EventManager::instance().fireEvent(Mouse_GoingDown(i));
 				else EventManager::instance().fireEvent(Key_GoingDown(i));

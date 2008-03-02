@@ -1,6 +1,11 @@
 #pragma once
 #include <string>
-#include <fstream>
+//#include <fstream>
+//#include <istream>
+// you only need this in your header file.
+// it forward declares all input/output stream stuff
+// quicker!
+#include <iosfwd>
 #include "../ConfParser/ParserSection.h"
 
 
@@ -61,7 +66,9 @@ class ConfParser
 	void _removeTrailBlanks(std::string& line) const;		// removes trailing blanks from a line
 
 	// Parse functions
-	void _parseFile(std::ifstream& ifs);					// main dunction, called on ctor
+	// Changed by Joep: ifstream --> istream
+	// Don't make parsers directly take ifstreams!
+	void _parseFile(std::istream& ifs);					// main dunction, called on ctor
 	parser_error_t _parseLine(parser_status_t& status,		// parses a single line for tokens
 					std::string& line, 
 					std::vector<ParserToken>& tokenlist) const;

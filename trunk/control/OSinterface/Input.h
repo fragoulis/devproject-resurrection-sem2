@@ -25,9 +25,6 @@
 class Input : public Singleton< Input >
 {
 public:
-	Input();
-	~Input();
-
 	bool isKeyGoingDown(int key) const { return m_keyState[key] == GOING_DOWN; }
 	bool isKeyGoingUp(int key) const { return m_keyState[key] == GOING_UP; }
 	bool isKeyDown(int key) const { return m_keyState[key] == DOWN; }
@@ -66,4 +63,9 @@ private:
 	KeyState m_previousKeyState[NUM_KEYS];
 
 	int m_mouseX, m_mouseY;
+
+
+	friend Singleton< Input >;
+	Input();
+	~Input();
 };

@@ -68,17 +68,47 @@ void ConfParser :: _removeTrailBlanks(std::string& line) const
 		line.erase(pos+1,line.size() - pos);	
 }
 
+
+
+
+
+
+//-------------------------------------------------------------
+// Added by Joep: strip comments
+#include <sstream>
+void stripComments(istream& is, iostream& out)
+{
+	char buffer[256];
+
+	while (is.good())
+	{
+		is.getline(buffer, 256); // doesn't include newline
+		for (int i=0; i < 255; i++)
+			if (buffer[i] == '#' || (buffer[i] == '/' && buffer[i+1] == '/'))
+				buffer[i] = 0;
+		out << buffer << "\n"; // put back the newline
+	}
+}
+
 ConfParser :: ConfParser(const std::string& fname)
 {
 	_validConfFile = true;
 	// Open file & start reading loop
 	ifstream ifs(fname.c_str());
-	_parseFile(ifs);
+	// added stringstream
+	stringstream is;
+	stripComments(ifs, is);
+	_parseFile(is);
 	ifs.close();
 	assert(_validConfFile);
 }
+//---------------------------------------------------------------------
 
-void ConfParser :: _parseFile(ifstream& ifs)
+
+
+
+
+void ConfParser :: _parseFile(istream& ifs)
 {
 	string line;
 	unsigned linenum = 0;

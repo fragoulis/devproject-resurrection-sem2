@@ -1,0 +1,8 @@
+[main]
+types = <interceptor> //, <carrier>
+
+[interceptor]
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 20         # integer
+ThrusterMaxPower = 10.0     # float
+Radius = 10.0

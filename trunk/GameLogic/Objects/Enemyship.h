@@ -1,6 +1,7 @@
 #pragma once
 #include "../Spaceship.h"
 #include "../EnergyTypes.h"
+class ParserSection;
 
 class Enemyship : public Spaceship
 {
@@ -12,6 +13,8 @@ public:
 	int getType() const { return m_type; }
 	EnergyType getEnergyType() const { return m_energyType; }
 	int getCollisionPower() const { return m_collisionPower; }
+
+	void loadSettings(const ParserSection&);
 
 private:
 	int m_type;

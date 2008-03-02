@@ -16,6 +16,14 @@ PhysicsEngine :: ~PhysicsEngine()
 {
 }
 
+void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
+{
+}
+
+void PhysicsEngine :: onApplicationUnload()
+{
+}
+
 
 void PhysicsEngine :: onEvent( Terrain_Changed& tc )
 {
@@ -80,7 +88,7 @@ void PhysicsEngine :: integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f
 	Vector3 forces, moments;
 	forces.set(0.0f, 0.0f, 0.0f);
 	moments.set(0.0f, 0.0f, 0.0f);
-	((*this).*f)(t, forces, moments);
+	(this->*f)(t, forces, moments);
 	Vector3 acceleration = forces / t->getMass() * dt;
 	t->setVelocity(t->getVelocity() + acceleration);
 	updateMovable(t, dt);

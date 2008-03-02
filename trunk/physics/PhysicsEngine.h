@@ -19,8 +19,10 @@ class PhysicsEngine :
 	public EventListener< Player_Spawned >
 {
 public:
-	PhysicsEngine();
-	virtual ~PhysicsEngine();
+
+	//! Called by Application startup.
+	void onApplicationLoad(const ParserSection&);
+	void onApplicationUnload();
 
 	void onEvent(Terrain_Changed&);
 	void onEvent(Player_Spawned&);
@@ -68,4 +70,6 @@ private:
 
 
 	friend Singleton< PhysicsEngine >;
+	PhysicsEngine();
+	virtual ~PhysicsEngine();
 };

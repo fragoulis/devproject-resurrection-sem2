@@ -7,5 +7,6 @@
 # It is passed to each engine with a call to XXXEngine::onApplicationLoad(ParserSection&);
 #
 
-[TestSection]
-Testvar = "weee"
+
+[files]
+EnemyTypesFile = "EnemyTypes.txt"

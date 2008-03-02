@@ -4,6 +4,12 @@ Matrix33::Matrix33()
 {
 }
 
+Matrix33::Matrix33(float f)
+{
+	for (int i = 0; i < 9; i++) m_components[i] = 0.0f;
+	for (int i = 0; i < 3; i++) m_components[i*4] = f;
+}
+
 Matrix33::Matrix33(const float components[9])
 {
 	for (int i = 0; i < 9; i++)
