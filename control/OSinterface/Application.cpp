@@ -67,7 +67,5 @@ void Application :: render(Graphics& g) const
 void Application :: update(float dt)
 {
 	ControllerManager::instance().update(dt);
-	AIEngine::instance().update(dt);
-	RenderEngine::instance().update(dt);
 	Input::instance().update();
 }
