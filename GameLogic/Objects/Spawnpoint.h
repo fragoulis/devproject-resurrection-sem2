@@ -1,5 +1,6 @@
 #pragma once
 #include "../WorldObject.h"
+class ParserSection;
 
 class Spawnpoint : public WorldObject
 {
@@ -8,6 +9,8 @@ public:
 	virtual ~Spawnpoint();
 
 	void update(float dt);
+
+	void loadSettings(const ParserSection&);
 
 private:
 	int m_spawnType;

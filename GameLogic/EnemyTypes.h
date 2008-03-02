@@ -6,7 +6,6 @@ class Enemyship;
 class ParserSection;
 
 
-typedef int EnemyType;
 
 /**
  * Keeps a list of enemy types.
@@ -18,8 +17,8 @@ class EnemyTypes : public Singleton< EnemyTypes >
 {
 public:
 
-	EnemyType getTypeFromName(const std::string& name) const;
-	const std::string& getNameFromType(EnemyType type) const;
+	int getTypeFromName(const std::string& name) const;
+	const std::string& getNameFromType(int type) const;
 
 	Enemyship* createEnemyship(int type) const;
 
