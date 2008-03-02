@@ -10,3 +10,22 @@
 
 [files]
 EnemyTypesFile = "EnemyTypes.txt"
+
+
+// Defines a prototype for playership
+// This is used to create a new playership object when a new level is loaded
+[Playership]
+ThrusterMaxPower = 10.0     # float
+Radius = 10.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+
+
+[MemManager : RawData]
+MinMemoryPOT = 4
+MaxMemoryPOT = 27
+
+[MemManager : RawData : MemDistribution]
+FixedMemTree = 10000

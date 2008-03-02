@@ -31,7 +31,6 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	// TODO: remove m_confParser entirely and read global data now, from ps
 	m_confParser = new ConfParser("./config/config.ini");
 
-	MemMgrRaw::init(m_confParser->getSection("MemManager:RawData"));
 	TextureMgr::init(m_confParser->getSection("Texture"));
 	ShaderManager::init(m_confParser->getSection("Shader"));
 	VBOMgr::safeInstance().init(m_confParser->getSection("VBOSettings"));
@@ -44,7 +43,6 @@ void RenderEngine :: onApplicationUnload()
 	VBOMgr::destroy();
 	ShaderManager::destroy();
 	TextureMgr::destroy();
-	MemMgrRaw::destroy();
 
 	if (m_confParser != 0) delete m_confParser;
 }

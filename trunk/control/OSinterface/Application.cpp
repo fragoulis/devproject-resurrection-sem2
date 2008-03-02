@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
+#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ControllerManager.h"
 #include "../GameController.h"
 #include "../../GameLogic/GameLogic.h"
@@ -35,6 +36,8 @@ bool Application :: init()
 	ConfParser cp("./config/config.txt");
 	const ParserSection& ps = cp.rootSection();
 
+	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
+
 	EnemyTypes::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
 	SoundEngine::safeInstance().onApplicationLoad(ps);
@@ -64,6 +67,7 @@ void Application :: destroy()
 	RenderEngine::destroy();
 	SoundEngine::destroy();
 	GameLogic::destroy();
+	MemMgrRaw::destroy();
 }
 
 void Application :: render(Graphics& g) const

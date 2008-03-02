@@ -26,4 +26,5 @@ void Rigidbody :: loadSettings( const ParserSection& ps )
 	m_airdrag.coefficient = FromString<float>(ps.getVal("AirdragCoefficient"));
 	m_lift.power = FromString<float>(ps.getVal("LiftPower"));
 	m_lift.variance = FromString<float>(ps.getVal("LiftVariance"));
+	Movable::loadSettings(ps);
 }
