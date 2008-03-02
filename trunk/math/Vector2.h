@@ -40,9 +40,6 @@ public:
 	Vector2& operator -= (const Vector2& rhs) { subtract(rhs); return *this; }
 	Vector2& operator *= (float rhs) { multiply(rhs); return *this; }
 
-	std::istream& operator >> (std::istream& is) { return read(is); }
-	std::ostream& operator << (std::ostream& os) const { return write(os); }
-
 private:
 	float m_components[2];
 };
@@ -86,4 +83,14 @@ inline const Vector2 operator - (const Vector2& rhs) {
 	Vector2 ret(rhs);
 	ret.negate();
 	return ret;
+}
+
+inline std::istream& operator >> (std::istream& is, Vector2& v)
+{
+	return v.read(is);
+}
+
+inline std::ostream& operator << (std::ostream& os, const Vector2& v)
+{
+	return v.write(os);
 }

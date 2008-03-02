@@ -21,7 +21,7 @@ template<class T>
 T FromString(const std::string& strval)
 {
 	T val;
-	std::istringstream str(strval);
+	std::stringstream str(strval);
     str>>val;
 	return val;
 	

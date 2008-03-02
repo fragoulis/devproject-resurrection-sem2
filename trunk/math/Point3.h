@@ -39,9 +39,6 @@ public:
 	Point3& operator += (const Vector3& rhs) { add(rhs); return *this; }
 	Point3& operator -= (const Vector3& rhs) { subtract(rhs); return *this; }
 
-	std::istream& operator >> (std::istream& is) { return read(is); }
-	std::ostream& operator << (std::ostream& os) const { return write(os); }
-
 private:
 	Vector3 m_vector;
 };
@@ -84,4 +81,14 @@ inline const Point3 operator - (const Vector3& lhs, const Point3& rhs)
 	Point3 ret(rhs);
 	ret -= lhs;
 	return ret;
+}
+
+inline std::istream& operator >> (std::istream& is, Point3& p)
+{
+	return p.read(is);
+}
+
+inline std::ostream& operator << (std::ostream& os, const Point3& p)
+{
+	return p.write(os);
 }

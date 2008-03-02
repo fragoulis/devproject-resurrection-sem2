@@ -48,9 +48,6 @@ public:
 	Vector3& operator /= (float rhs) { divide(rhs); return *this; }
 	Vector3& operator *= (const Matrix33& rhs) { multiply(rhs); return *this; }
 
-	std::istream& operator >> (std::istream& is) { return read(is); }
-	std::ostream& operator << (std::ostream& os) const { return write(os); }
-
 	static const Vector3 cross(const Vector3& lhs, const Vector3& rhs);
 
 private:
@@ -110,4 +107,15 @@ inline const Vector3 operator - (const Vector3& rhs) {
 	Vector3 ret(rhs);
 	ret.negate();
 	return ret;
+}
+
+
+inline std::istream& operator >> (std::istream& is, Vector3& v)
+{
+	return v.read(is);
+}
+
+inline std::ostream& operator << (std::ostream& os, const Vector3& v)
+{
+	return v.write(os);
 }
