@@ -10,6 +10,7 @@
 #include "../gfxutils/Misc/utils.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
+#include <vector>
 
 
 // Two helpers for deleting objects and lists
@@ -119,6 +120,16 @@ void GameLogic :: loadLevel(const std::string& id)
 	Point3 pos = FromString<Point3>(psMap->getVal("PlayerStart"));
 	m_playership->setPosition(pos);
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
+
+	// Load and spawn craters
+	std::vector<std::string> craterNames = psMap->getValVector("Craters");
+	for (std::vector<std::string>::iterator i = craterNames.begin(); i != craterNames.end(); ++i)
+	{
+		Crater* crater = new Crater();
+		crater->loadSettings(*cp.getSection(*i));
+		m_craters.push_back(crater);
+		EventManager::instance().fireEvent(Crater_Spawned(crater));
+	}
 }
 
 void GameLogic :: _deleteLevelData()
