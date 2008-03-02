@@ -108,13 +108,16 @@ void GameLogic :: loadLevel(const std::string& id)
 
 	EventManager::instance().fireEvent(Level_Load(ps));
 
+	const ParserSection* psMap = cp.getSection("Map");
+
 	// TODO: load level data, get terrain id from that
 	m_terrain = new Terrain(id);
 	EventManager::instance().fireEvent(Terrain_Changed(m_terrain));
 
 	// Spawn player
 	m_playership = new Playership(*m_playershipPrototype);
-	m_playership->loadSettings(*cp.getSection("Playership"));
+	Point3 pos = FromString<Point3>(psMap->getVal("PlayerStart"));
+	m_playership->setPosition(pos);
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 }
 
