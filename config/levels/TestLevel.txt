@@ -11,8 +11,4 @@ SoundsUsed = <EnemyDied1>, <EnemyDied2>
 
 [Map]
 Dimensions = "(128.0, 128.0)"
-
-// you can change any of the usual variables here
-// that includes those that were loaded in config.txt for the prototype
-[Playership]
-Position = "(10.0, 0.0, 1.0)"
+PlayerStart = "(10.0, 0.0, 1.0)"
