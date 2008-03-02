@@ -1,5 +1,6 @@
 #pragma once
 #include "../math/CoordinateFrame.h"
+class ParserSection;
 
 class WorldObject
 {
@@ -12,6 +13,8 @@ public:
 
 	const CoordinateFrame& getCoordinateFrame() const { return m_coordinateFrame; }
 	void setCoordinateFrame(const CoordinateFrame& cf) { m_coordinateFrame = cf; }
+
+	void loadSettings(const ParserSection&);
 
 private:
 	CoordinateFrame m_coordinateFrame;
