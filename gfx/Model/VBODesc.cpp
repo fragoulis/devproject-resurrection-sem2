@@ -26,7 +26,7 @@ m_vbo(vbo)
 		vbo->sendData(attrib[k],attrib_data[k],m_dStart,data_num);
 }
 
-void VBODesc :: call()
+void VBODesc :: call() const
 {
 	m_vbo->call(m_iStart,m_iSize,m_drawMode);
 }

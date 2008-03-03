@@ -1,5 +1,6 @@
 #include "../VBO/vbo.h"
 #include "../Shaders/ShaderManager.h"
+#include "VBOMgr.h"
 #include <gl/glee.h>
 #include <sstream>
 
@@ -10,7 +11,6 @@ using namespace std;
 VBO * VBO :: _active = 0;
 
 VAttribStatus VBO :: _enabledAttribs(0);
-VAttribStatus VBO :: _currentFlags(0xFFFFFFFF);
 
 
 VBO :: VBO(std::vector<const VertexAttribute *> attribs,
@@ -82,11 +82,11 @@ void VBO :: setup(const std::vector<const VertexAttribute *>& vattrs)
 }
 
 
-void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmode)
+void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmode) const
 {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,_ibuffer);
 
-	VAttribStatus cur_flags = _currentFlags.AND(_potentialAttribs);
+	VAttribStatus cur_flags = VBOMgr::instance().getCurrentFlags().AND(_potentialAttribs);
 
 	const unsigned total_attribs = unsigned(ShaderManager::instance()->vertexAttributeNum());
 	if(_active == this)
@@ -120,7 +120,7 @@ void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmod
 	else
 	{
 		//cout<<"VBO changed from "<<_active<<" to "<<this<<endl;
-		_active = this;
+		_active = const_cast<VBO *>(this);
 		VAttribStatus to_change = cur_flags.OR(_enabledAttribs);
 		for(unsigned i=0;i<total_attribs;++i)
 		{

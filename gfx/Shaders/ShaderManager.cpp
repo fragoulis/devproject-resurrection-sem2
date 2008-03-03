@@ -109,7 +109,7 @@ void ShaderManager :: loadShaderFile(const std::string& shaderfile)
 		vector<const ParserSection *> attnames = parsec->getChildren();
 		for(size_t i=0;i<attnames.size();++i)
 		{
-			string nis = parsec->getVal("AttributeRef");
+			string nis = parsec->getName();
 			assert(nis != "");
 			unsigned j;
 			for(j=0;j<_vertex_attribs.size();++j)

@@ -12,6 +12,7 @@ VBOMgr :: ~VBOMgr()
 
 void VBOMgr :: init(const ParserSection * parsec)
 {
+	m_statusFlags = 0xFFFFFFFF;
 	m_settings[U_STATIC].dSize = FromString<unsigned>(parsec->getVal("StaticVData"));
 	m_settings[U_STATIC].iSize = FromString<unsigned>(parsec->getVal("StaticIndices"));
 	m_settings[U_DYNAMIC].dSize = FromString<unsigned>(parsec->getVal("DynamicVData"));

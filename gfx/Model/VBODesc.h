@@ -35,5 +35,5 @@ public :
 	VBO * getVBO() {return m_vbo;}
 
 	// Funcs
-	void call();
+	void call() const;
 };
