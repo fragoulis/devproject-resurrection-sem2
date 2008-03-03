@@ -11,6 +11,7 @@
 #include "../gfx/Model/ModelMgr.h"
 #include "../gfx/VBO/VBOMgr.h"
 #include "../gfxutils/MemManager/MemMgr_RawData.h"
+#include "../ParticleSystem/PS_Manager.h"
 
 using namespace std;
 
@@ -35,10 +36,14 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	ShaderManager::init(m_confParser->getSection("Shader"));
 	VBOMgr::safeInstance().init(m_confParser->getSection("VBOSettings"));
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
+
+	PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 }
 
 void RenderEngine :: onApplicationUnload()
 {
+	PS_Manager::instance().clear();
+	PS_Manager::destroy();
 	ModelMgr::destroy();
 	VBOMgr::destroy();
 	ShaderManager::destroy();
