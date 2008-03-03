@@ -12,26 +12,9 @@
 #include "Enemies/Enemyship.h"
 #include "Enemies/EnemyFactory.h"
 #include "Lasers/Laser.h"
+#include "../utility/deleters.h"
 #include <vector>
 
-
-// Two helpers for deleting objects and lists
-template< typename T >
-void deleteObject(T*& t)
-{
-	if (t != NULL) {
-		delete t;
-		t = NULL;
-	}
-}
-
-template< typename T >
-void deleteList(std::list<T*>& list)
-{
-	for (std::list<T*>::iterator i = list.begin(); i != list.end(); ++i)
-		delete *i;
-	list.clear();
-}
 
 
 GameLogic :: GameLogic() : m_terrain(0), m_playership(0), m_playershipPrototype(0)
