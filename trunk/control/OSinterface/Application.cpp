@@ -11,6 +11,7 @@
 #include "../../GameLogic/EnemyTypes.h"
 #include "Input.h"
 
+const float DELTA_TIME_MAX = 0.1f;
 
 Application :: Application()
 {
@@ -76,6 +77,7 @@ void Application :: render(Graphics& g) const
 }
 void Application :: update(float dt)
 {
+	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
 	ControllerManager::instance().update(dt);
 	Input::instance().update();
 }
