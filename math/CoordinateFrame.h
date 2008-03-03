@@ -1,7 +1,7 @@
 #pragma once
 #include "Point3.h"
 #include "Rotation.h"
-class Matrix44;
+#include "Matrix44.h"
 
 
 
@@ -33,6 +33,10 @@ public:
 	void reverseTransform(Point3& p) const;
 
 private:
+
+	void _updateMatrix();
+
 	Point3 m_origin;
 	Rotation m_rotation;
+	Matrix44 m_matrix;
 };

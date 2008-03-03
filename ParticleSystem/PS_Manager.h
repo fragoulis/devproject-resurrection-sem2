@@ -4,6 +4,7 @@
 #include "../utility/Singleton.h"
 
 class PS_Base;
+class VBO;
 class PS_Manager : public Singleton<PS_Manager>
 {
 public :
@@ -11,7 +12,8 @@ public :
 	
 
 private : 
-	std::vector<PS_Base *>	_psList;
+	std::vector<PS_Base *>	m_psList;
+	VBO					  * m_vbo;
 
 	// singleton stuff
 	friend Singleton< PS_Manager >;
