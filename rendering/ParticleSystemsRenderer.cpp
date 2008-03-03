@@ -4,17 +4,18 @@
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
-	// FIXME : Adding the hacky way the dummy ps
-	_psList.push_back(PS_Manager::instance().fetchNewPS("TestPS"));
-	CoordinateFrame cf;
-	cf.move(Vector3(64,150,-64));
-	_psList[0]->setTransform(cf);
+
 }
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
-	// FIXME : Deleting the hacky way the dummy ps
-	delete _psList[0];
+	for(std::vector<PS_Base *>::iterator it = _psList.begin();
+		it != _psList.end();
+		++it)
+	{
+		delete (*it);
+		(*it) = 0;
+	}
 	_psList.clear();
 }
 

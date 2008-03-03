@@ -83,12 +83,8 @@ void PS_Manager :: clear()
 		it != m_psList.end();
 		++it)
 	{
-		if(*it)	// FIXME : just for now, that I fill with NULL pointers
-		{
-			//delete (*it)->model() ?? because here we hold the templates??
-			delete (*it);
-			(*it) = 0;
-		}
+		delete (*it);
+		(*it) = 0;
 	}
 	m_psList.clear();
 	if(m_vbo)

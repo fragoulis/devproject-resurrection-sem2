@@ -108,6 +108,7 @@ void RenderEngine::unloadAllRenderers()
 
 void RenderEngine :: render(Graphics &g) const
 {
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	for (RendererList::const_iterator i = m_activeRenderers.begin(); i != m_activeRenderers.end(); ++i)
 		(*i)->render(g);
 }
