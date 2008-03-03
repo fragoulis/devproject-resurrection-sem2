@@ -14,11 +14,6 @@ Input::~Input()
 {
 }
 
-void Input :: onMouseMove(int x, int y)
-{
-	m_mouseX = x;
-	m_mouseY = y;
-}
 
 void Input :: update()
 {

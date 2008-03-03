@@ -1,25 +1,23 @@
 [main]
-Craters = <Crater1>, <Crater2>
-Spawnpoints = <Spawnpoint1>, <Spawnpoint2>
+test = 5
 
-
-[Crater1]
+[Craters : Crater1]
 Radius = 20.0
 EnergyType = yellow
 Position = "(500, 100, -100)"
 
-[Crater2]
+[Craters : Crater2]
 Radius = 20.0
 EnergyType = blue
 Position = "(500, 500, -100)"
 
-[Spawnpoint1]
+[Spawnpoints : p1]
 Position = "(500, 500, -100)"
 EnemyType = "interceptor"           # string
 EnemyCount = 5                      # int
 TimePeriod = 10.0                   # float
 
-[Spawnpoint2]
+[Spawnpoints : p2]
 Position = "(500, 500, -100)"
 EnemyType = "interceptor"           # string
 EnemyCount = 5                      # int

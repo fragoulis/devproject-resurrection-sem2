@@ -1,6 +1,6 @@
 [files]
-Sound = "TestLevelSound.txt"
-Graphics = "TestLevelGraphics.txt"
+Sound = "TestLevel.Sound.txt"
+Graphics = "TestLevel.Graphics.txt"
 Gameplay = "TestLevel.Gameplay.txt"
 
 [graphics]

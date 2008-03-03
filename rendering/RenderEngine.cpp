@@ -2,6 +2,8 @@
 #include "IRenderer.h"
 #include "WorldRenderer.h"
 #include "LoadingRenderer.h"
+#include "../math/Point2.h"
+#include "../math/Point3.h"
 #include <cassert>
 #include <string>
 
@@ -143,4 +145,10 @@ void RenderEngine :: getViewport(int vp[4]) const
 	vp[1] = m_viewport[1];
 	vp[2] = m_viewport[2];
 	vp[3] = m_viewport[3];
+}
+
+Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
+{
+	return Point3(100.0f, 0.0f, 0.0f);
+	//return p;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include "../../utility/singleton.h"
+#include "../../math/Point2.h"
 
 #define INPUT_FIRES_EVENTS 1
 
@@ -33,17 +34,16 @@ public:
 	void onKeyDown(int key) { m_keyDown[key] = true; }
 	void onKeyUp(int key) { m_keyDown[key] = false; }
 
-	void onMouseMove(int x, int y);
+	void onMouseMove(int x, int y) { m_mousePosition.set(float(x), float(y)); }
 	void onMouseDown(int button) { onKeyDown(button); }
 	void onMouseUp(int button) { onKeyUp(button); }
 
-	int getMouseX() const { return m_mouseX; }
-	int getMouseY() const { return m_mouseY; }
+	Point2 getMousePosition() { return m_mousePosition; }
 
-	bool isMouseButtonGoingDown(int button) const { isKeyGoingDown(button); }
-	bool isMouseButtonDown(int button) const { isKeyDown(button); }
-	bool isMouseButtonGoingUp(int button) const { isKeyGoingUp(button); }
-	bool isMouseButtonUp(int button) const { isKeyUp(button); }
+	bool isMouseButtonGoingDown(int button) const { return isKeyGoingDown(button); }
+	bool isMouseButtonDown(int button) const { return isKeyDown(button); }
+	bool isMouseButtonGoingUp(int button) const { return isKeyGoingUp(button); }
+	bool isMouseButtonUp(int button) const { return isKeyUp(button); }
 
 	void update();
 
@@ -62,7 +62,7 @@ private:
 	KeyState m_keyState[NUM_KEYS];
 	KeyState m_previousKeyState[NUM_KEYS];
 
-	int m_mouseX, m_mouseY;
+	Point2 m_mousePosition;
 
 
 	friend Singleton< Input >;

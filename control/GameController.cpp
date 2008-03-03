@@ -5,6 +5,7 @@
 #include "../physics/PhysicsEngine.h"
 #include "OSinterface/Input.h"
 #include "../math/Vector3.h"
+#include "../GameLogic/LaserTypes.h"
 
 GameController :: GameController()
 {
@@ -52,9 +53,19 @@ void GameController :: update(float dt)
 	GameLogic& gl = GameLogic::instance();
 	gl.setPlayerDirection(direction);
 
+
+	if (input.isMouseButtonDown(0) || input.isMouseButtonGoingDown(0)) _fireLaser(PLAYER_POSITIVE);
+	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) _fireLaser(PLAYER_NEGATIVE);
+
 	gl.update(dt);
 
 	AIEngine::instance().update(dt);
 	PhysicsEngine::instance().update(dt);
 	RenderEngine::instance().update(dt);
+}
+
+void GameController :: _fireLaser(LaserType type)
+{
+	Point3 mapPosition = RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition());
+	GameLogic::instance().fireLaser(mapPosition, type);
 }

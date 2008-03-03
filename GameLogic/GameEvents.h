@@ -19,3 +19,5 @@ EVENT_WITH_POINTER_AND_VALUE(Player_Destroyed, Playership, EnergyType);
 EVENT_WITH_POINTER_AND_2VALUES(Player_Drained, Playership, EnergyType, int); // int is amount of energy drained
 EVENT_WITH_POINTER(Crater_Spawned, Crater);
 EVENT_WITH_POINTER(Spawnpoint_Spawned, Spawnpoint);
+EVENT_WITH_POINTER_AND_2VALUES(Enemy_Hit, Enemyship, EnergyType, int);
+EVENT_WITH_2POINTERS(Enemy_Attached_To_Player, Enemyship, Playership);

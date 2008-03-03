@@ -1,5 +1,6 @@
 #pragma once
 #include "IController.h"
+#include "../GameLogic/LaserTypes.h"
 
 class GameController : public IController
 {
@@ -13,4 +14,6 @@ public:
 	virtual void update(float dt);
 
 private:
+
+	void _fireLaser(LaserType type);
 };
