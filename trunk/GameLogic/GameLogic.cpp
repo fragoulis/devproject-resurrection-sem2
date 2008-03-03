@@ -10,6 +10,7 @@
 #include "../gfxutils/Misc/utils.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
+#include "EnemyTypes.h"
 #include <vector>
 
 
@@ -44,14 +45,12 @@ GameLogic :: ~GameLogic()
 
 void GameLogic :: onApplicationLoad(const ParserSection& ps)
 {
-	// TODO: read ParserSection for info and load data from disk
 	m_playershipPrototype = new Playership();
 	m_playershipPrototype->loadSettings(*ps.getSection("Playership"));
 }
 
 void GameLogic :: onApplicationUnload()
 {
-	// TODO: delete allocated memory
 	_deleteLevelData();
 	deleteObject(m_playershipPrototype);
 }
@@ -91,7 +90,6 @@ void GameLogic :: update(float dt)
 	}
 }
 
-
 /**
  * Loads a new level
  * Fires Level_Load event.
@@ -104,14 +102,19 @@ void GameLogic :: loadLevel(const std::string& id)
 	assert(m_playership == 0);
 	assert(m_enemyships.empty());
 
-	ConfParser cp(std::string("config/levels/") + id + ".txt");
-	const ParserSection& ps = cp.rootSection();
+	// load level file
+	ConfParser cpLevel(std::string("config/levels/") + id + ".txt");
+	const ParserSection* psMap = cpLevel.getSection("map");
+	const ParserSection* psFiles = cpLevel.getSection("files");
 
-	EventManager::instance().fireEvent(Level_Load(ps));
+	// fire event Level_Load
+	EventManager::instance().fireEvent(Level_Load(cpLevel.rootSection()));
 
-	const ParserSection* psMap = cp.getSection("Map");
+	// load gameplay file
+	ConfParser cpGameplay(std::string("config/levels/") + psFiles->getVal("Gameplay"));
+	const ParserSection* psMainMap = cpGameplay.getSection("main");
 
-	// TODO: load level data, get terrain id from that
+	// TODO: get terrain ID from level file
 	m_terrain = new Terrain(id);
 	EventManager::instance().fireEvent(Terrain_Changed(m_terrain));
 
@@ -121,14 +124,24 @@ void GameLogic :: loadLevel(const std::string& id)
 	m_playership->setPosition(pos);
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 
-	// Load and spawn craters
-	std::vector<std::string> craterNames = psMap->getValVector("Craters");
+	// Read crater data from gameplay file and spawn craters
+	std::vector<std::string> craterNames = psMainMap->getValVector("Craters");
 	for (std::vector<std::string>::iterator i = craterNames.begin(); i != craterNames.end(); ++i)
 	{
 		Crater* crater = new Crater();
-		crater->loadSettings(*cp.getSection(*i));
+		crater->loadSettings(*cpGameplay.getSection(*i));
 		m_craters.push_back(crater);
 		EventManager::instance().fireEvent(Crater_Spawned(crater));
+	}
+
+	// Read spawnpoint data from gameplay file and spawn spawnpoints
+	std::vector<std::string> spawnNames = psMainMap->getValVector("Spawnpoints");
+	for (std::vector<std::string>::iterator i = spawnNames.begin(); i != spawnNames.end(); ++i)
+	{
+		Spawnpoint* spawnPoint = new Spawnpoint();
+		spawnPoint->loadSettings(*cpGameplay.getSection(*i));
+		m_spawnpoints.push_back(spawnPoint);
+		EventManager::instance().fireEvent(Spawnpoint_Spawned(spawnPoint));
 	}
 }
 
@@ -150,9 +163,10 @@ void GameLogic :: unloadLevel()
 
 void GameLogic :: spawnEnemies( int count, int type )
 {
+	EnemyTypes& enemyTypes = EnemyTypes::instance();
 	for (int i = 0; i < count; i++)
 	{
-		Enemyship* es = new Enemyship(type);
+		Enemyship* es = enemyTypes.createEnemyship(type);
 		m_enemyships.push_back(es);
 		EventManager::instance().fireEvent(Enemy_Spawned(es));
 	}

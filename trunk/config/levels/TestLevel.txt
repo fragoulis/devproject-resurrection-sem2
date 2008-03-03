@@ -1,26 +1,14 @@
 [files]
 Sound = "TestLevelSound.txt"
 Graphics = "TestLevelGraphics.txt"
-Map = "TestLevelMap.txt"
+Gameplay = "TestLevel.Gameplay.txt"
 
 [graphics]
 LightDirection = "some vector"
 
-[Sound]
+[sound]
 SoundsUsed = <EnemyDied1>, <EnemyDied2>
 
-[Map]
+[map]
 Dimensions = "(128.0, 128.0)"
 PlayerStart = "(10.0, 0.0, 1.0)"
-Craters = <Crater1>, <Crater2>
-
-[Crater1]
-Radius = 20.0
-EnergyType = yellow
-Position = "(500, 100, -100)"
-
-[Crater2]
-Radius = 20.0
-EnergyType = blue
-Position = "(500, 500, -100)"
-
