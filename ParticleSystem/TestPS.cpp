@@ -80,12 +80,13 @@ void  TestPS :: _generateData(VBO * vbo,Texture * tex)
 		Vector3 vel;
 		RandomGenerator::GET_RANDOM_VECTOR3(vel,Vector3(-1,-1,-1),Vector3(1,1,1));
 		vel.normalize();
-		vel.multiply(5.0f);
+		vel.multiply(5.0f + RandomGenerator::GET_RANDOM_FLOAT(1.0f,2.5f));
 		velocities[i] = velocities[i+1] = velocities[i+2] = velocities[i+3] = Vector4(vel.getX(),
 																					  vel.getY(),
 																					  vel.getZ(),
-																					  0.0f);
+																					  float(i)*m_particleLife*0.25f/m_particleNum);
 
+		//std::cout<<velocities[i].getW()<<std::endl;
 		positions[i] = Vector4(-1,1,0,1);
 		positions[i+1] = Vector4(-1,-1,0,1);
 		positions[i+2] = Vector4(1,-1,0,1);
@@ -125,7 +126,7 @@ void  TestPS :: _generateData(VBO * vbo,Texture * tex)
 
 void TestPS :: update(const float delta)
 {
-	m_currentTime += 0.001f;
+	m_currentTime += delta;
 }
 
 void TestPS :: render() const
@@ -139,9 +140,6 @@ void TestPS :: render() const
 	const float * m = m_transform.getMatrix().cfp();
 	glMultMatrixf(m);
 	ShaderManager::instance()->begin(m_shaderIndex);
-	ShaderManager::instance()->setUniform1fv("particleLife",&m_particleLife);
-	ShaderManager::instance()->setUniform1fv("particleSize",&m_particleSize);
-	ShaderManager::instance()->setUniform1fv("systemLife",&m_systemLife);
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("currentTime",&m_currentTime);
 	CHECK_GL_ERROR();
