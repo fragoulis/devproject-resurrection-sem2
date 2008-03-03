@@ -1,20 +1,20 @@
-#include "EnemyTypes.h"
-#include "Objects/Enemyship.h"
-#include "../gfxutils/ConfParser/ConfParser.h"
+#include "EnemyFactory.h"
+#include "Enemyship.h"
+#include "../../gfxutils/ConfParser/ConfParser.h"
 using namespace std;
 
-EnemyTypes :: EnemyTypes()
+EnemyFactory :: EnemyFactory()
 {
 }
 
-EnemyTypes :: ~EnemyTypes()
+EnemyFactory :: ~EnemyFactory()
 {
 	// TODO: remove this call when we fix unloading
 	onApplicationUnload();
 }
 
 
-int EnemyTypes :: getTypeFromName(const std::string& name) const
+int EnemyFactory :: getTypeFromName(const std::string& name) const
 {
 	//for (StringVector::const_iterator i = m_typeNames.begin(); i != m_typeNames.end(); ++i)
 	for (int i = 0; i != m_typeNames.size(); ++i)
@@ -25,12 +25,12 @@ int EnemyTypes :: getTypeFromName(const std::string& name) const
 	return -1;
 }
 
-const string& EnemyTypes :: getNameFromType(int type) const
+const string& EnemyFactory :: getNameFromType(int type) const
 {
 	return m_typeNames[type];
 }
 
-Enemyship* EnemyTypes :: createEnemyship(int type) const
+Enemyship* EnemyFactory :: createEnemyship(int type) const
 {
 	Enemyship* prototype = m_enemyPrototypes[type];
 	assert(prototype != 0);
@@ -40,10 +40,10 @@ Enemyship* EnemyTypes :: createEnemyship(int type) const
 
 
 
-void EnemyTypes :: onApplicationLoad(const ParserSection& ps)
+void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 {
 	const ParserSection* psFiles = ps.getSection("files");
-	string filename = string("config/") + psFiles->getVal("EnemyTypesFile");
+	string filename = string("config/") + psFiles->getVal("EnemyFactoryFile");
 
 	ConfParser cp(filename);
 	const ParserSection* psMain = cp.getSection("main");
@@ -60,7 +60,7 @@ void EnemyTypes :: onApplicationLoad(const ParserSection& ps)
 	}
 }
 
-void EnemyTypes :: onApplicationUnload()
+void EnemyFactory :: onApplicationUnload()
 {
 	for (int i = 0; i != m_enemyPrototypes.size(); i++)
 	{

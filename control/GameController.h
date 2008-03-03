@@ -1,6 +1,6 @@
 #pragma once
 #include "IController.h"
-#include "../GameLogic/LaserTypes.h"
+#include "../GameLogic/Lasers/LaserTypes.h"
 
 class GameController : public IController
 {

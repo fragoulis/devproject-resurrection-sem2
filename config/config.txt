@@ -9,7 +9,7 @@
 
 
 [files]
-EnemyTypesFile = "EnemyTypes.txt"
+EnemyFactoryFile = "EnemyFactory.txt"
 
 
 // Defines a prototype for playership

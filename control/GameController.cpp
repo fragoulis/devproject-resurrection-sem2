@@ -5,7 +5,7 @@
 #include "../physics/PhysicsEngine.h"
 #include "OSinterface/Input.h"
 #include "../math/Vector3.h"
-#include "../GameLogic/LaserTypes.h"
+#include "../GameLogic/Lasers/LaserTypes.h"
 
 GameController :: GameController()
 {
