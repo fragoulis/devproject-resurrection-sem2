@@ -2,8 +2,13 @@
 #include "../GameLogic.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
+#include "../EnemyTypes.h"
 
-Spawnpoint :: Spawnpoint()
+Spawnpoint :: Spawnpoint() :
+	m_spawnType(-1),
+	m_spawnCount(0),
+	m_spawnPeriodTime(0.0f),
+	m_timeTillNextSpawn(0.0f)
 {
 }
 
@@ -25,8 +30,9 @@ void Spawnpoint :: update(float dt)
 
 void Spawnpoint :: loadSettings( const ParserSection& ps )
 {
-	m_spawnType = FromString<int>(ps.getVal("EnemyType"));
+	m_spawnType = EnemyTypes::instance().getTypeFromName(ps.getVal("EnemyType"));
 	m_spawnCount = FromString<int>(ps.getVal("EnemyCount"));
 	m_spawnPeriodTime = FromString<float>(ps.getVal("TimePeriod"));
+	m_timeTillNextSpawn = m_spawnPeriodTime;
 	WorldObject::loadSettings(ps);
 }
