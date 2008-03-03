@@ -1,7 +1,13 @@
 #pragma once
 #include <string>
 
-enum EnergyType { RED, YELLOW, BLUE, ENERGY_TYPE_COUNT, UNKNOWN };
+enum EnergyType {
+	RED,
+	YELLOW,
+	BLUE,
+	ENERGY_TYPE_COUNT,
+	UNKNOWN
+};
 
 inline EnergyType EnergyTypeFromString(const std::string& s)
 {

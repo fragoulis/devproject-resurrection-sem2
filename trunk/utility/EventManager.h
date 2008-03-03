@@ -21,6 +21,17 @@ public:
 		type* m_t; \
 	};
 
+#define EVENT_WITH_2POINTERS(name, type1, type2) \
+	class name { \
+	public: \
+		name(type1* t1, type2* t2) : m_t1(t1), m_t2(t2) { } \
+		type1* getPointer1() { return m_t1; } \
+		type2* getPointer2() { return m_t2; } \
+	private: \
+		type1* m_t1; \
+		type2* m_t2; \
+	};
+
 #define EVENT_WITH_VALUE(name, type) \
 	class name { \
 	public: \

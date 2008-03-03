@@ -111,6 +111,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	EventManager::instance().fireEvent(Level_Load(cpLevel.rootSection()));
 
 	// load gameplay file
+	std::string filename = std::string("config/levels/") + psFiles->getVal("Gameplay");
 	ConfParser cpGameplay(std::string("config/levels/") + psFiles->getVal("Gameplay"));
 	const ParserSection* psMainMap = cpGameplay.getSection("main");
 
@@ -125,21 +126,23 @@ void GameLogic :: loadLevel(const std::string& id)
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 
 	// Read crater data from gameplay file and spawn craters
-	std::vector<std::string> craterNames = psMainMap->getValVector("Craters");
-	for (std::vector<std::string>::iterator i = craterNames.begin(); i != craterNames.end(); ++i)
+	typedef std::vector<const ParserSection *> PSVector;
+	const ParserSection* psCraters2 = cpGameplay.getSection("Craters");
+	PSVector psCraters = cpGameplay.getSection("Craters")->getChildren();
+	for (PSVector::iterator it = psCraters.begin(); it != psCraters.end(); it++)
 	{
 		Crater* crater = new Crater();
-		crater->loadSettings(*cpGameplay.getSection(*i));
+		crater->loadSettings(**it);
 		m_craters.push_back(crater);
 		EventManager::instance().fireEvent(Crater_Spawned(crater));
 	}
 
 	// Read spawnpoint data from gameplay file and spawn spawnpoints
-	std::vector<std::string> spawnNames = psMainMap->getValVector("Spawnpoints");
-	for (std::vector<std::string>::iterator i = spawnNames.begin(); i != spawnNames.end(); ++i)
+	PSVector psSpawnpoints = cpGameplay.getSection("Spawnpoints")->getChildren();
+	for (PSVector::iterator it = psSpawnpoints.begin(); it != psSpawnpoints.end(); it++)
 	{
 		Spawnpoint* spawnPoint = new Spawnpoint();
-		spawnPoint->loadSettings(*cpGameplay.getSection(*i));
+		spawnPoint->loadSettings(**it);
 		m_spawnpoints.push_back(spawnPoint);
 		EventManager::instance().fireEvent(Spawnpoint_Spawned(spawnPoint));
 	}
@@ -177,4 +180,11 @@ void GameLogic :: setPlayerDirection( const Vector3& v )
 {
 	assert(m_playership != 0);
 	m_playership->setThrusterDirection(v);
+}
+
+void GameLogic :: fireLaser(const Point3& target, LaserType type)
+{
+	const Point3& playerPosition = m_playership->getPosition();
+	Vector3 direction = target - playerPosition;
+	direction.normalize();
 }

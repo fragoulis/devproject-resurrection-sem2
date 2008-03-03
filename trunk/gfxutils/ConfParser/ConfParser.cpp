@@ -121,6 +121,7 @@ void ConfParser :: _parseFile(istream& ifs)
 		if((error = _parseLine(status,line,tokenlist)) != CONFPARSER_NO_ERROR)
 		{
 			cout<<"Parsing error type "<<error<<" at line : "<<linenum<<endl;
+			_validConfFile = false; // Added by Joep so that constructor fails assert
 			return;
 		}
 		linenum++;

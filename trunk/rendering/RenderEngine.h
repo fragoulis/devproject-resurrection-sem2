@@ -7,6 +7,8 @@ class Graphics;
 class IRenderer;
 class ConfParser;
 class ParserSection;
+class Point2;
+class Point3;
 
 class RenderEngine : public Singleton< RenderEngine >
 {
@@ -40,6 +42,7 @@ public:
 	// viewport getset
 	void setViewport(int x,int y,int width, int height);
 	void getViewport(int vp[4]) const;
+	Point3 getMapPositionFromScreenPosition(const Point2& p);
 
 
 private:
