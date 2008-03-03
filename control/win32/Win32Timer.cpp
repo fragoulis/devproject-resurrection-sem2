@@ -22,6 +22,7 @@ void GetSystemFrequency() throw(Exception)
 Win32Timer::Win32Timer()
 {
 	if (frequency == 0) GetSystemFrequency();
+	reset();
 }
 
 Win32Timer::~Win32Timer()
