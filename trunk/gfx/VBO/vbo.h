@@ -4,31 +4,7 @@
 #include <map>
 #include <vector>
 #include "../Shaders/VertexAttrib.h"
-
-#define ATTRIB_NUM 8
-
-
-/*
-	VAttribStatus : 
-	Keeps status of attributes. Maximum supported = 8
-*/
-struct VAttribStatus
-{
-	union{
-		unsigned _raw[2];
-		unsigned char attrib[ATTRIB_NUM];
-	};
-	VAttribStatus(const unsigned data=0x00000000){_raw[0] = _raw[1] = data;}
-	VAttribStatus(const unsigned raw1,const unsigned raw2)
-	{_raw[0] = raw1;_raw[1] = raw2;}
-	VAttribStatus XOR (const VAttribStatus& vs) const
-	{return VAttribStatus(_raw[0]^vs._raw[0],_raw[1]^vs._raw[1]);}
-	VAttribStatus OR (const VAttribStatus& vs) const
-	{return VAttribStatus(_raw[0]|vs._raw[0],_raw[1]|vs._raw[1]);}
-	VAttribStatus AND (const VAttribStatus& vs) const
-	{return VAttribStatus(_raw[0]&vs._raw[0],_raw[1]&vs._raw[1]);}
-	bool operator == (const VAttribStatus& vs) {return (_raw[0]&vs._raw[0]) && (_raw[1]&vs._raw[1]);}
-};
+#include "VBOMgr.h"
 
 /*
 	VBO : 
@@ -118,7 +94,7 @@ public :
 					  const unsigned pos,const unsigned count) const;
 	// In setup, define usage, & in which attributes
 	void setup(const std::vector<const VertexAttribute *>& vattrs);
-	void call(const unsigned start,const unsigned size,const unsigned drawmode);
+	void call(const unsigned start,const unsigned size,const unsigned drawmode) const;
 
 	bool querySetData(const unsigned d_size,const unsigned i_size,unsigned& d_pos,unsigned& i_pos);
 	bool querySize(const unsigned d_size,const unsigned i_size);

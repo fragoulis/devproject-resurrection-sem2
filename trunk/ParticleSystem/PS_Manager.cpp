@@ -1,5 +1,5 @@
 #include "PS_Manager.h"
-#include "PS_Base.h"
+#include "TestPS.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
@@ -22,9 +22,11 @@ void PS_Manager :: init(const ParserSection * parsec)
 
 	// Create our VBO with prespecified attribs, 3 generics for now, if more are needed, 
 	// don't forget to specify it here
+
+	// PACK TIGHTLY!!! Less Attributes -> More Particles
+
 	std::vector<const VertexAttribute *> attribs;
 	attribs.push_back(ShaderManager::instance()->vertexAttribute("Vertex"));
-	attribs.push_back(ShaderManager::instance()->vertexAttribute("Texcoord"));
 	attribs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib1"));
 	attribs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib2"));
 	attribs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib3"));
@@ -49,9 +51,26 @@ void PS_Manager :: init(const ParserSection * parsec)
 		{
 			PS_Base * created_ps(0);
 			// fetch the standard PS_Base parameters
-			// fetch the type in order to fetch the rest required parameters
-			// generate the random starting data / model
-			// push the appropriate ps to m_psList
+			const float particleLife = FromString<float>((*it)->getVal("ParticleLife"));
+			const float systemLife = FromString<float>((*it)->getVal("SystemLife"));
+			const float particleSize = FromString<float>((*it)->getVal("ParticleSize"));
+			const unsigned particleNum = FromString<unsigned>((*it)->getVal("ParticleNum"));
+			const int shaderIndex = ShaderManager::instance()->getShaderIndex((*it)->getVal("Shader"));
+
+			// fetch the name in order to fetch the rest required parameters
+			const std::string pstype = (*it)->getName();
+			if(pstype == "TestPS")
+			{
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new TestPS((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+			}
+			else if(pstype == "TestPS2")
+			{
+				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
+				// If so,parse them & create the particle system
+
+				// created_ps = new PS_SomeOther(blah blah)
+			}
 			
 			m_psList.push_back(created_ps);
 		}
@@ -66,6 +85,7 @@ void PS_Manager :: clear()
 	{
 		if(*it)	// FIXME : just for now, that I fill with NULL pointers
 		{
+			//delete (*it)->model() ?? because here we hold the templates??
 			delete (*it);
 			(*it) = 0;
 		}

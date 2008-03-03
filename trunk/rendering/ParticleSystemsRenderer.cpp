@@ -13,10 +13,21 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 void ParticleSystemsRenderer :: render( Graphics& g ) const
 {
 	// render particle systems
-	// please have graphics class encapsulate as much opengl calls as possible!
+	for(std::vector<PS_Base *>::const_iterator it = _psList.begin();
+		it != _psList.end();
+		++it)
+	{
+		(*it)->render();
+	}
 }
 
 void ParticleSystemsRenderer :: update( float dt )
 {
 	// Do particle system updates
+	for(std::vector<PS_Base *>::iterator it = _psList.begin();
+		it != _psList.end();
+		++it)
+	{
+		(*it)->update(dt);
+	}
 }
