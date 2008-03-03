@@ -5,10 +5,12 @@
 
 class PS_Base;
 class VBO;
+class ParserSection;
 class PS_Manager : public Singleton<PS_Manager>
 {
 public :
 	void clear();
+	void init(const ParserSection * parsec);	
 	
 
 private : 
