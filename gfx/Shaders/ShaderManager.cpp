@@ -109,7 +109,7 @@ void ShaderManager :: loadShaderFile(const std::string& shaderfile)
 		vector<const ParserSection *> attnames = parsec->getChildren();
 		for(size_t i=0;i<attnames.size();++i)
 		{
-			string nis = parsec->getName();
+			string nis = attnames[i]->getName();
 			assert(nis != "");
 			unsigned j;
 			for(j=0;j<_vertex_attribs.size();++j)
@@ -120,7 +120,7 @@ void ShaderManager :: loadShaderFile(const std::string& shaderfile)
 					break;
 				}
 			}
-			nis = parsec->getVal("NameInShader");
+			nis = attnames[i]->getVal("NameInShader");
 			assert(nis != "");
 			_shaders[last]->attrib_nis().push_back(nis);
 

@@ -8,6 +8,9 @@
 #include "../utility/RandomGenerator.h"
 
 
+#include <iostream>
+
+
 // TEMPLATE CREATION CTOR
 TestPS :: TestPS(const std::string& name,
 			VBO * vbo,
@@ -77,6 +80,7 @@ void  TestPS :: _generateData(VBO * vbo,Texture * tex)
 		Vector3 vel;
 		RandomGenerator::GET_RANDOM_VECTOR3(vel,Vector3(-1,-1,-1),Vector3(1,1,1));
 		vel.normalize();
+		vel.multiply(5.0f);
 		velocities[i] = velocities[i+1] = velocities[i+2] = velocities[i+3] = Vector4(vel.getX(),
 																					  vel.getY(),
 																					  vel.getZ(),
@@ -92,8 +96,16 @@ void  TestPS :: _generateData(VBO * vbo,Texture * tex)
 	data.push_back(velocities);		
 
 	// generate the index data.
-	for(unsigned i=0;i<totalIData;++i)
-		indices[i] = i;
+	for(unsigned i=0;i<totalIData;i+=6)
+	{
+		const unsigned d_i = (4*i)/6;		// the data index
+		indices[i] = d_i;
+		indices[i+1] = d_i+1;
+		indices[i+2] = d_i+3;
+		indices[i+3] = d_i+3;
+		indices[i+4] = d_i+1;
+		indices[i+5] = d_i+2;
+	}
 
 	// Ok, now our vbo desc
 	VBODesc vdesc(vbo,vattrs,data,totalVData,indices,totalIData,GL_TRIANGLES);
@@ -113,28 +125,37 @@ void  TestPS :: _generateData(VBO * vbo,Texture * tex)
 
 void TestPS :: update(const float delta)
 {
-	m_currentTime += delta;
+	m_currentTime += 0.001f;
 }
 
 void TestPS :: render() const
 {
 	// set uniforms, bind texture, transform & call VBO
-
+	CHECK_GL_ERROR();
 	VAttribStatus curstatus = VBOMgr::instance().getCurrentFlags();
 	VBOMgr::instance().setCurrentFlags(m_usedAttribs);
 
 	glPushMatrix();
-	glMultMatrixf(m_transform.getMatrix().cfp());
+	const float * m = m_transform.getMatrix().cfp();
+	glMultMatrixf(m);
 	ShaderManager::instance()->begin(m_shaderIndex);
+	ShaderManager::instance()->setUniform1fv("particleLife",&m_particleLife);
+	ShaderManager::instance()->setUniform1fv("particleSize",&m_particleSize);
+	ShaderManager::instance()->setUniform1fv("systemLife",&m_systemLife);
+	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("currentTime",&m_currentTime);
+	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
-	ShaderManager::instance()->setUniform1fv("particleTex",0);
-
+	CHECK_GL_ERROR();
+	ShaderManager::instance()->setUniform1i("particleTex",0);
+	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getVboDesc().call();
 
 	glPopMatrix();
 	
 	VBOMgr::instance().setCurrentFlags(curstatus);
+	ShaderManager::instance()->end();
+	CHECK_GL_ERROR();
 }
 
 void TestPS :: reset()

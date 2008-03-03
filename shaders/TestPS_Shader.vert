@@ -31,7 +31,7 @@ void main(void)
 					 0.4*quad_func,
 					 quad_func);
 
-		vert = gl_ModelViewMatrix * vert;
+		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
     }
     else

@@ -1,6 +1,7 @@
 #pragma once
 #include "IRenderer.h"
 #include "TerrainRenderer.h"
+#include "ParticleSystemsRenderer.h"
 #include "../Math/Vector3.h"
 class Camera;
 
@@ -30,4 +31,5 @@ private:
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
 	Camera		  * m_camera;				// The world renderer has our main camera
 	TerrainRenderer m_terrainRenderer;
+	ParticleSystemsRenderer m_psRenderer;
 };
