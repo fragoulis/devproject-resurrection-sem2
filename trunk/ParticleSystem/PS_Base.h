@@ -16,7 +16,8 @@ public :
 	const std::string& getName() const {return m_nameId;}
 
 	virtual void render(const float delta);		// fetch the current time & update uniforms
-	virtual void reset();
+	virtual void reset();						// see implementation & override accordingly
+	virtual PS_Base * clone();					// see implementation & override accordingly 
 
 	void setTransform(const CoordinateFrame& transform);
 
@@ -33,7 +34,7 @@ public :
 protected :
 
 	std::string   m_nameId;
-	// Non - volatile
+	// Non - volatile ( most of them used in cloning)
 
 	float		  m_particleSize;
 	float		  m_systemLife;
@@ -42,7 +43,7 @@ protected :
 	int			  m_shaderIndex;		//Might this override model's shader index for quadarray sharing??
 	CoordinateFrame m_transform;
 
-	// volatile
+	// volatile ( most of them used in rendering / reset)
 	float		  m_currentTime;
 
 };

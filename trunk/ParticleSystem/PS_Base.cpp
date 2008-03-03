@@ -27,6 +27,11 @@ void PS_Base :: reset()
 	m_currentTime = 0.0f;
 }
 
+PS_Base * PS_Base :: clone()
+{
+	return new PS_Base(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_shaderIndex);
+}
+
 void PS_Base :: setTransform(const CoordinateFrame& transform)
 {
 	m_transform = transform;
