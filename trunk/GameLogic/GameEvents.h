@@ -8,6 +8,7 @@ class Terrain;
 class ParserSection;
 class Crater;
 class Spawnpoint;
+class Laser;
 
 EVENT_WITH_CONST_REFERENCE(Level_Load, ParserSection);
 SIMPLE_EVENT(Level_Unload);
@@ -21,3 +22,6 @@ EVENT_WITH_POINTER(Crater_Spawned, Crater);
 EVENT_WITH_POINTER(Spawnpoint_Spawned, Spawnpoint);
 EVENT_WITH_POINTER_AND_2VALUES(Enemy_Hit, Enemyship, EnergyType, int);
 EVENT_WITH_2POINTERS(Enemy_Attached_To_Player, Enemyship, Playership);
+SIMPLE_EVENT(Player_LaserType_Swapped);
+EVENT_WITH_POINTER(Laser_Spawned, Laser);
+EVENT_WITH_POINTER(Laser_Despawned, Laser);

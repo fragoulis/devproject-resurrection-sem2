@@ -2,7 +2,7 @@
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
 #include "../physics/PhysicsEvents.h"
-#include "LaserTypes.h"
+#include "Lasers/LaserTypes.h"
 #include <string>
 #include <list>
 class ParserSection;
@@ -12,6 +12,7 @@ class Enemyship;
 class Spawnpoint;
 class Crater;
 class Ebomb;
+class Laser;
 
 
 class GameLogic :
@@ -39,6 +40,7 @@ private:
 	typedef std::list<Spawnpoint*> SpawnpointList;
 	typedef std::list<Crater*> CraterList;
 	typedef std::list<Ebomb*> EbombList;
+	typedef std::list<Laser*> LaserList;
 
 	Terrain* m_terrain;
 	Playership* m_playership;
@@ -47,6 +49,7 @@ private:
 	SpawnpointList m_spawnpoints;
 	CraterList m_craters;
 	EbombList m_ebombs;
+	LaserList m_lasers;
 
 	void _deleteLevelData();
 

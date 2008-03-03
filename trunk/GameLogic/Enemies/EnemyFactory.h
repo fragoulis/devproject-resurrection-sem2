@@ -1,5 +1,5 @@
 #pragma once
-#include "../utility/Singleton.h"
+#include "../../utility/Singleton.h"
 #include <string>
 #include <vector>
 class Enemyship;
@@ -13,7 +13,7 @@ class ParserSection;
  * Can spawn an enemyship of a specified type.
  *
  */
-class EnemyTypes : public Singleton< EnemyTypes >
+class EnemyFactory : public Singleton< EnemyFactory >
 {
 public:
 
@@ -35,7 +35,7 @@ private:
 	EnemyVector m_enemyPrototypes;
 
 
-	friend Singleton< EnemyTypes >;
-	EnemyTypes();
-	virtual ~EnemyTypes();
+	friend Singleton< EnemyFactory >;
+	EnemyFactory();
+	virtual ~EnemyFactory();
 };

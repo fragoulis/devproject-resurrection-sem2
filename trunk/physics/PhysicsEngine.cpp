@@ -4,7 +4,7 @@
 #include "../GameLogic/Rigidbody.h"
 #include "../GameLogic/Spaceship.h"
 #include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
-#include "../GameLogic/Objects/Enemyship.h"    // needed to convert to Spaceship*
+#include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
 
 const float EARTH_GRAVITY = 9.81f;
 

@@ -8,7 +8,8 @@
 #include "../../sound/SoundEngine.h"
 #include "../../AI/AIEngine.h"
 #include "../../Physics/PhysicsEngine.h"
-#include "../../GameLogic/EnemyTypes.h"
+#include "../../GameLogic/Enemies/EnemyFactory.h"
+#include "../../GameLogic/Lasers/LaserFactory.h"
 #include "Input.h"
 
 const float DELTA_TIME_MAX = 0.1f;
@@ -39,7 +40,8 @@ bool Application :: init()
 
 	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
 
-	EnemyTypes::safeInstance().onApplicationLoad(ps);
+	LaserFactory::safeInstance().onApplicationLoad(ps);
+	EnemyFactory::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
 	SoundEngine::safeInstance().onApplicationLoad(ps);
 	RenderEngine::safeInstance().onApplicationLoad(ps);
@@ -60,7 +62,8 @@ void Application :: destroy()
 	ControllerManager::safeInstance().unloadAllControllers();
 	RenderEngine::safeInstance().unloadAllRenderers();
 
-	EnemyTypes::destroy();
+	LaserFactory::destroy();
+	EnemyFactory::destroy();
 	PhysicsEngine::destroy();
 	AIEngine::destroy();
 	SoundEngine::destroy();
@@ -78,6 +81,6 @@ void Application :: render(Graphics& g) const
 void Application :: update(float dt)
 {
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
-	ControllerManager::instance().update(dt);
 	Input::instance().update();
+	ControllerManager::instance().update(dt);
 }

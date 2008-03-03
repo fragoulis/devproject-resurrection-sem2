@@ -2,7 +2,6 @@
 #include "GameEvents.h"
 #include "Objects/Terrain.h"
 #include "Objects/Playership.h"
-#include "Objects/Enemyship.h"
 #include "Objects/Spawnpoint.h"
 #include "Objects/Crater.h"
 #include "Objects/Ebomb.h"
@@ -10,7 +9,9 @@
 #include "../gfxutils/Misc/utils.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
-#include "EnemyTypes.h"
+#include "Enemies/Enemyship.h"
+#include "Enemies/EnemyFactory.h"
+#include "Lasers/Laser.h"
 #include <vector>
 
 
@@ -88,6 +89,19 @@ void GameLogic :: update(float dt)
 	{
 		(*i)->update(dt);
 	}
+	for (LaserList::iterator i = m_lasers.begin(); i != m_lasers.end(); )
+	{
+		Laser* laser = *i;
+		laser->update(dt);
+		if (laser->isDead()) {
+			i = m_lasers.erase(i);
+			EventManager::instance().fireEvent(Laser_Despawned(laser));
+			delete laser;
+		}
+		else {
+			++i;
+		}
+	}
 }
 
 /**
@@ -156,6 +170,7 @@ void GameLogic :: _deleteLevelData()
 	deleteList(m_spawnpoints);
 	deleteList(m_craters);
 	deleteList(m_ebombs);
+	deleteList(m_lasers);
 }
 
 void GameLogic :: unloadLevel()
@@ -166,10 +181,10 @@ void GameLogic :: unloadLevel()
 
 void GameLogic :: spawnEnemies( int count, int type )
 {
-	EnemyTypes& enemyTypes = EnemyTypes::instance();
+	EnemyFactory& EnemyFactory = EnemyFactory::instance();
 	for (int i = 0; i < count; i++)
 	{
-		Enemyship* es = enemyTypes.createEnemyship(type);
+		Enemyship* es = EnemyFactory.createEnemyship(type);
 		m_enemyships.push_back(es);
 		EventManager::instance().fireEvent(Enemy_Spawned(es));
 	}
