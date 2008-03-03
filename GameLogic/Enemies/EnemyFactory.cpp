@@ -1,6 +1,7 @@
 #include "EnemyFactory.h"
 #include "Enemyship.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
+#include "../../utility/deleters.h"
 using namespace std;
 
 EnemyFactory :: EnemyFactory()
@@ -62,8 +63,5 @@ void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 
 void EnemyFactory :: onApplicationUnload()
 {
-	for (int i = 0; i != m_enemyPrototypes.size(); i++)
-	{
-		delete m_enemyPrototypes[i];
-	}
+	deleteVector(m_enemyPrototypes);
 }

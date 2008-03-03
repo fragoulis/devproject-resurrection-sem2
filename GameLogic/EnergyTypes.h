@@ -6,7 +6,7 @@ enum EnergyType {
 	YELLOW,
 	BLUE,
 	ENERGY_TYPE_COUNT,
-	UNKNOWN
+	ENERGY_TYPE_UNKNOWN,
 };
 
 inline EnergyType EnergyTypeFromString(const std::string& s)
@@ -14,5 +14,5 @@ inline EnergyType EnergyTypeFromString(const std::string& s)
 	if (s == "red") return RED;
 	if (s == "yellow") return YELLOW;
 	if (s == "blue") return BLUE;
-	return UNKNOWN;
+	return ENERGY_TYPE_UNKNOWN;
 }
