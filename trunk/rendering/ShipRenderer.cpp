@@ -1,0 +1,71 @@
+#include "ShipRenderer.h"
+#include "../Math/Matrix44.h"
+#include "../Math/CoordinateFrame.h"
+#include "../gfx/Model/Model.h"
+#include "../gfx/Shaders/ShaderManager.h"
+#include "../gfx/Texture/Texture.h"
+#include "../GameLogic/Enemies/Enemyship.h"
+#include "../GameLogic/Objects/Playership.h"
+
+using namespace std;
+
+static char texstr[8] = "texmap0";
+
+void ShipRenderer :: render(Graphics& g) const
+{
+	// FIXME : Do we need to do a special setup for ship rendering?
+	// Maybe they should be drawn in an FBO or sth, we'll see
+
+	// FIXME : ShaderManager->end() should be avoided. Fix that later in ALL renderers
+	for(vector<CoordinateModel>::const_iterator it = m_ships.begin();
+		it != m_ships.end();
+		++it)
+	{
+		glPushMatrix();
+		glMultMatrixf(it->coordframe->getMatrix().cfp());
+		for(size_t i=0;i<it->model->getMatGroup().size();++i)
+		{
+			const MaterialGroup& matg = it->model->getMatGroup()[i];
+			// Set Shader
+			ShaderManager::instance()->begin(matg.getShaderIndex());
+			// Set Material
+			matg.getMaterial().Apply();
+			// Set Textures as texmap0..texmapk
+			const vector<Texture *>& texlist = matg.getTextureList();
+			for(size_t i=0;i<texlist.size();++i)
+			{
+				texstr[6] = '0' + char(i);
+				texlist[i]->bind();
+				ShaderManager::instance()->setUniform1i(texstr,GLint(i));
+			}
+			// Call VBO
+			matg.getVboDesc().call();
+			ShaderManager::instance()->end();
+		}
+		glPopMatrix();
+	}
+}
+
+void ShipRenderer :: onEvent(Player_Spawned& evt)
+{
+	// Fetch the playership & place accordingly
+	//FIXME : For now I'll just place everything straight ahead
+
+	//CoordinateModel cm(/*fetch model here*/ /*ModelMgr::instance()->getModel(evt->getPointer()->getModelName())*/0,evt.getPointer()->getCoordinateFrame());
+	//m_ships.push_back(cm);
+}
+
+void ShipRenderer :: onEvent(Enemy_Spawned& evt)
+{
+	// Fetch the enemy & place accordingly
+}
+
+void ShipRenderer :: onEvent(Enemy_Destroyed& evt)
+{
+	// Fetch the enemy & remove
+}
+
+void ShipRenderer :: onEvent(Player_Destroyed&)
+{
+	// Fetch the player & remove
+}
