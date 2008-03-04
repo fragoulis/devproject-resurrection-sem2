@@ -85,6 +85,15 @@ void TerrainRenderer :: onEvent(Terrain_Changed& tc)
 	// Read the light direction
 	fread(&ldir,sizeof(Vector4),1,fp);
 
+	// Set the GL Light 0
+	glPushAttrib(GL_MATRIX_MODE);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	glLightfv(GL_LIGHT0,GL_POSITION,ldir.cfp());
+	glPopMatrix();
+	glPopAttrib();
+
 	// Compute the index - data sizes
 	dataSize = dimension * dimension;
 	indexSize = 2*(dimension + 1)*(dimension - 1);		// tristrip index formula

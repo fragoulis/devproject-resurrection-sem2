@@ -11,4 +11,4 @@ SoundsUsed = <EnemyDied1>, <EnemyDied2>
 
 [map]
 Dimensions = "(128.0, 128.0)"
-PlayerStart = "(10.0, 0.0, 1.0)"
+PlayerStart = "(64.0, 200, -64.0)"

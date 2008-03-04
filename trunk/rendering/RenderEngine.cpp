@@ -21,6 +21,10 @@ using namespace std;
 RenderEngine :: RenderEngine() : m_confParser(0)
 {
 	setViewport(0,0,800,600);
+	glShadeModel(GL_SMOOTH);
+	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 }
 
 RenderEngine :: ~RenderEngine()
