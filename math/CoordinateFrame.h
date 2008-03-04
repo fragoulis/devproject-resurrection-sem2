@@ -19,9 +19,9 @@ public:
 	Matrix44 getMatrix() const;
 	Matrix44 getReverseMatrix() const;
 
-	void setOrigin(const Point3& p) { m_origin = p; }
-	void setRotation(const Rotation& r) { m_rotation = r; }
-	void setRotation(const Vector3& axis, float angle) { m_rotation.set(axis, angle); }
+	void setOrigin(const Point3& p) { m_origin = p; _updateMatrix();}
+	void setRotation(const Rotation& r) { m_rotation = r; _updateMatrix();}
+	void setRotation(const Vector3& axis, float angle) { m_rotation.set(axis, angle); _updateMatrix();}
 
 	void move(const Vector3& v);
 	void rotate(const Vector3& axis, float angle);

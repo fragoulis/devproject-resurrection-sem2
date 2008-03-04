@@ -39,13 +39,13 @@ void GameController :: update(float dt)
 	Vector3 direction;
 	direction.set(0.0f, 0.0f, 0.0f);
 	Input& input = Input::instance();
-	if (input.isKeyDown('w') || input.isKeyGoingDown('w'))
+	if (input.isKeyDown('W') || input.isKeyGoingDown('W'))
 		direction += Vector3(0.0f, 1.0f, 0.0f);
-	if (input.isKeyDown('a') || input.isKeyGoingDown('a'))
+	if (input.isKeyDown('A') || input.isKeyGoingDown('A'))
 		direction += Vector3(-1.0f, 0.0f, 0.0f);
-	if (input.isKeyDown('s') || input.isKeyGoingDown('s'))
+	if (input.isKeyDown('S') || input.isKeyGoingDown('S'))
 		direction += Vector3(0.0f, -1.0f, 0.0f);
-	if (input.isKeyDown('d') || input.isKeyGoingDown('d'))
+	if (input.isKeyDown('D') || input.isKeyGoingDown('D'))
 		direction += Vector3(1.0f, 0.0f, 0.0f);
 
 	direction.normalize();

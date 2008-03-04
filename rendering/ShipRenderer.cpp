@@ -2,14 +2,25 @@
 #include "../Math/Matrix44.h"
 #include "../Math/CoordinateFrame.h"
 #include "../gfx/Model/Model.h"
+#include "../gfx/Model/ModelMgr.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfx/Texture/Texture.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
 
+#include <iostream>
+
 using namespace std;
 
 static char texstr[8] = "texmap0";
+
+ShipRenderer :: ShipRenderer()
+{
+	EventManager::instance().registerEventListener< Player_Spawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
+}
 
 void ShipRenderer :: render(Graphics& g) const
 {
@@ -23,11 +34,13 @@ void ShipRenderer :: render(Graphics& g) const
 	{
 		glPushMatrix();
 		glMultMatrixf(it->coordframe->getMatrix().cfp());
+		const float * m = it->coordframe->getMatrix().cfp();
+		// Set Shader
+		//ShaderManager::instance()->begin(matg.getShaderIndex());
+		ShaderManager::instance()->begin("PerPixelNoTex");
 		for(size_t i=0;i<it->model->getMatGroup().size();++i)
 		{
 			const MaterialGroup& matg = it->model->getMatGroup()[i];
-			// Set Shader
-			ShaderManager::instance()->begin(matg.getShaderIndex());
 			// Set Material
 			matg.getMaterial().Apply();
 			// Set Textures as texmap0..texmapk
@@ -40,9 +53,9 @@ void ShipRenderer :: render(Graphics& g) const
 			}
 			// Call VBO
 			matg.getVboDesc().call();
-			ShaderManager::instance()->end();
 		}
 		glPopMatrix();
+		ShaderManager::instance()->end();
 	}
 }
 
@@ -51,8 +64,8 @@ void ShipRenderer :: onEvent(Player_Spawned& evt)
 	// Fetch the playership & place accordingly
 	//FIXME : For now I'll just place everything straight ahead
 
-	//CoordinateModel cm(/*fetch model here*/ /*ModelMgr::instance()->getModel(evt->getPointer()->getModelName())*/0,evt.getPointer()->getCoordinateFrame());
-	//m_ships.push_back(cm);
+	CoordinateModel cm(ModelMgr::instance().getModel("tri_cruiser4.obj"),&(evt.getPointer()->getCoordinateFrame()));
+	m_ships.push_back(cm);
 }
 
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)

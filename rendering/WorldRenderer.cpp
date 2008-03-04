@@ -20,12 +20,14 @@ void WorldRenderer :: render(Graphics& g) const
 {
 	m_terrainRenderer.render(g);
 	m_psRenderer.render(g);
+	m_shipRenderer.render(g);
 }
 
 void WorldRenderer :: update( float dt )
 {
 	m_camera->update(dt);
 	m_psRenderer.update(dt);
+	//m_shipRenderer.update(dt);
 }
 
 void WorldRenderer :: newCamera(Camera * cam)

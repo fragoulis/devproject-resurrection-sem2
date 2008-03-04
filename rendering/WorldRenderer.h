@@ -2,6 +2,7 @@
 #include "IRenderer.h"
 #include "TerrainRenderer.h"
 #include "ParticleSystemsRenderer.h"
+#include "ShipRenderer.h"
 #include "../Math/Vector3.h"
 class Camera;
 
@@ -32,4 +33,5 @@ private:
 	Camera		  * m_camera;				// The world renderer has our main camera
 	TerrainRenderer m_terrainRenderer;
 	ParticleSystemsRenderer m_psRenderer;
+	ShipRenderer	m_shipRenderer;
 };
