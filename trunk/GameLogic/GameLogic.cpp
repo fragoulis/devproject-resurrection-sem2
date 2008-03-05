@@ -14,6 +14,8 @@
 #include "Lasers/Laser.h"
 #include "../utility/deleters.h"
 #include <vector>
+#include <iostream>
+using namespace std;
 
 
 
@@ -85,6 +87,7 @@ void GameLogic :: update(float dt)
 			++i;
 		}
 	}
+	//cout << m_playership->getPosition() << endl;
 }
 
 /**

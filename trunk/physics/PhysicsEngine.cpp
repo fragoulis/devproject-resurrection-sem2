@@ -6,6 +6,8 @@
 #include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
 #include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
 #include "../math/maths.h"
+#include <iostream>
+using namespace std;
 
 const float EARTH_GRAVITY = 9.81f;
 
@@ -66,6 +68,8 @@ void PhysicsEngine :: updatePhysics( float dt )
 
 void PhysicsEngine :: updateMovable( Movable* m, float dt )
 {
+	//Point3 newpos = m->getPosition() + m->getVelocity() * dt;
+	//cout << "OldPos " << m->getPosition() << " Newpos " << newpos << " velocity " << m->getVelocity() << " dt " << dt << endl;
 	m->setPosition(m->getPosition() + m->getVelocity() * dt);
 }
 
