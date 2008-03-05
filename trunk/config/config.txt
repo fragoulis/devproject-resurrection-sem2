@@ -15,10 +15,10 @@ EnemyFactoryFile = "EnemyFactory.txt"
 // Defines a prototype for playership
 // This is used to create a new playership object when a new level is loaded
 [Playership]
-ThrusterMaxPower = 100.0    # float
+ThrusterMaxPower = 2000.0   # float
 Radius = 10.0               # float, collision detection and inertia calculation
 Mass = 1.0                  # float
-AirdragCoefficient = 1.0    # float
+AirdragCoefficient = 2.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 
