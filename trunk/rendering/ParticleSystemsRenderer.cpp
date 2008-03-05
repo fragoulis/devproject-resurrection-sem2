@@ -4,18 +4,17 @@
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
-
+	// FIXME : Adding the hacky way the dummy ps
+	//_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+	//CoordinateFrame cf;
+	//cf.move(Vector3(64,150,-64));
+	//_psList[0]->setTransform(cf);
 }
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
-	for(std::vector<PS_Base *>::iterator it = _psList.begin();
-		it != _psList.end();
-		++it)
-	{
-		delete (*it);
-		(*it) = 0;
-	}
+	// FIXME : Deleting the hacky way the dummy ps
+	delete _psList[0];
 	_psList.clear();
 }
 
@@ -26,12 +25,14 @@ void ParticleSystemsRenderer :: render( Graphics& g ) const
 	// render particle systems
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glEnable(GL_BLEND);
+	glDepthMask(GL_FALSE);
 	for(std::vector<PS_Base *>::const_iterator it = _psList.begin();
 		it != _psList.end();
 		++it)
 	{
 		(*it)->render();
 	}
+	glDepthMask(GL_TRUE);
 	glDisable(GL_BLEND);
 }
 
