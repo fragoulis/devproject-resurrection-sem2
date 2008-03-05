@@ -10,6 +10,7 @@
 #include "../../Physics/PhysicsEngine.h"
 #include "../../GameLogic/Enemies/EnemyFactory.h"
 #include "../../GameLogic/Lasers/LaserFactory.h"
+#include "../../gfxutils/Misc/Logger.h"
 #include "Input.h"
 
 const float DELTA_TIME_MAX = 0.1f;
@@ -38,6 +39,7 @@ bool Application :: init()
 	ConfParser cp("./config/config.txt");
 	const ParserSection& ps = cp.rootSection();
 
+	Logger::init(ps.getSection("Logger"));
 	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
 
 	LaserFactory::safeInstance().onApplicationLoad(ps);
@@ -72,6 +74,7 @@ void Application :: destroy()
 	SoundEngine::destroy();
 	GameLogic::destroy();
 	MemMgrRaw::destroy();
+	Logger::destroy();
 }
 
 void Application :: render(Graphics& g) const
