@@ -53,10 +53,6 @@ void GameController :: update(float dt)
 
 	if (!Math::float_is_zero(direction.lengthSquared())) {
 		direction.normalize();
-		gl.setPlayerThrusterPower(1.0f);
-	}
-	else {
-		gl.setPlayerThrusterPower(0.0f);
 	}
 
 	gl.setPlayerDirection(direction);

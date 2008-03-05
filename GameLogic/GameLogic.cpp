@@ -178,6 +178,7 @@ void GameLogic :: setPlayerDirection( const Vector3& v )
 {
 	assert(m_playership != 0);
 	m_playership->setThrusterDirection(v);
+	m_playership->setThrusterPower(m_playership->getMaxThrusterPower());
 }
 
 void GameLogic :: setPlayerThrusterPower(const float f)
