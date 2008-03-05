@@ -3,6 +3,10 @@
 #include "../GameLogic/GameEvents.h"
 class ParserSection;
 
+
+/**
+ * Listens for events and plays sounds when things happen
+ */
 class SoundEngine :
 	public Singleton< SoundEngine >,
 	public EventListener< Player_Destroyed >,

@@ -2,6 +2,9 @@
 #include "../math/CoordinateFrame.h"
 class ParserSection;
 
+/**
+ * Any game object with a position and orientation in the world is a WorldObject.
+ */
 class WorldObject
 {
 public:

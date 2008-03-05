@@ -78,6 +78,11 @@ float Vector3::length() const
 {
 	return float(sqrt(dot(*this)));
 }
+float Vector3 :: lengthSquared() const
+{
+	return dot(*this);
+}
+
 
 void Vector3::normalize()
 {

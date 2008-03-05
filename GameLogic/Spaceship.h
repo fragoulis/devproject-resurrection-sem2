@@ -2,6 +2,12 @@
 #include "Rigidbody.h"
 class ParserSection;
 
+/**
+ * Spaceship extends Rigidbody by giving it a thruster.
+ * It also adds a radius as we are assuming all spaceships are circles.
+ */
+
+
 struct ThrusterData
 {
 	float factor;

@@ -180,6 +180,11 @@ void GameLogic :: setPlayerDirection( const Vector3& v )
 	m_playership->setThrusterDirection(v);
 }
 
+void GameLogic :: setPlayerThrusterPower(const float f)
+{
+	m_playership->setThrusterPower(f);
+}
+
 void GameLogic :: fireLaser(const Point3& target, LaserType type)
 {
 	const Point3& playerPosition = m_playership->getPosition();

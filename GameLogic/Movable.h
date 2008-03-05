@@ -1,6 +1,11 @@
 #pragma once
 #include "WorldObject.h"
 
+
+/**
+ * Extends WorldObject by giving it a velocity and angularVelocity.
+ * Sweet for Lasers.
+ */
 class Movable : public WorldObject
 {
 public:

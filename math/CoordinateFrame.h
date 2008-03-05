@@ -4,7 +4,12 @@
 #include "Matrix44.h"
 
 
-
+/**
+ * Also known as Transform, Matrix44, PositionAndOrientationHelper
+ * It helps with moving and rotating objects and
+ * multiplying the OpenGL matrix stack
+ *
+ */
 class CoordinateFrame
 {
 public:

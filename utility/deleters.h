@@ -1,6 +1,9 @@
+/**
+ * This adds 3 helper functions for deleting objects, lists of objects and vectors of objects
+ * Has to be included after including <list> or <vector>
+ */
 
 
-// Two helpers for deleting objects and lists
 template< typename T >
 void deleteObject(T*& t)
 {

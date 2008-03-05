@@ -4,7 +4,11 @@ class Playership;
 class Enemyship;
 
 
-// Collision event
+/**
+ * Collision event is a special templated class to make it easier to code the PhysicsEngine
+ * Down below is a list of typedefs for specific events.
+ * The templated version should not be used directly, but the typedefs isntead.
+ */
 template< typename T1, typename T2 >
 class Collision
 {

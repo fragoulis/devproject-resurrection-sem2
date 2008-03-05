@@ -4,7 +4,17 @@
 class ParserSection;
 
 
-
+/**
+ * Rigidbody extends Movable by adding mass, inertia
+ * and physics data for air drag, gravity and lift.
+ * This is physics data yes, but it is shared between
+ * PhysicsEngine and AIEngine (GameLogic probably never touches it)
+ * Data that is shared between engines is stored in game objects.
+ * Alternative is to create a bridge between them.
+ * That's just too much for this small game (already overdesigning this game).
+ *
+ * Airdrag, Gravity and Lift data is put into structs for convenience.
+ */
 struct AirdragData
 {
 	float factor;

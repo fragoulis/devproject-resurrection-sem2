@@ -1,5 +1,9 @@
 #pragma once
 
+
+/**
+ * Interface for controllers
+ */
 class IController
 {
 public:

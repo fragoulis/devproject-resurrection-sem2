@@ -1,3 +1,7 @@
+# This file contains gameplay data about every enemy type in the game
+# Variables are explained below
+
+
 [main]
 types = <interceptor> //, <carrier>
 
@@ -10,3 +14,4 @@ Mass = 200.0                # float
 AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
+HitPoints = 2               # integer

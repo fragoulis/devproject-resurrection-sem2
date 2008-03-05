@@ -1,6 +1,19 @@
 #pragma once
 #include <list>
 
+/**
+ * EventManager.
+ * To fire an event, you need to create an event first.
+ * You can use the macros below for that, or define a new class yourself.
+ * The class of the object that you pass to fireEvent specifies the type of event.
+ * 
+ * To listen to an event, you need to inherit from EventListener< EventType >
+ * And register with the manager using registerListener< EventType >(me);
+ * And implement the onEvent(EventType* data) method as specified by the EventListener interface.
+ *
+ *
+ */
+
 template< typename EventData >
 class EventListener
 {

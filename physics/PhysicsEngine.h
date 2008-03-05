@@ -12,7 +12,15 @@ class Rigidbody;
 class Spaceship;
 
 
-
+/**
+ * Does two things separately:
+ *   move objects according to their physics
+ *   do collision detection
+ *
+ * Both are implemented as easy and fast as possible.
+ *
+ *
+ */
 class PhysicsEngine :
 	public Singleton< PhysicsEngine >,
 	public EventListener< Terrain_Changed >,

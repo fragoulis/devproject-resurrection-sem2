@@ -1,3 +1,7 @@
+# This contains gameplay data for a level
+# The GameLogic object loads and processes this data alone.
+#
+
 [main]
 test = 5
 

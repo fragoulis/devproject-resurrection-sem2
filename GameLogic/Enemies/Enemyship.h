@@ -3,6 +3,9 @@
 #include "../EnergyTypes.h"
 class ParserSection;
 
+/**
+ * Stores type, energy type, collision power and hit points.
+ */
 class Enemyship : public Spaceship
 {
 public:
@@ -20,4 +23,5 @@ private:
 	int m_type;
 	EnergyType m_energyType;
 	int m_collisionPower;
+	int m_hitpoints;
 };

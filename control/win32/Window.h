@@ -1,7 +1,11 @@
 #pragma once
 #include <windows.h>
 
-// basic window class
+/**
+ * Basic window class.
+ * Does not really do anything special.
+ * What else is there to say?
+ */
 class Window
 {
 public:
