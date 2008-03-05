@@ -1,5 +1,6 @@
 #include "PS_Manager.h"
-#include "TestPS.h"
+#include "PS_EnergyLoss.h"
+#include "PS_Explosion.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
@@ -59,17 +60,19 @@ void PS_Manager :: init(const ParserSection * parsec)
 
 			// fetch the name in order to fetch the rest required parameters
 			const std::string pstype = (*it)->getName();
-			if(pstype == "TestPS")
+			if(pstype == "PS_EnergyLoss")
 			{
 				const string texname = (*it)->getVal("Texture");
-				created_ps = new TestPS((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+				created_ps = new PS_EnergyLoss((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
 			}
-			else if(pstype == "TestPS2")
+			else if(pstype == "PS_Explosion")
 			{
 				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
 				// If so,parse them & create the particle system
 
-				// created_ps = new PS_SomeOther(blah blah)
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+
 			}
 			
 			m_psList.push_back(created_ps);
@@ -83,8 +86,12 @@ void PS_Manager :: clear()
 		it != m_psList.end();
 		++it)
 	{
-		delete (*it);
-		(*it) = 0;
+		if(*it)	// FIXME : just for now, that I fill with NULL pointers
+		{
+			//delete (*it)->model() ?? because here we hold the templates??
+			delete (*it);
+			(*it) = 0;
+		}
 	}
 	m_psList.clear();
 	if(m_vbo)
