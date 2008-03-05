@@ -15,6 +15,17 @@ class Ebomb;
 class Laser;
 
 
+/**
+ * Keeps track of all game objects (owns them).
+ * Handles interactions between multiple game objects
+ * Has methods to create/alter/destroy game objects:
+ *   spawnEnemies
+ *   setPlayerDirection
+ *   fireLaser
+ *
+ * Also has methods to load/unload a level.
+ */
+
 class GameLogic :
 	public Singleton< GameLogic >,
 	public EventListener< Collision_Player_Enemy >
@@ -29,6 +40,7 @@ public:
 	void unloadLevel();
 	void spawnEnemies(int count, int type);  // Spawnpoint has a tiny bit of game logic in it!
 	void setPlayerDirection(const Vector3& v);
+	void setPlayerThrusterPower(const float f);
 	void fireLaser(const Point3& targetPosition, LaserType type);
 	void update(float dt);
 

@@ -3,6 +3,13 @@
 #include "../GameLogic/GameEvents.h"
 class ParserSection;
 
+
+
+/**
+ * This controls the AI.
+ * This includes behavior and controlling how enemies spawn (initial velocity and such)
+ * The update function is called every frame before any other engine.
+ */
 class AIEngine :
 	public Singleton< AIEngine >,
 	public EventListener< Level_Load >,

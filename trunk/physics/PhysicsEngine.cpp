@@ -5,6 +5,7 @@
 #include "../GameLogic/Spaceship.h"
 #include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
 #include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
+#include "../math/maths.h"
 
 const float EARTH_GRAVITY = 9.81f;
 
@@ -18,6 +19,8 @@ PhysicsEngine :: ~PhysicsEngine()
 
 void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 {
+	EventManager::instance().registerEventListener<Terrain_Changed>(this);
+	EventManager::instance().registerEventListener<Player_Spawned>(this);
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -98,17 +101,20 @@ void PhysicsEngine :: integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f
 void PhysicsEngine :: getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& forces, Vector3& moments )
 {
 	// Gravity, we assume Z points upward
-	forces.setZ(forces.getZ() + r->getGravityData().factor * EARTH_GRAVITY * r->getMass());
+	forces.setY(forces.getY() - r->getGravityData().factor * EARTH_GRAVITY * r->getMass());
 
 	// Simple airdrag, assumes turbulent flow
-	const AirdragData& ad =r->getAirdragData();
-	Vector3 airdrag_direction = -r->getVelocity();
-	airdrag_direction.normalize();
-	float speed = r->getVelocity().length();
-	forces += airdrag_direction * ad.factor * ad.coefficient * speed * speed;
+	const AirdragData& ad = r->getAirdragData();
+	const Vector3& vel = r->getVelocity();
+	if (!Math::float_is_zero(vel.lengthSquared())) {
+		Vector3 airdrag_direction = -vel;
+		airdrag_direction.normalize();
+		float speed = r->getVelocity().length();
+		forces += airdrag_direction * ad.factor * ad.coefficient * speed * speed;
+	}
 
 	// Simple lift
-	forces.setZ(forces.getZ() + r->getLiftData().factor * EARTH_GRAVITY * r->getMass());
+	forces.setY(forces.getY() + r->getLiftData().factor * EARTH_GRAVITY * r->getMass());
 }
 
 void PhysicsEngine :: getSpaceshipForcesAndMoments( Spaceship* s, Vector3& forces, Vector3& moments )
@@ -118,7 +124,9 @@ void PhysicsEngine :: getSpaceshipForcesAndMoments( Spaceship* s, Vector3& force
 
 	// add force pointing in target direction
 	ThrusterData td = s->getThrusterData();
-	forces += td.factor * td.power * td.direction;
+	if (!Math::float_is_zero(td.direction.lengthSquared())) {
+		forces += td.factor * td.power * td.direction;
+	}
 }
 
 
@@ -138,13 +146,13 @@ void PhysicsEngine :: checkCircleCollisions(std::list<T1*>& list1, std::list<T2*
 	{
 		T1* t1 = *i;
 		Point3 pos1 = t1->getPosition();
-		pos1.setZ(0.0f);
+		pos1.setY(0.0f);
 		float r1 = t1->getRadius();
 		for (List2::iterator j = list2.begin(); j != list2.end(); ++j)
 		{
 			T2* t2 = *j;
 			Point3 pos2 = t2->getPosition();
-			pos2.setZ(0.0f);
+			pos2.setY(0.0f);
 			float r2 = t2->getRadius();
 			float distance = pos1.distance(pos2) - (r1 + r2);
 			if (distance < 0.0f) {

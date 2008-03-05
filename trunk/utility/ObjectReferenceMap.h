@@ -2,6 +2,11 @@
 #include <map>
 #include <string>
 
+
+/**
+ * Helper class that wraps around std::map<string, T*>
+ */
+
 template< typename T >
 class ObjectReferenceMap
 {

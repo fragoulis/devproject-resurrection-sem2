@@ -5,6 +5,10 @@
 class ParserSection;
 class Laser;
 
+/**
+ * Uses a list of prototypes loaded from file
+ * at app::load to create lasers of specified type.
+ */
 class LaserFactory : public Singleton< LaserFactory >
 {
 public:

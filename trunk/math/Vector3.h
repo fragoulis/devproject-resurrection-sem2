@@ -32,6 +32,7 @@ public:
 	void negate();
 	void normalize();
 	float length() const;
+	float lengthSquared() const;
 	float dot(const Vector3& v) const;
 	float angle(const Vector3& v) const; //assumes both are unit length
 	void cross(const Vector3& rhs);

@@ -18,7 +18,11 @@
 //#define ZeroMemory(a,b) (memset((a),0,(b)))
 #endif
 
-
+/**
+ * Contains WinMain and main functions
+ * Creates a window and runs the main loop.
+ * Sets up and interfaces with Application object and Win32Interface
+ */
 int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 {
 	MSG winMsg;	//the window's message struct

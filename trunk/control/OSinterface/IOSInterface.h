@@ -2,12 +2,14 @@
 #include <cassert>
 
 /**
- * Provides an interface to the OS
+ * Provides an interface for the game to talk to the OS.
+ * The OS does not use this to talk to the game.
+ * Instead, the OS uses Application to talk to the game.
  *
  * OS is responsible for instantiating a subclass of this,
  * calling setInstance, and deleting it on application shutdown.
  *
- * TODO: add set resolution?
+ * TODO: add get window size
  */
 class IOSInterface
 {
