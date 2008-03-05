@@ -35,6 +35,9 @@ public:
 	float getThrusterPower() const { return m_thrusterData.power; }
 	void setThrusterPower(float p) { m_thrusterData.power = p; }
 
+	float getMaxThrusterPower() const { return m_thrusterData.maxPower; }
+	void setMaxThrusterPower(float p) { m_thrusterData.maxPower = p; }
+
 	float getRadius() const { return m_radius; }
 	void setRadius(float r) { m_radius = r; }
 
