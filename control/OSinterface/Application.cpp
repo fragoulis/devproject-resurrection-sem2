@@ -12,6 +12,9 @@
 #include "../../GameLogic/Lasers/LaserFactory.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "Input.h"
+#include <iostream>
+#include <fstream>
+using namespace std;
 
 const float DELTA_TIME_MAX = 0.1f;
 
@@ -24,9 +27,15 @@ Application :: ~Application()
 }
 
 
+ofstream filestr;
 
 bool Application :: init()
 {
+	streambuf* psbuf;
+	filestr.open("cout.txt");
+	psbuf = filestr.rdbuf();
+	cout.rdbuf(psbuf);
+
 	ControllerManager& cm = ControllerManager::safeInstance();
 	cm.activateController("loading");
 
@@ -75,6 +84,8 @@ void Application :: destroy()
 	GameLogic::destroy();
 	MemMgrRaw::destroy();
 	Logger::destroy();
+
+	filestr.close();
 }
 
 void Application :: render(Graphics& g) const

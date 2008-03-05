@@ -20,6 +20,6 @@ public:
 	void reset();
 
 private:
-	double m_starttime;
-	double m_lasttime;
+	unsigned long m_starttime;
+	unsigned long m_lasttime;
 };
