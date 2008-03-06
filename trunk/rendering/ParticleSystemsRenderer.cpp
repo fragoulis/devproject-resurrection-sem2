@@ -4,11 +4,14 @@
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
+
+	EventManager::instance().registerEventListener(this);
+
 	// FIXME : Adding the hacky way the dummy ps
-	//_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-	//CoordinateFrame cf;
-	//cf.move(Vector3(64,150,-64));
-	//_psList[0]->setTransform(cf);
+	_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+	CoordinateFrame cf;
+	cf.move(Vector3(64,150,-64));
+	_psList[0]->setTransform(cf);
 }
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
@@ -45,4 +48,8 @@ void ParticleSystemsRenderer :: update( float dt )
 	{
 		(*it)->update(dt);
 	}
+}
+
+void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
+ float a=0;
 }
