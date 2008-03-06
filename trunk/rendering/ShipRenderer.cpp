@@ -70,7 +70,10 @@ void ShipRenderer :: onEvent(Player_Spawned& evt)
 
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)
 {
+	1;
 	// Fetch the enemy & place accordingly
+	// It's working fine!
+	// First enemy spawns after 10 seconds
 }
 
 void ShipRenderer :: onEvent(Enemy_Destroyed& evt)
