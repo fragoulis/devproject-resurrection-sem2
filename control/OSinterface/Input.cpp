@@ -35,13 +35,13 @@ void Input :: update()
 		{
 			if (m_keyDown[i]) {
 				m_keyState[i] = GOING_DOWN;
-			}
-			else {
-				m_keyState[i] = UP;
 #ifdef INPUT_FIRES_EVENTS
 				if (i < 3) EventManager::instance().fireEvent(Mouse_GoingDown(i));
 				else EventManager::instance().fireEvent(Key_GoingDown(i));
 #endif
+			}
+			else {
+				m_keyState[i] = UP;
 			}
 		}
 	}
