@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               textureIO.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include <string>
 #include <iostream>
 #include "textureIO.h"

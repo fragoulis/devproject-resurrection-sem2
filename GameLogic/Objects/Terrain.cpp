@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Terrain.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Terrain.h"
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"
 

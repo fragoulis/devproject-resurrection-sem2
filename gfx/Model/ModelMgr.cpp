@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ModelMgr.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "ModelMgr.h"
 #include "Model.h"
 #include "../../gfxutils/Misc/utils.h"

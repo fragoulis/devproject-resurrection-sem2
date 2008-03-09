@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ShaderManager.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../Shaders/ShaderManager.h"
 #include <string>
 #include <vector>

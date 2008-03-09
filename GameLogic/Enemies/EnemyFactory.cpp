@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               EnemyFactory.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "EnemyFactory.h"
 #include "Enemyship.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"

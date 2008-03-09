@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundBuffer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "SoundBuffer.h"
 #include <al/alut.h>
 

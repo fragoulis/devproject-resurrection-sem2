@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               VertexAttrib.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../Shaders/VertexAttrib.h"
 #include <gl/glee.h>
 #include <string>

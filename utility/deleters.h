@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               deleters.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 /**
  * This adds 3 helper functions for deleting objects, lists of objects and vectors of objects
  * Has to be included after including <list> or <vector>

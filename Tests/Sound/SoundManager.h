@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundManager.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #ifndef __SOUNDMANAGER_H__
 #define __SOUNDMANAGER_H__
 #pragma once

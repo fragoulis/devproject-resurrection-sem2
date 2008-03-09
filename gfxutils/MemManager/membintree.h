@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               membintree.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 
 #include "../MemManager/MemMgr_AnyData.h"

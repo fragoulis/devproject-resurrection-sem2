@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               GameController.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "GameController.h"
 #include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"

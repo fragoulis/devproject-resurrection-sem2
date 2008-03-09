@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               config.txt
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #
 # This is the new application level configuration file
 # In here we can make references to other files

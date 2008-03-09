@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               MemBinTree.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "MemBinTree.h"
 #include "../ConfParser/ConfParser.h"
 #include "../Misc/utils.h"

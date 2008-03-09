@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               LaserFactory.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "LaserFactory.h"
 #include "Laser.h"
 #include "../../utility/deleters.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ParticleSystemsRenderer.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include "IRenderer.h"
 #include "../ParticleSystem/PS_Base.h"

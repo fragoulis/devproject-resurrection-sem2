@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Matrix44.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 
 /// OpenGL stores a 4x4 matrix as a float array. The elements are stored as in the diagram below.

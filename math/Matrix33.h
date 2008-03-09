@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Matrix33.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 
 /// OpenGL stores a 3x3 matrix as a float array. The elements are stored as in the diagram below.

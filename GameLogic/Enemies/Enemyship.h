@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Enemyship.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../Spaceship.h"
 #include "../EnergyTypes.h"

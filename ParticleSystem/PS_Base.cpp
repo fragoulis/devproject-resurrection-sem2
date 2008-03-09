@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_Base.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "PS_Base.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfx/Model/Model.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               computeLightmap.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform samplerRect heightmap;
 uniform samplerRect normalmap;
 uniform float shadoweffect;

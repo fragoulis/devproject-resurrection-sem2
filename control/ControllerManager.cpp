@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               ControllerManager.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "ControllerManager.h"
 #include "IController.h"
 #include "LoadingController.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               computeContrib.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = computeContrib
 Vertex = basicvs.vert

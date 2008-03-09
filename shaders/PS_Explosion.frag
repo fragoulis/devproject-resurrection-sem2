@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_Explosion.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform sampler2D particleTex;
 varying vec4 color;
 

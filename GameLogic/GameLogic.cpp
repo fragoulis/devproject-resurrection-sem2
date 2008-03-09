@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               GameLogic.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "GameLogic.h"
 #include "GameEvents.h"
 #include "Objects/Terrain.h"

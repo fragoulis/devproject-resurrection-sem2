@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ParticleSystemsRenderer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include <gl/glee.h>
 #include "ParticleSystemsRenderer.h"
 #include "../ParticleSystem/PS_Manager.h"

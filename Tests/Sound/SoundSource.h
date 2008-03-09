@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundSource.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #ifndef __SOUNDSOURCE_H__
 #define __SOUNDSOURCE_H__
 #pragma once

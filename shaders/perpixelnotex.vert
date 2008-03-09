@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               perpixelnotex.vert
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 varying vec4 diffuse,ambient;
 varying vec3 normal,lightDir,halfVector;
 

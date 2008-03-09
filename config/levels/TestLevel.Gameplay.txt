@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TestLevel.Gameplay.txt
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 # This contains gameplay data for a level
 # The GameLogic object loads and processes this data alone.
 #

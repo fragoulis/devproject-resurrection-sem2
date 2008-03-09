@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               compPosNorm.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = compPosNorm
 Vertex = basicvs.vert

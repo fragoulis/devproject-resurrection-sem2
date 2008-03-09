@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               utils.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../Misc/utils.h"
 #include <string>
 #include <gl/glee.h>

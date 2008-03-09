@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               RenderEngine.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "RenderEngine.h"
 #include "IRenderer.h"
 #include "WorldRenderer.h"

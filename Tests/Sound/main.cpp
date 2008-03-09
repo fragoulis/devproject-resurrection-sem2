@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               main.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 //#include "SoundManager.h"
 #include "SoundBuffer.h"
 #include "SoundSource.h"

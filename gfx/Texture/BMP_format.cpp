@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               BMP_format.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "TextureIO.h"
 #include <string>
 #include <cstdio>

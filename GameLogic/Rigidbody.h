@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Rigidbody.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "Movable.h"
 #include "../math/Matrix33.h"

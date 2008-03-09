@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               AIEngine.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "AIEngine.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/EnergyTypes.h"

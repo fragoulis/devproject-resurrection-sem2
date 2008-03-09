@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundEngine.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "SoundEngine.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/EnergyTypes.h"

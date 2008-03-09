@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               lightmapTex.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = lightmapTex
 Vertex = basicvs.vert

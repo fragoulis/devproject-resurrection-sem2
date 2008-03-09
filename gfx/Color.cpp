@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Color.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Color.h"
 
 void Color::Set(GLfloat r, GLfloat g, GLfloat b, GLfloat a) {

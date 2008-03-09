@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TestLevel.txt
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 # This is the first file loaded when a level loads.
 # The root section of this is passed along with the Level_Load event.
 

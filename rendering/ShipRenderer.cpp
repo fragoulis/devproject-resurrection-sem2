@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ShipRenderer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "ShipRenderer.h"
 #include "../Math/Matrix44.h"
 #include "../Math/CoordinateFrame.h"

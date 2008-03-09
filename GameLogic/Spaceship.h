@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Spaceship.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "Rigidbody.h"
 class ParserSection;

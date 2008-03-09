@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Rigidbody.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Rigidbody.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../gfxutils/Misc/utils.h"

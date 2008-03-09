@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               WorldRenderer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "WorldRenderer.h"
 #include "../gfx/Camera.h"
 

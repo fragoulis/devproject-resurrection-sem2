@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_Manager.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "PS_Manager.h"
 #include "PS_EnergyLoss.h"
 #include "PS_Explosion.h"

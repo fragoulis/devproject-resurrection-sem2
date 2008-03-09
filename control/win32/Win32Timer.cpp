@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Win32Timer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Win32Timer.h"
 #include <windows.h>
 #pragma comment(lib, "Winmm.lib")

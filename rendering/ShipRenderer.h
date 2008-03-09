@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ShipRenderer.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"

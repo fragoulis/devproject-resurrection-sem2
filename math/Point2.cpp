@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Point2.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Point2.h"
 #include <cmath>
 #include <iostream>

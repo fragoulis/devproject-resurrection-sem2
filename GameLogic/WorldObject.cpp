@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               WorldObject.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "WorldObject.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../gfxutils/Misc/utils.h"
