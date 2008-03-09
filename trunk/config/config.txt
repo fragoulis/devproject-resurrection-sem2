@@ -16,6 +16,8 @@
 # It is passed to each engine with a call to XXXEngine::onApplicationLoad(ParserSection&);
 #
 
+[main]
+WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>
 
 [files]
 EnemyFactoryFile = "EnemyFactory.txt"

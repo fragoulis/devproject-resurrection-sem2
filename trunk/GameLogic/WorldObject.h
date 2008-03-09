@@ -7,10 +7,10 @@
 //**
 //*****************************************************************************
 
-
 #pragma once
 #include "../math/CoordinateFrame.h"
 class ParserSection;
+
 
 /**
  * Any game object with a position and orientation in the world is a WorldObject.
@@ -29,6 +29,10 @@ public:
 
 	void loadSettings(const ParserSection&);
 
+	int getType() const { return m_type; }
+	void setType(int type) { m_type = type; }
+
 private:
 	CoordinateFrame m_coordinateFrame;
+	int m_type;
 };
