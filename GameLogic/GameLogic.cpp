@@ -114,15 +114,14 @@ void GameLogic :: loadLevel(const std::string& id)
 
 	// load level file
 	ConfParser cpLevel(std::string("config/levels/") + id + ".txt");
-	const ParserSection* psMap = cpLevel.getSection("map");
-	const ParserSection* psFiles = cpLevel.getSection("files");
+	const ParserSection* psMap = cpLevel.getSection("Map");
+	const ParserSection* psGameplay = cpLevel.getSection("Gameplay");
 
 	// fire event Level_Load
 	EventManager::instance().fireEvent(Level_Load(cpLevel.rootSection()));
 
 	// load gameplay file
-	std::string filename = std::string("config/levels/") + psFiles->getVal("Gameplay");
-	ConfParser cpGameplay(std::string("config/levels/") + psFiles->getVal("Gameplay"));
+	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));
 	const ParserSection* psMainMap = cpGameplay.getSection("main");
 
 	// TODO: get terrain ID from level file

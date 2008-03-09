@@ -12,6 +12,7 @@
 #include "Enemyship.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
 #include "../../utility/deleters.h"
+#include "../WorldObjectTypeManager.h"
 using namespace std;
 
 EnemyFactory :: EnemyFactory()
@@ -27,18 +28,12 @@ EnemyFactory :: ~EnemyFactory()
 
 int EnemyFactory :: getTypeFromName(const std::string& name) const
 {
-	//for (StringVector::const_iterator i = m_typeNames.begin(); i != m_typeNames.end(); ++i)
-	for (int i = 0; i != m_typeNames.size(); ++i)
-	{
-		if (m_typeNames[i] == name) return i;
-	}
-	assert(0);
-	return -1;
+	return WorldObjectTypeManager::instance().getTypeFromName(name);
 }
 
 const string& EnemyFactory :: getNameFromType(int type) const
 {
-	return m_typeNames[type];
+	return WorldObjectTypeManager::instance().getNameFromType(type);
 }
 
 Enemyship* EnemyFactory :: createEnemyship(int type) const
@@ -53,21 +48,29 @@ Enemyship* EnemyFactory :: createEnemyship(int type) const
 
 void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 {
-	const ParserSection* psFiles = ps.getSection("files");
-	string filename = string("config/") + psFiles->getVal("EnemyFactoryFile");
+	// get filename for enemy factory
+	const ParserSection* psFiles = ps.getSection("EnemyFactory");
+	string filename = string("config/") + psFiles->getVal("file");
 
+	// open enemy factory file and get data
 	ConfParser cp(filename);
-	const ParserSection* psMain = cp.getSection("main");
-	m_typeNames = psMain->getValVector("types");
+	const ParserSection& psRoot = cp.rootSection();
+	typedef std::vector<const ParserSection *> PSVector;
+	PSVector psTypes = psRoot.getChildren();
 
-	m_enemyPrototypes.resize(m_typeNames.size());
-	
-	for (int i = 0; i != m_typeNames.size(); ++i)
+	int typeCount = WorldObjectTypeManager::instance().getTypeCount();
+	m_enemyPrototypes.resize(typeCount);
+
+	// loop over all sections
+	// each section is an enemy type
+	// and the name should correspond to a world object type
+	for (PSVector::iterator it = psTypes.begin(); it != psTypes.end(); it++)
 	{
-		const ParserSection* psType = cp.getSection(m_typeNames[i]);
-		Enemyship* es = new Enemyship(i);
-		es->loadSettings(*psType);
-		m_enemyPrototypes[i] = es;
+		const ParserSection* ps = *it;
+		int type = WorldObjectTypeManager::instance().getTypeFromName(ps->getName());
+		Enemyship* es = new Enemyship(type);
+		es->loadSettings(*ps);
+		m_enemyPrototypes[type] = es;
 	}
 }
 

@@ -20,6 +20,8 @@ public:
 	int getTypeFromName(const std::string& name) const;
 	const std::string& getNameFromType(int type) const;
 
+	int getTypeCount() const { return int(m_typeNames.size()); }
+
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 

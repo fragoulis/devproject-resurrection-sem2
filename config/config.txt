@@ -19,8 +19,8 @@
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>
 
-[files]
-EnemyFactoryFile = "EnemyFactory.txt"
+[EnemyFactory]
+file = "EnemyFactory.txt"
 
 
 // Defines a prototype for playership
