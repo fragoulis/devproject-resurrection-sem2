@@ -73,7 +73,7 @@ void ShipRenderer :: onEvent(Player_Spawned& evt)
 	// Fetch the playership & place accordingly
 	//FIXME : For now I'll just place everything straight ahead
 
-	CoordinateModel cm(ModelMgr::instance().getModel("tri_cruiser4.obj"),&(evt.getPointer()->getCoordinateFrame()));
+	CoordinateModel cm(ModelMgr::instance().getModel("tri_cruiser4.obj"),&(evt.getValue()->getCoordinateFrame()));
 	m_ships.push_back(cm);
 }
 

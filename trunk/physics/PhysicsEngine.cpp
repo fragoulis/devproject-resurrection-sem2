@@ -42,12 +42,12 @@ void PhysicsEngine :: onApplicationUnload()
 
 void PhysicsEngine :: onEvent( Terrain_Changed& tc )
 {
-	m_terrain = tc.getPointer();
+	m_terrain = tc.getValue();
 }
 
 void PhysicsEngine :: onEvent( Player_Spawned& ps )
 {
-	m_spaceships.push_back(ps.getPointer());
+	m_spaceships.push_back(ps.getValue());
 }
 
 

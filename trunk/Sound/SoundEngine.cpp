@@ -45,17 +45,17 @@ void SoundEngine :: onEvent(Level_Load& ll)
 
 void SoundEngine :: onEvent(Player_Destroyed& pd)
 {
-	Playership* ps = pd.getPointer();
-	EnergyType type = pd.getValue();
+	Playership* ps = pd.getValue1();
+	EnergyType type = pd.getValue2();
 
 	// TODO: play sound effect for playership explosion
 }
 
 void SoundEngine :: onEvent(Player_Drained& pd)
 {
-	Playership* ps = pd.getPointer();
-	EnergyType type = pd.getValue1();
-	int amount = pd.getValue2();
+	Playership* ps = pd.getValue1();
+	EnergyType type = pd.getValue2();
+	int amount = pd.getValue3();
 
 	// TODO: play sound effect for energy draining from playership
 }
