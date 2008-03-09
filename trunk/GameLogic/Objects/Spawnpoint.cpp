@@ -14,6 +14,8 @@
 #include "../../gfxutils/Misc/utils.h"
 #include "../Enemies/EnemyFactory.h"
 #include "../../math/Point3.h"
+#include "../GameEvents.h"
+#include "../../utility/EventManager.h"
 
 Spawnpoint :: Spawnpoint() :
 	m_spawnType(-1),
@@ -50,7 +52,10 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 				m_timeTillNextEvent = m_timeBetweenLastSpawnAndSessionEnd;
 				break;
 			case SESSION_ENDING :
-				if (m_timeTillNextEvent < 0.0f) m_state = WAITING_FOR_PLAYER;
+				if (m_timeTillNextEvent < 0.0f) {
+					m_state = WAITING_FOR_PLAYER;
+					EventManager::instance().fireEvent(Spawnpoint_SessionEnded(this));
+				}
 				break;
 			case WAITING_BETWEEN_SESSIONS :
 				m_state = WAITING_FOR_PLAYER;
@@ -70,6 +75,7 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 					case WAITING_BETWEEN_SESSIONS :
 						m_state = SESSION_STARTING;
 						m_timeTillNextEvent = m_timeBetweenSessionStartAndFirstSpawn;
+						EventManager::instance().fireEvent(Spawnpoint_SessionStarted(this));
 						break;
 					case SESSION_STARTING :
 						m_state = SPAWNING;
@@ -82,6 +88,7 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 					case SESSION_ENDING :
 						m_state = WAITING_BETWEEN_SESSIONS;
 						m_timeTillNextEvent = m_timeBetweenSessionEndAndSessionStart;
+						EventManager::instance().fireEvent(Spawnpoint_SessionEnded(this));
 						break;
 				}
 			}
