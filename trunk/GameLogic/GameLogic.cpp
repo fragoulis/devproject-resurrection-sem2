@@ -82,7 +82,7 @@ void GameLogic :: update(float dt)
 {
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
-		(*i)->update(dt);
+		(*i)->update(dt, m_playership->getPosition());
 	}
 	for (LaserList::iterator i = m_lasers.begin(); i != m_lasers.end(); )
 	{
