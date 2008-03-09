@@ -16,10 +16,9 @@ class Model;
 class Terrain
 {
 public:
-	Terrain(const std::string& id);
+	Terrain();
 	~Terrain();
 
-	const std::string& getID() { return m_id; }
 
 	float getHeight(float x, float z);	// z is always negative since the terrain volume min & max is :
 										// min = 0,0,0
@@ -28,7 +27,6 @@ public:
 	void fillData(float * heights,const float xzscale,const float ymax,const unsigned dim);
 	
 private:
-	std::string m_id;
 
 	// The below stuff consider the terrain heights as a dim*dim array of floats
 	float		m_terrainXZScale;		// The scale of the terrain in X & Z axes

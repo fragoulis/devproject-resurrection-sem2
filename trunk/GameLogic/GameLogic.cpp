@@ -124,8 +124,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));
 	const ParserSection* psMainMap = cpGameplay.getSection("main");
 
-	// TODO: get terrain ID from level file
-	m_terrain = new Terrain(id);
+	m_terrain = new Terrain();
 	EventManager::instance().fireEvent(Terrain_Changed(m_terrain));
 
 	// Spawn player
