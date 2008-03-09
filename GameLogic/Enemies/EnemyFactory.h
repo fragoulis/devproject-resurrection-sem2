@@ -47,7 +47,6 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-
 private:
 	typedef std::vector<std::string> StringVector;
 	typedef std::vector<Enemyship*> EnemyVector;

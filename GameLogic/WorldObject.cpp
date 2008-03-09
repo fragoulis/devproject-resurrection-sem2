@@ -7,7 +7,6 @@
 //**
 //*****************************************************************************
 
-
 #include "WorldObject.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../gfxutils/Misc/utils.h"

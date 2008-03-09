@@ -21,6 +21,7 @@
 #include "../../GameLogic/Enemies/EnemyFactory.h"
 #include "../../GameLogic/Lasers/LaserFactory.h"
 #include "../../gfxutils/Misc/Logger.h"
+#include "../../GameLogic/WorldObjectTypeManager.h"
 #include "Input.h"
 #include <iostream>
 #include <fstream>
@@ -61,6 +62,7 @@ bool Application :: init()
 	Logger::init(ps.getSection("Logger"));
 	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
 
+	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);
 	EnemyFactory::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
@@ -83,6 +85,7 @@ void Application :: destroy()
 	ControllerManager::safeInstance().unloadAllControllers();
 	RenderEngine::safeInstance().unloadAllRenderers();
 
+	WorldObjectTypeManager::destroy();
 	LaserFactory::destroy();
 	EnemyFactory::destroy();
 	PhysicsEngine::destroy();
