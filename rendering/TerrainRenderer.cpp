@@ -176,7 +176,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 
 void TerrainRenderer :: onEvent(Terrain_Changed& evt)
 {
-	m_terrain = evt.getPointer();
+	m_terrain = evt.getValue();
 	// Not allowed to do file loading here!
 	// Keep that restricted to Level_Load please
 	// If not possible at all: tell Joep :)

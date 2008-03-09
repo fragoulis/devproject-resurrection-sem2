@@ -52,21 +52,21 @@ void AIEngine :: onEvent(Level_Unload&)
 
 void AIEngine :: onEvent( Player_Spawned& es )
 {
-	m_playership = es.getPointer();
+	m_playership = es.getValue();
 }
 
 
 void AIEngine :: onEvent( Player_Destroyed& pd )
 {
-	Playership* ps = pd.getPointer();
-	EnergyType type = pd.getValue();
+	Playership* ps = pd.getValue1();
+	EnergyType type = pd.getValue2();
 
 	// TODO: despawn all enemies? no idea!
 }
 
 void AIEngine :: onEvent(Enemy_Spawned& es)
 {
-	Enemyship* enemy = es.getPointer();
+	Enemyship* enemy = es.getValue();
 
 	// TODO: Wrap es in a AIEnemyStateCouple and add it to a list
 }
