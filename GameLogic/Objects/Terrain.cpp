@@ -12,8 +12,7 @@
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"
 
 
-Terrain :: Terrain(const std::string& id) :
-	m_id(id),
+Terrain :: Terrain() :
 	m_terrainXZScale(0.0f),
 	m_terrainYMax(0),
 	m_terrainHeights(0),
