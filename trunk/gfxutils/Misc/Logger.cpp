@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Logger.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Logger.h"
 #include <string>
 #include "../ConfParser/ParserSection.h"

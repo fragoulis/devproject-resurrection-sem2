@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_Explosion.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "PS_Explosion.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../gfx/Texture/Texture.h"

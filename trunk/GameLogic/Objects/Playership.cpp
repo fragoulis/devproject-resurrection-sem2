@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Playership.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Playership.h"
 
 Playership :: Playership()

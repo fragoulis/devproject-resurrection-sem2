@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Camera.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include <math.h>
 #include "../Math/Vector3.h"
 #include <gl/glee.h>

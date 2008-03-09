@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundManager.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "SoundManager.h"
 using namespace game::sound;
 

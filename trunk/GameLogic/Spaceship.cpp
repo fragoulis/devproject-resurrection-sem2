@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Spaceship.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Spaceship.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../gfxutils/Misc/utils.h"

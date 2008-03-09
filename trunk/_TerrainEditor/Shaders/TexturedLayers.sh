@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TexturedLayers.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = TexturedLayers
 Vertex = basicvs.vert

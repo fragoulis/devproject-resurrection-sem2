@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               DDS_format.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "TextureIO.h"
 #include "Texture2D.h"
 #include "Texture3D.h"

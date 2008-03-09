@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_EnergyLoss.vert
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform float currentTime;
 uniform float particleLife;
 uniform float particleSize;

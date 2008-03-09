@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Main.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include <windows.h>
 #include "Window.h"
 #include "Win32Interface.h"

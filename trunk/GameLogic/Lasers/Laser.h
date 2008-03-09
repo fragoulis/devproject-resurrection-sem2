@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Laser.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../Movable.h"
 #include "LaserTypes.h"

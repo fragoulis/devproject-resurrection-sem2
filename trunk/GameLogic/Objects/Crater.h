@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Crater.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../WorldObject.h"
 #include "../EnergyTypes.h"

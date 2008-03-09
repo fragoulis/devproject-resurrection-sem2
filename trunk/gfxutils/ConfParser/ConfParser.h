@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ConfParser.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include <string>
 //#include <fstream>

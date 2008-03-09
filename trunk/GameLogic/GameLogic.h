@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               GameLogic.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"

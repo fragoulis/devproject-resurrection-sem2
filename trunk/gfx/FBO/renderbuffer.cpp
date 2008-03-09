@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               renderbuffer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 /*
   Copyright (c) 2005, 
 	  Aaron Lefohn	(lefohn@cs.ucdavis.edu)

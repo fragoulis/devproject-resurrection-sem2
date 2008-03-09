@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Spawnpoint.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Spawnpoint.h"
 #include "../GameLogic.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ColouredLayers.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform samplerRect heightmap;
 uniform vec3 layerBounds;
 uniform vec3 bleedBounds;

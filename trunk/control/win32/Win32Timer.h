@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Win32Timer.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../../utility/Exception.h"
 #pragma warning( disable: 4290 )

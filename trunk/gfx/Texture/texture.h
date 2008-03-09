@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               texture.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include <gl/glee.h>
 #include "../../gfxutils/MemManager/MemMgr_AnyData.h"

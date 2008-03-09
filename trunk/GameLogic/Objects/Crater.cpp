@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Crater.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Crater.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"

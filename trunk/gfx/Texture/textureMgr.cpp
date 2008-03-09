@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               textureMgr.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "textureMgr.h"
 #include "../../gfxutils/MemManager/MemMgr_AnyData.h"
 #include "Texture2D.h"

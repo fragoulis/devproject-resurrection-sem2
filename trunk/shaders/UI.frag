@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               UI.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform sampler2D colorMap;
 uniform sampler2D shadowMap;
 

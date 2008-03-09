@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_EnergyLoss.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "PS_EnergyLoss.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../gfx/Texture/Texture.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               UI.vert
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform mat4 TexGenMat;
 uniform mat4 InvViewMat;
 

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ParserSection.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../ConfParser/ParserSection.h"
 #include <assert.h>
 #include <fstream>

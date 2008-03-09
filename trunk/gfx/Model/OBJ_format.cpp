@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               OBJ_format.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "OBJ_format.h"
 #include <iostream>
 #include <fstream>

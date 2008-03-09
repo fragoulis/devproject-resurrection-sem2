@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               PhysicsEvents.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "../math/Vector3.h"
 #include "../math/Point3.h"
 class Playership;

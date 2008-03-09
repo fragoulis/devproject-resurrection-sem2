@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundBuffer.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #ifndef __SOUNDBUFFER_H__
 #define __SOUNDBUFFER_H__
 #pragma once

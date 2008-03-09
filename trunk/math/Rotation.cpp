@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Rotation.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Rotation.h"
 #include "Vector3.h"
 #include "Point3.h"

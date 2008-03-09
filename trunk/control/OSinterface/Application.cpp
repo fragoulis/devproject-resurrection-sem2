@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Application.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "Application.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"

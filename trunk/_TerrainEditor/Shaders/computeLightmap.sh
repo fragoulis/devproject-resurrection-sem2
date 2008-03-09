@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               computeLightmap.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = computeLightmap
 Vertex = basicvs.vert

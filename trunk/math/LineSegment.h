@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               LineSegment.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include "Point3.h"
 class CoordinateFrame;

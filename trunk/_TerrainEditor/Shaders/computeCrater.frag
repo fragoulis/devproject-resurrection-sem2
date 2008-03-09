@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               computeCrater.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform samplerRect heightmap;
 uniform float linbell_mix;
 uniform float bell_area;

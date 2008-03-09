@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               texture.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Texture.h"
 #include "../../gfxutils/Misc/utils.h"
 

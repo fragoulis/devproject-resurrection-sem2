@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               computeCrater.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = computeCrater
 Vertex = basicvs.vert

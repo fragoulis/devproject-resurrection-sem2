@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               SoundEngine.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"

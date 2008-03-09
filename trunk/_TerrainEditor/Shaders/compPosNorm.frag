@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               compPosNorm.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform samplerRect heightmap;
 uniform vec3 xyzscale;
 //uniform float dimdenom;

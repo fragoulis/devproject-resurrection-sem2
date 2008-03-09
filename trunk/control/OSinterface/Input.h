@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Input.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../../utility/singleton.h"
 #include "../../math/Point2.h"

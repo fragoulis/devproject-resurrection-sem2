@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TEX_format.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "TextureIO.h"
 #include "Texture.h"
 #include "Texture2D.h"

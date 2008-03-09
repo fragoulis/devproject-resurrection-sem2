@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               lightmapTex.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform sampler2D contributionTex;
 uniform sampler2D layer1map;
 uniform sampler2D layer2map;

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               MemMgr_RawData.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "MemMgr_RawData.h"
 #include "../Misc/utils.h"
 

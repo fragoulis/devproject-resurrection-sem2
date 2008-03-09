@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               ControllerManager.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../utility/ObjectReferenceMap.h"
 #include "../utility/Singleton.h"

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               WorldRenderer.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #pragma once
 #include "IRenderer.h"
 #include "TerrainRenderer.h"

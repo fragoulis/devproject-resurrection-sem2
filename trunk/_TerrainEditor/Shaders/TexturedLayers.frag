@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TexturedLayers.frag
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 uniform samplerRect heightmap;
 uniform sampler2D layer1map,layer2map,layer3map,layer4map;
 uniform vec3 layerBounds;

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Shader.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../Shaders/Shader.h"
 #include "../../gfxutils/Misc/utils.h"
 #include <string>

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               ColouredLayers.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = ColouredLayers
 Vertex = basicvs.vert

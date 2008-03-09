@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               VBO.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "../VBO/vbo.h"
 #include "../Shaders/ShaderManager.h"
 #include "VBOMgr.h"

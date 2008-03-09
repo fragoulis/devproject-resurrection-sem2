@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               VBOMgr.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "VBOMgr.h"
 #include "VBO.h"
 #include "../../gfxutils/Misc/utils.h"

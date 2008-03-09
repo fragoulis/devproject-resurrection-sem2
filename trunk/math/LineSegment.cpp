@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               LineSegment.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "LineSegment.h"
 #include "CoordinateFrame.h"
 

@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               CoordinateFrame.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "CoordinateFrame.h"
 
 CoordinateFrame::CoordinateFrame()

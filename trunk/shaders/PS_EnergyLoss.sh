@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               PS_EnergyLoss.sh
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 [Shader]
 Name = PS_EnergyLoss
 Vertex = PS_EnergyLoss.vert

@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               Win32Interface.h
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #pragma once
 #include "../OSinterface/IOSInterface.h"
 

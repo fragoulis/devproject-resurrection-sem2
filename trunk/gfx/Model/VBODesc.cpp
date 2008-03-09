@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               VBODesc.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "VBODesc.h"
 #include "../Shaders/VertexAttrib.h"
 #include "../VBO/VBO.h"

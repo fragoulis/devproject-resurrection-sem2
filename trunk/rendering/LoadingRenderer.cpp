@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               LoadingRenderer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "LoadingRenderer.h"
 
 LoadingRenderer :: LoadingRenderer()

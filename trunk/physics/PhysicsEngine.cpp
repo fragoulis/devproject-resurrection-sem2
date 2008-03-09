@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               PhysicsEngine.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "PhysicsEngine.h"
 #include "PhysicsEvents.h"
 #include "../GameLogic/Movable.h"

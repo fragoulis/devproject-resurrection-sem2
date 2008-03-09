@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               Texture3D.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include "Texture3D.h"
 #include "../../gfxutils/Misc/utils.h"
 #include "../../gfxutils/Misc/defines.h"

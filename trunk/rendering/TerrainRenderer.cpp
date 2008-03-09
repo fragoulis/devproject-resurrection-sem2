@@ -1,3 +1,12 @@
+//*****************************************************************************
+//**
+//**   File:               TerrainRenderer.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
 #include <string>
 
 #include "TerrainRenderer.h"

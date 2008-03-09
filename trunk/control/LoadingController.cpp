@@ -1,3 +1,13 @@
+//*****************************************************************************
+//**
+//**   File:               LoadingController.cpp
+//**   Author:             $Author$
+//**   Last Change:        $Date$
+//**   Last Revision:      $Revision$
+//**
+//*****************************************************************************
+
+
 #include "LoadingController.h"
 #include "../rendering/RenderEngine.h"
 
