@@ -37,7 +37,7 @@ void SoundEngine :: onApplicationUnload()
 
 void SoundEngine :: onEvent(Level_Load& ll)
 {
-	const ParserSection& ps = ll.getReference();
+	const ParserSection* ps = ll.getValue1();
 
 	// TODO: make sure all sounds required for this level are loaded
 	// If not, load them now.

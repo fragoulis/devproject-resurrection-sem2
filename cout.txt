@@ -1,0 +1,5 @@
+Program Linker Log : 
+Vertex info
+-----------
+(44) : warning C7011: implicit cast from "vec4" to "vec3"
+

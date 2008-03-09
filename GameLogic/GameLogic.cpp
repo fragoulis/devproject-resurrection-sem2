@@ -118,7 +118,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	const ParserSection* psGameplay = cpLevel.getSection("Gameplay");
 
 	// fire event Level_Load
-	EventManager::instance().fireEvent(Level_Load(cpLevel.rootSection()));
+	EventManager::instance().fireEvent(Level_Load(&cpLevel.rootSection(), id));
 
 	// load gameplay file
 	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));

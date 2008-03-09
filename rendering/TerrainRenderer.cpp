@@ -29,11 +29,12 @@
 
 using namespace std;
 
-TerrainRenderer :: TerrainRenderer()
-:m_terrainModel(0),
-m_vbo(0)
+TerrainRenderer :: TerrainRenderer() :
+	m_terrainModel(0),
+	m_vbo(0)
 {
-	EventManager::instance().registerEventListener(this);
+	EventManager::instance().registerEventListener< Terrain_Changed >(this);
+	EventManager::instance().registerEventListener< Level_Load >(this);
 }
 
 TerrainRenderer :: ~TerrainRenderer()
@@ -66,26 +67,34 @@ void TerrainRenderer :: render(Graphics& g) const
 	CHECK_GL_ERROR();
 }
 
-void TerrainRenderer :: onEvent(Terrain_Changed& tc)
-{
-	m_terrain = tc.getPointer();
-	const std::string& id = m_terrain->getID();
 
-	// Erase the old data
+void TerrainRenderer :: onEvent(Level_Load& evt)
+{
+	const ParserSection* psRoot = evt.getValue1();
+	const ParserSection* psGraphics = psRoot->getSection("Graphics");
+
+	std::string data = psGraphics->getVal("Data");
+	std::string texture = psGraphics->getVal("Texture");
 
 	_clearResources();
 
+	_loadResources(evt.getValue2(), data, texture);
+}
+
+void TerrainRenderer :: _loadResources(const std::string& id,
+									   const std::string& dataFileName,
+									   const std::string& textureFileName)
+{
 	// Fetch the parser sections
 
 	const ParserSection * parsecLevel = RenderEngine::instance().getParserSection(string("Level:") + id);
-	const ParserSection * parsecLevelTerrain = parsecLevel->getChild("Terrain");
 
 	unsigned dimension;
 	unsigned dataSize,indexSize;
 	Vector4 ldir;
 
 	// Open the file
-	string filepath = ModelMgr::instance().getModelDir() + parsecLevelTerrain->getVal("Data");
+	string filepath = ModelMgr::instance().getModelDir() + dataFileName;
 	FILE * fp = fopen(filepath.c_str(),"rb");
 
 	// Read the dimension
@@ -143,33 +152,39 @@ void TerrainRenderer :: onEvent(Terrain_Changed& tc)
 	m_terrainModel = new Model(string("Terrain_")+id,m_vbo);
 
 	std::vector<Texture *> texvector;
-	texvector.push_back(TextureIO::instance()->loadImage(parsecLevelTerrain->getVal("Texture")));
+	texvector.push_back(TextureIO::instance()->loadImage(textureFileName));
 	m_terrainModel->addMatGroup(MaterialGroup(Material(),
 									 texvector,
 									 VBODesc(m_vbo,vattrs,attribData,dataSize,indexData,indexSize,GL_TRIANGLE_STRIP),
 									 -1));	
 
 	// Get the heights & stuff for Terrain *, at the moment assume the scale is 1 & ymax = 100
-	float * heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
-	for(unsigned i=0;i<dataSize;++i)
-		heights[i] = vertexData[i].getY();
-	m_terrain->fillData(heights,
-						1.0f,
-						100.0f,
-						dimension);	
+	//float * heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
+	//for(unsigned i=0;i<dataSize;++i)
+	//	heights[i] = vertexData[i].getY();
+	//m_terrain->fillData(heights,
+	//					1.0f,
+	//					100.0f,
+	//					dimension);	
 
 	// Free our data
 	MemMgrRaw::instance()->free(vertexData);
 	MemMgrRaw::instance()->free(texcoordData);
 	MemMgrRaw::instance()->free(indexData);
 
+}
 
-	// set a camera at the center of the terrain looking down
+void TerrainRenderer :: onEvent(Terrain_Changed& evt)
+{
+	m_terrain = evt.getPointer();
+	// Not allowed to do file loading here!
+	// Keep that restricted to Level_Load please
+	// If not possible at all: tell Joep :)
 }
 
 void TerrainRenderer :: addShadowCaster(const CoordinateModel& model)
 {
-		m_shadowCasters.push_back(model);
+	m_shadowCasters.push_back(model);
 }
 
 void TerrainRenderer :: removeShadowCaster(const CoordinateModel& model)

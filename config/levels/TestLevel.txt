@@ -18,8 +18,8 @@ PlayerStart = "(64.0, 200, -64.0)"
 file = "TestLevel.Gameplay.txt"
 
 [Graphics]
-LightDirection = "some vector"
-file = "somefile.txt"
+Texture = TerraTForm.dds
+Data = Terra.ter
 
 [Sound]
 SoundsUsed = <EnemyDied1>, <EnemyDied2>

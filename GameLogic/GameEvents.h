@@ -20,7 +20,7 @@ class Crater;
 class Spawnpoint;
 class Laser;
 
-EVENT_WITH_CONST_REFERENCE(Level_Load, ParserSection);
+EVENT_WITH_2VALUES(Level_Load, const ParserSection*, const std::string&);
 SIMPLE_EVENT(Level_Unload);
 EVENT_WITH_POINTER(Terrain_Changed, Terrain);
 EVENT_WITH_POINTER(Player_Spawned, Playership);

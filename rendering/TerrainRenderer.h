@@ -19,7 +19,9 @@ class Graphics;
 class Model;
 class VBO;
 
-class TerrainRenderer : public EventListener< Terrain_Changed >
+class TerrainRenderer :
+	public EventListener< Terrain_Changed >,
+	public EventListener< Level_Load >
 {
 public:
 	TerrainRenderer();
@@ -27,6 +29,7 @@ public:
 
 	void render(Graphics& g) const;
 
+	void onEvent(Level_Load&);
 	void onEvent(Terrain_Changed&);
 
 	void addShadowCaster(const CoordinateModel& model);
@@ -34,6 +37,9 @@ public:
 
 private:
 	void _clearResources();
+	void _loadResources(const std::string& id,
+		                const std::string& dataFileName,
+						const std::string& textureFileName);
 
 	Terrain* m_terrain;
 	Model     * m_terrainModel;			// The terrain 'model'
