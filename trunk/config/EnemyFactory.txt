@@ -11,10 +11,7 @@
 # Variables are explained below
 
 
-[main]
-types = <Interceptor> //, <carrier>
-
-[Interceptor]
+[EnemyFighter]
 EnergyType = red            # possible values: red yellow blue
 CollisionPower = 20         # integer
 ThrusterMaxPower = 10.0     # float

@@ -48,10 +48,8 @@ public:
 	void onApplicationUnload();
 
 private:
-	typedef std::vector<std::string> StringVector;
 	typedef std::vector<Enemyship*> EnemyVector;
 
-	StringVector m_typeNames;
 	EnemyVector m_enemyPrototypes;
 
 

@@ -10,18 +10,17 @@
 # This is the first file loaded when a level loads.
 # The root section of this is passed along with the Level_Load event.
 
-
-[files]
-Sound = "TestLevel.Sound.txt"
-Graphics = "TestLevel.Graphics.txt"
-Gameplay = "TestLevel.Gameplay.txt"
-
-[graphics]
-LightDirection = "some vector"
-
-[sound]
-SoundsUsed = <EnemyDied1>, <EnemyDied2>
-
-[map]
+[Map]
 Dimensions = "(128.0, 128.0)"
 PlayerStart = "(64.0, 200, -64.0)"
+
+[Gameplay]
+file = "TestLevel.Gameplay.txt"
+
+[Graphics]
+LightDirection = "some vector"
+file = "somefile.txt"
+
+[Sound]
+SoundsUsed = <EnemyDied1>, <EnemyDied2>
+
