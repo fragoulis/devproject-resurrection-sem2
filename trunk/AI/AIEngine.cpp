@@ -39,7 +39,7 @@ void AIEngine :: onApplicationUnload()
 
 void AIEngine :: onEvent(Level_Load& ll)
 {
-	const ParserSection& ps = ll.getReference();
+	const ParserSection* ps = ll.getValue1();
 
 	// TODO: make sure all AIs required for this level are loaded
 	// If not, load them now.

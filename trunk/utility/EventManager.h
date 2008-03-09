@@ -57,11 +57,36 @@ public:
 #define EVENT_WITH_VALUE(name, type) \
 	class name { \
 	public: \
-		name(const type& t) : m_t(t) { } \
-		const type& getValue() { return m_t; } \
+		name(type t) : m_t(t) { } \
+		type getValue() { return m_t; } \
 	private: \
 		type m_t; \
 	};
+
+#define EVENT_WITH_2VALUES(name, type1, type2) \
+	class name { \
+	public: \
+		name(type1 t1, type2 t2) : m_t1(t1), m_t2(t2) { } \
+		type1 getValue1() { return m_t1; } \
+		type2 getValue2() { return m_t2; } \
+	private: \
+		type1 m_t1; \
+		type2 m_t2; \
+	};
+
+#define EVENT_WITH_3VALUES(name, type1, type2, type3) \
+	class name { \
+	public: \
+		name(type1 t1, type2 t2, type3 t3) : m_t1(t1), m_t2(t2), m_t3(t3) { } \
+		type1 getValue1() { return m_t1; } \
+		type2 getValue2() { return m_t2; } \
+		type3 getValue3() { return m_t3; } \
+	private: \
+		type1 m_t1; \
+		type2 m_t2; \
+		type3 m_t3; \
+	};
+
 
 #define EVENT_WITH_CONST_REFERENCE(name, type) \
 	class name { \
