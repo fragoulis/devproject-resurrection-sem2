@@ -35,3 +35,5 @@ EVENT_WITH_2POINTERS(Enemy_Attached_To_Player, Enemyship, Playership);
 SIMPLE_EVENT(Player_LaserType_Swapped);
 EVENT_WITH_POINTER(Laser_Spawned, Laser);
 EVENT_WITH_POINTER(Laser_Despawned, Laser);
+EVENT_WITH_POINTER(Spawnpoint_SessionStarted, Spawnpoint);
+EVENT_WITH_POINTER(Spawnpoint_SessionEnded, Spawnpoint);
