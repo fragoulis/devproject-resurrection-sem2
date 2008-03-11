@@ -70,7 +70,7 @@ int CheckGLError(char *file, int line)
 	glErr = glGetError();
 	while (glErr != GL_NO_ERROR) 
    {
-       cout << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file << " at line: " << line << endl;
+       cerr << "GL Error #" << glErr << "(" << gluErrorString(glErr) << ") " << " in File " << file << " at line: " << line << endl;
 		retCode = 1;
 		glErr = glGetError();
 		assert(0);

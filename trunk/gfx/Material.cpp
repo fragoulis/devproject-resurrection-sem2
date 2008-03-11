@@ -9,8 +9,11 @@
 
 #include "Material.h"
 
-Material::Material() {
-	m_ambient = Color::black();
+Material::Material() 
+:m_shininess(64.0f)
+{
+	m_emission = m_specular = Color::black();
+	m_ambient = Color(0.2f,0.2f,0.2f,1.0f);
 	m_diffuse = Color::white();
 }
 

@@ -11,15 +11,14 @@
 # The root section of this is passed along with the Level_Load event.
 
 [Map]
-Dimensions = "(128.0, 128.0)"
-PlayerStart = "(64.0, 200, -64.0)"
+Dimensions = "(2048.0, 2048.0)"
+PlayerStart = "(0.0, 286, 0.0)"
 
 [Gameplay]
 file = "TestLevel.Gameplay.txt"
 
 [Graphics]
-Texture = TerraTForm.dds
-Data = Terra.ter
+file = "TestLevel.Graphics.txt"
 
 [Sound]
 SoundsUsed = <EnemyDied1>, <EnemyDied2>

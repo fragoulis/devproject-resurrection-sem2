@@ -74,35 +74,33 @@ void TerrainRenderer :: onEvent(Level_Load& evt)
 	const ParserSection* psRoot = evt.getValue1();
 	const ParserSection* psGraphics = psRoot->getSection("Graphics");
 
-	std::string data = psGraphics->getVal("Data");
-	std::string texture = psGraphics->getVal("Texture");
+	std::string gfxlevelfile = psGraphics->getVal("file");
 
 	_clearResources();
 
-	_loadResources(evt.getValue2(), data, texture);
+	_loadResources(evt.getValue2(), gfxlevelfile);
 }
 
 void TerrainRenderer :: _loadResources(const std::string& id,
-									   const std::string& dataFileName,
-									   const std::string& textureFileName)
+									   const std::string& gfxlevelfile)
 {
 	// Fetch the parser sections
 
-	const ParserSection * parsecLevel = RenderEngine::instance().getParserSection(string("Level:") + id);
+	ConfParser parser(std::string("config/levels/") + gfxlevelfile);
 
 	unsigned dimension;
 	unsigned dataSize,indexSize;
 	Vector4 ldir;
 
 	// Open the file
-	string filepath = ModelMgr::instance().getModelDir() + dataFileName;
+	string filepath = ModelMgr::instance().getModelDir() + parser.getSection("DataFiles")->getVal("TerrainData");
 	FILE * fp = fopen(filepath.c_str(),"rb");
 
-	// Read the dimension
-	fread(&dimension,sizeof(unsigned),1,fp);
-
-	// Read the light direction
-	fread(&ldir,sizeof(Vector4),1,fp);
+	// Read the dimension & light direction
+	// FIXME : see what the fuck happens in TerrainEditor & I get one
+	dimension = fread(&dimension,sizeof(unsigned),1,fp);
+	dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
+	ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
 
 	// Set the GL Light 0
 	glPushAttrib(GL_MATRIX_MODE);
@@ -153,7 +151,8 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	m_terrainModel = new Model(string("Terrain_")+id,m_vbo);
 
 	std::vector<Texture *> texvector;
-	texvector.push_back(TextureIO::instance()->loadImage(textureFileName));
+	//texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("BarrenTexture")));
+	texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("TerraformTexture")));
 	m_terrainModel->addMatGroup(MaterialGroup(Material(),
 									 texvector,
 									 VBODesc(m_vbo,vattrs,attribData,dataSize,indexData,indexSize,GL_TRIANGLE_STRIP),
