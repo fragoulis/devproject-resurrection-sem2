@@ -73,16 +73,16 @@ void ShipRenderer :: render(Graphics& g) const
 void ShipRenderer :: onEvent(Player_Spawned& evt)
 {
 	// Get the const render settings of the ship
-	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
-	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)
 {
 	// Get the const render settings of the ship
-	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
-	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	//_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
 void ShipRenderer :: onEvent(Enemy_Destroyed& evt)

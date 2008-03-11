@@ -22,6 +22,7 @@
 #include "Enemies/Enemyship.h"
 #include "Enemies/EnemyFactory.h"
 #include "Lasers/Laser.h"
+#include "WorldObjectTypeManager.h"
 #include "../utility/deleters.h"
 #include <vector>
 #include <iostream>
@@ -43,6 +44,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 {
 	m_playershipPrototype = new Playership();
 	m_playershipPrototype->loadSettings(*ps.getSection("Playership"));
+	m_playershipPrototype->setType(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 }
 
 void GameLogic :: onApplicationUnload()
@@ -173,15 +175,12 @@ void GameLogic :: unloadLevel()
 	_deleteLevelData();
 }
 
-void GameLogic :: spawnEnemies( int count, int type )
+Enemyship* GameLogic :: spawnEnemy( int type )
 {
-	EnemyFactory& EnemyFactory = EnemyFactory::instance();
-	for (int i = 0; i < count; i++)
-	{
-		Enemyship* es = EnemyFactory.createEnemyship(type);
-		m_enemyships.push_back(es);
-		EventManager::instance().fireEvent(Enemy_Spawned(es));
-	}
+	Enemyship* es = EnemyFactory::instance().createEnemyship(type);
+	EventManager::instance().fireEvent(Enemy_Spawned(es));
+	m_enemyships.push_back(es);
+	return es;
 }
 
 

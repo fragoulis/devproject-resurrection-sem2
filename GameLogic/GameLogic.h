@@ -48,9 +48,9 @@ public:
 
 	void loadLevel(const std::string& id);
 	void unloadLevel();
-	void spawnEnemies(int count, int type);  // Spawnpoint has a tiny bit of game logic in it!
+	Enemyship* spawnEnemy(int type);
 	void setPlayerDirection(const Vector3& v);
-	void setPlayerThrusterPower(const float f);
+	void setPlayerThrusterPower(float f);
 	void fireLaser(const Point3& targetPosition, LaserType type);
 	void update(float dt);
 
