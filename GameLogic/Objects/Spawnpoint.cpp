@@ -115,6 +115,7 @@ void Spawnpoint :: loadSettings( const ParserSection& ps )
 {
 	m_spawnType = EnemyFactory::instance().getTypeFromName(ps.getVal("EnemyType"));
 	m_spawnCount = FromString<int>(ps.getVal("EnemyCount"));
+	m_energyType = EnergyTypeFromString(ps.getVal("EnergyType"));
 	m_timeBetweenInRangeAndFirstSession = FromString<float>(ps.getVal("TimeBetweenInRangeAndFirstSession"));
 	m_timeBetweenSessionStartAndFirstSpawn = FromString<float>(ps.getVal("TimeBetweenSessionStartAndFirstSpawn"));
 	m_timeBetweenSpawns = FromString<float>(ps.getVal("TimeBetweenSpawns"));

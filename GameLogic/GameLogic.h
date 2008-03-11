@@ -73,6 +73,9 @@ private:
 	EbombList m_ebombs;
 	LaserList m_lasers;
 
+	// helper functions
+	template< typename T, typename EventType >
+	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
 	void _deleteLevelData();
 
 	friend Singleton< GameLogic >;

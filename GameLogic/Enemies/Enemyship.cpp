@@ -12,8 +12,14 @@
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
 
-Enemyship :: Enemyship()
+Enemyship :: Enemyship() : m_state(ALIVE)
 {
+}
+
+Enemyship :: Enemyship(int type)
+{
+	m_state = ALIVE;
+	setType(type);
 }
 
 Enemyship :: ~Enemyship()

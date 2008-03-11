@@ -99,6 +99,9 @@ void GameLogic :: update(float dt)
 			++i;
 		}
 	}
+
+	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
+	_cleanUpList<Ebomb, Ebomb_Despawned>(m_ebombs);
 	//cout << m_playership->getPosition() << endl;
 }
 
@@ -126,10 +129,11 @@ void GameLogic :: loadLevel(const std::string& id)
 	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));
 	const ParserSection* psMainMap = cpGameplay.getSection("main");
 
+	// create terrain, fire event Terrain_Changed
 	m_terrain = new Terrain();
 	EventManager::instance().fireEvent(Terrain_Changed(m_terrain));
 
-	// Spawn player
+	// Spawn player, fire event Player_Spawned
 	m_playership = new Playership(*m_playershipPrototype);
 	Point3 pos = FromString<Point3>(psMap->getVal("PlayerStart"));
 	m_playership->setPosition(pos);
@@ -201,4 +205,29 @@ void GameLogic :: fireLaser(const Point3& target, LaserType type)
 	const Point3& playerPosition = m_playership->getPosition();
 	Vector3 direction = target - playerPosition;
 	direction.normalize();
+}
+
+
+
+
+
+// This can be rewritten to work with vectors:
+// use integer index as loop iterator
+// swap back() with current iteration and redo current iteration
+template< typename T, typename EventType >
+void GameLogic :: _cleanUpList( std::list<T*>& list )
+{
+	typedef std::list<T*> List;
+	for (List::iterator it = list.begin(); it != list.end(); )
+	{
+		T* t = *it;
+		if (t->isToBeDeleted()) {
+			it = list.erase(it);
+			EventManager::instance().fireEvent(EventType(t));
+			delete t;
+		}
+		else {
+			++it;
+		}
+	}
 }
