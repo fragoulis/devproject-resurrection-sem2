@@ -12,6 +12,7 @@
 #include "../GameLogic/GameEvents.h"
 #include "../gfx/FBO/FramebufferObject.h"
 #include "CoordinateModel.h"
+#include "../math/Vector3.h"
 
 #include <vector>
 
@@ -43,6 +44,9 @@ private:
 		                const std::string& gfxlevelfile);
 
 	Terrain* m_terrain;
+	float	* m_heights;
+	unsigned m_terrainDimension;
+	Vector3  m_mapExtents;
 	Model     * m_terrainModel;			// The terrain 'model'
 	VBO       * m_vbo;					// The terrain will always have it's own VBO
 

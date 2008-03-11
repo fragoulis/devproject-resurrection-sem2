@@ -15,25 +15,18 @@
 Terrain :: Terrain() :
 	m_terrainXZScale(0.0f),
 	m_terrainYMax(0),
-	m_terrainHeights(0),
 	m_terrainDim(0)
 {
 }
 
 Terrain::~Terrain()
 {
-	// Delete / unload the terrain data
-	if(m_terrainHeights)
-	{
-		MemMgrRaw::instance()->free(m_terrainHeights);
-		m_terrainHeights = 0;
-	}
 }
 
 float Terrain :: getHeight(float x, float z)
 {
-	const unsigned xgrid = unsigned(x/m_terrainXZScale)%m_terrainDim;
-	const unsigned zgrid = unsigned(-z/m_terrainXZScale)/m_terrainDim;
+	const unsigned xgrid = min(m_terrainDim-1,unsigned((x + m_terrainXZScale*0.5f) / m_terrainXZScale));
+	const unsigned zgrid = min(m_terrainDim-1,unsigned((z - m_terrainXZScale*0.5f) / m_terrainXZScale));
 	return m_terrainHeights[xgrid + m_terrainDim*zgrid];
 }
 

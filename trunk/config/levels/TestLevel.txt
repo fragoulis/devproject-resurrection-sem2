@@ -12,7 +12,7 @@
 
 [Map]
 Dimensions = "(2048.0, 2048.0)"
-PlayerStart = "(0.0, 286, 0.0)"
+PlayerStart = "(0.0, 300, 0.0)"
 
 [Gameplay]
 file = "TestLevel.Gameplay.txt"
