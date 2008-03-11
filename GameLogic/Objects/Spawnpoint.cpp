@@ -101,6 +101,7 @@ void Spawnpoint :: _spawnEnemy()
 {
 	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType);
 	es->setPosition(getPosition());
+	es->setEnergyType(m_energyType);
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_timeTillNextEvent = m_timeBetweenSpawns;
