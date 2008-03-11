@@ -86,22 +86,14 @@ void GameLogic :: update(float dt)
 	{
 		(*i)->update(dt, m_playership->getPosition());
 	}
-	for (LaserList::iterator i = m_lasers.begin(); i != m_lasers.end(); )
+	for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
 	{
-		Laser* laser = *i;
-		laser->update(dt);
-		if (laser->isDead()) {
-			i = m_lasers.erase(i);
-			EventManager::instance().fireEvent(Laser_Despawned(laser));
-			delete laser;
-		}
-		else {
-			++i;
-		}
+		(*it)->update(dt);
 	}
 
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
 	_cleanUpList<Ebomb, Ebomb_Despawned>(m_ebombs);
+	_cleanUpList<Laser, Laser_Despawned>(m_lasers);
 	//cout << m_playership->getPosition() << endl;
 }
 
@@ -200,7 +192,7 @@ void GameLogic :: setPlayerThrusterPower(const float f)
 	m_playership->setThrusterPower(f);
 }
 
-void GameLogic :: fireLaser(const Point3& target, LaserType type)
+void GameLogic :: fireLaser(const Point3& target, int type)
 {
 	const Point3& playerPosition = m_playership->getPosition();
 	Vector3 direction = target - playerPosition;
