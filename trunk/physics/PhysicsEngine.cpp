@@ -27,12 +27,14 @@ PhysicsEngine :: PhysicsEngine()
 
 PhysicsEngine :: ~PhysicsEngine()
 {
+	onApplicationUnload();
 }
 
 void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 {
-	EventManager::instance().registerEventListener<Terrain_Changed>(this);
-	EventManager::instance().registerEventListener<Player_Spawned>(this);
+	EventManager::instance().registerEventListener< Terrain_Changed >(this);
+	EventManager::instance().registerEventListener< Player_Spawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -40,14 +42,19 @@ void PhysicsEngine :: onApplicationUnload()
 }
 
 
-void PhysicsEngine :: onEvent( Terrain_Changed& tc )
+void PhysicsEngine :: onEvent( Terrain_Changed& evt )
 {
-	m_terrain = tc.getValue();
+	m_terrain = evt.getValue();
 }
 
-void PhysicsEngine :: onEvent( Player_Spawned& ps )
+void PhysicsEngine :: onEvent( Player_Spawned& evt )
 {
-	m_spaceships.push_back(ps.getValue());
+	m_spaceships.push_back(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
+{
+	//m_spaceships.push_back(evt.getValue());
 }
 
 

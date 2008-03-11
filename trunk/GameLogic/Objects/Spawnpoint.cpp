@@ -13,6 +13,7 @@
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
 #include "../Enemies/EnemyFactory.h"
+#include "../Enemies/Enemyship.h"
 #include "../../math/Point3.h"
 #include "../GameEvents.h"
 #include "../../utility/EventManager.h"
@@ -98,7 +99,9 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 
 void Spawnpoint :: _spawnEnemy()
 {
-	GameLogic::instance().spawnEnemies(1, m_spawnType);
+	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType);
+	es->setPosition(getPosition());
+
 	m_enemiesLeftToSpawnThisSession--;
 	m_timeTillNextEvent = m_timeBetweenSpawns;
 	if (m_enemiesLeftToSpawnThisSession == 0) {

@@ -11,7 +11,10 @@
 # The GameLogic object loads and processes this data alone.
 #
 
-[main]
+[Craters]
+test = 5
+
+[Spawnpoints]
 test = 5
 
 [Craters : Crater1]

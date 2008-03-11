@@ -34,7 +34,8 @@ class Spaceship;
 class PhysicsEngine :
 	public Singleton< PhysicsEngine >,
 	public EventListener< Terrain_Changed >,
-	public EventListener< Player_Spawned >
+	public EventListener< Player_Spawned >,
+	public EventListener< Enemy_Spawned >
 {
 public:
 
@@ -44,6 +45,7 @@ public:
 
 	void onEvent(Terrain_Changed&);
 	void onEvent(Player_Spawned&);
+	void onEvent(Enemy_Spawned&);
 
 	void update(float dt);
 
