@@ -30,7 +30,7 @@ Position = "(500, 500, -100)"
 [Spawnpoints : p1]
 Position = "(500, 500, -100)"
 EnemyType = EnemyFighter            # string
-EnemyCount = 5                      # int
+EnemyCount = 2                      # int
 EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
@@ -44,7 +44,7 @@ MaximumPlayerDistance = 10000.0
 [Spawnpoints : p2]
 Position = "(500, 500, -100)"
 EnemyType = EnemyFighter
-EnemyCount = 5                      # int
+EnemyCount = 2                      # int
 EnergyType = blue
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0

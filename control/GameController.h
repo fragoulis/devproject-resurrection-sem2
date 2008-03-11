@@ -10,7 +10,6 @@
 
 #pragma once
 #include "IController.h"
-#include "../GameLogic/Lasers/LaserTypes.h"
 
 
 /**
@@ -38,5 +37,5 @@ public:
 
 private:
 
-	void _fireLaser(LaserType type);
+	void _fireLaser(int type);
 };

@@ -10,7 +10,6 @@
 
 #pragma once
 #include "../../utility/Singleton.h"
-#include "LaserTypes.h"
 #include <vector>
 class ParserSection;
 class Laser;
@@ -26,7 +25,7 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-	Laser* createLaser(LaserType type) const;
+	Laser* createLaser(int type) const;
 
 
 private:

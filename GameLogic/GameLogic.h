@@ -12,7 +12,6 @@
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
 #include "../physics/PhysicsEvents.h"
-#include "Lasers/LaserTypes.h"
 #include <string>
 #include <list>
 class ParserSection;
@@ -51,7 +50,7 @@ public:
 	Enemyship* spawnEnemy(int type);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);
-	void fireLaser(const Point3& targetPosition, LaserType type);
+	void fireLaser(const Point3& targetPosition, int type);
 	void update(float dt);
 
 	void onEvent(Collision_Player_Enemy&);
