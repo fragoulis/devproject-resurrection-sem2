@@ -19,8 +19,8 @@ struct EntitySettings_t;
 class CoordinateFrame;
 class ShipRenderer : public EventListener< Player_Spawned >,
 					 public EventListener< Enemy_Spawned >,
-					 public EventListener< Enemy_Destroyed >,
-					 public EventListener< Player_Destroyed >
+					 public EventListener< Enemy_Despawned >,
+					 public EventListener< Player_Despawned >
 					 
 {
 public:
@@ -31,8 +31,8 @@ public:
 
 	void onEvent(Player_Spawned&);
 	void onEvent(Enemy_Spawned&);
-	void onEvent(Enemy_Destroyed&);
-	void onEvent(Player_Destroyed&);
+	void onEvent(Enemy_Despawned&);
+	void onEvent(Player_Despawned&);
 
 private:
 

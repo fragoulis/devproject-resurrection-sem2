@@ -27,11 +27,13 @@ file = "EnemyFactory.txt"
 // This is used to create a new playership object when a new level is loaded
 [Playership]
 ThrusterMaxPower = 10000.0      # float
-Radius = 10.0                # float, collision detection and inertia calculation
+Radius = 100.0                # float, collision detection and inertia calculation
 Mass = 0.5                  # float
 AirdragCoefficient = 0.05     # float
 LiftPower = 1.0              # float
 LiftVariance = 1.0           # float
+LaserCooldown = 2.0
+LaserStartOffset = 128.0
 
 [Laser : LaserPlayerPositive]
 Lifetime = 120.0
@@ -56,3 +58,4 @@ FixedMemTree = 10000
 [Logger]
 Level = 2
 DisplayFileLine = 0
+Stream = stderr

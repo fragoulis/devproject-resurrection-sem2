@@ -23,7 +23,6 @@ class CoordinateFrame
 {
 public:
 	CoordinateFrame();
-	CoordinateFrame(const Point3& p, const Rotation& r);
 	~CoordinateFrame();
 
 	const Point3& getOrigin() const { return m_origin; }

@@ -22,15 +22,21 @@
 #include "Enemies/Enemyship.h"
 #include "Enemies/EnemyFactory.h"
 #include "Lasers/Laser.h"
+#include "Lasers/LaserFactory.h"
 #include "WorldObjectTypeManager.h"
 #include "../utility/deleters.h"
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
 #include <vector>
 #include <iostream>
 using namespace std;
 
 
 
-GameLogic :: GameLogic() : m_terrain(0), m_playership(0), m_playershipPrototype(0)
+GameLogic :: GameLogic() : 
+	m_terrain(0),
+	m_playership(0),
+	m_playershipPrototype(0)
 {
 }
 
@@ -42,9 +48,18 @@ GameLogic :: ~GameLogic()
 
 void GameLogic :: onApplicationLoad(const ParserSection& ps)
 {
+	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
+
+	const ParserSection* psPlayer = ps.getSection("Playership");
 	m_playershipPrototype = new Playership();
-	m_playershipPrototype->loadSettings(*ps.getSection("Playership"));
+	m_playershipPrototype->loadSettings(*psPlayer);
 	m_playershipPrototype->setType(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
+
+	m_playerLaserCooldownTime = FromString<float>(psPlayer->getVal("LaserCooldown"));
+	m_laserStartOffset = FromString<float>(psPlayer->getVal("LaserStartOffset"));
+
+	m_laserTypePositive = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
+	m_laserTypeNegative = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
 }
 
 void GameLogic :: onApplicationUnload()
@@ -77,11 +92,16 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 	else {
 		player->setEnergy(type, energy);
 		EventManager::instance().fireEvent(Player_Drained(player, type, colpower));
+		enemy->setToBeDeleted();
 	}
 }
 
 void GameLogic :: update(float dt)
 {
+	// Laser cooldown
+	m_playerLaserCooldownLeft -= dt;
+
+	// Send update to objects that need it
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());
@@ -91,11 +111,70 @@ void GameLogic :: update(float dt)
 		(*it)->update(dt);
 	}
 
+	// delete objects that died this round
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
 	_cleanUpList<Ebomb, Ebomb_Despawned>(m_ebombs);
 	_cleanUpList<Laser, Laser_Despawned>(m_lasers);
+
+	// Output debug info
 	//cout << m_playership->getPosition() << endl;
 }
+
+Enemyship* GameLogic :: spawnEnemy( int type )
+{
+	Enemyship* es = EnemyFactory::instance().createEnemyship(type);
+	EventManager::instance().fireEvent(Enemy_Spawned(es));
+	m_enemyships.push_back(es);
+	return es;
+}
+
+
+void GameLogic :: setPlayerDirection( const Vector3& v )
+{
+	assert(m_playership != 0);
+	m_playership->setThrusterDirection(v);
+	m_playership->setThrusterPower(m_playership->getMaxThrusterPower());
+}
+
+void GameLogic :: setPlayerThrusterPower(const float f)
+{
+	m_playership->setThrusterPower(f);
+}
+
+void GameLogic :: firePositiveLaser(const Point3& targetPosition) {
+	_fireLaser(targetPosition, m_laserTypePositive);
+}
+
+void GameLogic :: fireNegativeLaser(const Point3& targetPosition) {
+	_fireLaser(targetPosition, m_laserTypeNegative);
+}
+
+void GameLogic :: _fireLaser(const Point3& target, int type)
+{
+	if (m_playerLaserCooldownLeft <= 0.0f) {
+		const Point3& playerPosition = m_playership->getPosition();
+		Vector3 direction = target - playerPosition;
+		direction.normalize();
+		Point3 startingPosition = playerPosition + direction * m_laserStartOffset;
+		if (m_playerLaserSwapped) {
+			if (type == m_laserTypePositive) type = m_laserTypeNegative;
+			else type = m_laserTypePositive;
+		}
+		Laser* laser = LaserFactory::instance().createLaser(type);
+		laser->start(startingPosition, direction);
+		m_lasers.push_back(laser);
+		m_playerLaserCooldownLeft = m_playerLaserCooldownTime;
+	}
+}
+
+
+
+
+
+
+
+
+
 
 /**
  * Loads a new level
@@ -152,7 +231,21 @@ void GameLogic :: loadLevel(const std::string& id)
 		m_spawnpoints.push_back(spawnPoint);
 		EventManager::instance().fireEvent(Spawnpoint_Spawned(spawnPoint));
 	}
+
+
+	// Reset variables
+	m_playerLaserSwapped = false;
+	m_playerLaserCooldownLeft = 0.0f;
 }
+
+
+void GameLogic :: unloadLevel()
+{
+	EventManager::instance().fireEvent(Level_Unload());
+	_deleteLevelData();
+	m_playerLaserSwapped = false;
+}
+
 
 void GameLogic :: _deleteLevelData()
 {
@@ -163,40 +256,6 @@ void GameLogic :: _deleteLevelData()
 	deleteList(m_craters);
 	deleteList(m_ebombs);
 	deleteList(m_lasers);
-}
-
-void GameLogic :: unloadLevel()
-{
-	EventManager::instance().fireEvent(Level_Unload());
-	_deleteLevelData();
-}
-
-Enemyship* GameLogic :: spawnEnemy( int type )
-{
-	Enemyship* es = EnemyFactory::instance().createEnemyship(type);
-	EventManager::instance().fireEvent(Enemy_Spawned(es));
-	m_enemyships.push_back(es);
-	return es;
-}
-
-
-void GameLogic :: setPlayerDirection( const Vector3& v )
-{
-	assert(m_playership != 0);
-	m_playership->setThrusterDirection(v);
-	m_playership->setThrusterPower(m_playership->getMaxThrusterPower());
-}
-
-void GameLogic :: setPlayerThrusterPower(const float f)
-{
-	m_playership->setThrusterPower(f);
-}
-
-void GameLogic :: fireLaser(const Point3& target, int type)
-{
-	const Point3& playerPosition = m_playership->getPosition();
-	Vector3 direction = target - playerPosition;
-	direction.normalize();
 }
 
 
@@ -214,6 +273,7 @@ void GameLogic :: _cleanUpList( std::list<T*>& list )
 	{
 		T* t = *it;
 		if (t->isToBeDeleted()) {
+			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 3);
 			it = list.erase(it);
 			EventManager::instance().fireEvent(EventType(t));
 			delete t;

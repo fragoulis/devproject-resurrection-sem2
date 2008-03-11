@@ -20,36 +20,36 @@ test = 5
 [Craters : Crater1]
 Radius = 20.0
 EnergyType = yellow
-Position = "(500, 100, -100)"
+Position = "(-500, 286, 500)"
 
 [Craters : Crater2]
 Radius = 20.0
 EnergyType = blue
-Position = "(500, 500, -100)"
+Position = "(500, 286, -100)"
 
-[Spawnpoints : p1]
-Position = "(500, 500, -100)"
+[aSpawnpoints : p1]
+Position = "(-500, 286, 500)"
 EnemyType = EnemyFighter            # string
-EnemyCount = 2                      # int
+EnemyCount = 1                      # int
 EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 10.0
+TimeBetweenSessionEndAndSessionStart = 5.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 
 
 [Spawnpoints : p2]
-Position = "(500, 500, -100)"
+Position = "(500, 286, -100)"
 EnemyType = EnemyFighter
-EnemyCount = 2                      # int
+EnemyCount = 1                      # int
 EnergyType = blue
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 10.0
+TimeBetweenSessionEndAndSessionStart = 5.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0

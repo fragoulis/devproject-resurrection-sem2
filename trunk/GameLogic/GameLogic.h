@@ -50,7 +50,8 @@ public:
 	Enemyship* spawnEnemy(int type);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);
-	void fireLaser(const Point3& targetPosition, int type);
+	void firePositiveLaser(const Point3& targetPosition);
+	void fireNegativeLaser(const Point3& targetPosition);
 	void update(float dt);
 
 	void onEvent(Collision_Player_Enemy&);
@@ -63,6 +64,7 @@ private:
 	typedef std::list<Ebomb*> EbombList;
 	typedef std::list<Laser*> LaserList;
 
+	// Gameplay objects
 	Terrain* m_terrain;
 	Playership* m_playership;
 	Playership* m_playershipPrototype;
@@ -72,11 +74,21 @@ private:
 	EbombList m_ebombs;
 	LaserList m_lasers;
 
+	// Player laser firing data
+	bool m_playerLaserSwapped;
+	float m_playerLaserCooldownTime;
+	float m_playerLaserCooldownLeft;
+	float m_laserStartOffset;
+	int m_laserTypePositive;
+	int m_laserTypeNegative;
+
 	// helper functions
+	void _fireLaser(const Point3& targetPosition, int type);
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
 	void _deleteLevelData();
 
+	// Singleton stuff
 	friend Singleton< GameLogic >;
 	GameLogic();
 	~GameLogic();
