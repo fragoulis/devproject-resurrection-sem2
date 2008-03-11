@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               config.ini
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
-//**
-//*****************************************************************************
-
 
 [VBOSettings]
 StaticVData = 300000
@@ -113,21 +104,17 @@ Shader       = "PS_Explosion"
 Texture      = "Flare1_32.sgi" 
 
 
-################### LEVELS ##############################
+################# ENTITY-MODEL SETTINGS ####################
 
-# Because we don't know the size of the map we'll load, we can specify a percentage offset 
-# in x,y,z, where these can be queried from the terrain
-# The " " are put there because of the nature of my parser, it doesn't like parentheses, but
-# if these "" are given, it doesn't complain / rearrange the string. So they 
-# can be parsed with FromString<VectorWhatever>(string value)
+[EntitySettings : PlayerShip]
+ModelHook = tri_cruiser4.obj
 
-[Level : TestLevel]
-PlayerPosOffsetPercent = "( 0.5 , 0.5 , 0.5 )"
+[EntitySettings : EnemyFighter]
+ModelHook = tri_cruiser4.obj
 
-# for the moment the light direction is specified in the .ter file,
-# but later another one can be made with any info needed ( lightdir, craters, etc)
+[EntitySettings : EnemyInterceptor]
+ModelHook = tri_cruiser4.obj
 
-[Level : TestLevel : Terrain]
-Texture = TerraTForm.dds
-Data = Terra.ter
+[EntitySettings : Ebomb]
+ModelHook = tri_cruiser4.obj
 

@@ -10,6 +10,7 @@
 #pragma once
 #include "../utility/ObjectReferenceMap.h"
 #include "../utility/Singleton.h"
+#include "ConstRenderSettings.h"
 #include <vector>
 #include <algorithm>
 class Graphics;
@@ -53,6 +54,9 @@ public:
 	void getViewport(int vp[4]) const;
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
 
+	// get entity settings
+	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
+
 
 private:
 	typedef ObjectReferenceMap<IRenderer> RendererMap;
@@ -64,6 +68,8 @@ private:
 	ConfParser * m_confParser;
 
 	int m_viewport[4];
+
+	ConstRenderSettings m_settings;
 
 
 	// helper functions

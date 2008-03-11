@@ -235,20 +235,6 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 	if(!objm._texcoord.empty())
 		attrs.push_back(ShaderManager::instance()->vertexAttribute("Texcoord"));
 
-	/*
-		############## SCALE HACK!!!! #####################
-	*/
-	
-	const size_t size = objm._vertex.size();
-	for(size_t i=0;i<size;++i)
-	{
-		objm._vertex[i].multiply(0.2f);
-	}
-
-	/*
-		############## END OF SCALE HACK!!!! #####################
-	*/
-
 
 	// Fetch the VBO that we'll use
 	size_t max_elems(0);
