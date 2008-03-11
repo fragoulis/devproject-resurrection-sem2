@@ -10,6 +10,7 @@
 
 #pragma once
 #include "../WorldObject.h"
+#include "../EnergyTypes.h"
 class ParserSection;
 class Point3;
 
@@ -26,6 +27,7 @@ public:
 private:
 	int m_spawnType;
 	int m_spawnCount;
+	EnergyType m_energyType;
 	float m_timeBetweenInRangeAndFirstSession;
 	float m_timeBetweenSessionStartAndFirstSpawn;
 	float m_timeBetweenSpawns;

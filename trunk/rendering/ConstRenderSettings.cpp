@@ -34,6 +34,10 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 	}
 }
 
+
+#pragma warning ( push )
+#pragma warning ( disable : 4715 )
+
 const EntitySettings_t& ConstRenderSettings :: getEntitySettings(const int type) const
 {
 	for(std::vector<EntitySettings_t>::const_iterator it = m_entities.begin();
@@ -45,3 +49,5 @@ const EntitySettings_t& ConstRenderSettings :: getEntitySettings(const int type)
 	}
 	assert(0);
 }
+
+#pragma warning( pop )
