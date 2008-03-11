@@ -23,6 +23,7 @@
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfx/Model/Model.h"
 #include "../gfx/Model/VBODesc.h"
+#include "../gfx/Texture/Texture2D.h"
 #include "../gfx/vbo/vbo.h"
 #include "../Math/Vector4.h"
 #include "../Math/Vector2.h"
@@ -31,7 +32,9 @@ using namespace std;
 
 TerrainRenderer :: TerrainRenderer() :
 	m_terrainModel(0),
-	m_vbo(0)
+	m_vbo(0),
+	m_tformContribTex(0),
+	m_heights(0)
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
@@ -50,11 +53,18 @@ void TerrainRenderer :: _clearResources()
 		TextureIO::instance()->deleteTexture(texname);
 		delete m_terrainModel;
 		m_terrainModel = 0;
+		if(m_tformContribTex)
+			delete m_tformContribTex;
 	}
 	if(m_vbo)
 	{
 		delete m_vbo;
 		m_vbo = 0;
+	}
+	if(m_heights)
+	{
+		MemMgrRaw::instance()->free(m_heights);
+		m_heights = 0;
 	}
 }
 
@@ -62,8 +72,18 @@ void TerrainRenderer :: _clearResources()
 void TerrainRenderer :: render(Graphics& g) const
 {
 	// Do some magic to render the terrain
-	ShaderManager::instance()->end();
-	m_terrainModel->matGroup(0).getTextureList()[0]->bind();
+	ShaderManager::instance()->begin("TerrainShader");
+	m_terrainModel->matGroup(0).getTextureList()[0]->bind(0);
+	ShaderManager::instance()->setUniform1i("texmap0",0);
+	m_terrainModel->matGroup(0).getTextureList()[1]->bind(1);
+	ShaderManager::instance()->setUniform1i("texmap1",1);
+	m_tformContribTex->bind(2);
+	ShaderManager::instance()->setUniform1i("contribMap",2);
+
+	// FIXME : fetch it from m_terrain
+	const float mapsize = 129.0f;
+	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
+
 	m_terrainModel->matGroup(0).vboDesc().call();
 	CHECK_GL_ERROR();
 }
@@ -97,9 +117,8 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	FILE * fp = fopen(filepath.c_str(),"rb");
 
 	// Read the dimension & light direction
-	// FIXME : see what the fuck happens in TerrainEditor & I get one
-	dimension = fread(&dimension,sizeof(unsigned),1,fp);
-	dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
+	fread(&dimension,sizeof(unsigned),1,fp);
+	//dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
 	ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
 
 	// Set the GL Light 0
@@ -151,7 +170,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	m_terrainModel = new Model(string("Terrain_")+id,m_vbo);
 
 	std::vector<Texture *> texvector;
-	//texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("BarrenTexture")));
+	texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("BarrenTexture")));
 	texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("TerraformTexture")));
 	m_terrainModel->addMatGroup(MaterialGroup(Material(),
 									 texvector,
@@ -159,24 +178,44 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 									 -1));	
 
 	// Get the heights & stuff for Terrain *, at the moment assume the scale is 1 & ymax = 100
-	//float * heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
-	//for(unsigned i=0;i<dataSize;++i)
-	//	heights[i] = vertexData[i].getY();
-	//m_terrain->fillData(heights,
-	//					1.0f,
-	//					100.0f,
-	//					dimension);	
+	m_mapExtents = FromString<Vector3>(parser.getSection("Misc")->getVal("MapExtent"));
+	m_heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
+	for(unsigned i=0;i<dataSize;++i)
+		m_heights[i] = vertexData[i].getY();
+	m_terrainDimension = dimension;
+	
 
 	// Free our data
 	MemMgrRaw::instance()->free(vertexData);
 	MemMgrRaw::instance()->free(texcoordData);
 	MemMgrRaw::instance()->free(indexData);
 
+
+
+	// TERRAFORM STUFF
+
+	if(m_tformContribTex)
+		delete m_tformContribTex;
+	std::vector<MipmapLevel> ml;
+	ml.push_back(MipmapLevel(0,0));
+	m_tformContribTex = new Texture2D(dimension,dimension,GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,
+									  ml,GL_TEXTURE_RECTANGLE_ARB,"Terraform contribution",false,true);
+	m_tformFBO.Bind();
+	m_tformFBO.UnattachAll();
+	m_tformFBO.AttachTexture(m_tformContribTex->getTarget(),m_tformContribTex->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	bool res = m_tformFBO.IsValid();
+	assert(res);
+	FramebufferObject::Disable();
+
 }
 
 void TerrainRenderer :: onEvent(Terrain_Changed& evt)
 {
 	m_terrain = evt.getValue();
+	m_terrain->fillData(m_heights,
+						m_mapExtents.getX(),
+						m_mapExtents.getY(),
+						m_terrainDimension);	
 	// Not allowed to do file loading here!
 	// Keep that restricted to Level_Load please
 	// If not possible at all: tell Joep :)

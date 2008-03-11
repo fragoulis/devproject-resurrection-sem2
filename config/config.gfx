@@ -35,7 +35,8 @@ TextureCube = 3
 
 [Shader]
 ShaderDir = "./shaders/"
-ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">
+ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
+				<"TerrainShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3

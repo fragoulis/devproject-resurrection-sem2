@@ -26,8 +26,8 @@ void ShaderObject :: loadRaw(const std::string& vert, const std::string& frag)
 	string clog = _vert_shader.getCompilerLog();
 	if(clog != "")
 	{
-		cout<<"Vertex Shader Compiler Log  : "<<endl;
-		cout<<clog<<endl;
+		cerr<<"Vertex Shader Compiler Log  : "<<endl;
+		cerr<<clog<<endl;
 	}
 	if(error)	return;
 	error += _frag_shader.compile(frag) ? 0 : 1;
@@ -35,8 +35,8 @@ void ShaderObject :: loadRaw(const std::string& vert, const std::string& frag)
 	clog = _frag_shader.getCompilerLog();
 	if(clog != "")
 	{
-		cout<<"Fragment Shader Compiler Log  : "<<endl;
-		cout<<clog<<endl;
+		cerr<<"Fragment Shader Compiler Log  : "<<endl;
+		cerr<<clog<<endl;
 	}
 	if(error)	return;
 	error += link() ? 0 : 1;
@@ -44,8 +44,8 @@ void ShaderObject :: loadRaw(const std::string& vert, const std::string& frag)
 	string llog = getLinkerLog();
 	if(llog != "")
 	{
-		cout<<"Program Linker Log : "<<endl;
-		cout<<llog<<endl;
+		cerr<<"Program Linker Log : "<<endl;
+		cerr<<llog<<endl;
 	}
 	_all_ok = error ? false : true;
 	CHECK_GL_ERROR();
