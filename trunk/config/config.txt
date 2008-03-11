@@ -43,5 +43,4 @@ FixedMemTree = 10000
 
 [Logger]
 Level = 2
-Stream = stdout
 DisplayFileLine = 0

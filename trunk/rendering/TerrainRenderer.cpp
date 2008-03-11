@@ -62,6 +62,7 @@ void TerrainRenderer :: _clearResources()
 void TerrainRenderer :: render(Graphics& g) const
 {
 	// Do some magic to render the terrain
+	ShaderManager::instance()->end();
 	m_terrainModel->matGroup(0).getTextureList()[0]->bind();
 	m_terrainModel->matGroup(0).vboDesc().call();
 	CHECK_GL_ERROR();

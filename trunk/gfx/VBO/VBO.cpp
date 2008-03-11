@@ -168,6 +168,7 @@ void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmod
 						GL_UNSIGNED_INT,
 						BUFFER_OFFSET(start*sizeof(unsigned)));
 
+	/*
 	for(unsigned i=0;i<total_attribs;++i)
 	{
 		ShaderManager::instance()->vertexAttribute(i)->DisableClientArray();
@@ -176,6 +177,7 @@ void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmod
 		_active = 0;
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER,0);
 	}
+	*/
 
 	CHECK_GL_ERROR();	
 }

@@ -19,6 +19,9 @@
 #include "RenderEngine.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
+
 #include <iostream>
 
 using namespace std;
@@ -66,7 +69,6 @@ void ShipRenderer :: render(Graphics& g) const
 			matg.getVboDesc().call();
 		}
 		glPopMatrix();
-		ShaderManager::instance()->end();
 	}
 }
 
@@ -74,15 +76,15 @@ void ShipRenderer :: onEvent(Player_Spawned& evt)
 {
 	// Get the const render settings of the ship
 	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
-	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)
 {
 	// Get the const render settings of the ship
-	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
-	//_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+	CKLOG(string("Active ships : ") + ToString<unsigned>(unsigned(m_ships.size())),2);
 }
 
 void ShipRenderer :: onEvent(Enemy_Destroyed& evt)
