@@ -17,7 +17,7 @@ ModelDir = "./resources/models/"
 # So, load one for now, and anything else afterwards.
 # Any object should ask the ModelMgr for the filename, without the extension
 
-PersistentModels = <tri_cruiser4.obj>
+#PersistentModels = <tri_cruiser4.obj>
 
 
 
@@ -107,14 +107,14 @@ Texture      = "Flare1_32.sgi"
 ################# ENTITY-MODEL SETTINGS ####################
 
 [EntitySettings : PlayerShip]
-ModelHook = tri_cruiser4.obj
+ModelHook = Stupship_proc.obj
 
 [EntitySettings : EnemyFighter]
-ModelHook = tri_cruiser4.obj
+ModelHook = Stupship_proc.obj
 
 [EntitySettings : EnemyInterceptor]
-ModelHook = tri_cruiser4.obj
+ModelHook = Stupship_proc.obj
 
 [EntitySettings : Ebomb]
-ModelHook = tri_cruiser4.obj
+ModelHook = Stupship_proc.obj
 

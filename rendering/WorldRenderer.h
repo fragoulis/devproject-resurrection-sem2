@@ -13,7 +13,9 @@
 #include "ParticleSystemsRenderer.h"
 #include "ShipRenderer.h"
 #include "../Math/Vector3.h"
+#include "../GameLogic/Objects/Playership.h"
 class Camera;
+class CoordinateFrame;
 
 /**
  * Renders the world!
@@ -22,7 +24,9 @@ class Camera;
 
 
 
-class WorldRenderer : public IRenderer
+class WorldRenderer : public IRenderer,  
+					  public EventListener< Player_Spawned >,
+					  public EventListener< Player_Destroyed >
 {
 public:
 	WorldRenderer();
@@ -36,6 +40,11 @@ public:
 	Camera * getCamera() {return m_camera;}
 	void newCamera(Camera * cam);		// the argument must be new-d before passing
 
+
+	// Events
+	void onEvent(Player_Spawned&);
+	void onEvent(Player_Destroyed&);
+
 private:
 
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
@@ -43,4 +52,7 @@ private:
 	TerrainRenderer m_terrainRenderer;
 	ParticleSystemsRenderer m_psRenderer;
 	ShipRenderer	m_shipRenderer;
+
+	bool			m_playerActive;
+	const CoordinateFrame * m_playerCoordFrame;
 };

@@ -10,6 +10,7 @@
 #pragma once
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
+#include "../gfx/FBO/FramebufferObject.h"
 #include "CoordinateModel.h"
 
 #include <vector>
@@ -18,6 +19,7 @@ class Terrain;
 class Graphics;
 class Model;
 class VBO;
+class Texture;
 
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
@@ -38,12 +40,15 @@ public:
 private:
 	void _clearResources();
 	void _loadResources(const std::string& id,
-		                const std::string& dataFileName,
-						const std::string& textureFileName);
+		                const std::string& gfxlevelfile);
 
 	Terrain* m_terrain;
 	Model     * m_terrainModel;			// The terrain 'model'
 	VBO       * m_vbo;					// The terrain will always have it's own VBO
+
+	// For terraform contribution computation
+	FramebufferObject m_tformFBO;
+	Texture * m_tformContribTex;
 
 	std::vector<CoordinateModel> m_shadowCasters;
 

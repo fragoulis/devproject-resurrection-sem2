@@ -215,6 +215,7 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 		}	
 	}
 	// Make sure that it's an all-or-nothing situation for tex & norms
+	/*
 	for(unsigned i=0;i<objm._groups.size();++i)
 	{
 		if((objm._groups[i]._vnfaces.size() < objm._groups[i]._vfaces.size()) &&
@@ -223,6 +224,18 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 		if(((objm._groups[i]._vtfaces.size() < objm._groups[i]._vfaces.size()) &&
 		   (objm._groups[i]._vtfaces.size() > 0)) || (!(objm._groups[i]._texture)))
 			objm._groups[i]._vtfaces.clear(); 
+	}
+	*/
+
+	// Be even more strict, all or nothing in ALL material groups
+	for(unsigned i=0;i<objm._groups.size();++i)
+	{
+		if((objm._groups[i]._vnfaces.size() < objm._groups[i]._vfaces.size()) &&
+		   (objm._groups[i]._vnfaces.size() > 0))
+			objm._normal.clear();
+		if(((objm._groups[i]._vtfaces.size() < objm._groups[i]._vfaces.size()) &&
+		   (objm._groups[i]._vtfaces.size() > 0)) || (!(objm._groups[i]._texture)))
+			objm._texcoord.clear(); 
 	}
 	if(objm._groups.empty())
 		assert(0);
@@ -234,6 +247,7 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 		attrs.push_back(ShaderManager::instance()->vertexAttribute("Normal"));
 	if(!objm._texcoord.empty())
 		attrs.push_back(ShaderManager::instance()->vertexAttribute("Texcoord"));
+	
 
 
 	// Fetch the VBO that we'll use

@@ -46,6 +46,7 @@ void ShipRenderer :: render(Graphics& g) const
 		it != m_ships.end();
 		++it)
 	{
+		CHECK_GL_ERROR();
 		glPushMatrix();
 		glMultMatrixf(it->coordframe->getMatrix().cfp());
 		const float * m = it->coordframe->getMatrix().cfp();
