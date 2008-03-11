@@ -15,6 +15,8 @@
 #include <vector>
 
 class Graphics;
+struct EntitySettings_t;
+class CoordinateFrame;
 class ShipRenderer : public EventListener< Player_Spawned >,
 					 public EventListener< Enemy_Spawned >,
 					 public EventListener< Enemy_Destroyed >,
@@ -33,6 +35,9 @@ public:
 	void onEvent(Player_Destroyed&);
 
 private:
+
+	void _insertShip(const EntitySettings_t& settings, const CoordinateFrame * cframe);
+	void _deleteShip(const CoordinateFrame * cframe);
 
 	std::vector<CoordinateModel> m_ships;
 };

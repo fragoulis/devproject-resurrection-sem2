@@ -16,6 +16,8 @@
 #include "../gfx/Texture/Texture.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "RenderEngine.h"
+#include "../GameLogic/WorldObjectTypeManager.h"
 
 #include <iostream>
 
@@ -70,27 +72,78 @@ void ShipRenderer :: render(Graphics& g) const
 
 void ShipRenderer :: onEvent(Player_Spawned& evt)
 {
-	// Fetch the playership & place accordingly
-	//FIXME : For now I'll just place everything straight ahead
-
-	CoordinateModel cm(ModelMgr::instance().getModel("tri_cruiser4.obj"),&(evt.getValue()->getCoordinateFrame()));
-	m_ships.push_back(cm);
+	// Get the const render settings of the ship
+	//const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
+	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)
 {
-	1;
-	// Fetch the enemy & place accordingly
-	// It's working fine!
-	// First enemy spawns after 10 seconds
+	// Get the const render settings of the ship
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
 void ShipRenderer :: onEvent(Enemy_Destroyed& evt)
 {
 	// Fetch the enemy & remove
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_deleteShip(cf);
 }
 
-void ShipRenderer :: onEvent(Player_Destroyed&)
+void ShipRenderer :: onEvent(Player_Destroyed& evt)
 {
-	// Fetch the player & remove
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue1()->getCoordinateFrame());
+	_deleteShip(cf);
+}
+
+void ShipRenderer :: _insertShip(const EntitySettings_t& settings, const CoordinateFrame * cframe)
+{
+	Model * model = ModelMgr::instance().getModel(settings.modelName);
+	const VBO * vbo = model->getVBO();
+	const int shaderIndex =settings.shaderIndex;
+
+	// sort & place appropriately the model
+	// sort order = VBO -> Shader -> Texture
+
+	int foundpos = -1;
+	for(unsigned j=0;j<m_ships.size();++j)
+	{
+		// check if we've found the same VBO
+		if(vbo == m_ships[j].model->getVBO())
+		{
+			// now iterate through all of the ships with the same vbo, 
+			// to find the same shader ( actually if the object has textures or not)
+			unsigned k = j;
+			for(; (vbo == m_ships[k].model->getVBO()) && (k < m_ships.size()); ++k)
+			{
+				int si = m_ships[k].model->getMatGroup()[0].getShaderIndex();
+				if(si == shaderIndex)
+					break;
+			}
+			foundpos = k;
+		}
+		if(foundpos != -1)
+			break;
+	}
+	if(foundpos == -1)
+		foundpos = int(m_ships.size());
+	m_ships.insert(m_ships.begin() + foundpos,CoordinateModel(model,cframe));
+}
+
+void ShipRenderer :: _deleteShip(const CoordinateFrame * cframe)
+{
+	for(std::vector<CoordinateModel>::iterator it = m_ships.begin();
+		it != m_ships.end();
+		++it)
+	{
+		if(it->coordframe == cframe)
+		{
+			m_ships.erase(it);
+			return;
+		}
+	}
+	assert(0);
 }

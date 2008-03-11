@@ -45,14 +45,15 @@ RenderEngine :: ~RenderEngine()
 void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 {
 	// TODO: remove m_confParser entirely and read global data now, from ps
-	m_confParser = new ConfParser("./config/config.ini");
+	m_confParser = new ConfParser("./config/config.gfx");
 
 	TextureMgr::init(m_confParser->getSection("Texture"));
 	ShaderManager::init(m_confParser->getSection("Shader"));
 	VBOMgr::safeInstance().init(m_confParser->getSection("VBOSettings"));
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
-
 	PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
+
+	m_settings.init(m_confParser->getSection("EntitySettings"));
 }
 
 void RenderEngine :: onApplicationUnload()
