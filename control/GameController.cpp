@@ -43,6 +43,10 @@ void GameController :: deactivate()
 	// deactivate controls, but leaves renderers alone
 }
 
+inline Point3 getMouseMapPosition() {
+	return RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition());
+}
+
 void GameController :: update(float dt)
 {
 	GameLogic& gl = GameLogic::instance();
@@ -67,18 +71,17 @@ void GameController :: update(float dt)
 	gl.setPlayerDirection(direction);
 
 
-	//if (input.isMouseButtonDown(0) || input.isMouseButtonGoingDown(0)) _fireLaser(PLAYER_POSITIVE);
-	//if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) _fireLaser(PLAYER_NEGATIVE);
+	if (input.isMouseButtonDown(0) || input.isMouseButtonGoingDown(0)) {
+		gl.firePositiveLaser(getMouseMapPosition());
+	}
+		
+	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {
+		gl.fireNegativeLaser(getMouseMapPosition());
+	}
 
 
 	AIEngine::instance().update(dt);
 	PhysicsEngine::instance().update(dt);
 	gl.update(dt);
 	RenderEngine::instance().update(dt);
-}
-
-void GameController :: _fireLaser(int type)
-{
-	Point3 mapPosition = RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition());
-	GameLogic::instance().fireLaser(mapPosition, type);
 }

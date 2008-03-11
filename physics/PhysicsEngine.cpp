@@ -16,6 +16,8 @@
 #include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
 #include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
 #include "../math/maths.h"
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
 #include <iostream>
 using namespace std;
 
@@ -34,7 +36,9 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
+	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -49,13 +53,27 @@ void PhysicsEngine :: onEvent( Terrain_Changed& evt )
 
 void PhysicsEngine :: onEvent( Player_Spawned& evt )
 {
+	m_playerships.push_back(evt.getValue());
 	m_spaceships.push_back(evt.getValue());
 }
 
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
-	//m_spaceships.push_back(evt.getValue());
+	m_enemyships.push_back(evt.getValue());
+	m_spaceships.push_back(evt.getValue());
 }
+
+void PhysicsEngine :: onEvent( Player_Despawned& evt )
+{
+	m_playerships.remove(evt.getValue());
+	m_spaceships.remove(evt.getValue());
+}
+void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
+{
+	m_enemyships.remove(evt.getValue());
+	m_spaceships.remove(evt.getValue());
+}
+
 
 
 
@@ -180,6 +198,7 @@ void PhysicsEngine :: checkCircleCollisions(std::list<T1*>& list1, std::list<T2*
 				Vector3 normal = pos1 - pos2;
 				normal.normalize();
 				Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
+				CKLOG(std::string("Collision between ") + ToString<T1*>(t1) + " and " + ToString<T2*>(t2), 3);
 				EventManager::instance().fireEvent(Collision<T1, T2>(t1, t2, colpos, normal));
 			}
 		}

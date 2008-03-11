@@ -35,7 +35,4 @@ public:
 	virtual void deactivate();
 	virtual void update(float dt);
 
-private:
-
-	void _fireLaser(int type);
 };

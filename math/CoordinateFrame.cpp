@@ -15,12 +15,6 @@ CoordinateFrame::CoordinateFrame()
 	m_rotation.clear();
 	m_matrix.loadIdentity();
 }
-CoordinateFrame::CoordinateFrame(const Point3& p, const Rotation& r)
-{
-	m_origin = p;
-	m_rotation = r;
-	_updateMatrix();
-}
 
 CoordinateFrame::~CoordinateFrame()
 {
