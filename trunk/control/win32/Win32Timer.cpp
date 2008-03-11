@@ -32,7 +32,10 @@
 //	frequency = float(f.QuadPart);
 //}
 
-
+double GetTime()
+{
+	return double(timeGetTime()) / 1000.0;
+}
 
 
 Win32Timer::Win32Timer()
@@ -49,24 +52,21 @@ Win32Timer::~Win32Timer()
 
 double Win32Timer::getCurrentTime()
 {
-	return (timeGetTime() - m_starttime) / 1000;
+	return GetTime() - m_starttime;
 	//return GetSystemTimestamp() - m_starttime;
 }
 
 double Win32Timer::getDeltatime()
 {
-	//double time = getCurrentTime();
-	//double deltatime = time - m_lasttime;
-	//m_lasttime = timeGetTime();
-	DWORD time = timeGetTime() - m_starttime;
-	DWORD deltatime = time - m_lasttime;
+	double time = getCurrentTime();
+	double deltatime = time - m_lasttime;
 	m_lasttime = time;
-	return double(deltatime) / double(1000);
+	return deltatime;
 }
 
 void Win32Timer::reset()
 {
-	m_lasttime = m_starttime = timeGetTime();
+	m_lasttime = m_starttime = GetTime();
 	//m_lasttime = m_starttime = GetSystemTimestamp();
 }
 
