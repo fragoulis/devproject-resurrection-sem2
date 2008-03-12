@@ -10,6 +10,7 @@
 #pragma once
 #include "IRenderer.h"
 #include "TerrainRenderer.h"
+#include "SpawnPointRenderer.h"
 #include "ParticleSystemsRenderer.h"
 #include "LaserRenderer.h"
 #include "ShipRenderer.h"
@@ -62,6 +63,7 @@ private:
 	ParticleSystemsRenderer m_psRenderer;
 	ShipRenderer	m_shipRenderer;
 	LaserRenderer   m_laserRenderer;
+	SpawnPointRenderer m_spawnPointRenderer;
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;

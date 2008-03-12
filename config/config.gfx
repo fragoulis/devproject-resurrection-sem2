@@ -36,7 +36,7 @@ TextureCube = 3
 [Shader]
 ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
-				<"TerrainShader.sh">
+				<"TerrainShader.sh">, <"SpawnPointShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -118,4 +118,9 @@ ModelHook = Stupship_proc.obj
 
 [EntitySettings : Ebomb]
 ModelHook = Stupship_proc.obj
+
+[EntitySettings : Misc]
+SpawnPointInterval = 1.0
+SpawnPointSize = 200
+SpawnPointTexture = stars.dds
 
