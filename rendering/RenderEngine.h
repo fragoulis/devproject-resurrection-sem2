@@ -13,6 +13,8 @@
 #include "ConstRenderSettings.h"
 #include <vector>
 #include <algorithm>
+#include "../math/Vector3.h"
+#include "../math/Vector2.h"
 class Graphics;
 class IRenderer;
 class ConfParser;
@@ -56,6 +58,12 @@ public:
 
 	// get entity settings
 	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
+
+	// Convenience functions
+	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
+								 const Vector2& tex_ll, const Vector2& extents);
+
+	static void drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up);
 
 
 private:

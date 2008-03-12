@@ -23,6 +23,8 @@
 #include "../gfx/VBO/VBOMgr.h"
 #include "../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ParticleSystem/PS_Manager.h"
+#include "../GameLogic/GameLogic.h"
+#include <gl/glu.h>
 
 using namespace std;
 
@@ -164,6 +166,55 @@ void RenderEngine :: getViewport(int vp[4]) const
 
 Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
 {
-	return Point3(100.0f, 0.0f, 0.0f);
-	//return p;
+	// get world renderer
+	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(findRenderer("world"));
+	// get it's modelview & proj matrices
+	const double * mv = wr->getModelViewMatrixd();
+	const double * proj = wr->getProjectionMatrixd();
+	
+	// UnProject - get the ray
+	double ray1x,ray1y,ray1z,
+		   ray2x,ray2y,ray2z;
+	gluUnProject(p.getX(),m_viewport[3] - p.getY(),0.0,mv,proj,m_viewport,&ray1x,&ray1y,&ray1z);
+	gluUnProject(p.getX(),m_viewport[3] - p.getY(),1.0,mv,proj,m_viewport,&ray2x,&ray2y,&ray2z);
+
+	const Vector3 ray(float(ray2x - ray1x),float(ray2y - ray1y),float(ray2z - ray1z));
+	
+
+	const float planeheight = GameLogic::instance().getGamePlaneHeight();
+	const float pcent = float((planeheight - ray1y) / (ray2y - ray1y));
+	const Vector3 pos = ray*pcent + Vector3(float(ray1x),float(ray1y),float(ray1z));
+
+	return Point3(pos.getX(),pos.getY(),pos.getZ());
+}
+
+void RenderEngine :: drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
+											 const Vector2& tex_ll, const Vector2& extents)
+{
+	const Vector3 lr(ll + right);
+	const Vector3 ul(ll + up);
+	const Vector3 ur(ul + right);
+	glBegin(GL_QUADS);
+		glTexCoord2fv(tex_ll.cfp());
+		glVertex3fv(ll.cfp());
+		glTexCoord2f(tex_ll.getX() + extents.getX(),tex_ll.getY());
+		glVertex3fv(lr.cfp());
+		glTexCoord2f(tex_ll.getX() + extents.getX(),tex_ll.getY() + extents.getY());
+		glVertex3fv(ur.cfp());
+		glTexCoord2f(tex_ll.getX(),tex_ll.getY() + extents.getY());
+		glVertex3fv(ul.cfp());
+	glEnd();
+}
+
+void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up)
+{
+	const Vector3 lr(ll + right);
+	const Vector3 ul(ll + up);
+	const Vector3 ur(ul + right);
+	glBegin(GL_QUADS);
+		glVertex3fv(ll.cfp());
+		glVertex3fv(lr.cfp());
+		glVertex3fv(ur.cfp());
+		glVertex3fv(ul.cfp());
+	glEnd();
 }

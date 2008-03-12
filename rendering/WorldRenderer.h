@@ -41,11 +41,19 @@ public:
 	void newCamera(Camera * cam);		// the argument must be new-d before passing
 
 
+	// stored Matrices & stuff
+	const double * getModelViewMatrixd() const {return m_mviewd;}
+	const double * getProjectionMatrixd() const {return m_projd;}
+	const float * getModelViewMatrixf() const {return m_mviewf;}
+	const float * getProjectionMatrixf() const {return m_projf;}
+
 	// Events
 	void onEvent(Player_Spawned&);
 	void onEvent(Player_Destroyed&);
 
 private:
+
+	void _updateMatrices();					// updates modelview & projection, based on cam, also updates win depth
 
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
 	Camera		  * m_camera;				// The world renderer has our main camera
@@ -55,4 +63,10 @@ private:
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;
+
+	// Matrices 
+	double m_projd[16];
+	double m_mviewd[16];
+	float m_projf[16];
+	float m_mviewf[16];
 };
