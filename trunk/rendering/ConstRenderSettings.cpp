@@ -3,6 +3,7 @@
 #include "../gfx/Model/Model.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfx/Model/ModelMgr.h"
+#include "../gfx/Texture/TextureIO.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include <assert.h>
 
@@ -11,6 +12,11 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 	std::vector<const ParserSection *> entities = parsec->getChildren();
 	for(size_t i=0;i<entities.size();++i)
 	{
+		if(entities[i]->getName() == "Misc")
+		{
+			_parseMiscEntities(entities[i]);
+			continue;
+		}
 		EntitySettings_t es;
 		es.entityName = entities[i]->getName();
 		es.modelName = entities[i]->getVal("ModelHook");
@@ -34,10 +40,6 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 	}
 }
 
-
-#pragma warning ( push )
-#pragma warning ( disable : 4715 )
-
 const EntitySettings_t& ConstRenderSettings :: getEntitySettings(const int type) const
 {
 	for(std::vector<EntitySettings_t>::const_iterator it = m_entities.begin();
@@ -48,6 +50,13 @@ const EntitySettings_t& ConstRenderSettings :: getEntitySettings(const int type)
 			return (*it);
 	}
 	assert(0);
+	return (*m_entities.begin());	// shut up compiler!
 }
 
-#pragma warning( pop )
+void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
+{
+	// read spawn point info
+	m_spawnpointInterval = FromString<float>(parsec->getVal("SpawnPointInterval"));
+	m_spawnpointSize = FromString<float>(parsec->getVal("SpawnPointSize"));
+	m_spawnpointTexture = TextureIO::instance()->getTexture(parsec->getVal("SpawnPointTexture"));
+}
