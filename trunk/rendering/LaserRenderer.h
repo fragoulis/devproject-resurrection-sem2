@@ -22,5 +22,8 @@ public:
 
 private:
 
+	int m_laserTypePos,
+		m_laserTypeNeg;
+
 	std::vector<Laser *> m_lasers;
 };

@@ -2,6 +2,7 @@
 #include "RenderEngine.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../math/Vector3.h"
+#include "../GameLogic/WorldObjectTypeManager.h"
 
 using namespace std;
 
@@ -9,6 +10,9 @@ LaserRenderer :: LaserRenderer()
 {
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
+
+	m_laserTypePos = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
+	m_laserTypeNeg = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
 }
 
 void LaserRenderer :: render(Graphics& g) const
@@ -25,10 +29,11 @@ void LaserRenderer :: render(Graphics& g) const
 
 		const float w = laser->getWidth();
 		Vector3 right = Vector3::cross(laser->getDirection(),Vector3(0.0f,1.0f,0.0f));
-		//right.normalize(); doesnt need to
 		right *= w;
 		const Point3 ll(laser->getBackPoint() - right*0.5f);
 		const Vector3 up(laser->getFrontPoint() - laser->getBackPoint());
+
+		// We can use the (*it)->getType() here to determine the color that we'll use for the laser
 
 		// for now draw a quad
 		RenderEngine::drawQuad(ll.getVector(),right,up);
