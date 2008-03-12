@@ -65,7 +65,7 @@ static void _parseMTL(OBJModel& objm, const std::string& fname)
 			lstr>>shine;
 			objm._groups[objm._groups.size() - 1]._material.SetShininess(shine);
 		}
-		else if(token == "Map_Ka")
+		else if((token == "Map_Ka") || (token == "Map_Kd") || (token == "map_Ka") || (token == "map_Kd"))
 		{
 			lstr>>token;
 			objm._groups[objm._groups.size() - 1]._texture = TextureIO::instance()->getTexture(token);

@@ -44,8 +44,8 @@ Texture2D :: Texture2D(const unsigned w,const unsigned h,const unsigned ifmt,
 		{
 			const unsigned char * tmp_data = texdata[miplevel].data;
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
-			unsigned tmp_w = unsigned(_width * adjust),
-					 tmp_h = unsigned(_height * adjust);
+			unsigned tmp_w = max(unsigned(_width * adjust),1),
+					 tmp_h = max(unsigned(_height * adjust),1);
 			glCompressedTexImage2D(_target,miplevel,_internalFormat,tmp_w,tmp_h,0,texdata[miplevel].size,tmp_data);
 			++miplevel;
 		}
@@ -62,8 +62,8 @@ Texture2D :: Texture2D(const unsigned w,const unsigned h,const unsigned ifmt,
 		{
 			const unsigned char * tmp_data = texdata[miplevel].data;
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
-			unsigned tmp_w = unsigned(_width * adjust),
-					 tmp_h = unsigned(_height * adjust);
+			unsigned tmp_w =  max(unsigned(_width * adjust),1),
+					 tmp_h =  max(unsigned(_height * adjust),1);
 			glTexImage2D(_target,miplevel,_internalFormat,tmp_w,tmp_h,0,_pixelFormat,_datatype,tmp_data);
 			++miplevel;
 		}
