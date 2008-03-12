@@ -11,6 +11,7 @@
 #include "IRenderer.h"
 #include "TerrainRenderer.h"
 #include "ParticleSystemsRenderer.h"
+#include "LaserRenderer.h"
 #include "ShipRenderer.h"
 #include "../Math/Vector3.h"
 #include "../GameLogic/Objects/Playership.h"
@@ -60,6 +61,7 @@ private:
 	TerrainRenderer m_terrainRenderer;
 	ParticleSystemsRenderer m_psRenderer;
 	ShipRenderer	m_shipRenderer;
+	LaserRenderer   m_laserRenderer;
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;
