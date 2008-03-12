@@ -50,6 +50,9 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 {
 	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
 
+	const ParserSection* psGame = ps.getSection("main");
+	m_gamePlaneHeight = FromString<float>(psGame->getVal("GamePlaneHeight"));
+
 	const ParserSection* psPlayer = ps.getSection("Playership");
 	m_playershipPrototype = new Playership();
 	m_playershipPrototype->loadSettings(*psPlayer);
