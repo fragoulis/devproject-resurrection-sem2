@@ -48,6 +48,7 @@ void WorldRenderer :: update( float dt )
 							  Vector3(0.0f,0.0f,-1.0f));
 	}
 	m_camera->update(dt);
+	_updateMatrices();
 	m_psRenderer.update(dt);
 	//m_shipRenderer.update(dt);
 }
@@ -68,4 +69,16 @@ void WorldRenderer :: onEvent(Player_Spawned& evt)
 void WorldRenderer :: onEvent(Player_Destroyed&)
 {
 	m_playerActive = false;
+}
+
+
+void WorldRenderer :: _updateMatrices()
+{
+	glGetFloatv(GL_MODELVIEW_MATRIX,m_mviewf);
+	glGetFloatv(GL_PROJECTION_MATRIX,m_projf);
+	for(int i=0;i<16;++i)
+	{
+		m_mviewd[i] = double(m_mviewf[i]);
+		m_projd[i] = double(m_projf[i]);
+	}
 }
