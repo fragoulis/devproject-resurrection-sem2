@@ -53,8 +53,6 @@ void TerrainRenderer :: _clearResources()
 		TextureIO::instance()->deleteTexture(texname);
 		delete m_terrainModel;
 		m_terrainModel = 0;
-		if(m_tformContribTex)
-			delete m_tformContribTex;
 	}
 	if(m_vbo)
 	{
@@ -66,6 +64,8 @@ void TerrainRenderer :: _clearResources()
 		MemMgrRaw::instance()->free(m_heights);
 		m_heights = 0;
 	}
+	if(m_tformContribTex)
+		delete m_tformContribTex;
 }
 
 
@@ -85,7 +85,22 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
 
 	m_terrainModel->matGroup(0).vboDesc().call();
+	TextureMgr::instance()->setTextureUnit(2);
+	TextureMgr::instance()->setBoundTexture(0,2);
+	TextureMgr::instance()->setTextureUnit(1);
+	TextureMgr::instance()->setBoundTexture(0,1);
+
 	CHECK_GL_ERROR();
+
+	// Draw the lake
+	// FIXME : do it appropriately
+	
+	ShaderManager::instance()->end();
+	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
+	Vector3 right(m_mapExtents.getX(),0,0);
+	Vector3 up(0,0,-m_mapExtents.getX());
+	m_lakeTexture->bind();
+	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(10,10));
 }
 
 
@@ -143,14 +158,6 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	fread(texcoordData,sizeof(Vector2),dataSize,fp);
 	fread(indexData,sizeof(unsigned),indexSize,fp);
 
-	// Check index integrity (we want all in range of 0-indexSize)
-	/*
-	unsigned max=0;
-	for(unsigned i=0;i<indexSize;++i)
-		max = MAX(indexData[i],max);
-	assert(max < dataSize);
-	*/
-
 	std::vector<void *> attribData;
 	attribData.push_back((void *)vertexData);
 	attribData.push_back((void *)texcoordData);
@@ -206,6 +213,11 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	bool res = m_tformFBO.IsValid();
 	assert(res);
 	FramebufferObject::Disable();
+
+
+	// LAKE STUFF
+	
+	m_lakeTexture = TextureIO::instance()->getTexture("LakeTexture.dds");
 
 }
 
