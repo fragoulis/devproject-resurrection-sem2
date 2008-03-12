@@ -11,6 +11,7 @@
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
 #include "../gfx/FBO/FramebufferObject.h"
+#include "../gfx/Material.h"
 #include "CoordinateModel.h"
 #include "../math/Vector3.h"
 
@@ -57,7 +58,35 @@ private:
 	// For the lake
 	Texture * m_lakeTexture;
 
+	// For the shadow casters
 	std::vector<CoordinateModel> m_shadowCasters;
 
-	// Put any extra data that is needed goes here
+	// For the trees
+	/*
+		while barren activated = false
+		while terraforming, activated = true, the positions will adjust a bit
+		after terraforming, just draw
+	*/
+	struct TreeInfo_t
+	{
+		Vector3 position;
+		bool	isActivated;
+		bool    isTerraforming;
+		float   terraformElapsed;
+		
+		TreeInfo_t(const Vector3& pos)
+			:position(pos),isActivated(false),isTerraforming(false),terraformElapsed(0.0f){}
+	};
+
+	struct ForestInfo_t
+	{
+		std::vector<TreeInfo_t> trees;
+		const Model * modelGeom;
+		const Model * modelTex;
+		ForestInfo_t(const Model * mg, const Model * mt)
+			:modelGeom(mg),modelTex(mt){}
+	};
+
+	Material m_treeMaterial;		// 0.0 - 1.0 ambient, 1.0 diffuse, 0 specular?
+	std::vector<ForestInfo_t>	m_trees;
 };
