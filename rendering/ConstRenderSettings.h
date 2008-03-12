@@ -12,6 +12,7 @@ struct EntitySettings_t
 
 class ParserSection;
 class Texture;
+class Model;
 class ConstRenderSettings
 {
 	std::vector<EntitySettings_t> m_entities;
@@ -20,6 +21,8 @@ class ConstRenderSettings
 	float m_spawnpointSize;
 	Texture * m_spawnpointTexture;
 	// other misc stuff
+	float m_treeGrowthInterval;
+	float m_treeBuriedHeight;
 
 
 	void _parseMiscEntities(const ParserSection * parsec);

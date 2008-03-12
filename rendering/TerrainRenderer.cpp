@@ -157,6 +157,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	fread(vertexData,sizeof(Vector4),dataSize,fp);
 	fread(texcoordData,sizeof(Vector2),dataSize,fp);
 	fread(indexData,sizeof(unsigned),indexSize,fp);
+	fclose(fp);
 
 	std::vector<void *> attribData;
 	attribData.push_back((void *)vertexData);
@@ -218,6 +219,29 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	// LAKE STUFF
 	
 	m_lakeTexture = TextureIO::instance()->getTexture("LakeTexture.dds");
+
+	// TREE STUFF
+	const string treefile = string("config/levels/") + parser.getSection("Misc")->getVal("TreePositions");
+	const vector<string> treeModelNames = parser.getSection("Misc")->getValVector("TreeModels");
+	fp = fopen(treefile.c_str(),"rb");
+	unsigned treenum;
+	fread(&treenum,sizeof(unsigned),1,fp);
+	Vector4 * treepos = MemMgrRaw::instance()->allocate<Vector4>(treenum);
+	fread(treepos,sizeof(Vector4),treenum,fp);
+	fclose(fp);
+	for(size_t i=0;i<treeModelNames.size();++i)
+	{
+		Model * m1 = ModelMgr::instance().getModel(treeModelNames[i] + string("_geom.obj"));
+		Model * m2 = ModelMgr::instance().getModel(treeModelNames[i] + string("_tex.obj"));
+		m_trees.push_back(ForestInfo_t(m1,m2));
+	}
+	for(unsigned i=0;i<treenum;++i)
+	{
+		const unsigned random_i = rand() % unsigned(m_trees.size());
+		m_trees[random_i].trees.push_back(TreeInfo_t(Vector3(treepos[i].cfp())));
+	}
+	MemMgrRaw::instance()->free(treepos);
+
 
 }
 

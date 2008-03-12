@@ -230,6 +230,12 @@ Model * ModelMgr :: _loadOBJ(const std::string& fname,const unsigned usage_hint)
 	// Be even more strict, all or nothing in ALL material groups
 	for(unsigned i=0;i<objm._groups.size();++i)
 	{
+		if(objm._groups[i]._vfaces.empty())
+		{
+			objm._groups.erase(objm._groups.begin() + i);
+			--i;
+			continue;
+		}
 		if((objm._groups[i]._vnfaces.size() < objm._groups[i]._vfaces.size()) &&
 		   (objm._groups[i]._vnfaces.size() > 0))
 			objm._normal.clear();
