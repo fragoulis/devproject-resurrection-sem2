@@ -101,6 +101,65 @@ void TerrainRenderer :: render(Graphics& g) const
 	Vector3 up(0,0,-m_mapExtents.getX());
 	m_lakeTexture->bind();
 	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(10,10));
+
+
+	// Draw the trees
+	// FIXME : do it appropriately
+
+	// set tha material
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+	m_treeMaterial.Apply();
+
+	// For each tree type
+	for(std::vector<ForestInfo_t>::const_iterator it = m_trees.begin();
+		it!= m_trees.end();
+		++it)
+	{
+		// for it's instance
+		for(std::vector<TreeInfo_t>::const_iterator it2 = it->trees.begin();
+			it2 != it->trees.end();
+			++it2)
+		{
+			glPushMatrix();
+			glTranslatef(it2->position.getX(),it2->position.getY(),it2->position.getZ());
+			for(std::vector<MaterialGroup>::const_iterator matit = it->modelGeom->getMatGroup().begin();
+				matit != it->modelGeom->getMatGroup().end();
+				++matit)
+			{
+				matit->getTextureList()[0]->bind();
+				matit->getVboDesc().call();
+			}
+			glPopMatrix();
+		}
+	}
+
+	// Enable Alpha Test & draw textures
+	glAlphaFunc(GL_GREATER,0.5);
+	glEnable(GL_ALPHA_TEST);
+	for(std::vector<ForestInfo_t>::const_iterator it = m_trees.begin();
+		it!= m_trees.end();
+		++it)
+	{
+		// for it's instance
+		for(std::vector<TreeInfo_t>::const_iterator it2 = it->trees.begin();
+			it2 != it->trees.end();
+			++it2)
+		{
+			glPushMatrix();
+			glTranslatef(it2->position.getX(),it2->position.getY(),it2->position.getZ());
+			for(std::vector<MaterialGroup>::const_iterator matit = it->modelTex->getMatGroup().begin();
+				matit != it->modelTex->getMatGroup().end();
+				++matit)
+			{
+				matit->getTextureList()[0]->bind();
+				matit->getVboDesc().call();
+			}
+			glPopMatrix();
+		}
+	}
+	glDisable(GL_ALPHA_TEST);
+	glDisable(GL_LIGHTING);
 }
 
 

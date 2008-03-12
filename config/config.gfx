@@ -27,7 +27,7 @@ ModelDir = "./resources/models/"
 DefaultDir = "./resources/textures/"
 
 [Texture : MemDistribution]
-Texture2D = 10
+Texture2D = 30
 Texture3D = 1
 TextureCube = 3
 

@@ -8,14 +8,14 @@ Ka 0.600000 0.600000 0.600000
 Kd 0.600000 0.600000 0.600000
 Ks 0.200000 0.200000 0.200000
 Ns 1
-map_Kd images\palm_bark301.dds
+map_Kd palm_bark301.dds
 
 newmtl material1
 Ka 0.300000 0.400000 0.200000
 Kd 0.300000 0.400000 0.200000
 Ks 0.200000 0.200000 0.200000
 Ns 1
-map_Kd images\preleaf_tex.dds
+map_Kd preleaf_tex.dds
 
 newmtl material2
 Ka 0.400000 0.500000 0.200000
