@@ -71,11 +71,11 @@ void GameController :: update(float dt)
 	gl.setPlayerDirection(direction);
 
 
-	if (input.isMouseButtonDown(0) || input.isMouseButtonGoingDown(0)) {
+	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {
 		gl.firePositiveLaser(getMouseMapPosition());
 	}
 		
-	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {
+	if (input.isMouseButtonDown(2) || input.isMouseButtonGoingDown(2)) {
 		gl.fireNegativeLaser(getMouseMapPosition());
 	}
 

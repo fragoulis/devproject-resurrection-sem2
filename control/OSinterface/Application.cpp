@@ -28,6 +28,7 @@
 using namespace std;
 
 const float DELTA_TIME_MAX = 0.1f;
+const float DELTA_TIME_MIN = 0.01f;
 
 Application :: Application()
 {
@@ -108,6 +109,7 @@ void Application :: render(Graphics& g) const
 void Application :: update(float dt)
 {
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
+	if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN;
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
 }

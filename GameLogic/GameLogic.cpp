@@ -164,6 +164,7 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		laser->start(startingPosition, direction);
 		m_lasers.push_back(laser);
 		m_playerLaserCooldownLeft = m_playerLaserCooldownTime;
+		EventManager::instance().fireEvent(Laser_Spawned(laser));
 	}
 }
 
