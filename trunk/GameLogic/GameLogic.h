@@ -34,7 +34,6 @@ class Laser;
  *
  * Also has methods to load/unload a level.
  */
-
 class GameLogic :
 	public Singleton< GameLogic >,
 	public EventListener< Collision_Player_Enemy >
@@ -52,11 +51,14 @@ public:
 	void setPlayerThrusterPower(float f);
 	void firePositiveLaser(const Point3& targetPosition);
 	void fireNegativeLaser(const Point3& targetPosition);
+	float getGamePlaneHeight() const { return m_gamePlaneHeight; }
 	void update(float dt);
 
 	void onEvent(Collision_Player_Enemy&);
 
 private:
+
+	float m_gamePlaneHeight; // Y coord of all gameplay things like laser, player, enemy
 
 	typedef std::list<Enemyship*> EnemyshipList;
 	typedef std::list<Spawnpoint*> SpawnpointList;
