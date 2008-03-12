@@ -54,6 +54,9 @@ private:
 	FramebufferObject m_tformFBO;
 	Texture * m_tformContribTex;
 
+	// For the lake
+	Texture * m_lakeTexture;
+
 	std::vector<CoordinateModel> m_shadowCasters;
 
 	// Put any extra data that is needed goes here
