@@ -93,7 +93,7 @@ void  PS_Explosion :: _generateData(VBO * vbo,Texture * tex)
 		Vector3 vel;
 		RandomGenerator::GET_RANDOM_VECTOR3(vel,Vector3(-1,-1,-1),Vector3(1,1,1));
 		vel.normalize();
-		vel.multiply(10.0f/* + RandomGenerator::GET_RANDOM_FLOAT(1.0f,2.5f)*/);
+		vel.multiply(5.0f/* + RandomGenerator::GET_RANDOM_FLOAT(1.0f,2.5f)*/);
 		velocities[i] = velocities[i+1] = velocities[i+2] = velocities[i+3] = Vector4(vel.getX(),
 																					  vel.getY(),
 																					  vel.getZ(),
