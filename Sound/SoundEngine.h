@@ -19,7 +19,7 @@ class ParserSection;
 class SoundEngine :
 	public Singleton< SoundEngine >,
 	public EventListener< Player_Destroyed >,
-	public EventListener< Player_Drained >,
+	public EventListener< Player_EnergyDrained >,
 	public EventListener< Level_Load >
 {
 public:
@@ -29,7 +29,7 @@ public:
 
 	void onEvent(Level_Load&);
 	void onEvent(Player_Destroyed&);
-	void onEvent(Player_Drained&);
+	void onEvent(Player_EnergyDrained&);
 
 private:
 

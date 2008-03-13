@@ -36,7 +36,8 @@ class Laser;
  */
 class GameLogic :
 	public Singleton< GameLogic >,
-	public EventListener< Collision_Player_Enemy >
+	public EventListener< Collision_Player_Enemy >,
+	public EventListener< Collision_Enemy_Laser >
 {
 public:
 
@@ -55,6 +56,7 @@ public:
 	void update(float dt);
 
 	void onEvent(Collision_Player_Enemy&);
+	void onEvent(Collision_Enemy_Laser&);
 
 private:
 

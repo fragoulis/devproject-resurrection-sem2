@@ -61,6 +61,8 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 	if (!Application.init()) return false;
 
+	timer.reset();
+
 	while (inLoop)
 	{
 		//see if there are any windows messages, and if so process and

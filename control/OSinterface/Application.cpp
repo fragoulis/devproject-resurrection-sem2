@@ -109,7 +109,7 @@ void Application :: render(Graphics& g) const
 void Application :: update(float dt)
 {
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
-	//if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN;		<--- BAD!! 
+	//if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN; // <--- BAD!! Just a quick bugfix
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
 }
