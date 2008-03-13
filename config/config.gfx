@@ -27,6 +27,7 @@ ModelDir = "./resources/models/"
 DefaultDir = "./resources/textures/"
 
 [Texture : MemDistribution]
+Texture1D = 10
 Texture2D = 30
 Texture3D = 1
 TextureCube = 3
@@ -36,7 +37,7 @@ TextureCube = 3
 [Shader]
 ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
-				<"TerrainShader.sh">, <"SpawnPointShader.sh">
+				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -103,6 +104,15 @@ ParticleSize = 3
 ParticleNum  = 2000
 Shader       = "PS_Explosion"
 Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_ColouredExplosion]
+Variations   = 1
+SystemLife   = 3
+ParticleLife = 3
+ParticleSize = 2
+ParticleNum  = 2000
+Shader       = "PS_ColouredExplosion"
+Texture      = "flame.bmp" 
 
 
 ################# ENTITY-MODEL SETTINGS ####################
