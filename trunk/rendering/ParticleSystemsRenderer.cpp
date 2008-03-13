@@ -16,11 +16,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 	EventManager::instance().registerEventListener(this);
 
-	// FIXME : Adding the hacky way the dummy ps
-	_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-	CoordinateFrame cf;
-	cf.move(Vector3(64,150,-64));
-	_psList[0]->setTransform(cf);
+	
 }
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
@@ -60,5 +56,26 @@ void ParticleSystemsRenderer :: update( float dt )
 }
 
 void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
- float a=0;
+	// FIXME : Adding the hacky way the dummy ps
+	int keyPressed = key.getValue();
+
+	CoordinateFrame cf;
+
+	switch (keyPressed) {
+		case 'Q':
+			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+			cf.move(Vector3(64,1400,-64));
+			_psList.back()->setTransform(cf);
+			break;
+		case 'E':
+			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnergyLoss"));
+			cf.move(Vector3(64,1400,-64));
+			_psList.back()->setTransform(cf);
+			break;
+		case 'R':
+			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+			cf.move(Vector3(64,1400,-64));
+			_psList.back()->setTransform(cf);
+			break;
+	}
 }
