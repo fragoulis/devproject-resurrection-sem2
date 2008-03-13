@@ -55,6 +55,7 @@ void TextureMgr :: init(const ParserSection * parsec)
 		TextureIO::init(parsec);
 		// Memory allocation
 
+		MemMgrAny<Texture1D>::init("Texture1D",parsec);
 		MemMgrAny<Texture2D>::init("Texture2D",parsec);
 		MemMgrAny<Texture3D>::init("Texture3D",parsec);
 		MemMgrAny<TextureCube>::init("TextureCube",parsec);
