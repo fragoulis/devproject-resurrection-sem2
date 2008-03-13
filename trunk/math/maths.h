@@ -42,6 +42,10 @@ namespace Math
 	inline bool double_is_bigger_or_equal(double a, double b) {
 		return a > b || doubles_are_equal(a, b);
 	}
+	template< typename real >
+	inline float clamp(real a, real minimum, real maximum) {
+		return min(max(a, minimum), maximum);
+	}
 
 	inline float rand() {
 		return float(std::rand()) / RAND_MAX;

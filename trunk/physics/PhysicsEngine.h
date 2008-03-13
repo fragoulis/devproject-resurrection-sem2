@@ -20,6 +20,7 @@ class Enemyship;
 class Movable;
 class Rigidbody;
 class Spaceship;
+class Laser;
 
 
 /**
@@ -37,7 +38,9 @@ class PhysicsEngine :
 	public EventListener< Player_Spawned >,
 	public EventListener< Player_Despawned >,
 	public EventListener< Enemy_Spawned >,
-	public EventListener< Enemy_Despawned >
+	public EventListener< Enemy_Despawned >,
+	public EventListener< Laser_Spawned >,
+	public EventListener< Laser_Despawned >
 {
 public:
 
@@ -50,6 +53,8 @@ public:
 	void onEvent(Player_Despawned&);
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
+	void onEvent(Laser_Spawned&);
+	void onEvent(Laser_Despawned&);
 
 	void update(float dt);
 
@@ -65,31 +70,30 @@ private:
 	RigidbodyList m_rigidbodies;
 	SpaceshipList m_spaceships;
 
-	void updatePhysics(float dt);
-	void updateMovable(Movable* m, float dt);
-	void updateRigidbody(Rigidbody* r, float dt);
-	void updateSpaceship(Spaceship* s, float dt);
+	void _updatePhysics(float dt);
+	void _updateMovable(Movable* m, float dt);
+	void _updateRigidbody(Rigidbody* r, float dt);
+	void _updateSpaceship(Spaceship* s, float dt);
 
-	void getRigidbodyForcesAndMoments(Rigidbody* r, Vector3& forces, Vector3& moments);
-	void getSpaceshipForcesAndMoments(Spaceship* s, Vector3& forces, Vector3& moments);
+	void _getRigidbodyForcesAndMoments(Rigidbody* r, Vector3& forces, Vector3& moments);
+	void _getSpaceshipForcesAndMoments(Spaceship* s, Vector3& forces, Vector3& moments);
 
-	// can't be arsed to write the type of ForcesAndMomentsFunction :)
 	template< typename T, typename ForcesAndMomentsFunction >
-	void integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
+	void _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
 
 
 
 	// Collision detection
 	typedef std::list<Enemyship*> EnemyshipList;
-	typedef std::list<Playership*> PlayershipList;
+	typedef std::list<Laser*> LaserList;
 
-	PlayershipList m_playerships;
+	Playership* m_playership;
 	EnemyshipList m_enemyships;
+	LaserList m_lasers;
 
-	void checkCollisions();
-
-	template< typename T1, typename T2 >
-	void checkCircleCollisions(std::list<T1*>& list1, std::list<T2*>& list2);
+	void _checkCollisions();
+	void _checkPlayerEnemyCollisions();
+	void _checkEnemyLaserCollisions();
 
 
 

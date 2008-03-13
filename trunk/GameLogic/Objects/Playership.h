@@ -21,6 +21,11 @@ public:
 	int getEnergy(EnergyType type) { return m_energy[type]; }
 	void setEnergy(EnergyType type, int amount) { m_energy[type] = amount; }
 
+	int getEnergyCapacity() { return m_energyCapacity; }
+
+	void loadSettings(const ParserSection&);
+
 private:
 	int m_energy[ENERGY_TYPE_COUNT];
+	int m_energyCapacity;
 };

@@ -35,6 +35,7 @@ void Laser :: start( const Point3& pos, const Vector3& direction )
 void Laser :: die()
 {
 	m_state = ENDING;
+	m_lifetime = m_age + getPosition().distance(m_backPoint) / m_speed;
 }
 
 void Laser :: update( float dt )
@@ -65,9 +66,11 @@ void Laser :: update( float dt )
 		case ENDING :
 		{
 			m_backPoint += m_direction * m_speed * dt;
-			if (Math::float_is_zero(m_backPoint.distance(getPosition()))) {
-				m_state = TO_BE_DELETED;
-			}
+			// if (front - back).dot(direction) < 0 --> delete ?
+			// both should point in either: same direction, or opposite
+			//if (Math::float_is_zero(m_backPoint.distance(getPosition()))) {
+			//	m_state = TO_BE_DELETED;
+			//}
 			break;
 		}
 	}

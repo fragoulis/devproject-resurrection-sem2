@@ -12,6 +12,7 @@
 #include "../math/Point3.h"
 class Playership;
 class Enemyship;
+class Laser;
 
 
 /**
@@ -40,3 +41,4 @@ private:
 
 // a list of typedefs for collision events
 typedef Collision<Playership, Enemyship> Collision_Player_Enemy;
+typedef Collision<Enemyship, Laser> Collision_Enemy_Laser;

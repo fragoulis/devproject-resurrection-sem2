@@ -15,7 +15,10 @@
 #include "../GameLogic/Spaceship.h"
 #include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
 #include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
+#include "../GameLogic/Lasers/Laser.h"
 #include "../math/maths.h"
+#include "../math/Vector3.h"
+#include "../math/Point3.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
 #include <iostream>
@@ -39,6 +42,8 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Laser_Spawned >(this);
+	EventManager::instance().registerEventListener< Laser_Despawned >(this);
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -53,8 +58,13 @@ void PhysicsEngine :: onEvent( Terrain_Changed& evt )
 
 void PhysicsEngine :: onEvent( Player_Spawned& evt )
 {
-	m_playerships.push_back(evt.getValue());
+	m_playership = evt.getValue();
 	m_spaceships.push_back(evt.getValue());
+}
+void PhysicsEngine :: onEvent( Player_Despawned& evt )
+{
+	m_playership = 0;
+	m_spaceships.remove(evt.getValue());
 }
 
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
@@ -63,15 +73,20 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 	m_spaceships.push_back(evt.getValue());
 }
 
-void PhysicsEngine :: onEvent( Player_Despawned& evt )
-{
-	m_playerships.remove(evt.getValue());
-	m_spaceships.remove(evt.getValue());
-}
 void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
 {
 	m_enemyships.remove(evt.getValue());
 	m_spaceships.remove(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Laser_Spawned& evt )
+{
+	m_lasers.push_back(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Laser_Despawned& evt )
+{
+	m_lasers.remove(evt.getValue());
 }
 
 
@@ -79,43 +94,43 @@ void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
 
 void PhysicsEngine :: update( float dt )
 {
-	updatePhysics(dt);
-	checkCollisions();
+	_updatePhysics(dt);
+	_checkCollisions();
 }
 
-void PhysicsEngine :: updatePhysics( float dt )
+void PhysicsEngine :: _updatePhysics( float dt )
 {
 	for (MovableList::iterator i = m_movables.begin(); i != m_movables.end(); ++i)
 	{
-		updateMovable(*i, dt);
+		_updateMovable(*i, dt);
 	}
 
 	for (RigidbodyList::iterator i = m_rigidbodies.begin(); i != m_rigidbodies.end(); ++i)
 	{
-		updateRigidbody(*i, dt);
+		_updateRigidbody(*i, dt);
 	}
 
 	for (SpaceshipList::iterator i = m_spaceships.begin(); i != m_spaceships.end(); ++i)
 	{
-		updateSpaceship(*i, dt);
+		_updateSpaceship(*i, dt);
 	}
 }
 
-void PhysicsEngine :: updateMovable( Movable* m, float dt )
+void PhysicsEngine :: _updateMovable( Movable* m, float dt )
 {
 	//Point3 newpos = m->getPosition() + m->getVelocity() * dt;
 	//cout << "OldPos " << m->getPosition() << " Newpos " << newpos << " velocity " << m->getVelocity() << " dt " << dt << endl;
 	m->setPosition(m->getPosition() + m->getVelocity() * dt);
 }
 
-void PhysicsEngine :: updateRigidbody( Rigidbody* r, float dt )
+void PhysicsEngine :: _updateRigidbody( Rigidbody* r, float dt )
 {
-	integrateForcesAndMoments(r, &PhysicsEngine::getRigidbodyForcesAndMoments, dt);
+	_integrateForcesAndMoments(r, &PhysicsEngine::_getRigidbodyForcesAndMoments, dt);
 }
 
-void PhysicsEngine :: updateSpaceship( Spaceship* s, float dt )
+void PhysicsEngine :: _updateSpaceship( Spaceship* s, float dt )
 {
-	integrateForcesAndMoments(s, &PhysicsEngine::getSpaceshipForcesAndMoments, dt);
+	_integrateForcesAndMoments(s, &PhysicsEngine::_getSpaceshipForcesAndMoments, dt);
 
 	// to rotate our ships, we simply rotate by a small factor toward the target direction
 	// this means we start moving before our ship faces the correct direction
@@ -125,7 +140,7 @@ void PhysicsEngine :: updateSpaceship( Spaceship* s, float dt )
 }
 
 template< typename T, typename ForcesAndMomentsFunction >
-void PhysicsEngine :: integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt)
+void PhysicsEngine :: _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt)
 {
 	Vector3 forces, moments;
 	forces.set(0.0f, 0.0f, 0.0f);
@@ -133,11 +148,11 @@ void PhysicsEngine :: integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f
 	(this->*f)(t, forces, moments);
 	Vector3 acceleration = forces / t->getMass() * dt;
 	t->setVelocity(t->getVelocity() + acceleration);
-	updateMovable(t, dt);
+	_updateMovable(t, dt);
 }
 
 
-void PhysicsEngine :: getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& forces, Vector3& moments )
+void PhysicsEngine :: _getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& forces, Vector3& moments )
 {
 	// Gravity, we assume Z points upward
 	forces.setY(forces.getY() - r->getGravityData().factor * EARTH_GRAVITY * r->getMass());
@@ -156,10 +171,10 @@ void PhysicsEngine :: getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& force
 	forces.setY(forces.getY() + r->getLiftData().factor * EARTH_GRAVITY * r->getMass());
 }
 
-void PhysicsEngine :: getSpaceshipForcesAndMoments( Spaceship* s, Vector3& forces, Vector3& moments )
+void PhysicsEngine :: _getSpaceshipForcesAndMoments( Spaceship* s, Vector3& forces, Vector3& moments )
 {
 	// get rigid body forces and moments
-	getRigidbodyForcesAndMoments(s, forces, moments);
+	_getRigidbodyForcesAndMoments(s, forces, moments);
 
 	// add force pointing in target direction
 	ThrusterData td = s->getThrusterData();
@@ -170,36 +185,66 @@ void PhysicsEngine :: getSpaceshipForcesAndMoments( Spaceship* s, Vector3& force
 
 
 
-void PhysicsEngine :: checkCollisions()
+void PhysicsEngine :: _checkCollisions()
 {
-	checkCircleCollisions(m_playerships, m_enemyships);
+	_checkPlayerEnemyCollisions();
+	_checkEnemyLaserCollisions();
 }
 
-template< typename T1, typename T2 >
-void PhysicsEngine :: checkCircleCollisions(std::list<T1*>& list1, std::list<T2*>& list2)
+
+void PhysicsEngine :: _checkPlayerEnemyCollisions()
 {
-	typedef std::list<T1*> List1;
-	typedef std::list<T2*> List2;
-	
-	for (List1::iterator i = list1.begin(); i != list1.end(); ++i)
+	Point3 pos1 = m_playership->getPosition();
+	pos1.setY(0.0f);
+	float r1 = m_playership->getRadius();
+	for (EnemyshipList::iterator it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
-		T1* t1 = *i;
-		Point3 pos1 = t1->getPosition();
-		pos1.setY(0.0f);
-		float r1 = t1->getRadius();
-		for (List2::iterator j = list2.begin(); j != list2.end(); ++j)
+		Enemyship* enemy = *it;
+		if (enemy->isToBeDeleted()) continue;
+		Point3 pos2 = enemy->getPosition();
+		pos2.setY(0.0f);
+		float r2 = enemy->getRadius();
+		float distance = pos1.distance(pos2) - (r1 + r2);
+		if (distance < 0.0f) {
+			Vector3 normal = pos1 - pos2;
+			normal.normalize();
+			Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
+			CKLOG(std::string("Collision between player and enemy ") + ToString<Enemyship*>(enemy), 1);
+			EventManager::instance().fireEvent(Collision_Player_Enemy(m_playership, enemy, colpos, normal));
+		}
+	}
+}
+
+
+
+void PhysicsEngine :: _checkEnemyLaserCollisions()
+{
+	for (EnemyshipList::iterator i = m_enemyships.begin(); i != m_enemyships.end(); ++i)
+	{
+		Enemyship* enemy = *i;
+		if (enemy->isToBeDeleted()) continue;
+		Point3 circleCentre = enemy->getPosition();
+		float circleRadius = enemy->getRadius();
+
+		for (LaserList::iterator j = m_lasers.begin(); j != m_lasers.end(); ++j)
 		{
-			T2* t2 = *j;
-			Point3 pos2 = t2->getPosition();
-			pos2.setY(0.0f);
-			float r2 = t2->getRadius();
-			float distance = pos1.distance(pos2) - (r1 + r2);
-			if (distance < 0.0f) {
-				Vector3 normal = pos1 - pos2;
+			Laser* laser = *j;
+			if (laser->isToBeDeleted() || laser->isEnding()) continue;
+			float totalRadiusSquared = circleRadius + laser->getWidth();
+			totalRadiusSquared *= totalRadiusSquared;
+			Point3 linePos1 = laser->getFrontPoint();
+			Point3 linePos2 = laser->getBackPoint();
+			Vector3 lineDirection = linePos2 - linePos1;
+			Vector3 toPoint1 = circleCentre - linePos1;
+			float t = Math::clamp(lineDirection.dot(toPoint1) / lineDirection.lengthSquared(), 0.0f, 1.0f);
+			Point3 closestPointOnLine = linePos1 + t * lineDirection;
+			float distanceSquared = (circleCentre - closestPointOnLine).lengthSquared();
+			if (distanceSquared < totalRadiusSquared)
+			{
+				Vector3 normal = circleCentre - closestPointOnLine;
 				normal.normalize();
-				Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
-				CKLOG(std::string("Collision between ") + ToString<T1*>(t1) + " and " + ToString<T2*>(t2), 3);
-				EventManager::instance().fireEvent(Collision<T1, T2>(t1, t2, colpos, normal));
+				CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 1);
+				EventManager::instance().fireEvent(Collision_Enemy_Laser(enemy, laser, closestPointOnLine, normal));
 			}
 		}
 	}

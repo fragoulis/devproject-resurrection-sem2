@@ -66,7 +66,8 @@ double Win32Timer::getDeltatime()
 
 void Win32Timer::reset()
 {
-	m_lasttime = m_starttime = GetTime();
+	m_starttime = GetTime();
+	m_lasttime = 0.0;
 	//m_lasttime = m_starttime = GetSystemTimestamp();
 }
 

@@ -32,6 +32,7 @@ public:
 	const Point3& getFrontPoint() const { return getPosition(); }
 	const Point3& getBackPoint() const { return m_backPoint; }
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
+	bool isEnding() const { return m_state == ENDING; }
 
 	//! Starts this laser at given position
 	void start(const Point3& pos, const Vector3& direction);

@@ -16,7 +16,7 @@ SoundEngine :: SoundEngine()
 {
 	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
-	EventManager::instance().registerEventListener< Player_Drained >(this);
+	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
 }
 
 SoundEngine :: ~SoundEngine()
@@ -51,7 +51,7 @@ void SoundEngine :: onEvent(Player_Destroyed& pd)
 	// TODO: play sound effect for playership explosion
 }
 
-void SoundEngine :: onEvent(Player_Drained& pd)
+void SoundEngine :: onEvent(Player_EnergyDrained& pd)
 {
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
