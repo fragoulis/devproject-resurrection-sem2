@@ -71,6 +71,7 @@ void TextureMgr :: destroy()
 	{
 		delete _instance;
 		_instance = 0;
+		MemMgrAny<Texture1D>::destroy();
 		MemMgrAny<Texture2D>::destroy();
 		MemMgrAny<Texture3D>::destroy();
 		MemMgrAny<TextureCube>::destroy();

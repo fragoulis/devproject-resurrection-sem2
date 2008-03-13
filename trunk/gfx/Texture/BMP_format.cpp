@@ -174,17 +174,19 @@ Texture * TextureIO ::_loadBMP(const std::string& fname)
 	level.push_back(MipmapLevel(_raw,img_size));
 
 	unsigned target = (_loadAsRect) ? GL_TEXTURE_RECTANGLE_ARB : GL_TEXTURE_2D;
-	if(height != 1)
+	//if(height != 1)
 	{
 		tex = new Texture2D(width,height,internalFormat,pixelFormat,datatype,
 						level,target,fileName,_genMipmaps,_loadAsRect);
 	}
+	/*
 	else
 	{
 		target = GL_TEXTURE_1D;
 		tex = new Texture1D(width,internalFormat,pixelFormat,datatype,
 						level,target,fileName,_genMipmaps,false);
 	}
+	*/
 
 	MemMgrRaw::instance()->free(_raw);
 	return tex;
