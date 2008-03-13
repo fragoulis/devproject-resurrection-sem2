@@ -9,6 +9,7 @@
 
 #include "textureMgr.h"
 #include "../../gfxutils/MemManager/MemMgr_AnyData.h"
+#include "Texture1D.h"
 #include "Texture2D.h"
 #include "Texture3D.h"
 #include "TextureCube.h"
