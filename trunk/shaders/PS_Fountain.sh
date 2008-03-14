@@ -10,7 +10,7 @@
 [Shader]
 Name = PS_Fountain
 Vertex = PS_Fountain.vert
-Fragment = PS_Explosion.frag
+Fragment = PS_Fountain.frag
 
 [Attribute : GenAttrib1]
 NameInShader = velocity
