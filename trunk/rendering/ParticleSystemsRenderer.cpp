@@ -10,6 +10,7 @@
 #include <gl/glee.h>
 #include "ParticleSystemsRenderer.h"
 #include "../ParticleSystem/PS_Manager.h"
+#include "../GameLogic/GameLogic.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -64,17 +65,22 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
 	switch (keyPressed) {
 		case 'Q':
 			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-			cf.move(Vector3(64,1400,-64));
+			cf.move(Vector3(64,1450,-64));
 			_psList.back()->setTransform(cf);
 			break;
 		case 'E':
 			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnergyLoss"));
-			cf.move(Vector3(64,1400,-64));
+			cf.move(Vector3(64,1450,-64));
 			_psList.back()->setTransform(cf);
 			break;
 		case 'R':
 			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
-			cf.move(Vector3(64,1400,-64));
+			cf.move(Vector3(64,1450,-64));
+			_psList.back()->setTransform(cf);
+			break;
+		case 'T':
+			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Fountain"));
+			cf.move(Vector3(64,1450,-64));
 			_psList.back()->setTransform(cf);
 			break;
 	}
