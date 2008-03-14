@@ -43,6 +43,9 @@ public :
 
 	virtual ~PS_Base() = 0;
 
+	const float &getCurrentTime() const { return m_currentTime; };
+	const float &getSystemLife() const { return m_systemLife; };
+
 protected :
 
 	std::string   m_nameId;			// name of the particle system

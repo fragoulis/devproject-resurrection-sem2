@@ -1,6 +1,6 @@
 //*****************************************************************************
 //**
-//**   File:               PS_Fountain.vert
+//**   File:               PS_Explosion.vert
 //**   Author:             $Author: manuele.bonanno $
 //**   Last Change:        $Date: 2008-03-13 22:27:01 +0000 (gio, 13 mar 2008) $
 //**   Last Revision:      $Revision: 159 $
@@ -36,7 +36,7 @@ void main(void)
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;
-        color = vec4(1.0,
+        color = vec4(0.0,
 					 0.1 + 0.2*quad_func,
 					 0.1*quad_func,
 					 quad_func);
@@ -47,6 +47,7 @@ void main(void)
     }
     else
 		color.w = -1.0;
+		
 		
  
     gl_Position = gl_ProjectionMatrix * vert;
