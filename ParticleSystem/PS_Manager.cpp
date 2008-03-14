@@ -92,6 +92,15 @@ void PS_Manager :: init(const ParserSection * parsec)
 				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
 
 			}
+			else if(pstype == "PS_Fountain")
+			{
+				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
+				// If so,parse them & create the particle system
+
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+
+			}
 			
 			m_psList.push_back(created_ps);
 		}
