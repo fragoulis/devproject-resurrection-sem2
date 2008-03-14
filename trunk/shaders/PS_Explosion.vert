@@ -15,14 +15,12 @@ attribute vec4 velocity;
 attribute vec4 offset;
 
 varying vec4 color;
-varying float vColor;
-varying vec2 vTexCoord;
 
 const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
 const float sum_time = currentTime + particleLife - systemLife;
 
-const vec3 GRAVITY = vec3(0.0,-9.8,0.0);
+//const vec3 ACCELERATION = vec3(0.0,-9.8,0.0);
 
 void main(void)
 {	
@@ -34,7 +32,7 @@ void main(void)
 	if(sum_time <= velocity.w)
     {
 		// Add the start offset & the time-based velocity
-        vert    = vec4(velocity.xyz*t + 0.5*GRAVITY*t*t, 1.0);
+        vert    = vec4(velocity.xyz*t /*+ 0.5*ACCELERATION*t*t*/, 1.0);
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;
@@ -47,17 +45,12 @@ void main(void)
 		vert.xyz += velocity*currentTime;
 		vert.xyz *= cos(currentTime);
 		vert.z *= sin(currentTime);
-		//vert.x += cos(currentTime)*vert.x + sin(currentTime)*vert.z;
-		//vert.z += cos(currentTime)*vert.z - sin(currentTime)*vert.x;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
     }
     else
 		color.w = -1.0;
 		
-		//vColor = partLifeDenom;
-		
-		//vTexCoord = gl_Vertex.xy;
 		
  
     gl_Position = gl_ProjectionMatrix * vert;
