@@ -26,11 +26,7 @@ void main(void)
 		// Add the start offset & the time-based velocity
 		vert    = vec4(velocity.xyz*t + 0.5*GRAVITY*t*t, 1.0);
 
-		vert.xyz += velocity*currentTime;
-		float x = vert.x;
-		float z = vert.z;
-		vert.x = cos(currentTime)*x + sin(currentTime)*z;
-		vert.z = cos(currentTime)*z - sin(currentTime)*x;
+		vert.xyz += velocity*30*currentTime;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
 
