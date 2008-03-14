@@ -12,9 +12,11 @@
 #include "../ParticleSystem/PS_Base.h"
 #include "../utility/EventManager.h"
 #include "../control/OSinterface/Input.h"
+#include "../GameLogic/GameEvents.h"
 #include <vector>
 
-class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>
+class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
+												  public EventListener<Enemy_Despawned>
 {
 public:
 	ParticleSystemsRenderer();
@@ -24,6 +26,7 @@ public:
 	virtual void update(float dt);
 
 	virtual void onEvent(Key_GoingDown&);
+	virtual void onEvent(Enemy_Despawned&);
 
 private:
 	// bunch of ParticleSystems here I guess
