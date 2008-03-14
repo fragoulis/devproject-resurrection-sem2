@@ -27,5 +27,5 @@ public:
 
 private:
 	// bunch of ParticleSystems here I guess
-	std::vector<PS_Base *>	_psList;
+	std::vector<PS_Base *>	m_psList;
 };
