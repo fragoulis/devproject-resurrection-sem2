@@ -11,11 +11,13 @@
 #include "ParticleSystemsRenderer.h"
 #include "../ParticleSystem/PS_Manager.h"
 #include "../GameLogic/GameLogic.h"
+#include "../GameLogic/Enemies/Enemyship.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
 
-	EventManager::instance().registerEventListener(this);
+	EventManager::instance().registerEventListener<Key_GoingDown>(this);
+	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 
 	
 }
@@ -23,8 +25,16 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
 	// FIXME : Deleting the hacky way the dummy ps
-	delete m_psList[0];
-	m_psList.clear();
+	//delete m_psList[0];
+	//m_psList.clear();
+
+	std::vector<PS_Base *>::iterator it = m_psList.begin();
+	while(it != m_psList.end())
+	{
+		PS_Base *ps = *it;
+		it = m_psList.erase(it);
+		delete ps;
+	}
 }
 
 
@@ -66,7 +76,7 @@ void ParticleSystemsRenderer :: update( float dt )
 	}
 }
 
-void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
+void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 	// FIXME : Adding the hacky way the dummy ps
 	int keyPressed = key.getValue();
 
@@ -99,4 +109,11 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
 			m_psList.back()->setTransform(cf);
 			break;
 	}
+}
+
+void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
+	
+	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion"));
+	m_psList.back()->setTransform(cf);
 }
