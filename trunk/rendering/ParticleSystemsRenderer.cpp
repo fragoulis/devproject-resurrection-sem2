@@ -23,8 +23,8 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
 	// FIXME : Deleting the hacky way the dummy ps
-	delete _psList[0];
-	_psList.clear();
+	delete m_psList[0];
+	m_psList.clear();
 }
 
 
@@ -35,8 +35,8 @@ void ParticleSystemsRenderer :: render( Graphics& g ) const
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
-	for(std::vector<PS_Base *>::const_iterator it = _psList.begin();
-		it != _psList.end();
+	for(std::vector<PS_Base *>::const_iterator it = m_psList.begin();
+		it != m_psList.end();
 		++it)
 	{
 		(*it)->render();
@@ -47,19 +47,19 @@ void ParticleSystemsRenderer :: render( Graphics& g ) const
 
 void ParticleSystemsRenderer :: update( float dt )
 {
-	std::vector<PS_Base *>::iterator it = _psList.begin();
+	std::vector<PS_Base *>::iterator it = m_psList.begin();
 	// Do particle system updates
-	//for(std::vector<PS_Base *>::iterator it = _psList.begin();
-	//	it != _psList.end();
+	//for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+	//	it != m_psList.end();
 	//	++it)
-	while(it != _psList.end())
+	while(it != m_psList.end())
 	{
 		(*it)->update(dt);
 
 		//remove dead particle systems
 		if ((*it)->getCurrentTime() > (*it)->getSystemLife()) { 
 			PS_Base *ps = *it;
-			it = _psList.erase(it);
+			it = m_psList.erase(it);
 			delete ps;
 		} else
 			it++;
@@ -74,29 +74,29 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown& key) {
 
 	switch (keyPressed) {
 		case 'Q':
-			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
 			cf.move(Vector3(64,1450,-64));
-			_psList.back()->setTransform(cf);
+			m_psList.back()->setTransform(cf);
 			break;
 		case 'E':
-			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnergyLoss"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnergyLoss"));
 			cf.move(Vector3(64,1450,-64));
-			_psList.back()->setTransform(cf);
+			m_psList.back()->setTransform(cf);
 			break;
 		case 'R':
-			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
 			cf.move(Vector3(64,1450,-64));
-			_psList.back()->setTransform(cf);
+			m_psList.back()->setTransform(cf);
 			break;
 		case 'T':
-			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Fountain"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Fountain"));
 			cf.move(Vector3(64,1450,-64));
-			_psList.back()->setTransform(cf);
+			m_psList.back()->setTransform(cf);
 			break;
 		case 'Y':
-			_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion"));
 			cf.move(Vector3(64,1450,-64));
-			_psList.back()->setTransform(cf);
+			m_psList.back()->setTransform(cf);
 			break;
 	}
 }
