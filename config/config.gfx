@@ -115,14 +115,32 @@ ParticleNum  = 2000
 Shader       = "PS_ColouredExplosion"
 Texture      = "flame.bmp" 
 
-[ParticleSystem : PS_EnemyExplosion]
+[ParticleSystem : PS_RedEnemyExplosion]
 Variations   = 1
-SystemLife   = 3
-ParticleLife = 3
-ParticleSize = 5
-ParticleNum  = 5000
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
-Texture      = "flame.bmp" 
+Texture      = "redExp.bmp" 
+
+[ParticleSystem : PS_YellowEnemyExplosion]
+Variations   = 1
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
+Shader       = "PS_EnemyExplosion"
+Texture      = "yellowExp.bmp" 
+
+[ParticleSystem : PS_BlueEnemyExplosion]
+Variations   = 1
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
+Shader       = "PS_EnemyExplosion"
+Texture      = "blueExp.bmp" 
 
 [ParticleSystem : PS_Fountain]
 Variations   = 1

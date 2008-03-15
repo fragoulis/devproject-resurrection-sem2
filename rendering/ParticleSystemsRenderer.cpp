@@ -24,9 +24,6 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
-	// FIXME : Deleting the hacky way the dummy ps
-	//delete m_psList[0];
-	//m_psList.clear();
 
 	std::vector<PS_Base *>::iterator it = m_psList.begin();
 	while(it != m_psList.end())
@@ -104,7 +101,7 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'Y':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
 			cf.move(Vector3(64,1450,-64));
 			m_psList.back()->setTransform(cf);
 			break;
@@ -114,6 +111,14 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 	
 	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
-	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion"));
+	EnergyType energyType = enemy.getValue()->getEnergyType();
+	//depending on the enemy energy type generates a different explosion
+	if (energyType == EnergyTypeFromString("red"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+	else if (energyType == EnergyTypeFromString("yellow"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+	else if (energyType == EnergyTypeFromString("blue"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+
 	m_psList.back()->setTransform(cf);
 }

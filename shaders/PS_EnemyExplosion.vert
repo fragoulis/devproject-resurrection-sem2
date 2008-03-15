@@ -11,6 +11,7 @@ varying vec4 alphaColor;
 const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
 const float sum_time = currentTime + particleLife - systemLife;
+const float explosionPower = 200.0;
 
 const vec3 GRAVITY = vec3(0.0,-9.8,0.0);
 
@@ -26,13 +27,13 @@ void main(void)
 		// Add the start offset & the time-based velocity
 		vert    = vec4(velocity.xyz*t + 0.5*GRAVITY*t*t, 1.0);
 
-		vert.xyz += velocity*100*currentTime;
+		vert.xyz += velocity*explosionPower*currentTime;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
 
-		vColor = -(currentTime/systemLife);
+		vColor = -(currentTime/particleLife)*4;
 		alphaColor = vec4(1.0);
-		alphaColor.a = 1-currentTime/systemLife;
+		alphaColor.a = 1.0-currentTime/systemLife;
 		
 	} 
 		
