@@ -92,7 +92,7 @@ void PS_Manager :: init(const ParserSection * parsec)
 				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
 
 			}
-			else if(pstype == "PS_EnemyExplosion")
+			else if(pstype == "PS_RedEnemyExplosion" || pstype == "PS_YellowEnemyExplosion" || pstype == "PS_BlueEnemyExplosion")
 			{
 				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
 				// If so,parse them & create the particle system
