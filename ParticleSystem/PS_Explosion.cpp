@@ -67,24 +67,24 @@ void  PS_Explosion :: _generateData(VBO * vbo,Texture * tex)
 	std::vector<const VertexAttribute *> vattrs;
 	vattrs.push_back(ShaderManager::instance()->vertexAttribute("Vertex"));
 	vattrs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib1"));
-	vattrs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib2"));
+	//vattrs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib2"));
 
 	// Set the attribute mask
 	m_usedAttribs._raw[0] = 0;
 	m_usedAttribs._raw[1] = 0;
 	const unsigned pos_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[0]);
 	const unsigned vel_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[1]);
-	const unsigned off_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[2]);
+	//const unsigned off_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[2]);
 	m_usedAttribs.attrib[pos_index] = 0xFF;
 	m_usedAttribs.attrib[vel_index] = 0xFF;
-	m_usedAttribs.attrib[off_index] = 0xFF;
+	//m_usedAttribs.attrib[off_index] = 0xFF;
 
 	// Allocate the memory for data & indices
 	std::vector<void *> data;
 	unsigned * indices = MemMgrRaw::instance()->allocate<unsigned>(totalIData);
 	Vector4 * positions = MemMgrRaw::instance()->allocate<Vector4>(totalVData);
 	Vector4 * velocities = MemMgrRaw::instance()->allocate<Vector4>(totalVData);	// as GenAttrib1
-	Vector4 * offsets = MemMgrRaw::instance()->allocate<Vector4>(totalVData);	// as GenAttrib2
+	//Vector4 * offsets = MemMgrRaw::instance()->allocate<Vector4>(totalVData);	// as GenAttrib2
 
 	// generate the vertex data.
 
@@ -99,10 +99,10 @@ void  PS_Explosion :: _generateData(VBO * vbo,Texture * tex)
 																					  vel.getZ(),
 																					  float(i)*m_particleLife*0.25f/m_particleNum);
 
-		offsets[i] = offsets[i+1] = offsets[i+2] = offsets[i+3] = Vector4(0,
-																					  0,
-																					  0,
-																					  0.0f);
+		/*offsets[i] = offsets[i+1] = offsets[i+2] = offsets[i+3] = Vector4(vel.getX()*10,
+																					  vel.getY()*10,
+																					  vel.getZ()*10,
+																					  0.0f);*/
 
 		//std::cout<<velocities[i].getW()<<std::endl;
 		positions[i] = Vector4(-1,1,0,1);
@@ -113,7 +113,7 @@ void  PS_Explosion :: _generateData(VBO * vbo,Texture * tex)
 	// attach the data to the vector in the order of the vertex attributes
 	data.push_back(positions);
 	data.push_back(velocities);		
-	data.push_back(offsets);	
+	//data.push_back(offsets);	
 
 	// generate the index data.
 	for(unsigned i=0;i<totalIData;i+=6)
@@ -141,7 +141,7 @@ void  PS_Explosion :: _generateData(VBO * vbo,Texture * tex)
 	MemMgrRaw::instance()->free(positions);
 	MemMgrRaw::instance()->free(velocities);
 	MemMgrRaw::instance()->free(indices);
-	MemMgrRaw::instance()->free(offsets);
+	//MemMgrRaw::instance()->free(offsets);
 }
 
 void PS_Explosion :: update(const float delta)

@@ -13,7 +13,6 @@ const float partLifeDenom = 1.0 / particleLife;
 const float sum_time = currentTime + particleLife - systemLife;
 const float explosionPower = 200.0;
 
-const vec3 GRAVITY = vec3(0.0,-9.8,0.0);
 
 void main(void)
 {	
@@ -25,7 +24,7 @@ void main(void)
 
 	if(sum_time <= velocity.w) {
 		// Add the start offset & the time-based velocity
-		vert    = vec4(velocity.xyz*t + 0.5*GRAVITY*t*t, 1.0);
+		vert    = vec4(velocity.xyz*t , 1.0);
 
 		vert.xyz += velocity*explosionPower*currentTime;
 		vert = gl_ModelViewMatrix*vert;

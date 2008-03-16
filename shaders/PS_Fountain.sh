@@ -15,6 +15,4 @@ Fragment = PS_Fountain.frag
 [Attribute : GenAttrib1]
 NameInShader = velocity
 
-[Attribute : GenAttrib2]
-NameInShader = offset
 

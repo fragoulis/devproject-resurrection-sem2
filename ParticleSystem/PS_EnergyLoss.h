@@ -35,6 +35,7 @@ public :
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
+			const int particleColor,
 			const VAttribStatus& status);
 
 	PS_EnergyLoss(const std::string& name,
@@ -44,6 +45,7 @@ public :
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
+			const int particleColor,
 			const std::string& texture);
 
 	void  _generateData(VBO * vbo,Texture * tex);			// The texture for the gen model
@@ -51,6 +53,9 @@ public :
 	virtual void render() const;		
 	virtual void update(const float delta);		
 	virtual void reset();						
-	virtual PS_Base * clone() const;					
+	virtual PS_Base * clone() const;		
+
+private:
+	int m_particleColor;
 
 };

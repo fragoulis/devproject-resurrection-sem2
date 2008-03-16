@@ -28,8 +28,9 @@ PS_EnergyLoss :: PS_EnergyLoss(const std::string& name,
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
+			const int particleColor,
 			const std::string& texture)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,true)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_particleColor(particleColor)
 {
 	// Initialize
 	_generateData(vbo,TextureIO::instance()->getTexture(texture));
@@ -43,8 +44,9 @@ PS_EnergyLoss :: PS_EnergyLoss(const std::string& name,
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
+			const int particleColor,
 			const VAttribStatus& status)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,false)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_particleColor(particleColor)
 {
 	m_quadArray = model;
 	m_usedAttribs = status;
@@ -54,7 +56,7 @@ PS_EnergyLoss :: PS_EnergyLoss(const std::string& name,
 PS_Base * PS_EnergyLoss :: clone() const
 {
 	return new PS_EnergyLoss(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_particleNum,
-					 m_shaderIndex,m_usedAttribs);
+					 m_shaderIndex,m_particleColor,m_usedAttribs);
 }
 
 
@@ -67,20 +69,24 @@ void  PS_EnergyLoss :: _generateData(VBO * vbo,Texture * tex)
 	std::vector<const VertexAttribute *> vattrs;
 	vattrs.push_back(ShaderManager::instance()->vertexAttribute("Vertex"));
 	vattrs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib1"));
+	vattrs.push_back(ShaderManager::instance()->vertexAttribute("GenAttrib2"));
 
 	// Set the attribute mask
 	m_usedAttribs._raw[0] = 0;
 	m_usedAttribs._raw[1] = 0;
 	const unsigned pos_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[0]);
 	const unsigned vel_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[1]);
+	const unsigned off_index = ShaderManager::instance()->vertexAttributeIndex(vattrs[2]);
 	m_usedAttribs.attrib[pos_index] = 0xFF;
 	m_usedAttribs.attrib[vel_index] = 0xFF;
+	m_usedAttribs.attrib[off_index] = 0xFF;
 
 	// Allocate the memory for data & indices
 	std::vector<void *> data;
 	unsigned * indices = MemMgrRaw::instance()->allocate<unsigned>(totalIData);
 	Vector4 * positions = MemMgrRaw::instance()->allocate<Vector4>(totalVData);
 	Vector4 * velocities = MemMgrRaw::instance()->allocate<Vector4>(totalVData);	// as GenAttrib1
+	Vector4 * offsets = MemMgrRaw::instance()->allocate<Vector4>(totalVData);	// as GenAttrib2
 
 	// generate the vertex data.
 
@@ -95,6 +101,11 @@ void  PS_EnergyLoss :: _generateData(VBO * vbo,Texture * tex)
 																					  vel.getZ(),
 																					  float(i)*m_particleLife*0.25f/m_particleNum);
 
+		offsets[i] = offsets[i+1] = offsets[i+2] = offsets[i+3] = Vector4(vel.getX()*10,
+																					  vel.getY()*10,
+																					  vel.getZ()*10,
+																					  0.0f);
+
 		//std::cout<<velocities[i].getW()<<std::endl;
 		positions[i] = Vector4(-1,1,0,1);
 		positions[i+1] = Vector4(-1,-1,0,1);
@@ -103,7 +114,8 @@ void  PS_EnergyLoss :: _generateData(VBO * vbo,Texture * tex)
 	}
 	// attach the data to the vector in the order of the vertex attributes
 	data.push_back(positions);
-	data.push_back(velocities);		
+	data.push_back(velocities);	
+	data.push_back(offsets);	
 
 	// generate the index data.
 	for(unsigned i=0;i<totalIData;i+=6)
@@ -131,6 +143,7 @@ void  PS_EnergyLoss :: _generateData(VBO * vbo,Texture * tex)
 	MemMgrRaw::instance()->free(positions);
 	MemMgrRaw::instance()->free(velocities);
 	MemMgrRaw::instance()->free(indices);
+	MemMgrRaw::instance()->free(offsets);
 }
 
 void PS_EnergyLoss :: update(const float delta)
@@ -153,6 +166,8 @@ void PS_EnergyLoss :: render() const
 	ShaderManager::instance()->setUniform1fv("currentTime",&m_currentTime);
 	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
+	CHECK_GL_ERROR();
+	ShaderManager::instance()->setUniform1i("particleColor",m_particleColor);
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1i("particleTex",0);
 	CHECK_GL_ERROR();
