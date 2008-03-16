@@ -69,10 +69,11 @@ void PS_Manager :: init(const ParserSection * parsec)
 
 			// fetch the name in order to fetch the rest required parameters
 			const std::string pstype = (*it)->getName();
-			if(pstype == "PS_EnergyLoss")
+			if(pstype == "PS_RedEnergyLoss" || pstype == "PS_YellowEnergyLoss" || pstype == "PS_BlueEnergyLoss")
 			{
+				const int particleColor = FromString<int>((*it)->getVal("ParticleColor"));
 				const string texname = (*it)->getVal("Texture");
-				created_ps = new PS_EnergyLoss((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+				created_ps = new PS_EnergyLoss((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,texname);
 			}
 			else if(pstype == "PS_Explosion")
 			{

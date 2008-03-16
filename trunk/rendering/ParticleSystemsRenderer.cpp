@@ -12,12 +12,15 @@
 #include "../ParticleSystem/PS_Manager.h"
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Enemies/Enemyship.h"
+#include "../GameLogic/Objects/Playership.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
 
-	EventManager::instance().registerEventListener<Key_GoingDown>(this);
+	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
+	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 
 	
 }
@@ -73,8 +76,9 @@ void ParticleSystemsRenderer :: update( float dt )
 	}
 }
 
+//LISTENING THE KEYBOARD FOR DEBUGGING PURPOSES ONLY
 void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
-	// FIXME : Adding the hacky way the dummy ps
+	//FIXME : Adding the hacky way the dummy ps
 	int keyPressed = key.getValue();
 
 	CoordinateFrame cf;
@@ -86,7 +90,7 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'E':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnergyLoss"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
 			cf.move(Vector3(64,1450,-64));
 			m_psList.back()->setTransform(cf);
 			break;
@@ -109,7 +113,7 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 }
 
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
-	
+
 	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
 	EnergyType energyType = enemy.getValue()->getEnergyType();
 	//depending on the enemy energy type generates a different explosion
@@ -121,4 +125,20 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
 
 	m_psList.back()->setTransform(cf);
+}
+
+void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
+
+	CoordinateFrame cf = playerEnergy.getValue1()->getCoordinateFrame(); 
+	EnergyType energyType = playerEnergy.getValue2();
+	//depending on the drained energy type generates a different effect
+	if (energyType == EnergyTypeFromString("red"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
+	else if (energyType == EnergyTypeFromString("yellow"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+	else if (energyType == EnergyTypeFromString("blue"))
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
+
+	m_psList.back()->setTransform(cf);
+
 }

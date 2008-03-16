@@ -15,3 +15,6 @@ Fragment = PS_EnergyLoss.frag
 [Attribute : GenAttrib1]
 NameInShader = velocity
 
+[Attribute : GenAttrib2]
+NameInShader = offset
+

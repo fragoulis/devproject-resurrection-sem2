@@ -88,14 +88,35 @@ MaxTotalParticles = 100000
 # For each PS, specify also variation, so we know how many diff variations to construct
 # and select from, afterwards
 
-[ParticleSystem : PS_EnergyLoss]
+[ParticleSystem : PS_RedEnergyLoss]
 Variations   = 1
-SystemLife   = 3
-ParticleLife = 3
-ParticleSize = 5
-ParticleNum  = 100
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
 Shader       = "PS_EnergyLoss"
-Texture      = "Flare1_32.sgi" 
+ParticleColor = 0
+Texture      = "flare0.bmp" 
+
+[ParticleSystem : PS_YellowEnergyLoss]
+Variations   = 1
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
+Shader       = "PS_EnergyLoss"
+ParticleColor = 1
+Texture      = "flare0.bmp" 
+
+[ParticleSystem : PS_BlueEnergyLoss]
+Variations   = 1
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
+Shader       = "PS_EnergyLoss"
+ParticleColor = 2
+Texture      = "flare0.bmp" 
 
 [ParticleSystem : PS_Explosion]
 Variations   = 1

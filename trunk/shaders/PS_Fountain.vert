@@ -12,7 +12,7 @@ uniform float particleLife;
 uniform float particleSize;
 uniform float systemLife;
 attribute vec4 velocity;
-attribute vec4 offset;
+//attribute vec4 offset;
 
 varying vec4 color;
 
@@ -41,7 +41,7 @@ void main(void)
 					 0.1*quad_func,
 					 quad_func);
 
-		vert.xyz += offset.xyz;
+		//vert.xyz += offset.xyz;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
     }
