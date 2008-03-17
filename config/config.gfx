@@ -144,6 +144,7 @@ ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
 Texture      = "redExp.bmp" 
+ShapeTexture = "flare0.bmp" 
 
 [ParticleSystem : PS_YellowEnemyExplosion]
 Variations   = 1
@@ -153,6 +154,7 @@ ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
 Texture      = "yellowExp.bmp" 
+ShapeTexture = "flare0.bmp" 
 
 [ParticleSystem : PS_BlueEnemyExplosion]
 Variations   = 1
@@ -161,7 +163,8 @@ ParticleLife = 1.5
 ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
-Texture      = "blueExp.bmp" 
+Texture      = "blueExp.bmp"
+ShapeTexture = "flare0.bmp"  
 
 [ParticleSystem : PS_Fountain]
 Variations   = 1
