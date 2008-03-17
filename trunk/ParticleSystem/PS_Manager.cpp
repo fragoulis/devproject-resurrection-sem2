@@ -10,6 +10,7 @@
 #include "PS_Manager.h"
 #include "PS_EnergyLoss.h"
 #include "PS_Explosion.h"
+#include "PS_MultiTexExplosion.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
@@ -99,7 +100,8 @@ void PS_Manager :: init(const ParserSection * parsec)
 				// If so,parse them & create the particle system
 
 				const string texname = (*it)->getVal("Texture");
-				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+				const string shapetexname = (*it)->getVal("ShapeTexture");
+				created_ps = new PS_MultiTexExplosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,shapetexname);
 
 			}
 			else if(pstype == "PS_Fountain")
