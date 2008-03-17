@@ -38,7 +38,7 @@ TextureCube = 3
 ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
-				<"PS_EnemyExplosion.sh">
+				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -144,7 +144,7 @@ ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
 Texture      = "redExp.bmp" 
-ShapeTexture = "flare0.bmp" 
+ShapeTexture = "particle2.bmp" 
 
 [ParticleSystem : PS_YellowEnemyExplosion]
 Variations   = 1
@@ -154,7 +154,7 @@ ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
 Texture      = "yellowExp.bmp" 
-ShapeTexture = "flare0.bmp" 
+ShapeTexture = "particle2.bmp" 
 
 [ParticleSystem : PS_BlueEnemyExplosion]
 Variations   = 1
@@ -164,7 +164,7 @@ ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
 Texture      = "blueExp.bmp"
-ShapeTexture = "flare0.bmp"  
+ShapeTexture = "particle2.bmp"  
 
 [ParticleSystem : PS_Fountain]
 Variations   = 1
@@ -173,6 +173,15 @@ ParticleLife = 3
 ParticleSize = 0.5
 ParticleNum  = 10000
 Shader       = "PS_Fountain"
+Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_Jet]
+Variations   = 1
+SystemLife   = 2000
+ParticleLife = 3
+ParticleSize = 0.5
+ParticleNum  = 1000
+Shader       = "PS_Jet"
 Texture      = "Flare1_32.sgi" 
 
 
