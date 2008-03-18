@@ -11,6 +11,7 @@
 
 #include <string>
 #include "PS_Base.h"
+#include "../GameLogic/Objects/Playership.h"
 
 class Texture;
 struct VAttribStatus;
@@ -23,7 +24,9 @@ struct VAttribStatus;
 
 class PS_EnergyLoss : public PS_Base
 {
-
+private:
+	int m_particleColor;
+	Playership *m_emitterShip;
 
 public :
 	// 2 Ctors : Template & copy 
@@ -53,9 +56,8 @@ public :
 	virtual void render() const;		
 	virtual void update(const float delta);		
 	virtual void reset();						
-	virtual PS_Base * clone() const;		
+	virtual PS_Base * clone() const;	
 
-private:
-	int m_particleColor;
+	void setEmitterShip(Playership *emitterShip) { m_emitterShip = emitterShip; };
 
 };
