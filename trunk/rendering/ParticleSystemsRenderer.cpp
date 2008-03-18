@@ -88,17 +88,17 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 	switch (keyPressed) {
 		case 'Q':
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-			cf.move(Vector3(64,1450,-64));
+			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'E':
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
-			cf.move(Vector3(64,1450,-64));
+			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'R':
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
-			cf.move(Vector3(64,1450,-64));
+			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'T':
@@ -108,7 +108,7 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			break;
 		case 'Y':
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-			cf.move(Vector3(64,1450,-64));
+			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
 	}
@@ -123,8 +123,12 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
 	else if (energyType == EnergyTypeFromString("yellow"))
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-	else if (energyType == EnergyTypeFromString("blue"))
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+	else if (energyType == EnergyTypeFromString("blue")) {
+		//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+	}
 	m_psList.back()->setTransform(cf);
 }
 
