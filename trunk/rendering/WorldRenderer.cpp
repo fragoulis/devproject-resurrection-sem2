@@ -32,10 +32,10 @@ WorldRenderer :: ~WorldRenderer()
 void WorldRenderer :: render(Graphics& g) const
 {
 	m_terrainRenderer.render(g);
-	m_psRenderer.render(g);
 	m_spawnPointRenderer.render(g);
 	m_shipRenderer.render(g);
 	m_laserRenderer.render(g);
+	m_psRenderer.render(g);
 }
 
 void WorldRenderer :: update( float dt )
