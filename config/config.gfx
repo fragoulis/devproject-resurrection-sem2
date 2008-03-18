@@ -125,7 +125,7 @@ ParticleLife = 2
 ParticleSize = 10
 ParticleNum  = 5000
 Shader       = "PS_Explosion"
-Texture      = "Flare1_32.sgi" 
+Texture      = "particle2.bmp" 
 
 [ParticleSystem : PS_ColouredExplosion]
 Variations   = 1
@@ -135,6 +135,8 @@ ParticleSize = 5
 ParticleNum  = 5000
 Shader       = "PS_ColouredExplosion"
 Texture      = "flame.bmp" 
+ShapeTexture = "particle2.bmp" 
+
 
 [ParticleSystem : PS_RedEnemyExplosion]
 Variations   = 1

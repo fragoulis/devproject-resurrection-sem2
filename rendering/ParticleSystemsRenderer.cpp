@@ -14,6 +14,7 @@
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../ParticleSystem/PS_Jet.h"
+#include "../ParticleSystem/PS_EnergyLoss.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -111,6 +112,13 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
+		case 'U':
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+			cf.move(Vector3(64,286,-64));
+			m_psList.back()->setTransform(cf);
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+			m_psList.back()->setTransform(cf);
+			break;
 	}
 }
 
@@ -123,28 +131,27 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
 	else if (energyType == EnergyTypeFromString("yellow"))
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-	else if (energyType == EnergyTypeFromString("blue")) {
-		//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
-	}
+	else if (energyType == EnergyTypeFromString("blue")) 
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
 	m_psList.back()->setTransform(cf);
 }
 
 void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
 
-	CoordinateFrame cf = playerEnergy.getValue1()->getCoordinateFrame(); 
+	PS_EnergyLoss *ps_EnergyLoss = NULL;
+	//CoordinateFrame cf = playerEnergy.getValue1()->getCoordinateFrame(); 
 	EnergyType energyType = playerEnergy.getValue2();
 	//depending on the drained energy type generates a different effect
 	if (energyType == EnergyTypeFromString("red"))
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
+		ps_EnergyLoss = (PS_EnergyLoss*) PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss");
 	else if (energyType == EnergyTypeFromString("yellow"))
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+		ps_EnergyLoss = (PS_EnergyLoss*) PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss");
 	else if (energyType == EnergyTypeFromString("blue"))
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
+		ps_EnergyLoss = (PS_EnergyLoss*) PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss");
 
-	m_psList.back()->setTransform(cf);
+	ps_EnergyLoss->setEmitterShip(playerEnergy.getValue1());
+	m_psList.push_back(ps_EnergyLoss);
+	//m_psList.back()->setTransform(cf);
 
 }
 

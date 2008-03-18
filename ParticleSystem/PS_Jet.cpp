@@ -33,6 +33,8 @@ PS_Jet :: PS_Jet(const std::string& name,
 {
 	// Initialize
 	_generateData(vbo,TextureIO::instance()->getTexture(texture));
+
+	m_emitterShip = NULL;
 }
 
 // TEMPLATE CREATION CTOR
@@ -48,6 +50,8 @@ PS_Jet :: PS_Jet(const std::string& name,
 {
 	m_quadArray = model;
 	m_usedAttribs = status;
+
+	m_emitterShip = NULL;
 }
 
 
@@ -153,8 +157,10 @@ void PS_Jet :: update(const float delta)
 	m_currentTime += delta;
 
 	//moving the jet with the player ship
-	CoordinateFrame cf = m_emitterShip->getCoordinateFrame();
-	setTransform(cf);  
+	if (m_emitterShip != NULL) {
+		CoordinateFrame cf = m_emitterShip->getCoordinateFrame();
+		setTransform(cf); 
+	} 
 }
 
 void PS_Jet :: render() const
