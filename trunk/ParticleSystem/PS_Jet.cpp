@@ -151,6 +151,10 @@ void  PS_Jet :: _generateData(VBO * vbo,Texture * tex)
 void PS_Jet :: update(const float delta)
 {
 	m_currentTime += delta;
+
+	//moving the jet with the player ship
+	CoordinateFrame cf = m_emitterShip->getCoordinateFrame();
+	setTransform(cf);  
 }
 
 void PS_Jet :: render() const
