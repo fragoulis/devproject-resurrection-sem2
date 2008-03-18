@@ -17,7 +17,8 @@
 
 class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
 												  public EventListener<Enemy_Despawned>,
-												  public EventListener<Player_EnergyDrained>
+												  public EventListener<Player_EnergyDrained>,
+												  public EventListener<Player_Spawned>
 {
 public:
 	ParticleSystemsRenderer();
@@ -29,6 +30,7 @@ public:
 	virtual void onEvent(Key_GoingDown&);
 	virtual void onEvent(Enemy_Despawned&);
 	virtual void onEvent(Player_EnergyDrained&);
+	virtual void onEvent(Player_Spawned&);
 
 private:
 	// bunch of ParticleSystems here I guess

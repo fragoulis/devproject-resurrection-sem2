@@ -13,6 +13,7 @@
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../ParticleSystem/PS_Jet.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -21,6 +22,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
+	EventManager::instance().registerEventListener<Player_Spawned>(this);
 
 	
 }
@@ -109,11 +111,6 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			cf.move(Vector3(64,1450,-64));
 			m_psList.back()->setTransform(cf);
 			break;
-		case 'U':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Jet"));
-			cf.move(Vector3(64,1450,-64));
-			m_psList.back()->setTransform(cf);
-			break;
 	}
 }
 
@@ -146,4 +143,11 @@ void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
 
 	m_psList.back()->setTransform(cf);
 
+}
+
+void ParticleSystemsRenderer::onEvent(Player_Spawned &player)
+{
+	PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
+	ps_jet->setEmitterShip(player.getValue());
+	m_psList.push_back(ps_jet);
 }
