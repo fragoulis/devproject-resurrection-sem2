@@ -125,7 +125,6 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
 	else if (energyType == EnergyTypeFromString("blue"))
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
-
 	m_psList.back()->setTransform(cf);
 }
 
