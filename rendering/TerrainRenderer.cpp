@@ -382,6 +382,10 @@ void TerrainRenderer :: _updateTerraformContribution() const
 	Vector3 up(0.0f,m_mapExtents.getZ(),0.0f);
 	Vector3 right(m_mapExtents.getX(),0.0f,0.0f);
 
+	glDepthMask(GL_FALSE);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+
 	ShaderManager::instance()->begin("terraformShader");
 
 	const float tpu = RenderEngine::instance().getConstRenderSettings().getTerraformingTimePerUnit();
@@ -397,6 +401,9 @@ void TerrainRenderer :: _updateTerraformContribution() const
 
 		RenderEngine::drawQuad(ll,right,up);
 	}
+
+	glDepthMask(GL_TRUE);
+	glDisable(GL_BLEND);
 
 	// disable fbo - restore buffer & viewport
 	FramebufferObject::Disable();
@@ -586,6 +593,15 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 			TerraformInfo_t tfi;
 			tfi.center = Vector3(0.0f,0.0f,0.0f);
 			tfi.radius = 1024;
+			tfi.currentTimeOffset = 0.0f;
+			m_tformInfo.push_back(tfi);
+			}
+			break;
+		case 'N':
+			{
+			TerraformInfo_t tfi;
+			tfi.center = Vector3(-150.0f,0.0f,-150.0f);
+			tfi.radius = 500;
 			tfi.currentTimeOffset = 0.0f;
 			m_tformInfo.push_back(tfi);
 			}
