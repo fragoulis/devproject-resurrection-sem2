@@ -15,6 +15,7 @@
 #include "../GameLogic/Objects/Playership.h"
 #include "../ParticleSystem/PS_Jet.h"
 #include "../ParticleSystem/PS_EnergyLoss.h"
+#include "../ParticleSystem/PS_Fountain.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -86,6 +87,7 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 	int keyPressed = key.getValue();
 
 	CoordinateFrame cf;
+	PS_Fountain *ps_Fountain = NULL;
 
 	switch (keyPressed) {
 		case 'Q':
@@ -104,7 +106,9 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'T':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueFountain"));
+			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountain");
+			ps_Fountain->setRadiusScale(20.0f);
+			m_psList.push_back(ps_Fountain);
 			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;

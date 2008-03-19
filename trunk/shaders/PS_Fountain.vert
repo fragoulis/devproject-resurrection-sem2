@@ -12,11 +12,13 @@ uniform float particleLife;
 uniform float particleSize;
 uniform float systemLife;
 uniform int particleColor;
+uniform float radiusScale;  //scale factor of the fountain radius
 
 attribute vec4 velocity;
 //attribute vec4 offset;
 
 varying vec4 color;
+varying vec4 alphaColor;
 
 const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
@@ -34,7 +36,7 @@ void main(void)
 	if(sum_time <= velocity.w)
     {
 		// Add the start offset & the time-based velocity
-        vert    = vec4(velocity.xyz*t*20 + 0.5*ACCELERATION*t*t, 1.0);
+        vert    = vec4(velocity.xyz*t*radiusScale + 0.5*ACCELERATION*t*t, 1.0);
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;
@@ -59,6 +61,9 @@ void main(void)
 		//vert.xyz += offset.xyz;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
+		
+		alphaColor = vec4(1.0);
+		alphaColor.a = 100*currentTime/systemLife;
     }
     else
 		color.w = -1.0;
