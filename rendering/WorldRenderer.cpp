@@ -18,8 +18,9 @@ m_playerActive(false)
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 
 	m_camera = new Camera();
-	m_camera->setPerspective(30, 1.0f, 10.0f, 10000.0f);
-	m_camera->setPosition(Vector3(64, 300, -64), Vector3(64, 0, -64), Vector3(0,0,-1));
+	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
+	m_camera->setPosition(Vector3(0, 300, -0), Vector3(0, 0, -0), Vector3(0,0,-1));
+	m_terrainRenderer.setCamera(m_camera);
 }
 
 WorldRenderer :: ~WorldRenderer()
@@ -53,6 +54,7 @@ void WorldRenderer :: update( float dt )
 	_updateMatrices();
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
+	m_terrainRenderer.update(dt);
 	//m_shipRenderer.update(dt);
 }
 

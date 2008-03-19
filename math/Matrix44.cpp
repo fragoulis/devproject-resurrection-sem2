@@ -122,4 +122,14 @@ void Matrix44::invert()
 	//set(3,2, get(0,2)*get(1,1)*get(3,0)-get(0,1)*get(1,2)*get(3,0)-get(0,2)*get(1,0)*get(3,1)+get(0,0)*get(1,2)*get(3,1)+ get(0,1)*get(1,0)*get(3,2)-get(0,0)*get(1,1)*get(3,2));
 	//set(3,3, get(0,1)*get(1,2)*get(2,0)-get(0,2)*get(1,1)*get(2,0)+get(0,2)*get(1,0)*get(2,1)-get(0,0)*get(1,2)*get(2,1)- get(0,1)*get(1,0)*get(2,2)+get(0,0)*get(1,1)*get(2,2));
 	//multiply(1 / determinant());
+
+	float invMat[16];
+
+	invMat[0] = m_components[0];  invMat[4] = m_components[1];  invMat[8] = m_components[2];           invMat[12] = -m_components[0]*m_components[12] - m_components[1]*m_components[13] - m_components[2]*m_components[14];
+	invMat[1] = m_components[4];  invMat[5] = m_components[5];  invMat[9] = m_components[6];           invMat[13] = -m_components[4]*m_components[12] - m_components[5]*m_components[13] - m_components[6]*m_components[14];
+	invMat[2] = m_components[8];  invMat[6] = m_components[9];  invMat[10] = m_components[10];         invMat[14] = -m_components[8]*m_components[12] - m_components[9]*m_components[13] - m_components[10]*m_components[14];
+	invMat[3] = 0;       invMat[7] = 0;       invMat[11] = 0;               invMat[15] = 1.0f;
+
+	for(int i = 0; i < 16; i++) 
+		m_components[i] = invMat[i];
 }
