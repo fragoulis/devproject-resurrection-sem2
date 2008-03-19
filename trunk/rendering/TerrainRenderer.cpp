@@ -28,6 +28,7 @@
 #include "../gfx/vbo/vbo.h"
 #include "../Math/Vector4.h"
 #include "../Math/Vector2.h"
+#include "../gfxutils/Misc/Logger.h"
 
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
@@ -48,6 +49,8 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+
+	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 }
 
 TerrainRenderer :: ~TerrainRenderer()
@@ -84,6 +87,7 @@ void TerrainRenderer :: _clearResources()
 void TerrainRenderer :: render(Graphics& g) const
 {
 	_renderShadows();
+	_updateTerraformContribution();
 
 	//creating the texture projection matrix
 	float texProjMat[16];
@@ -323,19 +327,19 @@ void TerrainRenderer :: _removeShadowCaster(const CoordinateFrame * cf)
 
 void TerrainRenderer :: _updateTerraform(const float dt)
 {
-	const float terraform_interval = 2.0f; // FIXME : apply appropriate
+	const float tpu = RenderEngine::instance().getConstRenderSettings().getTerraformingTimePerUnit();
 	// For every active terraform process, add the dt
 	for(size_t i=0; i< m_tformInfo.size();++i)
 	{
 		m_tformInfo[i].currentTimeOffset += dt;
-		if(m_tformInfo[i].currentTimeOffset > terraform_interval)
+		if(m_tformInfo[i].currentTimeOffset > (tpu*m_tformInfo[i].radius))
 		{
 			m_tformInfo.erase(m_tformInfo.begin() + i);
 			--i;
 		}
 	}
+	//CKLOG(string("ActiveTerraforms : ") + ToString<unsigned>(unsigned(m_tformInfo.size())),2);
 
-	// adjust tree heights!
 }
 
 void TerrainRenderer :: _updateTerraformContribution() const
@@ -347,6 +351,63 @@ void TerrainRenderer :: _updateTerraformContribution() const
 	// for every active terraform , run the shader in the appropriate quad ( for starters the whole map)
 	// the shader makes the terraformed cells white
 	// restore settings , unbind FBO
+
+	// save draw buffer * viewport
+	int curdrawbuf;
+	glGetIntegerv(GL_DRAW_BUFFER,&curdrawbuf);
+	int vp[4];
+	glGetIntegerv(GL_VIEWPORT,vp);
+	const unsigned dim = m_terrain->getTerrainDim();
+	
+	// Change viewport - bind fbo - set draw buffer
+	glViewport(0,0,dim,dim);
+	m_tformFBO.Bind();
+	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+
+	// push & alter transforms
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(-m_mapExtents.getX()*0.5f,
+			m_mapExtents.getX()*0.5f,
+			-m_mapExtents.getZ()*0.5f,
+			m_mapExtents.getZ()*0.5f,
+			-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	// bind shader & uniforms & runs the shader
+	Vector3 ll(-m_mapExtents.getX()*0.5f,-m_mapExtents.getZ()*0.5f,0.0f);
+	Vector3 up(0.0f,m_mapExtents.getZ(),0.0f);
+	Vector3 right(m_mapExtents.getX(),0.0f,0.0f);
+
+	ShaderManager::instance()->begin("terraformShader");
+
+	const float tpu = RenderEngine::instance().getConstRenderSettings().getTerraformingTimePerUnit();
+
+	for(size_t i=0;i< m_tformInfo.size();++i)
+	{
+		const float timepcent = m_tformInfo[i].currentTimeOffset / (tpu*m_tformInfo[0].radius);
+		Vector2 v(m_tformInfo[i].center.getX(),m_tformInfo[i].center.getZ());
+		ShaderManager::instance()->setUniform1fv("timePercent", &timepcent);
+		ShaderManager::instance()->setUniform2fv("center",v.cfp());
+		const float sqradius = m_tformInfo[i].radius*m_tformInfo[i].radius;
+		ShaderManager::instance()->setUniform1fv("sqradius",&sqradius);
+
+		RenderEngine::drawQuad(ll,right,up);
+	}
+
+	// disable fbo - restore buffer & viewport
+	FramebufferObject::Disable();
+	glDrawBuffer(curdrawbuf);
+	glViewport(vp[0],vp[1],vp[2],vp[3]);
+
+	// restore matrix states
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 }
 
 
@@ -513,4 +574,21 @@ void TerrainRenderer :: update(const float dt)
 	
 	m_lightCameraEye = m_cameraRef->getEye() - 500.0f*m_lightDir;
 	_updateTerraform(dt);
+}
+
+void TerrainRenderer::onEvent(Key_GoingDown &key) 
+{
+	int keyPressed = key.getValue();
+
+	switch (keyPressed) {
+		case 'M':
+			{
+			TerraformInfo_t tfi;
+			tfi.center = Vector3(0.0f,0.0f,0.0f);
+			tfi.radius = 1024;
+			tfi.currentTimeOffset = 0.0f;
+			m_tformInfo.push_back(tfi);
+			}
+			break;
+	}
 }
