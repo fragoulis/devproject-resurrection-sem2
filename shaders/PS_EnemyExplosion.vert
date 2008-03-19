@@ -30,7 +30,7 @@ void main(void)
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
 
-		vColor = -(currentTime/particleLife)*4;
+		vColor = (currentTime/particleLife);
 		alphaColor = vec4(1.0);
 		alphaColor.a = 1.0-currentTime/systemLife;
 		

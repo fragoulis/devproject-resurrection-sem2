@@ -109,9 +109,13 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'Y':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
 			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
+			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+			//m_psList.back()->setTransform(cf);
+			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+			//m_psList.back()->setTransform(cf);
 			break;
 		case 'U':
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
