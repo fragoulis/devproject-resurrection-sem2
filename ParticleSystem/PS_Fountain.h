@@ -25,6 +25,7 @@ class PS_Fountain : public PS_Base
 {
 private:
 	int m_particleColor;
+	float m_radiusScale;
 
 public :
 	// 2 Ctors : Template & copy 
@@ -55,5 +56,7 @@ public :
 	virtual void update(const float delta);		
 	virtual void reset();						
 	virtual PS_Base * clone() const;					
+
+	void setRadiusScale(float radiusScale) { m_radiusScale = radiusScale; };
 
 };

@@ -169,6 +169,8 @@ void PS_Fountain :: render() const
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1i("particleColor",m_particleColor);
 	CHECK_GL_ERROR();
+	ShaderManager::instance()->setUniform1fv("radiusScale",&m_radiusScale);
+	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1i("particleTex",0);
 	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getVboDesc().call();
