@@ -38,7 +38,7 @@ TextureCube = 3
 ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
-				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"ShadowWriteShader.sh"> , <"lakeShader.sh"> , <"foliageShader.sh">
+				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"ShadowWriteShader.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> 
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -227,6 +227,6 @@ SpawnPointInterval = 1.0
 SpawnPointSize = 200
 SpawnPointTexture = stars.dds
 ShadowTextureSize = 1024
-TreeBuriedHeight = -000
 TerraformingTimePerUnit = 0.1
+LaserTexture = "Flare1_32.sgi"
 

@@ -59,7 +59,7 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_spawnpointInterval = FromString<float>(parsec->getVal("SpawnPointInterval"));
 	m_spawnpointSize = FromString<float>(parsec->getVal("SpawnPointSize"));
 	m_spawnpointTexture = TextureIO::instance()->getTexture(parsec->getVal("SpawnPointTexture"));
-	m_treeBuriedHeight = FromString<float>(parsec->getVal("TreeBuriedHeight"));
 	m_shadowTextureSize = FromString<unsigned>(parsec->getVal("ShadowTextureSize"));
 	m_tformTimePerUnit = FromString<float>(parsec->getVal("TerraformingTimePerUnit"));
+	m_laserTexName = parsec->getVal("LaserTexture");
 }
