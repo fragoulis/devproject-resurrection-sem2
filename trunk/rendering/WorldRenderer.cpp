@@ -9,6 +9,9 @@
 
 #include "WorldRenderer.h"
 #include "../gfx/Camera.h"
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
+#include <string>
 
 WorldRenderer :: WorldRenderer()
 :m_camera(0),
