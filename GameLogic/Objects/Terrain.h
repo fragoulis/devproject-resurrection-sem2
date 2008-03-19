@@ -25,6 +25,8 @@ public:
 										// max = xzscale * dim, ymax, -xzscale * dim
 	
 	void fillData(float * heights,const float xzscale,const float ymax,const unsigned dim);
+
+	unsigned getTerrainDim() const {return m_terrainDim;}
 	
 private:
 

@@ -130,8 +130,7 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
 	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
 
-	// FIXME : fetch it from m_terrain
-	const float mapsize = 129.0f;
+	const float mapsize = float(m_terrain->getTerrainDim());
 	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
 
 	m_terrainModel->matGroup(0).vboDesc().call();
@@ -148,13 +147,20 @@ void TerrainRenderer :: render(Graphics& g) const
 	// Draw the lake
 	// FIXME : do it appropriately
 	
-	ShaderManager::instance()->end();
+	ShaderManager::instance()->begin("lakeShader");
+	m_lakeTexture->bind(0);
+	ShaderManager::instance()->setUniform1i("lakeTex",0);
+	m_shadowTexture->bind(1);
+	ShaderManager::instance()->setUniform1i("shadowTex",1);
+	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
+	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
+
 	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
 	Vector3 right(m_mapExtents.getX(),0,0);
 	Vector3 up(0,0,-m_mapExtents.getX());
-	m_lakeTexture->bind();
 	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(10,10));
 
+	ShaderManager::instance()->end();
 
 	// Draw the trees
 	// FIXME : do it appropriately
@@ -347,10 +353,12 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 		Model * m2 = ModelMgr::instance().getModel(treeModelNames[i] + string("_tex.obj"));
 		m_trees.push_back(ForestInfo_t(m1,m2));
 	}
+	const float buriedheight = RenderEngine::instance().getConstRenderSettings().getTreeBuriedHeight();
 	for(unsigned i=0;i<treenum;++i)
 	{
 		const unsigned random_i = rand() % unsigned(m_trees.size());
-		m_trees[random_i].trees.push_back(TreeInfo_t(Vector3(treepos[i].cfp())));
+		const Vector4 buried_pos = treepos[i] - Vector4(0.0f,buriedheight,0.0f,0.0f);
+		m_trees[random_i].trees.push_back(TreeInfo_t(Vector3(buried_pos.cfp())));
 	}
 	MemMgrRaw::instance()->free(treepos);
 
@@ -499,7 +507,7 @@ void TerrainRenderer :: _renderShadows() const
 			m_lightCameraVectorUp.getY(),
 			m_lightCameraVectorUp.getZ());
 
-	// Disable Color Writes Here??
+	// TODO : Disable Color Writes Here?? render to depth & fetch it as a luminance?
 	// Render the ships minimally - set the minimal shader
 
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -534,7 +542,7 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	float w,h,n,f;
 	m_cameraRef->getProjSettings(w,h,n,f);
 	
-	// compute the max quad dims shown in height = 0
+	// compute the max quad dims shown in height = gameplane
 	const float gameplanedepth = 1500.0f;
 	float maxLeftRight = w* gameplanedepth/ n;
 	float maxTopDown = h*gameplanedepth / n;
@@ -548,14 +556,9 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_lightCameraVectorUp = Vector3::cross(right,ldir);
 	m_lightCameraVectorUp.normalize();
 
-	// Adjust maxleft & maxright so that they cover the whole screen
-	const Vector3 X_AXIS(1.0f,0.0f,0.0f);
-	const Vector3 Z_AXIS(0.0f,0.0f,1.0f);
-	float right_d = min(abs(right.dot(X_AXIS)), abs(m_lightCameraVectorUp.dot(X_AXIS)));
-	float up_d = min(abs(right.dot(Z_AXIS)), abs(m_lightCameraVectorUp.dot(Z_AXIS)));
-
-	maxLeftRight /= right_d;
-	maxTopDown /= up_d;
+	// FIXME : 
+	maxLeftRight = 950;		// -- GOOD BUT HACK!!
+	maxTopDown = 950;
 
 	// set a safe distance for the light eye
 	m_lightCameraEye = Vector3(0.0f,gameplanedepth + GameLogic::instance().getGamePlaneHeight(),0.0f) - 500.0f*ldir;
@@ -565,7 +568,7 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_lightCameraProjSettings[1] = maxLeftRight;
 	m_lightCameraProjSettings[2] = -maxTopDown;
 	m_lightCameraProjSettings[3] = maxTopDown;
-	m_lightCameraProjSettings[4] = -n;
+	m_lightCameraProjSettings[4] = n;
 	m_lightCameraProjSettings[5] = f;
 
 	m_lightDir = ldir;
@@ -576,7 +579,8 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	ml.push_back(MipmapLevel(0,0));
 	m_shadowFBO.Bind();
 	m_shadowTexture = new Texture2D(ts,ts,GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"Shadow",false,false);
-	glGenerateMipmapEXT(GL_TEXTURE_2D);
+	//glGenerateMipmapEXT(GL_TEXTURE_2D);
+	m_shadowTexture->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	m_shadowFBO.AttachTexture(GL_TEXTURE_2D,m_shadowTexture->getId(),GL_COLOR_ATTACHMENT0_EXT);
 	m_shadowFBO.IsValid();
 	FramebufferObject::Disable();
