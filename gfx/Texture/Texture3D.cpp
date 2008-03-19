@@ -42,7 +42,7 @@ Texture3D :: Texture3D(const unsigned w,const unsigned h,const unsigned d,const 
 		unsigned miplevel = 0;
 		while(miplevel <= _maxMiplevel)
 		{
-			const unsigned char * tmp_data = texdata[miplevel].data;
+			const unsigned char * tmp_data = (unsigned char *)(texdata[miplevel].data);
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
 			unsigned tmp_w = unsigned(_width * adjust),
 					 tmp_h = unsigned(_height * adjust),
@@ -61,7 +61,7 @@ Texture3D :: Texture3D(const unsigned w,const unsigned h,const unsigned d,const 
 		unsigned miplevel = 0;
 		while(miplevel <= _maxMiplevel)
 		{
-			const unsigned char * tmp_data = texdata[miplevel].data;
+			const unsigned char * tmp_data = (unsigned char *)(texdata[miplevel].data);
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
 			unsigned tmp_w = unsigned(_width * adjust),
 					 tmp_h = unsigned(_height * adjust),

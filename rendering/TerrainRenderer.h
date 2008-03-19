@@ -99,6 +99,8 @@ private:
 
 	// For the lake
 	Texture * m_lakeTexture;
+	Texture * m_cloudTexture;
+	Texture * m_heightTexture;
 	float m_lakeTimer;
 
 	// For the shadows

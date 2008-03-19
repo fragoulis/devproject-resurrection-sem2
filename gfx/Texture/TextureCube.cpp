@@ -35,7 +35,7 @@ TextureCube :: TextureCube(const unsigned w,const unsigned h,const unsigned ifmt
 			unsigned miplevel = 0;
 			while(miplevel <= _maxMiplevel)
 			{
-				const unsigned char * tmp_data = texdata[face][miplevel].data;
+				const unsigned char * tmp_data = (unsigned char *)(texdata[face][miplevel].data);
 				const double adjust = 1.0 / pow(2.0,int(miplevel));
 				unsigned tmp_w = unsigned(_width * adjust),
 						 tmp_h = unsigned(_height * adjust);
@@ -54,7 +54,7 @@ TextureCube :: TextureCube(const unsigned w,const unsigned h,const unsigned ifmt
 			unsigned miplevel = 0;
 			while(miplevel <= _maxMiplevel)
 			{
-				const unsigned char * tmp_data = texdata[face][miplevel].data;
+				const unsigned char * tmp_data = (unsigned char *)(texdata[face][miplevel].data);
 				const double adjust = 1.0 / pow(2.0,int(miplevel));
 				unsigned tmp_w = unsigned(_width * adjust),
 						 tmp_h = unsigned(_height * adjust);

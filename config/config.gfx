@@ -233,5 +233,7 @@ LaserTexture = "Flare1_32.sgi"
 WaveChangeRate = 0.08;
 WaveSpeed = 0.02;
 WaveRepeats = 5;
+CloudRepeats = 5;
 LakeTexture = noiseVolume.dds
+CloudTexture = clouds.dds
 

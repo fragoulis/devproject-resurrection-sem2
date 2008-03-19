@@ -42,7 +42,7 @@ Texture2D :: Texture2D(const unsigned w,const unsigned h,const unsigned ifmt,
 		unsigned miplevel = 0;
 		while(miplevel <= _maxMiplevel)
 		{
-			const unsigned char * tmp_data = texdata[miplevel].data;
+			const unsigned char * tmp_data = (unsigned char *)(texdata[miplevel].data);
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
 			unsigned tmp_w = max(unsigned(_width * adjust),1),
 					 tmp_h = max(unsigned(_height * adjust),1);
@@ -60,7 +60,7 @@ Texture2D :: Texture2D(const unsigned w,const unsigned h,const unsigned ifmt,
 		unsigned miplevel = 0;
 		while(miplevel <= _maxMiplevel)
 		{
-			const unsigned char * tmp_data = texdata[miplevel].data;
+			const unsigned char * tmp_data = (unsigned char *)(texdata[miplevel].data);
 			const double adjust = 1.0 / pow(2.0,int(miplevel));
 			unsigned tmp_w =  max(unsigned(_width * adjust),1),
 					 tmp_h =  max(unsigned(_height * adjust),1);
