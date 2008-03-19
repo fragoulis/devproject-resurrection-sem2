@@ -168,15 +168,6 @@ Shader       = "PS_EnemyExplosion"
 Texture      = "blueExp.bmp"
 ShapeTexture = "Flare1_32.sgi"  
 
-[ParticleSystem : PS_Fountain]
-Variations   = 1
-SystemLife   = 2000
-ParticleLife = 3
-ParticleSize = 0.5
-ParticleNum  = 10000
-Shader       = "PS_Fountain"
-Texture      = "Flare1_32.sgi" 
-
 [ParticleSystem : PS_Jet]
 Variations   = 1
 SystemLife   = 2000
@@ -184,6 +175,36 @@ ParticleLife = 1
 ParticleSize = 6
 ParticleNum  = 1000
 Shader       = "PS_Jet"
+Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_RedFountain]
+Variations   = 1
+SystemLife   = 2000
+ParticleLife = 3
+ParticleSize = 5
+ParticleNum  = 10000
+Shader       = "PS_Fountain"
+ParticleColor = 0
+Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_YellowFountain]
+Variations   = 1
+SystemLife   = 2000
+ParticleLife = 3
+ParticleSize = 5
+ParticleNum  = 10000
+Shader       = "PS_Fountain"
+ParticleColor = 1
+Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_BlueFountain]
+Variations   = 1
+SystemLife   = 2000
+ParticleLife = 3
+ParticleSize = 5
+ParticleNum  = 10000
+Shader       = "PS_Fountain"
+ParticleColor = 2
 Texture      = "Flare1_32.sgi" 
 
 
