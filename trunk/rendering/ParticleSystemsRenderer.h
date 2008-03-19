@@ -21,6 +21,9 @@ class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_Going
 												  public EventListener<Player_Spawned>
 {
 public:
+	//flag to check if a jet particle system is already created (there is only one needed)
+	bool m_isJetCreated;
+
 	ParticleSystemsRenderer();
 	virtual ~ParticleSystemsRenderer();
 

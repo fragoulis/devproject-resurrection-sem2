@@ -11,6 +11,7 @@
 #include "PS_EnergyLoss.h"
 #include "PS_Explosion.h"
 #include "PS_MultiTexExplosion.h"
+#include "PS_Fountain.h"
 #include "PS_Jet.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
@@ -106,15 +107,6 @@ void PS_Manager :: init(const ParserSection * parsec)
 				created_ps = new PS_MultiTexExplosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,shapetexname);
 
 			}
-			else if(pstype == "PS_Fountain")
-			{
-				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
-				// If so,parse them & create the particle system
-
-				const string texname = (*it)->getVal("Texture");
-				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
- 
-			}
 			else if(pstype == "PS_Jet")
 			{
 				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
@@ -123,6 +115,12 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const string texname = (*it)->getVal("Texture");
 				created_ps = new PS_Jet((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
 
+			}
+			if(pstype == "PS_RedFountain" || pstype == "PS_YellowFountain" || pstype == "PS_BlueFountain")
+			{
+				const int particleColor = FromString<int>((*it)->getVal("ParticleColor"));
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new PS_Fountain((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,texname);
 			}
 			
 			m_psList.push_back(created_ps);

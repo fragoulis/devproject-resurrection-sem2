@@ -25,7 +25,8 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
 
-	
+	m_isJetCreated = false;
+
 }
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
@@ -103,8 +104,8 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'T':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Fountain"));
-			cf.move(Vector3(64,1450,-64));
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueFountain"));
+			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'Y':
@@ -155,9 +156,13 @@ void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
 
 }
 
-void ParticleSystemsRenderer::onEvent(Player_Spawned &player)
-{
-	PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
-	ps_jet->setEmitterShip(player.getValue());
-	m_psList.push_back(ps_jet);
+void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
+
+	if (!m_isJetCreated) {
+		PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
+		ps_jet->setEmitterShip(player.getValue());
+		m_psList.push_back(ps_jet);
+	}
+
 }
+
