@@ -99,6 +99,7 @@ private:
 
 	// For the lake
 	Texture * m_lakeTexture;
+	float m_lakeTimer;
 
 	// For the shadows
 	std::vector<CoordinateModel> m_shadowCasters;

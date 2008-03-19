@@ -27,6 +27,11 @@ class ConstRenderSettings
 	float m_tformTimePerUnit;
 
 	std::string m_laserTexName;
+	
+	float m_waveChangeRate;
+	float m_waveSpeed;
+	float m_waveRepeats;
+	std::string m_lakeTexture;
 
 
 	void _parseMiscEntities(const ParserSection * parsec);
@@ -45,6 +50,11 @@ public :
 	const float getTerraformingTimePerUnit() const {return m_tformTimePerUnit;}
 
 	const std::string& getLaserTextureName() const {return m_laserTexName;}
+
+	const float getWaveChangeRate() const{return m_waveChangeRate;}
+	const float getWaveSpeed() const{return m_waveSpeed;}
+	const std::string& getLakeTexture() const {return m_lakeTexture;}
+	const float getWaveRepeats() const {return m_waveRepeats;}
 
 	void init(const ParserSection * parsec);
 
