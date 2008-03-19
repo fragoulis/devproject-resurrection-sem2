@@ -16,10 +16,10 @@
 
 struct MipmapLevel
 {
-	unsigned char * data;
+	void * data;
 	unsigned size;
 	MipmapLevel():data(0),size(0){}
-	MipmapLevel(unsigned char * d,const unsigned s):data(d),size(s){}
+	MipmapLevel(void * d,const unsigned s):data(d),size(s){}
 };
 
 enum TexType

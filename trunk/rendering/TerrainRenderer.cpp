@@ -42,7 +42,8 @@ TerrainRenderer :: TerrainRenderer() :
 	m_tformContribTex(0),
 	m_heights(0),
 	m_shadowTexture(0),
-	m_lakeTimer(0.0f)
+	m_lakeTimer(0.0f),
+	m_heightTexture(0)
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
@@ -82,6 +83,8 @@ void TerrainRenderer :: _clearResources()
 		delete m_tformContribTex;
 	if(m_shadowTexture)
 		delete m_shadowTexture;
+	if(m_heightTexture)
+		delete m_heightTexture;
 }
 
 
@@ -149,12 +152,20 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	// Draw the lake
 	// FIXME : do it appropriately
+
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
 	
 	ShaderManager::instance()->begin("lakeShader");
 	m_lakeTexture->bind(0);
 	ShaderManager::instance()->setUniform1i("noiseTex",0);
 	m_shadowTexture->bind(1);
 	ShaderManager::instance()->setUniform1i("shadowTex",1);
+	m_cloudTexture->bind(2);
+	ShaderManager::instance()->setUniform1i("cloudTex",2);
+	m_heightTexture->bind(3);
+	ShaderManager::instance()->setUniform1i("heightTex",3);
+
 	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
 	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
@@ -162,6 +173,8 @@ void TerrainRenderer :: render(Graphics& g) const
 	const float ws = RenderEngine::instance().getConstRenderSettings().getWaveSpeed();
 	const float wcr = RenderEngine::instance().getConstRenderSettings().getWaveChangeRate();
 	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats();
+	const float cr = RenderEngine::instance().getConstRenderSettings().getCloudRepeats();
+
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
 	ShaderManager::instance()->setUniform1fv("waveSpeed",&ws);
@@ -169,13 +182,22 @@ void TerrainRenderer :: render(Graphics& g) const
 	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
 	ShaderManager::instance()->setUniform4fv("lightPosition",lightPos.cfp());
 
+	
+	ShaderManager::instance()->setUniform1fv("cloudRepeats",&cr);
+	ShaderManager::instance()->setUniform1fv("waveRepeats",&wr);
+
 	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
 	Vector3 right(m_mapExtents.getX(),0,0);
 	Vector3 up(0,0,-m_mapExtents.getX());
-	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(wr*0.5f,wr));
+	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(1.0f,1.0f));
 
 	ShaderManager::instance()->end();
+	glDisable(GL_BLEND);
 
+	TextureMgr::instance()->setTextureUnit(3);
+	TextureMgr::instance()->setBoundTexture(0,3);
+	TextureMgr::instance()->setTextureUnit(2);
+	TextureMgr::instance()->setBoundTexture(0,2);
 	TextureMgr::instance()->setTextureUnit(1);
 	TextureMgr::instance()->setBoundTexture(0,1);
 }
@@ -270,6 +292,13 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	for(unsigned i=0;i<dataSize;++i)
 		m_heights[i] = vertexData[i].getY();
 	m_terrainDimension = dimension;
+
+	vector<MipmapLevel> mlh;
+	mlh.push_back(MipmapLevel(m_heights,0));
+	m_heightTexture = new Texture2D(dimension,dimension,GL_LUMINANCE16F_ARB,GL_LUMINANCE,GL_FLOAT,mlh,
+									GL_TEXTURE_2D,"Heights",false,false);
+	m_heightTexture->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
+	m_heightTexture->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
 	
 
 	// Free our data
@@ -298,6 +327,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	// LAKE STUFF
 	
 	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
+	m_cloudTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getCloudTexture());
 
 	// SHADOW STUFF
 	_initShadows(ldir);

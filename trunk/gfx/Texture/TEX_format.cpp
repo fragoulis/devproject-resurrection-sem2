@@ -75,7 +75,7 @@ Texture * TextureIO :: _loadTEX(const std::string& fname)
 			if(_genMipmaps || (!j))
 				single_data.push_back(miplevel);
 			else
-				MemMgrRaw::instance()->free<unsigned char>(miplevel.data);
+				MemMgrRaw::instance()->free(miplevel.data);
 		}
 		data.push_back(single_data);
 	}
@@ -114,7 +114,7 @@ Texture * TextureIO :: _loadTEX(const std::string& fname)
 	// Release memory
 	for(unsigned i=0;i<faces;++i)
 		for(unsigned j=0;j<header.mipcount;++j)
-			MemMgrRaw::instance()->free<unsigned char>(data[i][j].data);
+			MemMgrRaw::instance()->free(data[i][j].data);
 
 	return tex;
 }
