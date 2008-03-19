@@ -139,8 +139,6 @@ void TerrainRenderer :: render(Graphics& g) const
 	TextureMgr::instance()->setBoundTexture(0,3);
 	TextureMgr::instance()->setTextureUnit(2);
 	TextureMgr::instance()->setBoundTexture(0,2);
-	TextureMgr::instance()->setTextureUnit(1);
-	TextureMgr::instance()->setBoundTexture(0,1);
 
 	CHECK_GL_ERROR();
 
@@ -162,63 +160,8 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	ShaderManager::instance()->end();
 
-	// Draw the trees
-	// FIXME : do it appropriately
-
-	// set tha material
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
-	m_treeMaterial.Apply();
-
-	// For each tree type
-	for(std::vector<ForestInfo_t>::const_iterator it = m_trees.begin();
-		it!= m_trees.end();
-		++it)
-	{
-		// for it's instance
-		for(std::vector<TreeInfo_t>::const_iterator it2 = it->trees.begin();
-			it2 != it->trees.end();
-			++it2)
-		{
-			glPushMatrix();
-			glTranslatef(it2->position.getX(),it2->position.getY(),it2->position.getZ());
-			for(std::vector<MaterialGroup>::const_iterator matit = it->modelGeom->getMatGroup().begin();
-				matit != it->modelGeom->getMatGroup().end();
-				++matit)
-			{
-				matit->getTextureList()[0]->bind();
-				matit->getVboDesc().call();
-			}
-			glPopMatrix();
-		}
-	}
-
-	// Enable Alpha Test & draw textures
-	glAlphaFunc(GL_GREATER,0.5);
-	glEnable(GL_ALPHA_TEST);
-	for(std::vector<ForestInfo_t>::const_iterator it = m_trees.begin();
-		it!= m_trees.end();
-		++it)
-	{
-		// for it's instance
-		for(std::vector<TreeInfo_t>::const_iterator it2 = it->trees.begin();
-			it2 != it->trees.end();
-			++it2)
-		{
-			glPushMatrix();
-			glTranslatef(it2->position.getX(),it2->position.getY(),it2->position.getZ());
-			for(std::vector<MaterialGroup>::const_iterator matit = it->modelTex->getMatGroup().begin();
-				matit != it->modelTex->getMatGroup().end();
-				++matit)
-			{
-				matit->getTextureList()[0]->bind();
-				matit->getVboDesc().call();
-			}
-			glPopMatrix();
-		}
-	}
-	glDisable(GL_ALPHA_TEST);
-	glDisable(GL_LIGHTING);
+	TextureMgr::instance()->setTextureUnit(1);
+	TextureMgr::instance()->setBoundTexture(0,1);
 }
 
 
@@ -253,6 +196,8 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	fread(&dimension,sizeof(unsigned),1,fp);
 	//dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
 	ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
+
+	m_lightColor = FromString<Vector4>(parser.getSection("Misc")->getVal("LightAmbDiff"));
 
 	// Set the GL Light 0
 	glPushAttrib(GL_MATRIX_MODE);
@@ -337,30 +282,6 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	// LAKE STUFF
 	
 	m_lakeTexture = TextureIO::instance()->getTexture("LakeTexture.dds");
-
-	// TREE STUFF
-	const string treefile = string("config/levels/") + parser.getSection("Misc")->getVal("TreePositions");
-	const vector<string> treeModelNames = parser.getSection("Misc")->getValVector("TreeModels");
-	fp = fopen(treefile.c_str(),"rb");
-	unsigned treenum;
-	fread(&treenum,sizeof(unsigned),1,fp);
-	Vector4 * treepos = MemMgrRaw::instance()->allocate<Vector4>(treenum);
-	fread(treepos,sizeof(Vector4),treenum,fp);
-	fclose(fp);
-	for(size_t i=0;i<treeModelNames.size();++i)
-	{
-		Model * m1 = ModelMgr::instance().getModel(treeModelNames[i] + string("_geom.obj"));
-		Model * m2 = ModelMgr::instance().getModel(treeModelNames[i] + string("_tex.obj"));
-		m_trees.push_back(ForestInfo_t(m1,m2));
-	}
-	const float buriedheight = RenderEngine::instance().getConstRenderSettings().getTreeBuriedHeight();
-	for(unsigned i=0;i<treenum;++i)
-	{
-		const unsigned random_i = rand() % unsigned(m_trees.size());
-		const Vector4 buried_pos = treepos[i] - Vector4(0.0f,buriedheight,0.0f,0.0f);
-		m_trees[random_i].trees.push_back(TreeInfo_t(Vector3(buried_pos.cfp())));
-	}
-	MemMgrRaw::instance()->free(treepos);
 
 	// SHADOW STUFF
 	_initShadows(ldir);

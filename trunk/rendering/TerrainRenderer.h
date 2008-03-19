@@ -61,26 +61,6 @@ private:
 		float currentTimeOffset;
 	};
 
-	struct TreeInfo_t
-	{
-		Vector3 position;
-		bool	isActivated;
-		bool    isTerraforming;
-		float   terraformElapsed;
-		
-		TreeInfo_t(const Vector3& pos)
-			:position(pos),isActivated(false),isTerraforming(false),terraformElapsed(0.0f){}
-	};
-
-	struct ForestInfo_t
-	{
-		std::vector<TreeInfo_t> trees;
-		const Model * modelGeom;
-		const Model * modelTex;
-		ForestInfo_t(const Model * mg, const Model * mt)
-			:modelGeom(mg),modelTex(mt){}
-	};
-
 	// PRIVATE FUNCS
 
 	void _clearResources();
@@ -98,6 +78,7 @@ private:
 
 	// VARIABLES
 	const Camera * m_cameraRef;
+	Vector4		   m_lightColor;
 
 	Terrain* m_terrain;
 	float	* m_heights;
@@ -124,14 +105,4 @@ private:
 	float m_lightCameraProjSettings[6];
 	Vector3 m_lightDir;
 
-	// For the trees
-	/*
-		while barren activated = false
-		while terraforming, activated = true, the positions will adjust a bit
-		after terraforming, just draw
-	*/
-	
-
-	Material m_treeMaterial;		// 0.0 - 1.0 ambient, 1.0 diffuse, 0 specular?
-	std::vector<ForestInfo_t>	m_trees;
 };
