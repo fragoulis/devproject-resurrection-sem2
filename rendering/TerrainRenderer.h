@@ -16,6 +16,8 @@
 #include "../math/Vector3.h"
 #include "../math/Vector4.h"
 
+#include "../control/OSinterface/Input.h"
+
 #include <vector>
 
 class Terrain;
@@ -31,7 +33,8 @@ class TerrainRenderer :
 	public EventListener< Player_Spawned >,
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
-	public EventListener< Player_Despawned >
+	public EventListener< Player_Despawned >,
+	public EventListener<Key_GoingDown>
 
 {
 public:
@@ -46,6 +49,8 @@ public:
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
 	void onEvent(Player_Despawned&);
+
+	void onEvent(Key_GoingDown&);
 
 	void setCamera(const Camera * cam) {m_cameraRef = cam;}
 	void update(const float dt);
