@@ -26,6 +26,8 @@ class ConstRenderSettings
 	unsigned m_shadowTextureSize;
 	float m_tformTimePerUnit;
 
+	std::string m_laserTexName;
+
 
 	void _parseMiscEntities(const ParserSection * parsec);
 
@@ -41,6 +43,8 @@ public :
 	const float getTreeBuriedHeight() const {return m_treeBuriedHeight;}
 	const unsigned getShadowTextureSize() const {return m_shadowTextureSize;}
 	const float getTerraformingTimePerUnit() const {return m_tformTimePerUnit;}
+
+	const std::string& getLaserTextureName() const {return m_laserTexName;}
 
 	void init(const ParserSection * parsec);
 
