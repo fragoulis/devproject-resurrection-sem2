@@ -30,7 +30,10 @@ _normalizeFloat(false)
 }
 
 TextureIO :: ~TextureIO()
-{}
+{
+	for(unsigned i=0;i<_textureTemplates.size();++i)
+		delete _textureTemplates[i];
+}
 
 
 void TextureIO :: _parseConfiguration(const ParserSection * parsec)

@@ -66,7 +66,7 @@ FramebufferObject::~FramebufferObject()
   glDeleteFramebuffersEXT(1, &m_fboId);
 }
 
-void FramebufferObject::Bind() 
+void FramebufferObject::Bind() const
 {
   glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, m_fboId);
 }

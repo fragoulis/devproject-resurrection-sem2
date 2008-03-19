@@ -22,8 +22,10 @@ class Camera
 private:
 	Vector3 eye;
 	Vector3 u,v,n;
-	double viewAngle, aspect, nearDist, farDist;
+	double viewAngle, aspect;
 	void setModelViewMatrix();
+
+	float fW,fH,fNear,fFar;
 
 public:
 	Camera();
@@ -37,4 +39,5 @@ public:
 
 	const Vector3 &getEye() const {return eye;};
 	const Vector3 &getLookAt() const {return n;};
+	void getProjSettings(float & w,float & h, float & n, float &f) const;
 };

@@ -20,9 +20,10 @@ void Camera::setPerspective(float vAng, float asp, float nearD, float farD)
 	glLoadIdentity();
 	//gluPerspective(vAng, asp, nearD, farD);
 	//to avoid to use glu a conversion from gluPerspective to glFrustum is done
-	GLdouble fW, fH;
-	fH = tan( vAng / 360 * PI ) * nearD;
+	fH = float(tan( vAng / 360 * PI ) * nearD);
 	fW = fH * asp;
+	fNear = nearD;
+	fFar = farD;
 
 	glFrustum( -fW, fW, -fH, fH, nearD, farD );
 }
@@ -87,4 +88,12 @@ void Camera::yaw(float angle)
 	n.set(cs*t.getX() - sn*u.getX(), cs*t.getY() - sn*u.getY(), cs*t.getZ() - sn*u.getZ());
 	u.set(sn*t.getX() + cs*u.getX(), sn*t.getY() + cs*u.getY(), sn*t.getZ() + cs*u.getZ());
 	setModelViewMatrix();
+}
+
+void Camera :: getProjSettings(float & w,float & h, float & n, float &f) const
+{
+	w = fW;
+	h = fH;
+	n = fNear;
+	f = fFar;
 }

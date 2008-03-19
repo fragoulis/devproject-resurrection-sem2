@@ -71,11 +71,11 @@ void TextureMgr :: destroy()
 	{
 		delete _instance;
 		_instance = 0;
+		TextureIO::destroy();
 		MemMgrAny<Texture1D>::destroy();
 		MemMgrAny<Texture2D>::destroy();
 		MemMgrAny<Texture3D>::destroy();
 		MemMgrAny<TextureCube>::destroy();
-		TextureIO::destroy();
 		_init = false;
 	}
 }

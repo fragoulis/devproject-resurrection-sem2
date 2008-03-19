@@ -23,6 +23,8 @@ class ConstRenderSettings
 	// other misc stuff
 	float m_treeGrowthInterval;
 	float m_treeBuriedHeight;
+	unsigned m_shadowTextureSize;
+	float m_tformTimePerUnit;
 
 
 	void _parseMiscEntities(const ParserSection * parsec);
@@ -36,6 +38,9 @@ public :
 	const float getSpawnPointInterval() const {return m_spawnpointInterval;}
 	const float getSpawnPointSize() const {return m_spawnpointSize;}
 	const Texture * getSpawnPointTexture() const {return m_spawnpointTexture;}
+	const float getTreeBuriedHeight() const {return m_treeBuriedHeight;}
+	const unsigned getShadowTextureSize() const {return m_shadowTextureSize;}
+	const float getTerraformingTimePerUnit() const {return m_tformTimePerUnit;}
 
 	void init(const ParserSection * parsec);
 
