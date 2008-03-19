@@ -62,4 +62,9 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_shadowTextureSize = FromString<unsigned>(parsec->getVal("ShadowTextureSize"));
 	m_tformTimePerUnit = FromString<float>(parsec->getVal("TerraformingTimePerUnit"));
 	m_laserTexName = parsec->getVal("LaserTexture");
+
+	m_waveChangeRate = FromString<float>(parsec->getVal("WaveChangeRate"));
+	m_waveSpeed = FromString<float>(parsec->getVal("WaveSpeed"));
+	m_lakeTexture = parsec->getVal("LakeTexture");
+	m_waveRepeats = FromString<float>(parsec->getVal("WaveRepeats"));
 }

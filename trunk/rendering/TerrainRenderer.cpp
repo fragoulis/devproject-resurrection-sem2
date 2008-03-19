@@ -41,7 +41,8 @@ TerrainRenderer :: TerrainRenderer() :
 	m_vbo(0),
 	m_tformContribTex(0),
 	m_heights(0),
-	m_shadowTexture(0)
+	m_shadowTexture(0),
+	m_lakeTimer(0.0f)
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
@@ -151,16 +152,27 @@ void TerrainRenderer :: render(Graphics& g) const
 	
 	ShaderManager::instance()->begin("lakeShader");
 	m_lakeTexture->bind(0);
-	ShaderManager::instance()->setUniform1i("lakeTex",0);
+	ShaderManager::instance()->setUniform1i("noiseTex",0);
 	m_shadowTexture->bind(1);
 	ShaderManager::instance()->setUniform1i("shadowTex",1);
 	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
 	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
+	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
+	
+	const float ws = RenderEngine::instance().getConstRenderSettings().getWaveSpeed();
+	const float wcr = RenderEngine::instance().getConstRenderSettings().getWaveChangeRate();
+	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats();
+	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
+	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
+	ShaderManager::instance()->setUniform1fv("waveSpeed",&ws);
+	ShaderManager::instance()->setUniform4fv("lightColor",m_lightColor.cfp());
+	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
+	ShaderManager::instance()->setUniform4fv("lightPosition",lightPos.cfp());
 
 	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
 	Vector3 right(m_mapExtents.getX(),0,0);
 	Vector3 up(0,0,-m_mapExtents.getX());
-	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(10,10));
+	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(wr*0.5f,wr));
 
 	ShaderManager::instance()->end();
 
@@ -285,7 +297,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 
 	// LAKE STUFF
 	
-	m_lakeTexture = TextureIO::instance()->getTexture("LakeTexture.dds");
+	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
 
 	// SHADOW STUFF
 	_initShadows(ldir);
@@ -581,6 +593,7 @@ void TerrainRenderer :: update(const float dt)
 	
 	m_lightCameraEye = m_cameraRef->getEye() - 500.0f*m_lightDir;
 	_updateTerraform(dt);
+	m_lakeTimer += dt;
 }
 
 void TerrainRenderer::onEvent(Key_GoingDown &key) 
