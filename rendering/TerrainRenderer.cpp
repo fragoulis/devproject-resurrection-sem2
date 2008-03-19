@@ -540,7 +540,7 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	float maxTopDown = h*gameplanedepth / n;
 
 	// compute the light camera vectors
-	Vector3 ldir(-lightdir.getX(),-lightdir.getY()*10,-lightdir.getZ());
+	Vector3 ldir(-lightdir.getX(),-lightdir.getY(),-lightdir.getZ());
 	ldir.normalize();
 	Vector3 yAxis(0.0f,1.0f,0.0f);
 	Vector3 right(Vector3::cross(ldir,yAxis));
@@ -565,7 +565,7 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_lightCameraProjSettings[1] = maxLeftRight;
 	m_lightCameraProjSettings[2] = -maxTopDown;
 	m_lightCameraProjSettings[3] = maxTopDown;
-	m_lightCameraProjSettings[4] = n;
+	m_lightCameraProjSettings[4] = -n;
 	m_lightCameraProjSettings[5] = f;
 
 	m_lightDir = ldir;
