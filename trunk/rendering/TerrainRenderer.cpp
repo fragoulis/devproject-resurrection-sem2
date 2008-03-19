@@ -551,8 +551,8 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	// Adjust maxleft & maxright so that they cover the whole screen
 	const Vector3 X_AXIS(1.0f,0.0f,0.0f);
 	const Vector3 Z_AXIS(0.0f,0.0f,1.0f);
-	float right_d = max(abs(right.dot(X_AXIS)), abs(m_lightCameraVectorUp.dot(X_AXIS)));
-	float up_d = max(abs(right.dot(Z_AXIS)), abs(m_lightCameraVectorUp.dot(Z_AXIS)));
+	float right_d = min(abs(right.dot(X_AXIS)), abs(m_lightCameraVectorUp.dot(X_AXIS)));
+	float up_d = min(abs(right.dot(Z_AXIS)), abs(m_lightCameraVectorUp.dot(Z_AXIS)));
 
 	maxLeftRight /= right_d;
 	maxTopDown /= up_d;
