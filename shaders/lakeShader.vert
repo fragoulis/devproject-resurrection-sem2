@@ -34,7 +34,7 @@ void main()
 	minMaxReflTexcoords.xy = - reflectionTexCoordOffsets;
 	minMaxReflTexcoords.zw = reflectionTexCoordScale - reflectionTexCoordOffsets;
 	
-	texExtentDenom = 1.0 / ((minMaxReflTexcoords.zw - minMaxReflTexcoords.xy)*0.5);
+	texExtentDenom = abs(1.0 / ((minMaxReflTexcoords.zw - minMaxReflTexcoords.xy)*0.5));
 	
 	viewVec = (gl_ModelViewMatrix * gl_Vertex).xyz;
 	lightVec = normalize((gl_ModelViewMatrix * (-lightPosition)).xyz);

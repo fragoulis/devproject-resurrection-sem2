@@ -283,17 +283,10 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	fread(&dimension,sizeof(unsigned),1,fp);
 	//dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
 	ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
+	RenderEngine::instance().setLevelLight(ldir);
 
 	m_lightColor = FromString<Vector4>(parser.getSection("Misc")->getVal("LightAmbDiff"));
-
-	// Set the GL Light 0
-	glPushAttrib(GL_MATRIX_MODE);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-	glLightfv(GL_LIGHT0,GL_POSITION,ldir.cfp());
-	glPopMatrix();
-	glPopAttrib();
+	RenderEngine::instance().setLevelLightColor(m_lightColor);
 
 	// Compute the index - data sizes
 	dataSize = dimension * dimension;
@@ -744,14 +737,19 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	glDepthMask(GL_TRUE);
 
 	// reverse camera - we're already in modelview
-	// reverse lighting
+	
+	
 	
 	glPushMatrix();
 	glTranslatef(0.0f,gph,0.0f);
 	glScalef(1.0f,-1.0f,1.0f);
 
+	RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
+
 	// draw ships
 	m_shipRendererRef->render(g);
+
+	RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
 
 	
 	glPopMatrix();

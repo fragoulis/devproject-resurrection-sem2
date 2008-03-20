@@ -25,7 +25,7 @@ m_playerActive(false),
 m_transpSurface(0)
 {
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Despawned >(this);
 
 	m_camera = new Camera();
 	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
@@ -138,7 +138,7 @@ void WorldRenderer :: onEvent(Player_Spawned& evt)
 	m_playerCoordFrame = &(evt.getValue()->getCoordinateFrame());
 }
 
-void WorldRenderer :: onEvent(Player_Destroyed&)
+void WorldRenderer :: onEvent(Player_Despawned&)
 {
 	m_playerActive = false;
 }
