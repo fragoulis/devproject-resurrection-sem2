@@ -16,8 +16,13 @@
 #include "ShipRenderer.h"
 #include "../Math/Vector3.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../gfx/FBO/FramebufferObject.h"
+#include "../gfx/FBO/Renderbuffer.h"
+
+
 class Camera;
 class CoordinateFrame;
+class Texture;
 
 /**
  * Renders the world!
@@ -67,6 +72,10 @@ private:
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;
+
+	// Transparent object FBO
+	FramebufferObject m_transpFBO;
+	Texture * m_transpSurface;		// surface for reflections
 
 	// Matrices 
 	double m_projd[16];

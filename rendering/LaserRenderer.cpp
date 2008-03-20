@@ -27,6 +27,7 @@ void LaserRenderer :: render(Graphics& g) const
 	
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glEnable(GL_BLEND);
+	glDepthMask(GL_FALSE);
 	ShaderManager::instance()->begin("laserShader");
 	m_laserTex->bind();
 	ShaderManager::instance()->setUniform1i("flareTex",0);
@@ -59,6 +60,7 @@ void LaserRenderer :: render(Graphics& g) const
 		RenderEngine::drawTexturedQuad(ll.getVector(),right,up,lltex,texext);
 	}
 	glDisable(GL_BLEND);
+	glDepthMask(GL_TRUE);
 }
 
 void LaserRenderer :: onEvent(Laser_Spawned& evt)

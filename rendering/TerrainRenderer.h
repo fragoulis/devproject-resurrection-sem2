@@ -11,6 +11,7 @@
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
 #include "../gfx/FBO/FramebufferObject.h"
+#include "../gfx/FBO/Renderbuffer.h"
 #include "../gfx/Material.h"
 #include "CoordinateModel.h"
 #include "../math/Vector3.h"
@@ -26,6 +27,7 @@ class Model;
 class VBO;
 class Texture;
 class Camera;
+class ShipRenderer;
 
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
@@ -53,6 +55,8 @@ public:
 	void onEvent(Key_GoingDown&);
 
 	void setCamera(const Camera * cam) {m_cameraRef = cam;}
+	void setTransparentReflection(Texture * tex) {m_transpReflection = tex;}
+	void setShipRendererRef( const ShipRenderer * sr) {m_shipRendererRef = sr;}
 	void update(const float dt);
 
 private:
@@ -79,6 +83,7 @@ private:
 	void _removeShadowCaster(const CoordinateFrame * cf);
 	void _renderShadows() const;
 	void _initShadows(const Vector4& lightdir);
+	void _drawLakeReflection(Graphics& g) const;
 
 
 	// VARIABLES
@@ -99,8 +104,12 @@ private:
 
 	// For the lake
 	Texture * m_lakeTexture;
-	Texture * m_cloudTexture;
 	Texture * m_heightTexture;
+	Texture * m_transpReflection;		// gotten from WorldRenderer
+	Texture * m_lakeReflection;			// reflection to applied to the lake
+	const ShipRenderer * m_shipRendererRef;		// handle to call when redrawing the ships
+	FramebufferObject m_reflectionFBO;
+	Renderbuffer m_reflectionDepthBuffer;
 	float m_lakeTimer;
 
 	// For the shadows

@@ -29,7 +29,7 @@ DefaultDir = "./resources/textures/"
 [Texture : MemDistribution]
 Texture1D = 10
 Texture2D = 30
-Texture3D = 1
+Texture3D = 2
 TextureCube = 3
 
 ########################### SHADERS + VERTEX ATTRIBUTES #######################################
@@ -39,7 +39,7 @@ ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"ShadowWriteShader.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
-				<"terraformShader.sh">
+				<"terraformShader.sh"> , <"blitShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -265,5 +265,4 @@ WaveSpeed = 0.02;
 WaveRepeats = 5;
 CloudRepeats = 5;
 LakeTexture = noiseVolume.dds
-CloudTexture = clouds.dds
 
