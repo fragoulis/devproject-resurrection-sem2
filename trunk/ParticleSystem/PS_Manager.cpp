@@ -116,11 +116,17 @@ void PS_Manager :: init(const ParserSection * parsec)
 				created_ps = new PS_Jet((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
 
 			}
-			if(pstype == "PS_RedFountain" || pstype == "PS_YellowFountain" || pstype == "PS_BlueFountain")
+			else if(pstype == "PS_RedFountainIn" || pstype == "PS_YellowFountainIn" || pstype == "PS_BlueFountainIn")
 			{
 				const int particleColor = FromString<int>((*it)->getVal("ParticleColor"));
 				const string texname = (*it)->getVal("Texture");
-				created_ps = new PS_Fountain((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,texname);
+				created_ps = new PS_Fountain((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,PS_Fountain::FOUNTAIN_TYPE_FADE_IN,texname);
+			}
+			else if(pstype == "PS_RedFountainOut" || pstype == "PS_YellowFountainOut" || pstype == "PS_BlueFountainOut")
+			{
+				const int particleColor = FromString<int>((*it)->getVal("ParticleColor"));
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new PS_Fountain((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,PS_Fountain::FOUNTAIN_TYPE_FADE_OUT,texname);
 			}
 			
 			m_psList.push_back(created_ps);

@@ -12,6 +12,7 @@ uniform float particleLife;
 uniform float particleSize;
 uniform float systemLife;
 uniform int particleColor;
+uniform int fountainType;
 uniform float radiusScale;  //scale factor of the fountain radius
 
 attribute vec4 velocity;
@@ -64,7 +65,7 @@ void main(void)
 		vert.xyz += gl_Vertex.xyz*scale;
 		
 		alphaColor = vec4(1.0);
-		alphaColor.a = 100*currentTime/systemLife;
+		alphaColor.a = fountainType == 0 ? 100*currentTime/systemLife : 1.0-currentTime/systemLife;
     }
     else
 		color.w = -1.0;

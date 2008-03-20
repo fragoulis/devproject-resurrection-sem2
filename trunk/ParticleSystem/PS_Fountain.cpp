@@ -29,8 +29,9 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 			const unsigned pnum,
 			const int shindex,
 			const int particleColor,
+			const FountainType fountainType,
 			const std::string& texture)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_particleColor(particleColor)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_particleColor(particleColor), m_fountainType(fountainType)
 {
 	// Initialize
 	_generateData(vbo,TextureIO::instance()->getTexture(texture));
@@ -45,8 +46,9 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 			const unsigned pnum,
 			const int shindex,
 			const int particleColor,
+			const FountainType fountainType,
 			const VAttribStatus& status)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_particleColor(particleColor)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_particleColor(particleColor), m_fountainType(fountainType)
 {
 	m_quadArray = model;
 	m_usedAttribs = status;
@@ -56,7 +58,7 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 PS_Base * PS_Fountain :: clone() const
 {
 	return new PS_Fountain(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_particleNum,
-					 m_shaderIndex,m_particleColor,m_usedAttribs);
+					 m_shaderIndex,m_particleColor,m_fountainType,m_usedAttribs);
 }
 
 
@@ -168,6 +170,8 @@ void PS_Fountain :: render() const
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1i("particleColor",m_particleColor);
+	CHECK_GL_ERROR();
+	ShaderManager::instance()->setUniform1i("fountainType",m_fountainType);
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("radiusScale",&m_radiusScale);
 	CHECK_GL_ERROR();
