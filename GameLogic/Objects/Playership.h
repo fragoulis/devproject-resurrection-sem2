@@ -22,6 +22,7 @@ public:
 	void setEnergy(EnergyType type, int amount) { m_energy[type] = amount; }
 
 	int getEnergyCapacity() { return m_energyCapacity; }
+	int getTotalEnergy();
 
 	void loadSettings(const ParserSection&);
 
