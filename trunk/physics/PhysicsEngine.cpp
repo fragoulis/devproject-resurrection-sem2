@@ -232,7 +232,7 @@ void PhysicsEngine :: _checkPlayerEnemyCollisions()
 			Vector3 normal = pos1 - pos2;
 			normal.normalize();
 			Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
-			CKLOG(std::string("Collision between player and enemy ") + ToString<Enemyship*>(enemy), 1);
+			CKLOG(std::string("Collision between player and enemy ") + ToString<Enemyship*>(enemy), 3);
 			EventManager::instance().fireEvent(Collision_Player_Enemy(m_playership, enemy, colpos, normal));
 		}
 	}
@@ -266,7 +266,7 @@ void PhysicsEngine :: _checkEnemyLaserCollisions()
 			{
 				Vector3 normal = circleCentre - closestPointOnLine;
 				normal.normalize();
-				CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 1);
+				CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 3);
 				EventManager::instance().fireEvent(Collision_Enemy_Laser(enemy, laser, closestPointOnLine, normal));
 			}
 		}

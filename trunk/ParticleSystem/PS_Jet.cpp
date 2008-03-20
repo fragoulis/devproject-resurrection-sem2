@@ -15,7 +15,7 @@
 #include "../Math/Vector4.h"
 #include "../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../utility/RandomGenerator.h"
-
+#include "../GameLogic/Objects/Playership.h"
 
 #include <iostream>
 

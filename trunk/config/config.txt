@@ -35,6 +35,17 @@ LiftPower = 1.0              # float
 LiftVariance = 1.0           # float
 LaserCooldown = 0.08
 LaserStartOffset = 128.0
+EnergyCapacity = 50
+
+// Defines a prototype for ebombs
+// This is used to create a new e-bomb object
+[Ebomb]
+Radius = 10.0                # float, collision detection
+Mass = 0.5                  # float
+AirdragCoefficient = 0.05     # float
+LiftPower = 0.0              # float
+LiftVariance = 1.0           # float
+
 
 [Laser : LaserPlayerPositive]
 Lifetime = 20.0

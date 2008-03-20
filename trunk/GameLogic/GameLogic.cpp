@@ -36,7 +36,8 @@ using namespace std;
 GameLogic :: GameLogic() : 
 	m_terrain(0),
 	m_playership(0),
-	m_playershipPrototype(0)
+	m_playershipPrototype(0),
+	m_currentEbomb(EBOMB_TYPE_UNKNOWN)
 {
 }
 
@@ -65,11 +66,19 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	m_playershipPrototype->loadSettings(*psPlayer);
 	m_playershipPrototype->setType(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 
+	// load laser data
 	m_playerLaserCooldownTime = FromString<float>(psPlayer->getVal("LaserCooldown"));
 	m_laserStartOffset = FromString<float>(psPlayer->getVal("LaserStartOffset"));
 
 	m_laserTypePositive = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
 	m_laserTypeNegative = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
+
+	// load e-bomb data
+	const ParserSection* psEbomb = ps.getSection("Ebomb");
+	m_ebombPrototype = new Ebomb();
+	m_ebombPrototype->loadSettings(*psEbomb);
+	m_normalBombEnergy = m_playershipPrototype->getEnergyCapacity();
+	m_combinedBombEnergy = int(m_playershipPrototype->getEnergyCapacity() / 2);
 }
 
 void GameLogic :: onApplicationUnload()
@@ -162,16 +171,95 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 
 
 
+
+
+
+
+
+
+
+
+
+/*********************************************************************
+
+Piece of code below takes care of creating and uncreating
+e-bombs in player's cargo bay
+
+**********************************************************************/
+
+
 void GameLogic :: onEvent( Player_EnergyGained& evt )
 {
+	cerr << "Gained " << evt.getValue3() << " energy" << endl;
 
+	// if we aready have an e-bomb, we can't create another
+	if (m_currentEbomb != EBOMB_TYPE_UNKNOWN) return;
+
+	EbombType ebombType = _seeIfPlayerCanCreateEbombAndReturnTypeOfBomb();
+	if (ebombType != EBOMB_TYPE_UNKNOWN) {
+		m_currentEbomb = ebombType;
+		EventManager::instance().fireEvent(Ebomb_Created(ebombType));
+		cerr << "Ebomb of type " << StringFromEbombType(ebombType) << " created" << endl;
+	}
 }
 void GameLogic :: onEvent( Player_EnergyDrained& evt )
 {
+	cerr << "Drained " << evt.getValue3() << " energy" << endl;
+	_checkEbombUncreation();
 }
 void GameLogic :: onEvent( Player_EnergyDispersed& evt )
 {
+	cerr << "Dispersed " << evt.getValue3() << " energy" << endl;
+	_checkEbombUncreation();
 }
+
+EbombType GameLogic :: _seeIfPlayerCanCreateEbombAndReturnTypeOfBomb()
+{
+	if (_checkNormalEbombCreation(ENERGY_TYPE_RED)) return EBOMB_TYPE_RED;
+	if (_checkNormalEbombCreation(ENERGY_TYPE_YELLOW)) return EBOMB_TYPE_YELLOW;
+	if (_checkNormalEbombCreation(ENERGY_TYPE_BLUE)) return EBOMB_TYPE_BLUE;
+	if (_checkCombinedEbombCreation(ENERGY_TYPE_RED, ENERGY_TYPE_YELLOW)) return EBOMB_TYPE_ORANGE;
+	if (_checkCombinedEbombCreation(ENERGY_TYPE_RED, ENERGY_TYPE_BLUE)) return EBOMB_TYPE_PURPLE;
+	if (_checkCombinedEbombCreation(ENERGY_TYPE_YELLOW, ENERGY_TYPE_BLUE)) return EBOMB_TYPE_GREEN;
+	return EBOMB_TYPE_UNKNOWN;
+}
+
+bool GameLogic :: _checkNormalEbombCreation(EnergyType energyType)
+{
+	int energy = m_playership->getEnergy(energyType);
+	return energy == m_normalBombEnergy;
+}
+
+bool GameLogic :: _checkCombinedEbombCreation(EnergyType energyType1, EnergyType energyType2)
+{
+	int energy1 = m_playership->getEnergy(energyType1);
+	int energy2 = m_playership->getEnergy(energyType2);
+	return energy1 == m_combinedBombEnergy && energy2 == m_combinedBombEnergy;
+}
+
+void GameLogic :: _checkEbombUncreation()
+{
+	// if we don't have an e-bomb, we can't uncreate it
+	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
+
+	if (_seeIfPlayerCanCreateEbombAndReturnTypeOfBomb() == EBOMB_TYPE_UNKNOWN) {
+		EventManager::instance().fireEvent(Ebomb_Uncreated(m_currentEbomb));
+		cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << "uncreated" << endl;
+		m_currentEbomb = EBOMB_TYPE_UNKNOWN;
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -203,9 +291,13 @@ void GameLogic :: update(float dt)
 	//cout << m_playership->getPosition() << endl;
 }
 
+
+
+
+
+
 /**
  * Helper function for spawn points
- * 
  */
 Enemyship* GameLogic :: spawnEnemy( int type )
 {
@@ -263,7 +355,20 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 }
 
 
+void GameLogic :: dropEbomb()
+{
+	// check if we have a bomb available
+	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
 
+	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
+	ebomb->setEbombType(m_currentEbomb);
+	ebomb->setPosition(m_playership->getPosition());
+
+	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
+	m_playership->resetAllEnergy();
+
+	EventManager::instance().fireEvent(Ebomb_Spawned(ebomb));
+}
 
 
 

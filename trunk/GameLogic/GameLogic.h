@@ -13,6 +13,7 @@
 #include "../utility/EventManager.h"
 #include "../physics/PhysicsEvents.h"
 #include "GameEvents.h"
+#include "EbombTypes.h"
 #include <string>
 #include <list>
 class ParserSection;
@@ -49,6 +50,15 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
+	//! Called by GameController. To pause game, controller can stop calling this
+	void update(float dt);
+
+	float getGamePlaneHeight() const { return m_gamePlaneHeight; }
+
+	//! Retrieves type of e-bomb in player's cargo bay. Returns unknown if no bomb is available.
+	EbombType getCurrentEbombType() const { return m_currentEbomb; }
+
+	// These are functions controller can call to change the game state
 	void loadLevel(const std::string& id);
 	void unloadLevel();
 	Enemyship* spawnEnemy(int type);
@@ -56,8 +66,7 @@ public:
 	void setPlayerThrusterPower(float f);
 	void firePositiveLaser(const Point3& targetPosition);
 	void fireNegativeLaser(const Point3& targetPosition);
-	float getGamePlaneHeight() const { return m_gamePlaneHeight; }
-	void update(float dt);
+	void dropEbomb(); // attempts, won't drop if no bomb is available
 
 	void onEvent(Collision_Player_Enemy&);
 	void onEvent(Collision_Enemy_Laser&);
@@ -74,6 +83,15 @@ private:
 	typedef std::list<Crater*> CraterList;
 	typedef std::list<Ebomb*> EbombList;
 	typedef std::list<Laser*> LaserList;
+
+	// Gameplay data
+	int m_currentLives;
+	int m_maxLives;
+	EbombType m_currentEbomb; // UNKNOWN if not created
+	int m_normalBombEnergy; // defaults to playership->energyCapacity
+	int m_combinedBombEnergy; // defaults to playership->energyCapacity / 2
+	Ebomb* m_ebombPrototype;
+
 
 	// Gameplay objects
 	Terrain* m_terrain;
@@ -94,6 +112,10 @@ private:
 	int m_laserTypeNegative;
 
 	// helper functions
+	EbombType _seeIfPlayerCanCreateEbombAndReturnTypeOfBomb();
+	bool _checkNormalEbombCreation(EnergyType);
+	bool _checkCombinedEbombCreation(EnergyType, EnergyType);
+	void _checkEbombUncreation();
 	void _fireLaser(const Point3& targetPosition, int type);
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
