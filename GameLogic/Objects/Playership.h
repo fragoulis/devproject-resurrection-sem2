@@ -24,6 +24,8 @@ public:
 	int getEnergyCapacity() { return m_energyCapacity; }
 	int getTotalEnergy();
 
+	void resetAllEnergy();
+
 	void loadSettings(const ParserSection&);
 
 private:

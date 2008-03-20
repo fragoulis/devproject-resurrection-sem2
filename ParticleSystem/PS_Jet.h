@@ -11,8 +11,8 @@
 
 #include <string>
 #include "PS_Base.h"
-#include "../GameLogic/Objects/Playership.h"
 
+class Playership;
 class Texture;
 struct VAttribStatus;
 

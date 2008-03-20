@@ -11,6 +11,7 @@
 #pragma once
 #include "../utility/EventManager.h"
 #include "EnergyTypes.h"
+#include "EbombTypes.h"
 #include <string>
 class Playership;
 class Enemyship;
@@ -75,6 +76,9 @@ EVENT_WITH_VALUE(Spawnpoint_Despawned, Spawnpoint*);
 EVENT_WITH_VALUE(Spawnpoint_SessionStarted, Spawnpoint*);
 EVENT_WITH_VALUE(Spawnpoint_SessionEnded, Spawnpoint*);
 
+// Not actually created, but in playership cargo bay
+EVENT_WITH_VALUE(Ebomb_Created, EbombType);
+EVENT_WITH_VALUE(Ebomb_Uncreated, EbombType);
 EVENT_WITH_VALUE(Ebomb_Spawned, Ebomb*);
 EVENT_WITH_VALUE(Ebomb_Despawned, Ebomb*);
 
