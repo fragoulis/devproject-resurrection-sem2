@@ -19,6 +19,7 @@
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>
 GamePlaneHeight = 286.0
+TerrainHeight = 0.0 // used by collision detection to kill e-bombs ATM
 
 [EnemyFactory]
 file = "EnemyFactory.txt"
@@ -45,6 +46,7 @@ Mass = 0.5
 AirdragCoefficient = 0.0
 LiftPower = 0.0              # doesn't lift, so gravity will pull it down quickly
 LiftVariance = 1.0
+InitialDownwardVelocity = 100
 
 
 [Laser : LaserPlayerPositive]

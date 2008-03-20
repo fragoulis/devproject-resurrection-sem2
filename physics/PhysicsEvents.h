@@ -15,6 +15,7 @@ class Enemyship;
 class Laser;
 class Ebomb;
 class Crater;
+class Terrain;
 
 
 /**
@@ -45,3 +46,4 @@ private:
 typedef Collision<Playership, Enemyship> Collision_Player_Enemy;
 typedef Collision<Enemyship, Laser> Collision_Enemy_Laser;
 typedef Collision<Ebomb, Crater> Collision_Ebomb_Crater;
+typedef Collision<Ebomb, Terrain> Collision_Ebomb_Terrain;
