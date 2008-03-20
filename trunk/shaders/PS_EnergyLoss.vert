@@ -16,6 +16,7 @@ attribute vec4 velocity;
 attribute vec4 offset;
 
 varying vec4 color;
+varying vec2 vTexCoord;
 
 const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
@@ -48,6 +49,8 @@ void main(void)
     }
     else
 		color.w = -1.0;
+		
+	vTexCoord = gl_Vertex.xy;
  
     gl_Position = gl_ProjectionMatrix * vert;
 }
