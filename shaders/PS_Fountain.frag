@@ -14,5 +14,6 @@ varying vec4 alphaColor;
 
 void main(void)
 {
-	gl_FragColor = texture2D(particleTex,gl_TexCoord[0].st)*color*alphaColor;
+	gl_FragColor = texture2D(particleTex,gl_TexCoord[0].st)*color;
+	gl_FragColor.a = alphaColor.a;
 }
