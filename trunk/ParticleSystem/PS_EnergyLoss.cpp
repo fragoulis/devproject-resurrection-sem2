@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               PS_EnergyLoss.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: manuele.bonanno $
+//**   Last Change:        $Date: 2008-03-18 17:12:15 +0000 (Tue, 18 Mar 2008) $
+//**   Last Revision:      $Revision: 185 $
 //**
 //*****************************************************************************
 

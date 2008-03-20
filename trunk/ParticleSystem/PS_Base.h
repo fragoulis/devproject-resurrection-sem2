@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               PS_Base.h
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: manuele.bonanno $
+//**   Last Change:        $Date: 2008-03-14 18:16:29 +0000 (Fri, 14 Mar 2008) $
+//**   Last Revision:      $Revision: 171 $
 //**
 //*****************************************************************************
 

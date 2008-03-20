@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               WorldRenderer.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: esrever2357 $
+//**   Last Change:        $Date: 2008-03-19 08:59:44 +0000 (Wed, 19 Mar 2008) $
+//**   Last Revision:      $Revision: 189 $
 //**
 //*****************************************************************************
 

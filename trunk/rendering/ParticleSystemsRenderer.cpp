@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               ParticleSystemsRenderer.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: manuele.bonanno $
+//**   Last Change:        $Date: 2008-03-19 19:24:13 +0000 (Wed, 19 Mar 2008) $
+//**   Last Revision:      $Revision: 199 $
 //**
 //*****************************************************************************
 
