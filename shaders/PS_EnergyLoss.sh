@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               PS_EnergyLoss.sh
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: manuele.bonanno $
+//**   Last Change:        $Date: 2008-03-16 19:42:46 +0000 (Sun, 16 Mar 2008) $
+//**   Last Revision:      $Revision: 176 $
 //**
 //*****************************************************************************
 

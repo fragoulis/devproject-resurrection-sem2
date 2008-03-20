@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               EventManager.h
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: Joep.Moritz $
+//**   Last Change:        $Date: 2008-03-09 17:14:41 +0000 (Sun, 09 Mar 2008) $
+//**   Last Revision:      $Revision: 129 $
 //**
 //*****************************************************************************
 

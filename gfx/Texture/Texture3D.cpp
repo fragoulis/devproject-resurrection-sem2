@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               Texture3D.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: esrever2357 $
+//**   Last Change:        $Date: 2008-03-19 20:39:19 +0000 (Wed, 19 Mar 2008) $
+//**   Last Revision:      $Revision: 200 $
 //**
 //*****************************************************************************
 

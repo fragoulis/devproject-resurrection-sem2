@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               PS_Explosion.frag
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: esrever2357 $
+//**   Last Change:        $Date: 2008-03-20 12:45:37 +0000 (Thu, 20 Mar 2008) $
+//**   Last Revision:      $Revision: 209 $
 //**
 //*****************************************************************************
 

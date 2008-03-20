@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               Spawnpoint.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: Joep.Moritz $
+//**   Last Change:        $Date: 2008-03-20 15:18:08 +0000 (Thu, 20 Mar 2008) $
+//**   Last Revision:      $Revision: 212 $
 //**
 //*****************************************************************************
 

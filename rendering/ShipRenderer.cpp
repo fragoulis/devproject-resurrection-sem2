@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               ShipRenderer.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: Joep.Moritz $
+//**   Last Change:        $Date: 2008-03-11 23:43:03 +0000 (Tue, 11 Mar 2008) $
+//**   Last Revision:      $Revision: 144 $
 //**
 //*****************************************************************************
 

@@ -1,9 +1,9 @@
 //*****************************************************************************
 //**
 //**   File:               BMP_format.cpp
-//**   Author:             $Author$
-//**   Last Change:        $Date$
-//**   Last Revision:      $Revision$
+//**   Author:             $Author: esrever2357 $
+//**   Last Change:        $Date: 2008-03-13 23:43:47 +0000 (Thu, 13 Mar 2008) $
+//**   Last Revision:      $Revision: 165 $
 //**
 //*****************************************************************************
 
