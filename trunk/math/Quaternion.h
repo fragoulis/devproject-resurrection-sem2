@@ -13,7 +13,7 @@
 class Quaternion
 {
 public:
-	Quaternion() { }
+	explicit Quaternion() { }
 	Quaternion(float s, const Vector3& v);
 	Quaternion(float s, float v1, float v2, float v3);
 	~Quaternion() { }
@@ -32,11 +32,12 @@ public:
 
 	void add(const Quaternion& q);
 	void subtract(const Quaternion& q);
-	void multiply(const Quaternion& q);
+	void multiply(const Quaternion& q); // Grassmann
 	void multiply(float m);
 	void conjugate();
 	void normalize();
 
+	float squareLength() const;
 	float length() const;
 
 

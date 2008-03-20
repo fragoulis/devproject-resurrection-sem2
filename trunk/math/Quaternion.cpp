@@ -9,6 +9,7 @@
 
 #include "Quaternion.h"
 #include <cmath>
+#include <cassert>
 
 Quaternion::Quaternion(float s, const Vector3& v)
 {
@@ -42,8 +43,9 @@ void Quaternion::subtract(const Quaternion& q)
 
 void Quaternion::multiply(const Quaternion& q)
 {
-	m_scalar = m_scalar * q.m_scalar - m_vector.dot(q.m_vector);
+	float new_scalar = m_scalar * q.m_scalar - m_vector.dot(q.m_vector);
 	m_vector = m_scalar * q.m_vector + q.m_scalar * m_vector + Vector3::cross(m_vector, q.m_vector);
+	m_scalar = new_scalar;
 }
 
 void Quaternion::multiply(float m)
@@ -59,11 +61,17 @@ void Quaternion::conjugate()
 
 void Quaternion::normalize()
 {
+	assert(squareLength() > 0.0f);
 	multiply(1.0f / length());
 }
 
 
-float Quaternion::length() const
+float Quaternion :: squareLength() const
 {
-	return sqrt(m_scalar * m_scalar + m_vector.dot(m_vector));
+	return m_scalar * m_scalar + m_vector.dot(m_vector);
+}
+
+float Quaternion :: length() const
+{
+	return sqrt(squareLength());
 }

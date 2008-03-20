@@ -31,12 +31,13 @@ public:
 
 	void clear();
 	void set(const Vector3& axis, float angle);
+	void set(float pitch, float yaw, float roll);
 
 	void rotate(const Vector3& axis, float angle);
 	void rotate(const Vector3& angle);
 
 	void applyTo(Vector3& v) const;
-	void applyTo(Point3& p) const;
+	void applyTo(Point3& p) const; // assume rotation around origin
 
 	void applyReverseTo(Vector3& v) const;
 	void applyReverseTo(Point3& p) const;

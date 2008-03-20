@@ -24,6 +24,9 @@ public:
 	const Point3& getPosition() const { return m_coordinateFrame.getOrigin(); }
 	void setPosition(const Point3& p) { m_coordinateFrame.setOrigin(p); }
 
+	const Rotation& getRotation() const { return m_coordinateFrame.getRotation(); }
+	void setRotation(const Rotation& r) { m_coordinateFrame.setRotation(r); }
+
 	const CoordinateFrame& getCoordinateFrame() const { return m_coordinateFrame; }
 	void setCoordinateFrame(const CoordinateFrame& cf) { m_coordinateFrame = cf; }
 

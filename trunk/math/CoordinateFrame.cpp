@@ -28,12 +28,12 @@ Matrix44 CoordinateFrame::getMatrix() const
 
 Matrix44 CoordinateFrame::getReverseMatrix() const
 {
-	return 
-		Matrix44(1.0f, 0.0f, 0.0f, m_origin.getX(),
-		         0.0f, 1.0f, 0.0f, m_origin.getY(),
-				 0.0f, 0.0f, 1.0f, m_origin.getZ(),
-				 0.0f, 0.0f, 0.0f, 1.0f)
-		* m_rotation.getMatrix();
+	return
+		m_rotation.getMatrix() *
+		Matrix44(1.0f, 0.0f, 0.0f, -m_origin.getX(),
+		         0.0f, 1.0f, 0.0f, -m_origin.getY(),
+				 0.0f, 0.0f, 1.0f, -m_origin.getZ(),
+				 0.0f, 0.0f, 0.0f, 1.0f);
 }
 
 
@@ -80,9 +80,9 @@ void CoordinateFrame::reverseTransform(Point3& p) const
 
 void CoordinateFrame :: _updateMatrix()
 {
-	m_matrix = m_rotation.getMatrix() *
+	m_matrix = //m_rotation.getMatrix() *
 						Matrix44(1.0f, 0.0f, 0.0f, m_origin.getX(),
 								 0.0f, 1.0f, 0.0f, m_origin.getY(),
 								 0.0f, 0.0f, 1.0f, m_origin.getZ(),
-								 0.0f, 0.0f, 0.0f, 1.0f);
+								 0.0f, 0.0f, 0.0f, 1.0f) * m_rotation.getMatrix();
 }
