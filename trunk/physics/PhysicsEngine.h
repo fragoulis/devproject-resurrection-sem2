@@ -21,6 +21,8 @@ class Movable;
 class Rigidbody;
 class Spaceship;
 class Laser;
+class Ebomb;
+class Crater;
 
 
 /**
@@ -39,6 +41,10 @@ class PhysicsEngine :
 	public EventListener< Player_Despawned >,
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
+	public EventListener< Ebomb_Spawned >,
+	public EventListener< Ebomb_Despawned >,
+	public EventListener< Crater_Spawned >,
+	public EventListener< Crater_Despawned >,
 	public EventListener< Laser_Spawned >,
 	public EventListener< Laser_Despawned >
 {
@@ -53,6 +59,10 @@ public:
 	void onEvent(Player_Despawned&);
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
+	void onEvent(Ebomb_Spawned&);
+	void onEvent(Ebomb_Despawned&);
+	void onEvent(Crater_Spawned&);
+	void onEvent(Crater_Despawned&);
 	void onEvent(Laser_Spawned&);
 	void onEvent(Laser_Despawned&);
 
@@ -86,14 +96,19 @@ private:
 	// Collision detection
 	typedef std::list<Enemyship*> EnemyshipList;
 	typedef std::list<Laser*> LaserList;
+	typedef std::list<Ebomb*> EbombList;
+	typedef std::list<Crater*> CraterList;
 
 	Playership* m_playership;
 	EnemyshipList m_enemyships;
 	LaserList m_lasers;
+	EbombList m_ebombs;
+	CraterList m_craters;
 
 	void _checkCollisions();
 	void _checkPlayerEnemyCollisions();
 	void _checkEnemyLaserCollisions();
+	void _checkEbombCraterCollisions();
 
 
 

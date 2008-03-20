@@ -14,6 +14,9 @@
 
 Crater :: Crater()
 {
+	m_state = UNKNOWN;
+	m_radius = 0.0f;
+	m_ebombType = EBOMB_TYPE_UNKNOWN;
 }
 
 Crater :: ~Crater()
@@ -23,6 +26,6 @@ Crater :: ~Crater()
 void Crater :: loadSettings(const ParserSection& ps)
 {
 	m_radius = FromString<float>(ps.getVal("Radius"));
-	m_energyType = EnergyTypeFromString(ps.getVal("EnergyType"));
+	m_ebombType = EbombTypeFromString(ps.getVal("EbombType"));
 	WorldObject::loadSettings(ps);
 }

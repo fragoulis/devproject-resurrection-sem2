@@ -26,7 +26,9 @@ public:
 	Ebomb();
 	virtual ~Ebomb();
 
-	EbombType getType() const { return m_ebombType; }
+	float getRadius() const { return m_radius; }
+
+	EbombType getEbombType() const { return m_ebombType; }
 	void setEbombType(EbombType ebombType) { m_ebombType = ebombType; }
 
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }

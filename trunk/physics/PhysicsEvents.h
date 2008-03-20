@@ -13,6 +13,8 @@
 class Playership;
 class Enemyship;
 class Laser;
+class Ebomb;
+class Crater;
 
 
 /**
@@ -42,3 +44,4 @@ private:
 // a list of typedefs for collision events
 typedef Collision<Playership, Enemyship> Collision_Player_Enemy;
 typedef Collision<Enemyship, Laser> Collision_Enemy_Laser;
+typedef Collision<Ebomb, Crater> Collision_Ebomb_Crater;

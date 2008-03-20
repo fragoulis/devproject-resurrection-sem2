@@ -86,6 +86,10 @@ void GameController :: update(float dt)
 		gl.fireNegativeLaser(getMouseMapPosition());
 	}
 
+	if (input.isKeyDown(32)) {
+		gl.dropEbomb(getMouseMapPosition());
+	}
+
 
 	AIEngine::instance().update(dt);
 	PhysicsEngine::instance().update(dt);

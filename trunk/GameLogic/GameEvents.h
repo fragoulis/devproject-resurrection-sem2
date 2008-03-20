@@ -68,6 +68,7 @@ EVENT_WITH_VALUE(Enemy_Destroyed, Enemyship*);
 
 EVENT_WITH_VALUE(Crater_Spawned, Crater*);
 EVENT_WITH_VALUE(Crater_Despawned, Crater*);
+EVENT_WITH_VALUE(Life_Restored, Crater*);
 
 EVENT_WITH_VALUE(Spawnpoint_Spawned, Spawnpoint*);
 EVENT_WITH_VALUE(Spawnpoint_Despawned, Spawnpoint*);
@@ -79,6 +80,7 @@ EVENT_WITH_VALUE(Spawnpoint_SessionEnded, Spawnpoint*);
 // Not actually created, but in playership cargo bay
 EVENT_WITH_VALUE(Ebomb_Created, EbombType);
 EVENT_WITH_VALUE(Ebomb_Uncreated, EbombType);
+EVENT_WITH_VALUE(Ebomb_Missed, Ebomb*);
 EVENT_WITH_VALUE(Ebomb_Spawned, Ebomb*);
 EVENT_WITH_VALUE(Ebomb_Despawned, Ebomb*);
 

@@ -40,6 +40,7 @@ class GameLogic :
 	public Singleton< GameLogic >,
 	public EventListener< Collision_Player_Enemy >,
 	public EventListener< Collision_Enemy_Laser >,
+	public EventListener< Collision_Ebomb_Crater >,
 	public EventListener< Player_EnergyGained >,
 	public EventListener< Player_EnergyDrained >,
 	public EventListener< Player_EnergyDispersed >
@@ -66,10 +67,11 @@ public:
 	void setPlayerThrusterPower(float f);
 	void firePositiveLaser(const Point3& targetPosition);
 	void fireNegativeLaser(const Point3& targetPosition);
-	void dropEbomb(); // attempts, won't drop if no bomb is available
+	void dropEbomb(const Point3& targetLocation); // attempts, won't drop if no bomb is available
 
 	void onEvent(Collision_Player_Enemy&);
 	void onEvent(Collision_Enemy_Laser&);
+	void onEvent(Collision_Ebomb_Crater&);
 	void onEvent(Player_EnergyGained&);
 	void onEvent(Player_EnergyDrained&);
 	void onEvent(Player_EnergyDispersed&);

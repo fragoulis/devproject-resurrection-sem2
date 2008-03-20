@@ -10,18 +10,34 @@
 
 #pragma once
 #include "../WorldObject.h"
-#include "../EnergyTypes.h"
+#include "../EbombTypes.h"
 class ParserSection;
 
 class Crater : public WorldObject
 {
 public:
+	enum State {
+		SPAWNING,
+		ALIVE,
+		DYING,
+		TO_BE_DELETED,
+		UNKNOWN,
+	};
+
+
 	Crater();
 	virtual ~Crater();
+
+	float getRadius() const { return m_radius; }
+	EbombType getEbombType() const { return m_ebombType; }
+
+	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
+	void setToBeDeleted() { m_state = TO_BE_DELETED; }
 
 	void loadSettings(const ParserSection&);
 
 private:
+	State m_state;
 	float m_radius;
-	EnergyType m_energyType;
+	EbombType m_ebombType;
 };
