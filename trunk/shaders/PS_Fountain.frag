@@ -15,7 +15,7 @@ varying vec2 vTexCoord;
 
 void main(void)
 {
-	float fade = pow(dot(vTexCoord, vTexCoord), 0.5);
-	gl_FragColor = (1.0-fade)*texture2D(particleTex,gl_TexCoord[0].st)*color;
-	gl_FragColor.a = alphaColor.a;
+	float lum = texture2D(particleTex,gl_TexCoord[0].st).r;
+	gl_FragColor = lum*color;
+	gl_FragColor.a = alphaColor.a * lum;
 }
