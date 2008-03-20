@@ -23,9 +23,17 @@ struct VAttribStatus;
 
 class PS_Fountain : public PS_Base
 {
+public:
+	enum FountainType {
+		FOUNTAIN_TYPE_FADE_IN,
+		FOUNTAIN_TYPE_FADE_OUT,
+		FOUNTAIN_TYPES_NUM,
+	};
+
 private:
 	int m_particleColor;
 	float m_radiusScale;
+	FountainType m_fountainType;
 
 public :
 	// 2 Ctors : Template & copy 
@@ -38,6 +46,7 @@ public :
 			const unsigned pnum,
 			const int shindex,
 			const int particleColor,
+			const FountainType fountainType,
 			const VAttribStatus& status);
 
 	PS_Fountain(const std::string& name,
@@ -48,6 +57,7 @@ public :
 			const unsigned pnum,
 			const int shindex,
 			const int particleColor,
+			const FountainType fountainType,
 			const std::string& texture);
 
 	void  _generateData(VBO * vbo,Texture * tex);			// The texture for the gen model

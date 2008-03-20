@@ -106,7 +106,14 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.back()->setTransform(cf);
 			break;
 		case 'T':
-			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountain");
+			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainIn");
+			ps_Fountain->setRadiusScale(20.0f);
+			m_psList.push_back(ps_Fountain);
+			cf.move(Vector3(64,286,-64));
+			m_psList.back()->setTransform(cf);
+			break;
+		case 'G':
+			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainOut");
 			ps_Fountain->setRadiusScale(20.0f);
 			m_psList.push_back(ps_Fountain);
 			cf.move(Vector3(64,286,-64));
