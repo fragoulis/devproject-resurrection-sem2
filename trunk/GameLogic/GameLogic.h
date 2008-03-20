@@ -12,6 +12,7 @@
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
 #include "../physics/PhysicsEvents.h"
+#include "GameEvents.h"
 #include <string>
 #include <list>
 class ParserSection;
@@ -37,7 +38,10 @@ class Laser;
 class GameLogic :
 	public Singleton< GameLogic >,
 	public EventListener< Collision_Player_Enemy >,
-	public EventListener< Collision_Enemy_Laser >
+	public EventListener< Collision_Enemy_Laser >,
+	public EventListener< Player_EnergyGained >,
+	public EventListener< Player_EnergyDrained >,
+	public EventListener< Player_EnergyDispersed >
 {
 public:
 
@@ -57,6 +61,9 @@ public:
 
 	void onEvent(Collision_Player_Enemy&);
 	void onEvent(Collision_Enemy_Laser&);
+	void onEvent(Player_EnergyGained&);
+	void onEvent(Player_EnergyDrained&);
+	void onEvent(Player_EnergyDispersed&);
 
 private:
 

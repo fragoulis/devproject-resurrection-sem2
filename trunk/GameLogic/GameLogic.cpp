@@ -51,6 +51,9 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	// Register for event listening
 	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
 	EventManager::instance().registerEventListener< Collision_Enemy_Laser >(this);
+	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
+	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
+	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
 
 	// Load data
 	const ParserSection* psGame = ps.getSection("main");
@@ -135,10 +138,10 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 		// Check laser type
 		// We don't create e-bombs here, that will be done in response to Player_EnergyGained
 		if (laserType == m_laserTypePositive) {
-			int newPlayerEnergy = min(oldPlayerEnergy + enemyEnergy, m_playership->getEnergyCapacity());
-			if (newPlayerEnergy > oldPlayerEnergy) {
-				m_playership->setEnergy(type, newPlayerEnergy);
-				EventManager::instance().fireEvent(Player_EnergyGained(m_playership, type, newPlayerEnergy - oldPlayerEnergy));
+			int addedEnergy = min(enemyEnergy, m_playership->getEnergyCapacity() - m_playership->getTotalEnergy());
+			if (addedEnergy > 0) {
+				m_playership->setEnergy(type, oldPlayerEnergy + addedEnergy);
+				EventManager::instance().fireEvent(Player_EnergyGained(m_playership, type, addedEnergy));
 			}
 		}
 		else {
@@ -156,6 +159,20 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 	// kill the laser
 	laser->die();
 }
+
+
+
+void GameLogic :: onEvent( Player_EnergyGained& evt )
+{
+
+}
+void GameLogic :: onEvent( Player_EnergyDrained& evt )
+{
+}
+void GameLogic :: onEvent( Player_EnergyDispersed& evt )
+{
+}
+
 
 
 /**
