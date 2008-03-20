@@ -16,7 +16,7 @@
 
 Rotation::Rotation()
 {
-	m_q.set(0.0f, 0.0f, 0.0f, 0.0f);
+	clear();
 }
 
 Rotation::~Rotation()
@@ -54,9 +54,9 @@ Matrix44 Rotation::getMatrix() const
 		  zw = z * w * 2;
 
 	return
-		Matrix44(1 - yy - zz,  xy - zw,      xz + yw,      0.0f,
-		         xy + zw,      1 - xx - zz,  yz - xw,      0.0f,
-				 xz - yw,      yz + xw,      1 - xx - yy,  0.0f,
+		Matrix44(1 - yy - zz,  xy + zw,      xz - yw,      0.0f,
+		         xy - zw,      1 - xx - zz,  yz + xw,      0.0f,
+				 xz + yw,      yz - xw,      1 - xx - yy,  0.0f,
 				 0.0f,         0.0f,         0.0f,         1.0f);
 }
 Matrix44 Rotation::getReverseMatrix() const
@@ -73,23 +73,44 @@ Matrix44 Rotation::getReverseMatrix() const
 		  zw = z * w * 2;
 
 	return
-		Matrix44(1 - yy - zz,  xy + zw,      xz - yw,      0.0f,
-		         xy - zw,      1 - xx - zz,  yz + xw,      0.0f,
-				 xz + yw,      yz - xw,      1 - xx - yy,  0.0f,
+		Matrix44(1 - yy - zz,  xy - zw,      xz + yw,      0.0f,
+		         xy + zw,      1 - xx - zz,  yz - xw,      0.0f,
+				 xz - yw,      yz + xw,      1 - xx - yy,  0.0f,
 				 0.0f,         0.0f,         0.0f,         1.0f);
 }
 
 
-void Rotation::clear()
+void Rotation :: clear()
 {
-	m_q.set(0.0f, 0.0f, 0.0f, 0.0f);
+	m_q.set(1.0f, 0.0f, 0.0f, 0.0f);
 }
 
-void Rotation::set(const Vector3& axis, const float angle)
+void Rotation :: set(const Vector3& axis, const float angle)
 {
 	m_q.set(cos(0.5f * angle), sin(0.5f * angle) * axis);
 }
 
+void Rotation :: set(float pitch, float yaw, float roll)
+{
+	float cosRoll = cos( roll * 0.5f );
+	float cosPitch = cos( pitch * 0.5f );
+	float cosYaw = cos( yaw * 0.5f );
+
+	float sinRoll = sin( roll * 0.5f );
+	float sinPitch = sin( pitch * 0.5f );
+	float sinYaw = sin( yaw * 0.5f );
+
+	float cpcy = cosPitch * cosYaw;
+	float spsy = sinPitch * sinYaw;
+
+	m_q.set(
+		cosRoll * cpcy + sinRoll * spsy,
+		sinRoll * cpcy - cosRoll * spsy,
+		cosRoll * sinPitch * cosYaw + sinRoll * cosPitch * sinYaw,
+		cosRoll * cosPitch * sinYaw - sinRoll * sinPitch * cosYaw
+	);
+	m_q.normalize();
+}
 	
 void Rotation::rotate(const Vector3& axis, const float angle)
 {

@@ -47,6 +47,9 @@ inline Point3 getMouseMapPosition() {
 	return RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition());
 }
 
+#include "../math/Rotation.h"
+#include "../math/Vector3.h"
+
 void GameController :: update(float dt)
 {
 	GameLogic& gl = GameLogic::instance();

@@ -132,6 +132,16 @@ void PhysicsEngine :: _updateSpaceship( Spaceship* s, float dt )
 {
 	_integrateForcesAndMoments(s, &PhysicsEngine::_getSpaceshipForcesAndMoments, dt);
 
+	// this should rotate the ship 90 degrees around y-axis.
+	// uncomment to have a look for yourself :)
+	//Rotation r;
+	//Vector3 axis(0.0f, 1.0f, 0.0f);
+	//axis.normalize();
+	//float angle = 3.1415f * 0.5f;
+	//r.set(axis, angle);
+
+	//s->setRotation(r);
+
 	// to rotate our ships, we simply rotate by a small factor toward the target direction
 	// this means we start moving before our ship faces the correct direction
 	// only 2D physics, so should be easy!
