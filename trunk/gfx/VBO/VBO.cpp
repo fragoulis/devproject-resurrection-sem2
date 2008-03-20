@@ -111,12 +111,9 @@ void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmod
 				{
 					ASSERT(_attribBuffers[i]);
 					glBindBuffer(GL_ARRAY_BUFFER,_attribBuffers[i]);
-					CHECK_GL_ERROR();
 					vattr->setAttribPointer();
-					CHECK_GL_ERROR();
 					vattr->EnableClientArray();
 					_enabledAttribs.attrib[i] = 0xFF;
-					CHECK_GL_ERROR();
 				}
 				else
 				{
@@ -140,14 +137,11 @@ void VBO :: call(const unsigned start,const unsigned size,const unsigned drawmod
 				{
 					ASSERT(_attribBuffers[i]);
 					glBindBuffer(GL_ARRAY_BUFFER,_attribBuffers[i]);
-					CHECK_GL_ERROR();
 					vattr->setAttribPointer();
-					CHECK_GL_ERROR();
 					if(!_enabledAttribs.attrib[i])
 					{
 						vattr->EnableClientArray();
 						_enabledAttribs.attrib[i] = 0xFF;
-						CHECK_GL_ERROR();
 					}
 				}
 				else

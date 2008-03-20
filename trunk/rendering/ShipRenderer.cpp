@@ -8,6 +8,7 @@
 //*****************************************************************************
 
 #include "ShipRenderer.h"
+#include "RenderEngine.h"
 #include "../Math/Matrix44.h"
 #include "../Math/CoordinateFrame.h"
 #include "../gfx/Model/Model.h"
@@ -38,8 +39,8 @@ ShipRenderer :: ShipRenderer()
 
 void ShipRenderer :: render(Graphics& g) const
 {
-	// FIXME : Do we need to do a special setup for ship rendering?
-	// Maybe they should be drawn in an FBO or sth, we'll see
+	Vector4 ldir = RenderEngine::instance().getLevelLight();
+	Vector4 lcol = RenderEngine::instance().getLevelLightColor();
 
 	// FIXME : ShaderManager->end() should be avoided. Fix that later in ALL renderers
 	for(vector<CoordinateModel>::const_iterator it = m_ships.begin();
@@ -53,6 +54,8 @@ void ShipRenderer :: render(Graphics& g) const
 		// Set Shader
 		//ShaderManager::instance()->begin(matg.getShaderIndex());
 		ShaderManager::instance()->begin("PerPixelNoTex");
+		ShaderManager::instance()->setUniform4fv("lightPosition",ldir.cfp());
+		ShaderManager::instance()->setUniform4fv("lightColor",lcol.cfp());
 		for(size_t i=0;i<it->model->getMatGroup().size();++i)
 		{
 			const MaterialGroup& matg = it->model->getMatGroup()[i];

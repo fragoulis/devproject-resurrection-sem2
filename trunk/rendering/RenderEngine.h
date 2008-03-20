@@ -15,6 +15,7 @@
 #include <algorithm>
 #include "../math/Vector3.h"
 #include "../math/Vector2.h"
+#include "../math/Vector4.h"
 class Graphics;
 class IRenderer;
 class ConfParser;
@@ -54,6 +55,13 @@ public:
 	// viewport getset
 	void setViewport(int x,int y,int width, int height);
 	void getViewport(int vp[4]) const;
+
+	// level light getset
+	void setLevelLight(const Vector4& llight) {m_levelLightPos = llight;}
+	const Vector4& getLevelLight() const {return m_levelLightPos;}
+	void setLevelLightColor(const Vector4& llight) {m_levelLightColor = llight;}
+	const Vector4& getLevelLightColor() const {return m_levelLightColor;}
+
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
 
 	// get entity settings
@@ -76,6 +84,8 @@ private:
 	ConfParser * m_confParser;
 
 	int m_viewport[4];
+	Vector4 m_levelLightPos;
+	Vector4 m_levelLightColor;
 
 	ConstRenderSettings m_settings;
 
