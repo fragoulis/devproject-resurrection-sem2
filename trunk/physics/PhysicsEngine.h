@@ -99,6 +99,7 @@ private:
 	typedef std::list<Ebomb*> EbombList;
 	typedef std::list<Crater*> CraterList;
 
+	float m_terrainHeight;
 	Playership* m_playership;
 	EnemyshipList m_enemyships;
 	LaserList m_lasers;
@@ -109,6 +110,7 @@ private:
 	void _checkPlayerEnemyCollisions();
 	void _checkEnemyLaserCollisions();
 	void _checkEbombCraterCollisions();
+	void _checkEbombTerrainCollisions();
 
 
 

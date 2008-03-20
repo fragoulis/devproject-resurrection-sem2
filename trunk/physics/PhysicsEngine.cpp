@@ -24,6 +24,8 @@
 #include "../math/Point2.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../gfxutils/ConfParser/ConfParser.h"
+#include "../gfxutils/Misc/utils.h"
 #include <iostream>
 using namespace std;
 
@@ -52,6 +54,10 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Crater_Despawned >(this);
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
+
+
+	const ParserSection* psGame = ps.getSection("main");
+	m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -242,6 +248,7 @@ void PhysicsEngine :: _checkCollisions()
 	_checkPlayerEnemyCollisions();
 	_checkEnemyLaserCollisions();
 	_checkEbombCraterCollisions();
+	_checkEbombTerrainCollisions();
 }
 
 
@@ -346,9 +353,34 @@ void PhysicsEngine :: _checkEbombCraterCollisions()
 				Vector3 normal = sphereCentre - craterPos;
 				normal.normalize();
 				Point3 colpos = craterPos + ((craterRadius + distance / 2) * normal);
-				CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and crater " + ToString<Crater*>(crater), 1);
+				CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and crater " + ToString<Crater*>(crater), 3);
 				EventManager::instance().fireEvent(Collision_Ebomb_Crater(ebomb, crater, colpos, normal));
 			}
+		}
+	}
+}
+
+/**
+ * Checks if any bomb hits a crater
+ * Bomb is a sphere, crater a disc on the X-Z plane.
+ */
+void PhysicsEngine :: _checkEbombTerrainCollisions()
+{
+	for (EbombList::iterator i = m_ebombs.begin(); i != m_ebombs.end(); ++i)
+	{
+		Ebomb* ebomb = *i;
+		if (ebomb->isToBeDeleted()) continue;
+		const Point3& sphereCentre = ebomb->getPosition();
+		float sphereRadius = ebomb->getRadius();
+		float sphereY = sphereCentre.getY();
+
+		if ((sphereY - sphereRadius) < m_terrainHeight)
+		{
+			Vector3 normal(0.0f, 1.0f, 0.0f);
+			Point3 colpos = sphereCentre;
+			colpos.setY(m_terrainHeight);
+			CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and terrain " + ToString<Terrain*>(m_terrain), 3);
+			EventManager::instance().fireEvent(Collision_Ebomb_Terrain(ebomb, m_terrain, colpos, normal));
 		}
 	}
 }

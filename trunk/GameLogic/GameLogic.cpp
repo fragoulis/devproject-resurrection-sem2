@@ -53,6 +53,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
 	EventManager::instance().registerEventListener< Collision_Enemy_Laser >(this);
 	EventManager::instance().registerEventListener< Collision_Ebomb_Crater >(this);
+	EventManager::instance().registerEventListener< Collision_Ebomb_Terrain >(this);
 	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
@@ -80,6 +81,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	m_ebombPrototype->loadSettings(*psEbomb);
 	m_normalBombEnergy = m_playershipPrototype->getEnergyCapacity();
 	m_combinedBombEnergy = int(m_playershipPrototype->getEnergyCapacity() / 2);
+	m_ebombInitialDownwardVelocity = FromString<float>(psEbomb->getVal("InitialDownwardVelocity"));
 }
 
 void GameLogic :: onApplicationUnload()
@@ -277,7 +279,7 @@ void GameLogic :: dropEbomb(const Point3& targetLocation)
 	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
 	ebomb->setEbombType(m_currentEbomb);
 	ebomb->setPosition(targetLocation);
-	ebomb->setVelocity(Vector3(0.0f, -20.0f, 0.0f));
+	ebomb->setVelocity(Vector3(0.0f, -m_ebombInitialDownwardVelocity, 0.0f));
 	m_ebombs.push_back(ebomb);
 
 	cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << " dropped" << endl;
@@ -298,8 +300,15 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 		crater->setToBeDeleted();
 	}
 	else {
-		//EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
+		EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 	}
+	ebomb->setToBeDeleted();
+}
+
+void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
+{
+	Ebomb* ebomb = evt.getObject1();
+	EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 	ebomb->setToBeDeleted();
 }
 
