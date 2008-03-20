@@ -25,6 +25,7 @@
 using namespace std;
 
 const float EARTH_GRAVITY = 9.81f;
+const float MIN_DT = 0.005f;
 
 PhysicsEngine :: PhysicsEngine()
 {
@@ -94,6 +95,10 @@ void PhysicsEngine :: onEvent( Laser_Despawned& evt )
 
 void PhysicsEngine :: update( float dt )
 {
+	while (dt > MIN_DT) {
+		_updatePhysics(MIN_DT);
+		dt -= MIN_DT;
+	}
 	_updatePhysics(dt);
 	_checkCollisions();
 }
@@ -178,10 +183,10 @@ void PhysicsEngine :: _getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& forc
 	// Simple airdrag, assumes turbulent flow
 	const AirdragData& ad = r->getAirdragData();
 	const Vector3& vel = r->getVelocity();
-	if (!Math::float_is_zero(vel.lengthSquared())) {
+	const float speed = vel.length();
+	if (!Math::float_is_zero(speed)) {
 		Vector3 airdrag_direction = -vel;
 		airdrag_direction.normalize();
-		float speed = r->getVelocity().length();
 		forces += airdrag_direction * ad.factor * ad.coefficient * speed * speed;
 	}
 

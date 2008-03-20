@@ -112,6 +112,7 @@ void Spawnpoint :: _spawnEnemy()
 }
 
 
+
 void Spawnpoint :: loadSettings( const ParserSection& ps )
 {
 	m_spawnType = EnemyFactory::instance().getTypeFromName(ps.getVal("EnemyType"));

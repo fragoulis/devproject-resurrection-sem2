@@ -28,7 +28,7 @@
 using namespace std;
 
 const float DELTA_TIME_MAX = 0.1f;
-const float DELTA_TIME_MIN = 0.01f;
+//const float DELTA_TIME_MIN = 0.5f;
 
 Application :: Application()
 {
