@@ -147,6 +147,14 @@ void PhysicsEngine :: _updateSpaceship( Spaceship* s, float dt )
 	// only 2D physics, so should be easy!
 	// have to find the 2D angle, change it a bit, use cos/sin to get new X/Y
 	// how do I get the direction from a Quaternion? grr
+
+	const Vector3& direction = s->getThrusterDirection();
+	if (direction.lengthSquared() > 0.0f) {
+		float angle = direction.angle(Vector3(0.0f, 0.0f, -1.0f));
+		if (direction.dot(Vector3(1.0f, 0.0f, 0.0f)) < 0.0f) angle = -angle;
+		Rotation r(Vector3(0.0f, 1.0f, 0.0f), angle);
+		s->rotateTowards(r, 0.1f);
+	}
 }
 
 template< typename T, typename ForcesAndMomentsFunction >

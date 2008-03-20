@@ -69,9 +69,13 @@ void GameController :: update(float dt)
 
 	if (!Math::float_is_zero(direction.lengthSquared())) {
 		direction.normalize();
+		gl.setPlayerDirection(direction);
+	}
+	else {
+		// if no direction is pressed on keyboard, turn off thruster, but leave direction the same
+		gl.setPlayerThrusterPower(0.0f);
 	}
 
-	gl.setPlayerDirection(direction);
 
 
 	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {

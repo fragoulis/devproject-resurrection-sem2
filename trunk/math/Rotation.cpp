@@ -122,6 +122,16 @@ void Rotation::rotate(const Vector3& angle)
 	m_q += 0.5f * Quaternion(0.0f, angle) * m_q;
 }
 
+void Rotation :: rotate( const Rotation& r )
+{
+	m_q = r.m_q * m_q;
+}
+
+void Rotation :: rotateTowards(const Rotation& r, float time)
+{
+	m_q.slerp(r.getQuaternion(), time);
+}
+
 void Rotation::applyTo(Vector3& v) const
 {
 	v = (m_q * Quaternion(0.0f, v) * ~m_q).getVector();

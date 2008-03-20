@@ -25,6 +25,10 @@ public:
 	void setPosition(const Point3& p) { m_coordinateFrame.setOrigin(p); }
 
 	const Rotation& getRotation() const { return m_coordinateFrame.getRotation(); }
+	void rotate(const Vector3& axis, float angle) { return m_coordinateFrame.rotate(axis, angle); }
+	void rotate(const Vector3& angle) { return m_coordinateFrame.rotate(angle); }
+	void rotate(const Rotation& r) { m_coordinateFrame.rotate(r); }
+	void rotateTowards(const Rotation& r, float time) { m_coordinateFrame.rotateTowards(r, time); }
 	void setRotation(const Rotation& r) { m_coordinateFrame.setRotation(r); }
 
 	const CoordinateFrame& getCoordinateFrame() const { return m_coordinateFrame; }
