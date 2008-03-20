@@ -35,6 +35,8 @@ public:
 
 	void rotate(const Vector3& axis, float angle);
 	void rotate(const Vector3& angle);
+	void rotate(const Rotation& r);
+	void rotateTowards(const Rotation& r, float time);
 
 	void applyTo(Vector3& v) const;
 	void applyTo(Point3& p) const; // assume rotation around origin

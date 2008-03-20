@@ -75,3 +75,50 @@ float Quaternion :: length() const
 {
 	return sqrt(squareLength());
 }
+
+void Quaternion :: slerp( const Quaternion& target, float time )
+{
+    float to1[4];
+
+    // calc cosine
+    float cosom = getX() * target.getX() +
+                  getY() * target.getY() +
+                  getZ() * target.getZ() +
+                  getScalar() * target.getScalar();
+
+    // adjust signs (if necessary)
+    if( cosom < 1e-6f ) {
+        cosom = -cosom;
+        to1[0] = -target.getX();
+        to1[1] = -target.getY();
+        to1[2] = -target.getZ();
+        to1[3] = -target.getScalar();
+    } else  {
+        to1[0] = target.getX();
+        to1[1] = target.getY();
+        to1[2] = target.getZ();
+        to1[3] = target.getScalar();
+    }
+
+    // calculate coefficients
+    float  omega, sinom, scale0, scale1;
+    if( ( 1.0f - cosom ) > 1e-3f ) {
+        // standard case (slerp)
+        omega   = acos(cosom);
+        sinom   = 1.0f / sin(omega);
+        scale0  = sin( ( 1.0f - time ) * omega ) * sinom;
+        scale1  = sin( time * omega ) * sinom;
+    } else {        
+    // "from" and "to" quaternions are very close
+    //  ... so we can do a linear interpolation
+            scale0 = 1.0f - time;
+            scale1 = time;
+    }
+
+    float rx = scale0 * getX() + scale1 * to1[0];
+    float ry = scale0 * getY() + scale1 * to1[1];
+    float rz = scale0 * getZ() + scale1 * to1[2];
+    float rw = scale0 * getScalar() + scale1 * to1[3];
+
+	set(rw, rx, ry, rz);
+}

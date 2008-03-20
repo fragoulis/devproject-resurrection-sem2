@@ -36,6 +36,7 @@ public:
 	void multiply(float m);
 	void conjugate();
 	void normalize();
+	void slerp(const Quaternion& target, float time);
 
 	float squareLength() const;
 	float length() const;

@@ -39,6 +39,8 @@ public:
 	void move(const Vector3& v);
 	void rotate(const Vector3& axis, float angle);
 	void rotate(const Vector3& angle);
+	void rotate(const Rotation& r) { m_rotation.rotate(r); }
+	void rotateTowards(const Rotation& r, float time) { m_rotation.rotateTowards(r, time); }
 
 	void transform(Vector3& v) const;
 	void transform(Point3& p) const;
