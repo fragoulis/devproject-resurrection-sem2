@@ -365,6 +365,13 @@ static void dds2glfmt(const DDPIXELFORMAT& pf,GLuint& ifmt,GLuint& pfmt,GLuint& 
         pfmt = GL_BGR;
 		components = 3;
     }
+	else if (pf.dwFlags == DDS_RGB  && pf.dwRGBBitCount == 32)
+    {
+        ifmt = GL_RGBA; 
+		dtype = GL_UNSIGNED_BYTE;
+        pfmt = GL_BGRA;
+		components = 4;
+    }
     else if (pf.dwRGBBitCount == 8)
     {
         ifmt = GL_LUMINANCE; 

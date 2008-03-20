@@ -31,9 +31,7 @@ class ConstRenderSettings
 	float m_waveChangeRate;
 	float m_waveSpeed;
 	float m_waveRepeats;
-	float m_cloudRepeats;
 	std::string m_lakeTexture;
-	std::string m_cloudTexture;
 
 
 	void _parseMiscEntities(const ParserSection * parsec);
@@ -56,9 +54,7 @@ public :
 	const float getWaveChangeRate() const{return m_waveChangeRate;}
 	const float getWaveSpeed() const{return m_waveSpeed;}
 	const std::string& getLakeTexture() const {return m_lakeTexture;}
-	const std::string& getCloudTexture() const {return m_cloudTexture;}
 	const float getWaveRepeats() const {return m_waveRepeats;}
-	const float getCloudRepeats() const {return m_cloudRepeats;}
 
 	void init(const ParserSection * parsec);
 

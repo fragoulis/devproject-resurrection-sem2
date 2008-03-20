@@ -36,6 +36,7 @@ RenderEngine :: RenderEngine() : m_confParser(0)
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glClearColor(0.0f,0.0f,0.0f,0.0f);
 }
 
 RenderEngine :: ~RenderEngine()

@@ -11,11 +11,18 @@
 #include "../gfx/Camera.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../gfx/Texture/Texture2D.h"
+#include "../gfx/Shaders/ShaderManager.h"
+#include "RenderEngine.h"
 #include <string>
+#include <vector>
+
+using namespace std;
 
 WorldRenderer :: WorldRenderer()
 :m_camera(0),
-m_playerActive(false)
+m_playerActive(false),
+m_transpSurface(0)
 {
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
@@ -24,22 +31,79 @@ m_playerActive(false)
 	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
 	m_camera->setPosition(Vector3(0, 300, -0), Vector3(0, 0, -0), Vector3(0,0,-1));
 	m_terrainRenderer.setCamera(m_camera);
+
+	// initialize transparent surface
+	vector<MipmapLevel> ml;
+	ml.push_back(MipmapLevel(0,0));
+	// FIXME : Get real window extents
+	m_transpSurface = new Texture2D(800,600,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"transp fbo",false,false);
+	m_transpFBO.Bind();
+	m_transpFBO.AttachTexture(GL_TEXTURE_2D,m_transpSurface->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	m_transpFBO.IsValid();
+	FramebufferObject::Disable();
+
+	m_terrainRenderer.setTransparentReflection(m_transpSurface);
+	m_terrainRenderer.setShipRendererRef(&m_shipRenderer);
 }
 
 WorldRenderer :: ~WorldRenderer()
 {
 	if(m_camera)
 		delete m_camera;
+	if(m_transpSurface)
+		delete m_transpSurface;
 }
 
 
 void WorldRenderer :: render(Graphics& g) const
 {
-	m_terrainRenderer.render(g);
-	m_spawnPointRenderer.render(g);
-	m_shipRenderer.render(g);
+	// Draw transparent 2D stuff in FBO
+	m_transpFBO.Bind();
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
+	
+
+	FramebufferObject::Disable();
+
+	// now render opaque 3D stuff
+
+	m_shipRenderer.render(g);
+	m_terrainRenderer.render(g);
+	m_spawnPointRenderer.render(g);
+
+	// now overlay the quad
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0,1,0,1,-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
+	glEnable(GL_BLEND);
+
+	ShaderManager::instance()->begin("blitShader");
+	m_transpSurface->bind();
+	ShaderManager::instance()->setUniform1i("tex",0);
+	RenderEngine::drawTexturedQuad(Vector3(0.0f,0.0f,0.0f),
+								   Vector3(1.0f,0.0f,0.0f),
+								   Vector3(0.0f,1.0f,0.0f),
+								   Vector2(0.0f,0.0f),
+								   Vector2(1.0f,1.0f));
+
+	glDisable(GL_BLEND);
+
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
+	
+	
 }
 
 void WorldRenderer :: update( float dt )

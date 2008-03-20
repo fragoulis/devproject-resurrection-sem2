@@ -33,6 +33,7 @@
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../gfx/Camera.h"
+#include "ShipRenderer.h"
 
 using namespace std;
 
@@ -43,7 +44,8 @@ TerrainRenderer :: TerrainRenderer() :
 	m_heights(0),
 	m_shadowTexture(0),
 	m_lakeTimer(0.0f),
-	m_heightTexture(0)
+	m_heightTexture(0),
+	m_lakeReflection(0)
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
@@ -84,6 +86,8 @@ void TerrainRenderer :: _clearResources()
 	if(m_shadowTexture)
 		delete m_shadowTexture;
 	if(m_heightTexture)
+		delete m_heightTexture;
+	if(m_lakeReflection)
 		delete m_heightTexture;
 }
 
@@ -150,8 +154,11 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	CHECK_GL_ERROR();
 
+	
+	// create the reflection Surface
+	_drawLakeReflection(g);
+
 	// Draw the lake
-	// FIXME : do it appropriately
 
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -161,8 +168,8 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1i("noiseTex",0);
 	m_shadowTexture->bind(1);
 	ShaderManager::instance()->setUniform1i("shadowTex",1);
-	m_cloudTexture->bind(2);
-	ShaderManager::instance()->setUniform1i("cloudTex",2);
+	m_lakeReflection->bind(7);
+	ShaderManager::instance()->setUniform1i("reflTex",7);
 	m_heightTexture->bind(3);
 	ShaderManager::instance()->setUniform1i("heightTex",3);
 
@@ -173,7 +180,6 @@ void TerrainRenderer :: render(Graphics& g) const
 	const float ws = RenderEngine::instance().getConstRenderSettings().getWaveSpeed();
 	const float wcr = RenderEngine::instance().getConstRenderSettings().getWaveChangeRate();
 	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats();
-	const float cr = RenderEngine::instance().getConstRenderSettings().getCloudRepeats();
 
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
@@ -182,8 +188,33 @@ void TerrainRenderer :: render(Graphics& g) const
 	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
 	ShaderManager::instance()->setUniform4fv("lightPosition",lightPos.cfp());
 
+	// compute the texcoord offsets & scale, based on the ship's center, max extents etc.
+	Vector2 rto;
+	Vector2 rts;
+	float proj[4];
+	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
+	float edge_x  = (1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
+	float edge_y  = (1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
+
+	// compute reflection texture scale
+	rts.setX( 1.0f / (edge_x * 2.0f / m_mapExtents.getX()));
+	rts.setY( 1.0f / (edge_y * 2.0f / m_mapExtents.getZ()));
+
+	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
 	
-	ShaderManager::instance()->setUniform1fv("cloudRepeats",&cr);
+	// compute reflection texture offset
+	
+	Vector2 mapExtents(m_mapExtents.getX(),m_mapExtents.getZ());
+	Vector2 ll_mapEdge(-mapExtents * 0.5f);
+	Vector2 curpos(off[0],-off[1]);
+	Vector2 ll_screenEdge(curpos - Vector2(edge_x,edge_y));
+	Vector2 offset_to_ur(ll_screenEdge - ll_mapEdge);
+	rto.setX(rts.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
+	rto.setY(rts.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
+
+	ShaderManager::instance()->setUniform2fv("reflectionTexCoordOffsets",rto.cfp());
+	ShaderManager::instance()->setUniform2fv("reflectionTexCoordScale",rts.cfp());
+
 	ShaderManager::instance()->setUniform1fv("waveRepeats",&wr);
 
 	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
@@ -200,6 +231,24 @@ void TerrainRenderer :: render(Graphics& g) const
 	TextureMgr::instance()->setBoundTexture(0,2);
 	TextureMgr::instance()->setTextureUnit(1);
 	TextureMgr::instance()->setBoundTexture(0,1);
+
+	// FIXME : DRAW A THICKLINE QUAD AT THE EDGES FOR DEBUG
+/*
+	float proj[4];
+	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
+	glLineWidth(13.0f);
+	float edge_x  = 0.55f*(1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
+	float edge_y  = 0.55f*(1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
+	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
+	glDisable(GL_DEPTH_TEST);
+	glBegin(GL_LINE_LOOP);
+		glVertex3f(-edge_x+off[0],0.0f,edge_y+off[1]);
+		glVertex3f(edge_x+off[0],0.0f,edge_y+off[1]);
+		glVertex3f(edge_x+off[0],0.0f,-edge_y+off[1]);
+		glVertex3f(-edge_x+off[0],0.0f,-edge_y+off[1]);
+	glEnd();
+	glEnable(GL_DEPTH_TEST);
+*/
 }
 
 
@@ -314,7 +363,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 		delete m_tformContribTex;
 	std::vector<MipmapLevel> ml;
 	ml.push_back(MipmapLevel(0,0));
-	m_tformContribTex = new Texture2D(dimension,dimension,GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,
+	m_tformContribTex = new Texture2D(dimension,dimension,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,
 									  ml,GL_TEXTURE_RECTANGLE_ARB,"Terraform contribution",false,true);
 	m_tformFBO.Bind();
 	m_tformFBO.UnattachAll();
@@ -327,7 +376,18 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	// LAKE STUFF
 	
 	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
-	m_cloudTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getCloudTexture());
+
+	// FIXME : get the REAL dims of the screen - or get a lesser one dep on opts
+	m_lakeReflection = new Texture2D(800,600,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"lake reflection",false,false);
+	m_lakeReflection->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
+	m_lakeReflection->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
+	m_reflectionDepthBuffer.Bind();
+	m_reflectionDepthBuffer.Set(GL_DEPTH_COMPONENT32,800,600);
+	m_reflectionFBO.Bind();
+	m_reflectionFBO.AttachTexture(GL_TEXTURE_2D,m_lakeReflection->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	m_reflectionFBO.AttachRenderBuffer(m_reflectionDepthBuffer.GetId(),GL_DEPTH_ATTACHMENT_EXT);
+	m_reflectionFBO.IsValid();
+	FramebufferObject::Disable();
 
 	// SHADOW STUFF
 	_initShadows(ldir);
@@ -650,4 +710,54 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 			}
 			break;
 	}
+}
+
+void TerrainRenderer::_drawLakeReflection(Graphics& g) const
+{
+	// save state
+	int drawbuf;
+	glGetIntegerv(GL_DRAW_BUFFER,&drawbuf);
+
+	// bind & set draw buffer
+	m_reflectionFBO.Bind();
+	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// apply texture to the screen quad
+	glDepthMask(GL_FALSE);
+	float proj[4];
+	// Find the max quad at y=0
+	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
+	const float gph = GameLogic::instance().getGamePlaneHeight();
+	float edge_x  = (1500.0f + 2.0f*gph)*proj[0] / proj[2];
+	float edge_y  = (1500.0f + 2.0f*gph)*proj[1] / proj[2];
+	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
+	
+	ShaderManager::instance()->begin("blitShader");
+	m_transpReflection->bind();
+	ShaderManager::instance()->setUniform1i("tex",0);
+	RenderEngine::drawTexturedQuad(Vector3(-edge_x + off[0],-gph,edge_y + off[1]),
+								   Vector3(2.0f*edge_x,0.0f,0.0f),
+								   Vector3(0.0f,0.0f,-2.0f*edge_y),
+								   Vector2(0.0f,0.0f),
+								   Vector2(1.0f,1.0f));
+	glDepthMask(GL_TRUE);
+
+	// reverse camera - we're already in modelview
+	// reverse lighting
+	
+	glPushMatrix();
+	glTranslatef(0.0f,gph,0.0f);
+	glScalef(1.0f,-1.0f,1.0f);
+
+	// draw ships
+	m_shipRendererRef->render(g);
+
+	
+	glPopMatrix();
+
+	//restore settings
+	FramebufferObject::Disable();
+	glDrawBuffer(drawbuf);
+	
 }

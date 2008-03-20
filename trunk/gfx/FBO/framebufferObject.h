@@ -188,6 +188,8 @@ public:
 
     /// Which z-slice is currently attached to "attachment?"
     GLint  GetAttachedZSlice( GLenum attachment );
+
+	GLint GetFBOId() const {return m_fboId;}
   /// END : Accessors
 
 
