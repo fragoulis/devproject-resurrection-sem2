@@ -32,7 +32,7 @@ Radius = 60.0                # float, collision detection and inertia calculatio
 Mass = 0.5                  # float
 AirdragCoefficient = 0.05     # float
 LiftPower = 1.0              # float
-LiftVariance = 1.0           # float
+LiftVariance = 1.0           # float, not used ATM
 LaserCooldown = 0.08
 LaserStartOffset = 128.0
 EnergyCapacity = 50
@@ -41,10 +41,10 @@ EnergyCapacity = 50
 // This is used to create a new e-bomb object
 [Ebomb]
 Radius = 10.0                # float, collision detection
-Mass = 0.5                  # float
-AirdragCoefficient = 0.05     # float
-LiftPower = 0.0              # float
-LiftVariance = 1.0           # float
+Mass = 0.5
+AirdragCoefficient = 0.0
+LiftPower = 0.0              # doesn't lift, so gravity will pull it down quickly
+LiftVariance = 1.0
 
 
 [Laser : LaserPlayerPositive]

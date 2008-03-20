@@ -15,8 +15,8 @@
 namespace Math
 {
 	const double PI = M_PI;
-	const double PI_2 = M_PI_2;
-	const double PI_4 = M_PI_4;
+	const double PI_2 = M_PI_2; // PI/2
+	const double PI_4 = M_PI_4; // PI/4
 	const double E = M_E;
 	const float almost_zero_f = 0.0001f;
 	const double almost_zero_d = 0.0001;

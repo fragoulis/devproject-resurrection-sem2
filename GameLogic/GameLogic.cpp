@@ -52,6 +52,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	// Register for event listening
 	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
 	EventManager::instance().registerEventListener< Collision_Enemy_Laser >(this);
+	EventManager::instance().registerEventListener< Collision_Ebomb_Crater >(this);
 	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
@@ -156,7 +157,7 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 		else {
 			int newPlayerEnergy = max(oldPlayerEnergy - enemyEnergy, 0);
 			if (newPlayerEnergy < oldPlayerEnergy) {
-				m_playership->setEnergy(type, oldPlayerEnergy);
+				m_playership->setEnergy(type, newPlayerEnergy);
 				EventManager::instance().fireEvent(Player_EnergyDispersed(m_playership, type, oldPlayerEnergy - newPlayerEnergy));
 			}
 		}
@@ -190,7 +191,7 @@ e-bombs in player's cargo bay
 
 void GameLogic :: onEvent( Player_EnergyGained& evt )
 {
-	cerr << "Gained " << evt.getValue3() << " energy" << endl;
+	cerr << "Gained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 
 	// if we aready have an e-bomb, we can't create another
 	if (m_currentEbomb != EBOMB_TYPE_UNKNOWN) return;
@@ -204,12 +205,12 @@ void GameLogic :: onEvent( Player_EnergyGained& evt )
 }
 void GameLogic :: onEvent( Player_EnergyDrained& evt )
 {
-	cerr << "Drained " << evt.getValue3() << " energy" << endl;
+	cerr << "Drained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 	_checkEbombUncreation();
 }
 void GameLogic :: onEvent( Player_EnergyDispersed& evt )
 {
-	cerr << "Dispersed " << evt.getValue3() << " energy" << endl;
+	cerr << "Dispersed " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 	_checkEbombUncreation();
 }
 
@@ -262,6 +263,47 @@ void GameLogic :: _checkEbombUncreation()
 
 
 
+/**
+ * Attempts to drop an e-bomb at specified location
+ * If no e-bomb is available, returns without trying anything.
+ * E-bomb will drop straight down due to gravity
+ * Physics will check collision with craters and fire event
+ */
+void GameLogic :: dropEbomb(const Point3& targetLocation)
+{
+	// check if we have a bomb available
+	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
+
+	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
+	ebomb->setEbombType(m_currentEbomb);
+	ebomb->setPosition(targetLocation);
+	ebomb->setVelocity(Vector3(0.0f, -20.0f, 0.0f));
+	m_ebombs.push_back(ebomb);
+
+	cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << " dropped" << endl;
+
+	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
+	m_playership->resetAllEnergy();
+
+	EventManager::instance().fireEvent(Ebomb_Spawned(ebomb));
+}
+
+
+void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
+{
+	Ebomb* ebomb = evt.getObject1();
+	Crater* crater = evt.getObject2();
+	if (ebomb->getEbombType() == crater->getEbombType()) {
+		EventManager::instance().fireEvent(Life_Restored(crater));
+		crater->setToBeDeleted();
+	}
+	else {
+		//EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
+	}
+	ebomb->setToBeDeleted();
+}
+
+
 
 /**
  * Send update on to objects that need it.
@@ -286,6 +328,7 @@ void GameLogic :: update(float dt)
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
 	_cleanUpList<Ebomb, Ebomb_Despawned>(m_ebombs);
 	_cleanUpList<Laser, Laser_Despawned>(m_lasers);
+	_cleanUpList<Crater, Crater_Despawned>(m_craters);
 
 	// Output debug info
 	//cout << m_playership->getPosition() << endl;
@@ -355,20 +398,6 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 }
 
 
-void GameLogic :: dropEbomb()
-{
-	// check if we have a bomb available
-	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
-
-	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
-	ebomb->setEbombType(m_currentEbomb);
-	ebomb->setPosition(m_playership->getPosition());
-
-	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
-	m_playership->resetAllEnergy();
-
-	EventManager::instance().fireEvent(Ebomb_Spawned(ebomb));
-}
 
 
 

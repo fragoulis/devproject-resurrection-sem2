@@ -13,12 +13,15 @@
 #include "../GameLogic/Movable.h"
 #include "../GameLogic/Rigidbody.h"
 #include "../GameLogic/Spaceship.h"
-#include "../GameLogic/Objects/Playership.h"   // needed to convert to Spaceship*
-#include "../GameLogic/Enemies/Enemyship.h"    // needed to convert to Spaceship*
+#include "../GameLogic/Objects/Playership.h"
+#include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Lasers/Laser.h"
+#include "../GameLogic/Objects/Ebomb.h"
+#include "../GameLogic/Objects/Crater.h"
 #include "../math/maths.h"
 #include "../math/Vector3.h"
 #include "../math/Point3.h"
+#include "../math/Point2.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
 #include <iostream>
@@ -43,6 +46,10 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
+	EventManager::instance().registerEventListener< Crater_Spawned >(this);
+	EventManager::instance().registerEventListener< Crater_Despawned >(this);
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
 }
@@ -78,6 +85,28 @@ void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
 {
 	m_enemyships.remove(evt.getValue());
 	m_spaceships.remove(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Ebomb_Spawned& evt )
+{
+	m_ebombs.push_back(evt.getValue());
+	m_rigidbodies.push_back(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Ebomb_Despawned& evt )
+{
+	m_ebombs.remove(evt.getValue());
+	m_rigidbodies.remove(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Crater_Spawned& evt )
+{
+	m_craters.push_back(evt.getValue());
+}
+
+void PhysicsEngine :: onEvent( Crater_Despawned& evt )
+{
+	m_craters.remove(evt.getValue());
 }
 
 void PhysicsEngine :: onEvent( Laser_Spawned& evt )
@@ -191,7 +220,7 @@ void PhysicsEngine :: _getRigidbodyForcesAndMoments( Rigidbody* r, Vector3& forc
 	}
 
 	// Simple lift
-	forces.setY(forces.getY() + r->getLiftData().factor * EARTH_GRAVITY * r->getMass());
+	forces.setY(forces.getY() + r->getLiftData().factor * r->getLiftData().power * EARTH_GRAVITY * r->getMass());
 }
 
 void PhysicsEngine :: _getSpaceshipForcesAndMoments( Spaceship* s, Vector3& forces, Vector3& moments )
@@ -212,6 +241,7 @@ void PhysicsEngine :: _checkCollisions()
 {
 	_checkPlayerEnemyCollisions();
 	_checkEnemyLaserCollisions();
+	_checkEbombCraterCollisions();
 }
 
 
@@ -268,6 +298,56 @@ void PhysicsEngine :: _checkEnemyLaserCollisions()
 				normal.normalize();
 				CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 3);
 				EventManager::instance().fireEvent(Collision_Enemy_Laser(enemy, laser, closestPointOnLine, normal));
+			}
+		}
+	}
+}
+
+
+/**
+ * Checks if any bomb hits a crater
+ * Bomb is a sphere, crater a disc on the X-Z plane.
+ */
+void PhysicsEngine :: _checkEbombCraterCollisions()
+{
+	for (EbombList::iterator i = m_ebombs.begin(); i != m_ebombs.end(); ++i)
+	{
+		Ebomb* ebomb = *i;
+		if (ebomb->isToBeDeleted()) continue;
+		const Point3& sphereCentre = ebomb->getPosition();
+		float sphereRadius = ebomb->getRadius();
+		float sphereY = sphereCentre.getY();
+
+		for (CraterList::iterator j = m_craters.begin(); j != m_craters.end(); ++j)
+		{
+			Crater* crater = *j;
+			if (crater->isToBeDeleted()) continue;
+			const Point3 craterPos = crater->getPosition();
+			float craterY = craterPos.getY();
+			float craterRadius = crater->getRadius();
+
+			// first check if sphere touches the XZ plane at crater height at all
+			if (sphereY - sphereRadius > craterY) continue;
+
+			// (sphereY - craterY) / sphereRadius ranges from -1 to 1
+			// we want it in range 0 to PI
+			float y = (sphereY - craterY) / sphereRadius * float(Math::PI_2) + float(Math::PI_2);
+
+			// now we got the radius of the circle on the plane
+			// we can now do circle-circle collision
+			float ebombCircleRadius = sin(y);
+			Point2 craterCircleCentre(craterPos.getX(), craterPos.getZ());
+			Point2 ebombCircleCentre(sphereCentre.getX(), sphereCentre.getZ());
+
+			float distance = craterCircleCentre.distance(ebombCircleCentre);
+
+			if (distance < (ebombCircleRadius + craterRadius))
+			{
+				Vector3 normal = sphereCentre - craterPos;
+				normal.normalize();
+				Point3 colpos = craterPos + ((craterRadius + distance / 2) * normal);
+				CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and crater " + ToString<Crater*>(crater), 1);
+				EventManager::instance().fireEvent(Collision_Ebomb_Crater(ebomb, crater, colpos, normal));
 			}
 		}
 	}
