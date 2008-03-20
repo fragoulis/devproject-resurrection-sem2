@@ -9,9 +9,11 @@
 
 uniform sampler2D particleTex;
 varying vec4 color;
+varying vec2 vTexCoord;
 
 
 void main(void)
 {
-	gl_FragColor = texture2D(particleTex,gl_TexCoord[0].st)*color;
+	float fade = pow(dot(vTexCoord, vTexCoord), 0.5);
+	gl_FragColor = (1.0-fade)*texture2D(particleTex,gl_TexCoord[0].st)*color;
 }
