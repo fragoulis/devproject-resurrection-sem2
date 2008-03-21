@@ -40,6 +40,8 @@ RenderEngine :: RenderEngine() : m_confParser(0)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 	glClearColor(0.0f,0.0f,0.0f,0.0f);
+
+	m_camHeightAbovePlane = 2000.0f;
 }
 
 RenderEngine :: ~RenderEngine()

@@ -64,6 +64,7 @@ private:
 
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
 	Camera		  * m_camera;				// The world renderer has our main camera
+	Camera		  * m_realCam;
 	TerrainRenderer m_terrainRenderer;
 	ParticleSystemsRenderer m_psRenderer;
 	ShipRenderer	m_shipRenderer;

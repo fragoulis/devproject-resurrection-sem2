@@ -105,6 +105,9 @@ void TextureIO :: deleteTexture(const std::string& fname)
 		it!= _textureTemplates.end();
 		++it)
 		if((*it)->getName() == fname)
+		{
 			_textureTemplates.erase(it);
+			break;
+		}
 	return;
 }

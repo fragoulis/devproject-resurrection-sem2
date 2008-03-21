@@ -17,6 +17,7 @@
 #include "../gfx/Texture/Texture.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../GameLogic/Objects/Ebomb.h"
 #include "RenderEngine.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 
@@ -35,6 +36,8 @@ ShipRenderer :: ShipRenderer()
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
 }
 
 void ShipRenderer :: render(Graphics& g) const
@@ -99,6 +102,20 @@ void ShipRenderer :: onEvent(Enemy_Despawned& evt)
 }
 
 void ShipRenderer :: onEvent(Player_Despawned& evt)
+{
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_deleteShip(cf);
+}
+
+void ShipRenderer :: onEvent(Ebomb_Spawned& evt)
+{
+	// Get the const render settings of the ship
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+}
+
+void ShipRenderer :: onEvent(Ebomb_Despawned& evt)
 {
 	// Fetch the player & remove, based on coordinate frame address
 	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());

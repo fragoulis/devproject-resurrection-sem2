@@ -60,13 +60,21 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_spawnpointInterval = FromString<float>(parsec->getVal("SpawnPointInterval"));
 	m_spawnpointSize = FromString<float>(parsec->getVal("SpawnPointSize"));
 	m_spawnpointTexture = TextureIO::instance()->getTexture(parsec->getVal("SpawnPointTexture"));
+
+	// shadow info
 	m_shadowTextureSize = FromString<unsigned>(parsec->getVal("ShadowTextureSize"));
+
+	// terraform info
 	m_tformTimePerUnit = FromString<float>(parsec->getVal("TerraformingTimePerUnit"));
+
+	// laser info
 	m_laserTexName = parsec->getVal("LaserTexture");
 
+	// lake info
 	m_waveChangeRate = FromString<float>(parsec->getVal("WaveChangeRate"));
 	m_waveSpeed = FromString<float>(parsec->getVal("WaveSpeed"));
 	m_waveRepeats = FromString<float>(parsec->getVal("WaveRepeats"));
 	m_lakeTexture = parsec->getVal("LakeTexture");
+	m_reflectionTextureScreenRatio = FromString<float>(parsec->getVal("ReflectionTextureSizeRatio"));
 	
 }

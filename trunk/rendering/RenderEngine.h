@@ -64,6 +64,10 @@ public:
 	void setLevelLightColor(const Vector4& llight) {m_levelLightColor = llight;}
 	const Vector4& getLevelLightColor() const {return m_levelLightColor;}
 
+	// camera constants getset
+	const float getCameraHeightAbovePlane() const {return m_camHeightAbovePlane;}
+	void setCameraHeightAbovePlane(const float val) {m_camHeightAbovePlane = val;}
+
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
 
 	// get entity settings
@@ -88,6 +92,7 @@ private:
 	int m_viewport[4];
 	Vector4 m_levelLightPos;
 	Vector4 m_levelLightColor;
+	float m_camHeightAbovePlane;
 
 	ConstRenderSettings m_settings;
 

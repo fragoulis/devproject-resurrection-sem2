@@ -82,13 +82,25 @@ void TerrainRenderer :: _clearResources()
 		m_heights = 0;
 	}
 	if(m_tformContribTex)
+	{
 		delete m_tformContribTex;
+		m_tformContribTex = 0;
+	}
 	if(m_shadowTexture)
+	{
 		delete m_shadowTexture;
+		m_shadowTexture = 0;
+	}
 	if(m_heightTexture)
+	{
 		delete m_heightTexture;
+		m_heightTexture = 0;
+	}
 	if(m_lakeReflection)
-		delete m_heightTexture;
+	{
+		delete m_lakeReflection;
+		m_lakeReflection = 0;
+	}
 }
 
 
@@ -193,8 +205,8 @@ void TerrainRenderer :: render(Graphics& g) const
 	Vector2 rts;
 	float proj[4];
 	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
-	float edge_x  = (1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
-	float edge_y  = (1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
+	float edge_x  = (RenderEngine::instance().getCameraHeightAbovePlane() + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
+	float edge_y  = (RenderEngine::instance().getCameraHeightAbovePlane() + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
 
 	// compute reflection texture scale
 	rts.setX( 1.0f / (edge_x * 2.0f / m_mapExtents.getX()));
@@ -370,12 +382,22 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	
 	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
 
+	// get the reflection tex size
+	int vp[4];
+	RenderEngine::instance().getViewport(vp);
+	const float reflDimRatio = RenderEngine::instance().getConstRenderSettings().getReflectionTextureScreenRatio();
+	unsigned reflTexSize[2] = {unsigned(reflDimRatio*vp[2]),
+							   unsigned(reflDimRatio*vp[3])};
+	// be sure that it is a mult of 2
+	reflTexSize[0] += reflTexSize[0]%2;
+	reflTexSize[1] += reflTexSize[1]%2;
+
 	// FIXME : get the REAL dims of the screen - or get a lesser one dep on opts
-	m_lakeReflection = new Texture2D(800,600,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"lake reflection",false,false);
+	m_lakeReflection = new Texture2D(reflTexSize[0],reflTexSize[1],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"lake reflection",false,false);
 	m_lakeReflection->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	m_lakeReflection->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
 	m_reflectionDepthBuffer.Bind();
-	m_reflectionDepthBuffer.Set(GL_DEPTH_COMPONENT32,800,600);
+	m_reflectionDepthBuffer.Set(GL_DEPTH_COMPONENT32,reflTexSize[0],reflTexSize[1]);
 	m_reflectionFBO.Bind();
 	m_reflectionFBO.AttachTexture(GL_TEXTURE_2D,m_lakeReflection->getId(),GL_COLOR_ATTACHMENT0_EXT);
 	m_reflectionFBO.AttachRenderBuffer(m_reflectionDepthBuffer.GetId(),GL_DEPTH_ATTACHMENT_EXT);
@@ -627,7 +649,7 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_cameraRef->getProjSettings(w,h,n,f);
 	
 	// compute the max quad dims shown in height = gameplane
-	const float gameplanedepth = 1500.0f;
+	const float gameplanedepth = RenderEngine::instance().getCameraHeightAbovePlane();
 	float maxLeftRight = w* gameplanedepth/ n;
 	float maxTopDown = h*gameplanedepth / n;
 
@@ -640,9 +662,10 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_lightCameraVectorUp = Vector3::cross(right,ldir);
 	m_lightCameraVectorUp.normalize();
 
-	// FIXME : 
-	maxLeftRight = 950;		// -- GOOD BUT HACK!!
-	maxTopDown = 950;
+	// FIXME :  400->950 : 1500, 535 -> 1200 : 2000
+	const float hackvalue = RenderEngine::instance().getCameraHeightAbovePlane() * 3.5f / 5.0f;
+	maxLeftRight = hackvalue;		// -- GOOD BUT HACK!!
+	maxTopDown = hackvalue;
 
 	// set a safe distance for the light eye
 	m_lightCameraEye = Vector3(0.0f,gameplanedepth + GameLogic::instance().getGamePlaneHeight(),0.0f) - 500.0f*ldir;
@@ -707,9 +730,20 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 
 void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 {
+	// get the reflection tex size
+	int vp[4];
+	RenderEngine::instance().getViewport(vp);
+	const float reflDimRatio = RenderEngine::instance().getConstRenderSettings().getReflectionTextureScreenRatio();
+	unsigned reflTexSize[2] = {unsigned(reflDimRatio*vp[2]),
+							   unsigned(reflDimRatio*vp[3])};
+	// be sure that it is a mult of 2
+	reflTexSize[0] += reflTexSize[0]%2;
+	reflTexSize[1] += reflTexSize[1]%2;
+
 	// save state
 	int drawbuf;
 	glGetIntegerv(GL_DRAW_BUFFER,&drawbuf);
+	glViewport(0,0,reflTexSize[0],reflTexSize[1]);
 
 	// bind & set draw buffer
 	m_reflectionFBO.Bind();
@@ -722,8 +756,8 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	// Find the max quad at y=0
 	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
 	const float gph = GameLogic::instance().getGamePlaneHeight();
-	float edge_x  = (1500.0f + 2.0f*gph)*proj[0] / proj[2];
-	float edge_y  = (1500.0f + 2.0f*gph)*proj[1] / proj[2];
+	float edge_x  = (RenderEngine::instance().getCameraHeightAbovePlane() + 2.0f*gph)*proj[0] / proj[2];
+	float edge_y  = (RenderEngine::instance().getCameraHeightAbovePlane() + 2.0f*gph)*proj[1] / proj[2];
 	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
 	
 	ShaderManager::instance()->begin("blitShader");
@@ -757,5 +791,6 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	//restore settings
 	FramebufferObject::Disable();
 	glDrawBuffer(drawbuf);
+	glViewport(vp[0],vp[1],vp[2],vp[3]);
 	
 }
