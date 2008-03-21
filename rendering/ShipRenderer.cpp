@@ -52,8 +52,7 @@ void ShipRenderer :: render(Graphics& g) const
 		glMultMatrixf(it->coordframe->getMatrix().cfp());
 		const float * m = it->coordframe->getMatrix().cfp();
 		// Set Shader
-		//ShaderManager::instance()->begin(matg.getShaderIndex());
-		ShaderManager::instance()->begin("PerPixelNoTex");
+		ShaderManager::instance()->begin(it->model->getMatGroup()[0].getShaderIndex());
 		ShaderManager::instance()->setUniform4fv("lightPosition",ldir.cfp());
 		ShaderManager::instance()->setUniform4fv("lightColor",lcol.cfp());
 		for(size_t i=0;i<it->model->getMatGroup().size();++i)

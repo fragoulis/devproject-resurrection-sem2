@@ -242,7 +242,7 @@ Texture      = "Flare1_32.sgi"
 ################# ENTITY-MODEL SETTINGS ####################
 
 [EntitySettings : PlayerShip]
-ModelHook = Stupship_proc.obj
+ModelHook = enforcer_proc.obj
 
 [EntitySettings : EnemyFighter]
 ModelHook = Stupship_proc.obj
