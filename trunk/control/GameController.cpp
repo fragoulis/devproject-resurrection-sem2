@@ -42,6 +42,8 @@ void GameController :: activate()
 void GameController :: deactivate()
 {
 	// deactivate controls, but leaves renderers alone
+	// Hack again?
+	//GameLogic::safeInstance().unloadLevel();
 }
 
 inline Point3 getMouseMapPosition() {

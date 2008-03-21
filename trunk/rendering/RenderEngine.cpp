@@ -12,6 +12,7 @@
 #include "WorldRenderer.h"
 #include "LoadingRenderer.h"
 #include "HUDRenderer.h"
+#include "MenuRenderer.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
 #include <cassert>
@@ -115,6 +116,17 @@ void RenderEngine :: unloadRenderer(const std::string& name)
 	}
 }
 
+IRenderer* RenderEngine :: getRenderer(const std::string& name)
+{
+	IRenderer* r = findRenderer(name);
+	if (r == NULL) {
+		r = createRenderer(name);
+		assert(r != NULL);
+		addRenderer(name, r);
+	}
+	return r;
+}
+
 void RenderEngine::unloadAllRenderers()
 {
 	struct RendererDeleter
@@ -143,6 +155,7 @@ IRenderer* RenderEngine :: createRenderer(const std::string& name) const
 	if (name == "world") return new WorldRenderer();
 	if (name == "loading") return new LoadingRenderer();
 	if (name == "hud") return new HUDRenderer();
+	if (name == "menu") return new MenuRenderer();
 	return NULL;
 }
 
