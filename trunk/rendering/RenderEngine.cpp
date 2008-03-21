@@ -34,7 +34,7 @@ using namespace std;
 
 RenderEngine :: RenderEngine() : m_confParser(0)
 {
-	setViewport(0,0,800,600);
+	setViewport(0,0,1024,768);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -236,4 +236,20 @@ void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vecto
 		glVertex3fv(ur.cfp());
 		glVertex3fv(ul.cfp());
 	glEnd();
+}
+
+void RenderEngine :: getWsScreenEdges(Point3 pts[4]) const
+{
+	pts[0] = m_wsScreenEdges[0];
+	pts[1] = m_wsScreenEdges[1];
+	pts[2] = m_wsScreenEdges[2];
+	pts[3] = m_wsScreenEdges[3];
+}
+
+void RenderEngine :: computeWsScreenEdges()
+{
+	m_wsScreenEdges[0] = getMapPositionFromScreenPosition(Point2(m_viewport[0],m_viewport[1] + m_viewport[3]));
+	m_wsScreenEdges[1] = getMapPositionFromScreenPosition(Point2(m_viewport[0] + m_viewport[2],m_viewport[1] + m_viewport[3]));
+	m_wsScreenEdges[2] = getMapPositionFromScreenPosition(Point2(m_viewport[0] + m_viewport[2],m_viewport[1]));
+	m_wsScreenEdges[3] = getMapPositionFromScreenPosition(Point2(m_viewport[0],m_viewport[1]));
 }

@@ -16,6 +16,7 @@
 #include "../math/Vector3.h"
 #include "../math/Vector2.h"
 #include "../math/Vector4.h"
+#include "../math/Point3.h"
 class Graphics;
 class IRenderer;
 class ConfParser;
@@ -68,6 +69,10 @@ public:
 	const float getCameraHeightAbovePlane() const {return m_camHeightAbovePlane;}
 	void setCameraHeightAbovePlane(const float val) {m_camHeightAbovePlane = val;}
 
+
+	// mapping stuff
+	void getWsScreenEdges(Point3 pts[4]) const;
+	void computeWsScreenEdges();
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
 
 	// get entity settings
@@ -93,6 +98,8 @@ private:
 	Vector4 m_levelLightPos;
 	Vector4 m_levelLightColor;
 	float m_camHeightAbovePlane;
+
+	Point3 m_wsScreenEdges[4];		// ll, -> ccw
 
 	ConstRenderSettings m_settings;
 

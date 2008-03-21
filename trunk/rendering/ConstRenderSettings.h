@@ -51,7 +51,7 @@ public :
 	const float getWaveChangeRate() const{return m_waveChangeRate;}
 	const float getWaveSpeed() const{return m_waveSpeed;}
 	const std::string& getLakeTexture() const {return m_lakeTexture;}
-	const float getWaveRepeats() const {return m_waveRepeats;}
+	const float getWaveRepeats(const float mapExtent) const {return m_waveRepeats*mapExtent / 2048.0f;}
 	const float getReflectionTextureScreenRatio() const {return m_reflectionTextureScreenRatio;}
 
 	void init(const ParserSection * parsec);
