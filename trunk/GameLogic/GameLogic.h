@@ -33,6 +33,7 @@ class Laser;
  *   spawnEnemies
  *   setPlayerDirection
  *   fireLaser
+ *   dropEbomb
  *
  * Also has methods to load/unload a level.
  */
@@ -82,15 +83,13 @@ private:
 
 	float m_gamePlaneHeight; // Y coord of all gameplay things like laser, player, enemy
 
-	typedef std::list<Enemyship*> EnemyshipList;
-	typedef std::list<Spawnpoint*> SpawnpointList;
-	typedef std::list<Crater*> CraterList;
-	typedef std::list<Ebomb*> EbombList;
-	typedef std::list<Laser*> LaserList;
-
-	// Gameplay data
+	// Player data
 	int m_currentLives;
 	int m_maxLives;
+	Playership* m_playership;
+	Playership* m_playershipPrototype;
+
+	// Ebomb data
 	EbombType m_currentEbomb; // UNKNOWN if not created
 	int m_normalBombEnergy; // defaults to playership->energyCapacity
 	int m_combinedBombEnergy; // defaults to playership->energyCapacity / 2
@@ -99,9 +98,13 @@ private:
 
 
 	// Gameplay objects
+	typedef std::list<Enemyship*> EnemyshipList;
+	typedef std::list<Spawnpoint*> SpawnpointList;
+	typedef std::list<Crater*> CraterList;
+	typedef std::list<Ebomb*> EbombList;
+	typedef std::list<Laser*> LaserList;
+
 	Terrain* m_terrain;
-	Playership* m_playership;
-	Playership* m_playershipPrototype;
 	EnemyshipList m_enemyships;
 	SpawnpointList m_spawnpoints;
 	CraterList m_craters;

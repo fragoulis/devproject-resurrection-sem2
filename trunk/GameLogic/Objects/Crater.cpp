@@ -15,7 +15,7 @@
 
 Crater :: Crater()
 {
-	m_state = UNKNOWN;
+	m_state = ALIVE;
 	m_radius = 0.0f;
 	m_ebombType = EBOMB_TYPE_UNKNOWN;
 }

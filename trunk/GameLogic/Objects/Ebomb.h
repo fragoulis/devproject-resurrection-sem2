@@ -15,14 +15,6 @@
 class Ebomb : public Rigidbody
 {
 public:
-	enum State {
-		SPAWNING,
-		ALIVE,
-		DYING,
-		TO_BE_DELETED,
-		UNKNOWN,
-	};
-
 	Ebomb();
 	virtual ~Ebomb();
 
@@ -37,6 +29,13 @@ public:
 	void loadSettings(const ParserSection&);
 
 private:
+	enum State {
+		SPAWNING, // not used yet
+		ALIVE,
+		DYING, // not used yet
+		TO_BE_DELETED,
+		UNKNOWN,
+	};
 
 	State m_state;
 	EbombType m_ebombType;

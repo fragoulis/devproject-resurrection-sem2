@@ -105,6 +105,9 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 	// remove enemy from the game
 	enemy->setToBeDeleted();
 
+	// check if player is invulnerable
+	if (player->isInvulnerable()) return;
+
 	// get player energy, reduce it by enemy's collision power
 	EnergyType type = enemy->getEnergyType();
 	int enemyPower = enemy->getCollisionPower();
@@ -112,8 +115,15 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 
 	// check if player can sustain the damage taken
 	if (playerEnergy < 0) {
-		// TODO: reset player to some position, set it to invulnerable for a few sec
 		EventManager::instance().fireEvent(Player_Destroyed(player, type));
+		m_currentLives--;
+		if (m_currentLives == 0) {
+			EventManager::instance().fireEvent(Game_Over());
+		}
+		else {
+			player->respawn();
+			EventManager::instance().fireEvent(Player_Respawned(player));
+		}
 	}
 	else {
 		player->setEnergy(type, playerEnergy);
@@ -325,6 +335,7 @@ void GameLogic :: update(float dt)
 	m_playerLaserCooldownLeft -= dt;
 
 	// Send update to objects that need it
+	m_playership->update(dt);
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());
@@ -451,6 +462,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	Point3 pos = FromString<Point3>(psMap->getVal("PlayerStart"));
 	pos.setY(m_gamePlaneHeight);
 	m_playership->setPosition(pos);
+	m_playership->respawn();
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 
 	// Read crater data from gameplay file and spawn craters
