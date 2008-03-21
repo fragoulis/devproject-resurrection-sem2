@@ -31,6 +31,7 @@ void GameController :: activate()
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.deactivateAllRenderers();
 	re.activateRenderer("world");
+	re.activateRenderer("hud");
 
 	// Hack to get things working
 	// TODO: think about control flow to fix this

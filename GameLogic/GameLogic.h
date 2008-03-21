@@ -60,6 +60,9 @@ public:
 
 	//! Retrieves type of e-bomb in player's cargo bay. Returns unknown if no bomb is available.
 	EbombType getCurrentEbombType() const { return m_currentEbomb; }
+	int getCurrentLives() const { return m_currentLives; }
+	const Playership* getPlayership() const { return m_playership; }
+
 
 	// These are functions controller can call to change the game state
 	void loadLevel(const std::string& id);
