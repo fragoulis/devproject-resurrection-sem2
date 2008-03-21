@@ -11,6 +11,7 @@
 #include "Crater.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
+#include "../WorldObjectTypeManager.h"
 
 Crater :: Crater()
 {
@@ -28,4 +29,6 @@ void Crater :: loadSettings(const ParserSection& ps)
 	m_radius = FromString<float>(ps.getVal("Radius"));
 	m_ebombType = EbombTypeFromString(ps.getVal("EbombType"));
 	WorldObject::loadSettings(ps);
+
+	setType(WorldObjectTypeManager::instance().getTypeFromName("Crater"));
 }

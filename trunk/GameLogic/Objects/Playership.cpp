@@ -11,6 +11,7 @@
 #include "Playership.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
+#include "../WorldObjectTypeManager.h"
 
 Playership :: Playership()
 {
@@ -38,4 +39,5 @@ void Playership :: loadSettings(const ParserSection& ps)
 {
 	m_energyCapacity = FromString<int>(ps.getVal("EnergyCapacity"));
 	Spaceship::loadSettings(ps);
+	setType(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 }
