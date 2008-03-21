@@ -25,4 +25,5 @@ void LoadingRenderer :: render(Graphics& g) const
 
 void LoadingRenderer :: update( float dt )
 {
+	// animate loading screen :)
 }
