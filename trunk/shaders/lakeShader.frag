@@ -20,7 +20,7 @@ void main()
 {
 	vec3 V = normalize(viewVec);
 	float bump = texture3D(noiseTex,gl_TexCoord[0].stp).r;
-	bump *= bump*1.5;
+	bump *= 1.5;
 	vec3 n = normalize(normal + wavedir*bump);
 	
 	float shadowContrib = texture2DProj(shadowTex, gl_TexCoord[1]).r;

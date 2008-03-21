@@ -30,6 +30,7 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 			es.shaderIndex = ShaderManager::instance()->getShaderIndex("PerPixelTex");
 		else
 			;// ..more?? another shader then!
+		model->matGroup(0).setShaderIndex(es.shaderIndex);
 
 		// push back the settings
 		m_entities.push_back(es);
