@@ -106,63 +106,64 @@ void TerrainRenderer :: _clearResources()
 
 void TerrainRenderer :: render(Graphics& g) const
 {
-	_renderShadows();
+	_renderShadows2();
 	_updateTerraformContribution();
 
-	//creating the texture projection matrix
-	float texProjMat[16];
-	float viewMat[16];
-	glPushMatrix();
-		glLoadIdentity();
-		// First scale and bias into [0..1] range.
-		glTranslatef(0.5, 0.5, 0);
-		glScalef(0.5, 0.5, 1);
-		glOrtho(m_lightCameraProjSettings[0],
-			m_lightCameraProjSettings[1],
-			m_lightCameraProjSettings[2],
-			m_lightCameraProjSettings[3],
-			m_lightCameraProjSettings[4],
-			m_lightCameraProjSettings[5]);
-		gluLookAt(m_lightCameraEye.getX(),
-			m_lightCameraEye.getY(),
-			m_lightCameraEye.getZ(),
-			m_lightCameraEye.getX() + m_lightCameraVectorView.getX(),
-			m_lightCameraEye.getY() + m_lightCameraVectorView.getY(),
-			m_lightCameraEye.getZ() + m_lightCameraVectorView.getZ(),
-			m_lightCameraVectorUp.getX(),
-			m_lightCameraVectorUp.getY(),
-			m_lightCameraVectorUp.getZ());
-		/* ~ MY WAY */
-		glGetFloatv(GL_MODELVIEW_MATRIX, texProjMat);
-	glPopMatrix();
+	/*
+		fetch terrain texcoords & scaling
+	*/
+	Point3 pts[4];
+	RenderEngine::instance().getWsScreenEdges(pts);
+	Point3 ll(pts[0]);
+	Point3 lr(pts[1]);
+	Point3 tl(pts[3]);
+	Point3 tr(pts[2]);
+	Vector3 center = (pts[0].getVector() + pts[1].getVector() + pts[3].getVector() + pts[2].getVector())*0.25f;
+	Vector2 extents;
+	
+	extents.setX(max(max(max(lr.getX() - center.getX(),
+								  tr.getX() - center.getX()),
+							  center.getX() - tl.getX()),
+						  center.getX() - ll.getX()));
+	extents.setY(max(max(max(lr.getZ() - center.getZ(),
+								  ll.getZ() - center.getZ()),
+							  center.getZ() - tr.getZ()),
+						  center.getZ() - tl.getZ()));
+	extents.add(abs(center.getX()),abs(center.getZ()));
 
-	glGetFloatv(GL_MODELVIEW_MATRIX, viewMat);
-
-	Matrix44 invViewMatrix(viewMat);
-	invViewMatrix.invert();
+	// compute the tex scale
+	Vector2 terrain_tex_scale(0.5f*m_mapExtents.getX() / extents.getX(),
+							  0.5f*m_mapExtents.getZ() / extents.getY());
+	//compute the tex offset
+	Vector2 terrain_tex_offset;
+	{
+		Vector2 mapExtents(m_mapExtents.getX(),m_mapExtents.getZ());
+		Vector2 ll_mapEdge(-mapExtents * 0.5f);
+		Vector2 ll_screenEdge(center.getX() - extents.getX(),
+							  -center.getZ() - extents.getY());
+		Vector2 offset_to_ur(ll_screenEdge - ll_mapEdge);
+		terrain_tex_offset.setX(terrain_tex_scale.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
+		terrain_tex_offset.setY(terrain_tex_scale.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
+	}
 
 	// Do some magic to render the terrain
 	ShaderManager::instance()->begin("TerrainShader");
-	m_terrainModel->matGroup(0).getTextureList()[0]->bind(0);
-	ShaderManager::instance()->setUniform1i("texmap0",0);
-	m_terrainModel->matGroup(0).getTextureList()[1]->bind(1);
-	ShaderManager::instance()->setUniform1i("texmap1",1);
-	m_tformContribTex->bind(2);
-	ShaderManager::instance()->setUniform1i("contribMap",2);
-	m_shadowTexture->bind(3);
-	ShaderManager::instance()->setUniform1i("shadowTex",3);
-	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
-	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
+	m_terrainModel->matGroup(0).getTextureList()[0]->bind(14);
+	ShaderManager::instance()->setUniform1i("texmap0",14);
+	m_terrainModel->matGroup(0).getTextureList()[1]->bind(15);
+	ShaderManager::instance()->setUniform1i("texmap1",15);
+	m_tformContribTex->bind(0);
+	ShaderManager::instance()->setUniform1i("contribMap",0);
+	m_shadowTexture->bind(1);
+	ShaderManager::instance()->setUniform1i("shadowTex",1);
+	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
+	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
+
 
 	const float mapsize = float(m_terrain->getTerrainDim());
 	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
 
 	m_terrainModel->matGroup(0).vboDesc().call();
-
-	TextureMgr::instance()->setTextureUnit(3);
-	TextureMgr::instance()->setBoundTexture(0,3);
-	TextureMgr::instance()->setTextureUnit(2);
-	TextureMgr::instance()->setBoundTexture(0,2);
 
 	CHECK_GL_ERROR();
 
@@ -185,13 +186,11 @@ void TerrainRenderer :: render(Graphics& g) const
 	m_heightTexture->bind(3);
 	ShaderManager::instance()->setUniform1i("heightTex",3);
 
-	ShaderManager::instance()->setUniformMatrix4fv("TexGenMat", texProjMat);
-	ShaderManager::instance()->setUniformMatrix4fv("InvViewMat", invViewMatrix.cfp());
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	
 	const float ws = RenderEngine::instance().getConstRenderSettings().getWaveSpeed();
 	const float wcr = RenderEngine::instance().getConstRenderSettings().getWaveChangeRate();
-	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats();
+	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats(m_mapExtents.getX());
 
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
@@ -226,13 +225,15 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	ShaderManager::instance()->setUniform2fv("reflectionTexCoordOffsets",rto.cfp());
 	ShaderManager::instance()->setUniform2fv("reflectionTexCoordScale",rts.cfp());
+	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
+	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
 
 	ShaderManager::instance()->setUniform1fv("waveRepeats",&wr);
 
-	Vector3 ll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
-	Vector3 right(m_mapExtents.getX(),0,0);
-	Vector3 up(0,0,-m_mapExtents.getX());
-	RenderEngine::drawTexturedQuad(ll,right,up,Vector2(0,0),Vector2(1.0f,1.0f));
+	Vector3 qll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
+	Vector3 qright(m_mapExtents.getX(),0,0);
+	Vector3 qup(0,0,-m_mapExtents.getX());
+	RenderEngine::drawTexturedQuad(qll,qright,qup,Vector2(0,0),Vector2(1.0f,1.0f));
 
 	ShaderManager::instance()->end();
 	glDisable(GL_BLEND);
@@ -567,15 +568,9 @@ void TerrainRenderer :: onEvent(Player_Despawned& evt)
 	_removeShadowCaster(cf);
 }
 
-void TerrainRenderer :: _renderShadows() const
-{
-	// switches VBOs to vertex-only mode
-	// set's up light camera
-	// renders ships
-	// fetches - stores texture
-	// switches camera
-	// computes 
 
+void TerrainRenderer :: _renderShadows2() const
+{
 	int drawbuf;
 	glGetIntegerv(GL_DRAW_BUFFER,&drawbuf);
 	int vp[4];
@@ -591,33 +586,71 @@ void TerrainRenderer :: _renderShadows() const
 	vonly.attrib[ShaderManager::instance()->vertexAttributeIndex(vattr)] = 0xFF;
 	VBOMgr::instance().setCurrentFlags(vonly);
 
+	/*
+		Get the info from renderEngine : 
+	*/
+	
+	Point3 pts[4];
+	RenderEngine::instance().getWsScreenEdges(pts);
+	Point3 ll(pts[0]);
+	Point3 lr(pts[1]);
+	Point3 tl(pts[3]);
+	Point3 tr(pts[2]);
+
+	Vector3 center = (ll.getVector() + lr.getVector() + tl.getVector() + tr.getVector())*0.25f;
+	Vector2 extents;
+	
+	extents.setX(max(max(max(lr.getX() - center.getX(),
+								  tr.getX() - center.getX()),
+							  center.getX() - tl.getX()),
+						  center.getX() - ll.getX()));
+	extents.setY(max(max(max(lr.getZ() - center.getZ(),
+								  ll.getZ() - center.getZ()),
+							  center.getZ() - tr.getZ()),
+						  center.getZ() - tl.getZ()));
+	extents.add(abs(center.getX()),abs(center.getZ()));
+
+	float proj[4];
+	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
-	glOrtho(m_lightCameraProjSettings[0],
-		m_lightCameraProjSettings[1],
-		m_lightCameraProjSettings[2],
-		m_lightCameraProjSettings[3],
-		m_lightCameraProjSettings[4],
-		m_lightCameraProjSettings[5]);
+	glOrtho(-extents.getX(),
+			extents.getX(),
+			-extents.getY(),
+			extents.getY(),
+			proj[2],
+			proj[3]);		// set our proj to look at just the extents we need
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-	gluLookAt(m_lightCameraEye.getX(),
-			m_lightCameraEye.getY(),
-			m_lightCameraEye.getZ(),
-			m_lightCameraEye.getX() + m_lightCameraVectorView.getX(),
-			m_lightCameraEye.getY() + m_lightCameraVectorView.getY(),
-			m_lightCameraEye.getZ() + m_lightCameraVectorView.getZ(),
-			m_lightCameraVectorUp.getX(),
-			m_lightCameraVectorUp.getY(),
-			m_lightCameraVectorUp.getZ());
-
-	// TODO : Disable Color Writes Here?? render to depth & fetch it as a luminance?
-	// Render the ships minimally - set the minimal shader
+	gluLookAt(center.getX(),
+			  center.getY() + RenderEngine::instance().getCameraHeightAbovePlane(),
+			  center.getZ(),
+			  center.getX(),
+			  center.getY(),
+			  center.getZ(),
+			  0.0f,
+			  0.0f,
+			  -1.0f);	// set mview as a top down view,from a really high point, at the center
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	ShaderManager::instance()->begin("ShadowWriteShader");
+	ShaderManager::instance()->begin("ShadowWrite2");
+	const Vector3 ldir(m_lightDir);
+
+	/*
+	float flat[16] = {1.0, -ldir.getX() / ldir.getY(), 0.0, 0.0,
+								0.0, 1.0, 0.0, 0.0,
+								0.0, -ldir.getZ() / ldir.getY(), 1.0, 0.0,
+								0.0,0.0 , 0.0, 1.0};
+	*/
+	float flat[16] = {1 , 0,0,0,
+					-ldir.getX() / ldir.getY(), 1, -ldir.getZ() / ldir.getY(), 0.0, 
+					0.0,0.0,1.0 , 0.0, 
+					0.0,0.0,0.0,1.0};
+
+	glMultMatrixf(flat);
+
 	
 	for(std::vector<CoordinateModel>::const_iterator it = m_shadowCasters.begin();
 		it != m_shadowCasters.end();
@@ -644,42 +677,7 @@ void TerrainRenderer :: _renderShadows() const
 
 void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 {
-	// get camera projector settings
-	float w,h,n,f;
-	m_cameraRef->getProjSettings(w,h,n,f);
-	
-	// compute the max quad dims shown in height = gameplane
-	const float gameplanedepth = RenderEngine::instance().getCameraHeightAbovePlane();
-	float maxLeftRight = w* gameplanedepth/ n;
-	float maxTopDown = h*gameplanedepth / n;
-
-	// compute the light camera vectors
-	Vector3 ldir(-lightdir.getX(),-lightdir.getY(),-lightdir.getZ());
-	ldir.normalize();
-	Vector3 yAxis(0.0f,1.0f,0.0f);
-	Vector3 right(Vector3::cross(ldir,yAxis));
-	right.normalize();
-	m_lightCameraVectorUp = Vector3::cross(right,ldir);
-	m_lightCameraVectorUp.normalize();
-
-	// FIXME :  400->950 : 1500, 535 -> 1200 : 2000
-	const float hackvalue = RenderEngine::instance().getCameraHeightAbovePlane() * 3.5f / 5.0f;
-	maxLeftRight = hackvalue;		// -- GOOD BUT HACK!!
-	maxTopDown = hackvalue;
-
-	// set a safe distance for the light eye
-	m_lightCameraEye = Vector3(0.0f,gameplanedepth + GameLogic::instance().getGamePlaneHeight(),0.0f) - 500.0f*ldir;
-	m_lightCameraVectorView = ldir;
-
-	m_lightCameraProjSettings[0] = -maxLeftRight;
-	m_lightCameraProjSettings[1] = maxLeftRight;
-	m_lightCameraProjSettings[2] = -maxTopDown;
-	m_lightCameraProjSettings[3] = maxTopDown;
-	m_lightCameraProjSettings[4] = n;
-	m_lightCameraProjSettings[5] = f;
-
-	m_lightDir = ldir;
-
+	m_lightDir.set(-lightdir.getX(),-lightdir.getY(),-lightdir.getZ());
 	// initialize the texture & FBO
 	const unsigned ts = RenderEngine::instance().getConstRenderSettings().getShadowTextureSize();
 	std::vector<MipmapLevel> ml;
@@ -688,6 +686,8 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 	m_shadowTexture = new Texture2D(ts,ts,GL_RGB,GL_RGB,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"Shadow",false,false);
 	//glGenerateMipmapEXT(GL_TEXTURE_2D);
 	m_shadowTexture->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	m_shadowTexture->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
+	m_shadowTexture->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
 	m_shadowFBO.AttachTexture(GL_TEXTURE_2D,m_shadowTexture->getId(),GL_COLOR_ATTACHMENT0_EXT);
 	m_shadowFBO.IsValid();
 	FramebufferObject::Disable();
@@ -696,8 +696,6 @@ void TerrainRenderer :: _initShadows(const Vector4& lightdir)
 void TerrainRenderer :: update(const float dt)
 {
 	// Also update trees & contrib tex
-	
-	m_lightCameraEye = m_cameraRef->getEye() - 500.0f*m_lightDir;
 	_updateTerraform(dt);
 	m_lakeTimer += dt;
 }

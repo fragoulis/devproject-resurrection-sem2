@@ -83,7 +83,7 @@ private:
 
 	void _addShadowCaster(const CoordinateModel& model);
 	void _removeShadowCaster(const CoordinateFrame * cf);
-	void _renderShadows() const;
+	void _renderShadows2() const;
 	void _initShadows(const Vector4& lightdir);
 	void _drawLakeReflection(Graphics& g) const;
 
@@ -118,10 +118,6 @@ private:
 	std::vector<CoordinateModel> m_shadowCasters;
 	Texture * m_shadowTexture;
 	FramebufferObject m_shadowFBO;
-	Vector3 m_lightCameraVectorUp;
-	Vector3 m_lightCameraVectorView;
-	Vector3 m_lightCameraEye;
-	float m_lightCameraProjSettings[6];
 	Vector3 m_lightDir;
 
 };

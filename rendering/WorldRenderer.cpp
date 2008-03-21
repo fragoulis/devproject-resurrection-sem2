@@ -19,6 +19,8 @@
 #include <string>
 #include <vector>
 
+#include "../Math/Matrix44.h"
+
 using namespace std;
 
 WorldRenderer :: WorldRenderer()
@@ -118,17 +120,13 @@ void WorldRenderer :: render(Graphics& g) const
 }
 
 void WorldRenderer :: update( float dt )
-{
-	// FIXME : looks ugly, camera should be ChaseCamera, with the object as an attachment, and
-	//		   to be able to unattach it ( to stay constant)
-	
+{	
 	if(m_playerActive)
 	{
 		const Vector3 playerpos(m_playerCoordFrame->getOrigin().cfp());
 		m_camera->setPosition(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f),
 							  playerpos,
 							  Vector3(0.0f,0.0f,-1.0f));
-		_updateMatrices();
 		glLoadIdentity();
 		
 		m_realCam->setPosition(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f),
@@ -137,8 +135,11 @@ void WorldRenderer :: update( float dt )
 		m_realCam->slide(0.0f,-tanf(30.0f*math_const<float>::DEG2RAD)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
 		m_realCam->pitch(30.0f);
 		
+		_updateMatrices();
+		RenderEngine::instance().computeWsScreenEdges();
 		
 	}
+
 	m_camera->update(dt);
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
