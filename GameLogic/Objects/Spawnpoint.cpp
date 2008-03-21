@@ -17,6 +17,7 @@
 #include "../../math/Point3.h"
 #include "../GameEvents.h"
 #include "../../utility/EventManager.h"
+#include "../WorldObjectTypeManager.h"
 
 Spawnpoint :: Spawnpoint() :
 	m_spawnType(-1),
@@ -102,6 +103,7 @@ void Spawnpoint :: _spawnEnemy()
 	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType);
 	es->setPosition(getPosition());
 	es->setEnergyType(m_energyType);
+	EventManager::instance().fireEvent(Enemy_Spawned(es));
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_timeTillNextEvent = m_timeBetweenSpawns;
@@ -127,4 +129,6 @@ void Spawnpoint :: loadSettings( const ParserSection& ps )
 	m_maximumPlayerDistance = FromString<float>(ps.getVal("MaximumPlayerDistance"));
 
 	WorldObject::loadSettings(ps);
+
+	setType(WorldObjectTypeManager::instance().getTypeFromName("Spawnpoint"));
 }

@@ -66,7 +66,6 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	const ParserSection* psPlayer = ps.getSection("Playership");
 	m_playershipPrototype = new Playership();
 	m_playershipPrototype->loadSettings(*psPlayer);
-	m_playershipPrototype->setType(WorldObjectTypeManager::instance().getTypeFromName("PlayerShip"));
 
 	// load laser data
 	m_playerLaserCooldownTime = FromString<float>(psPlayer->getVal("LaserCooldown"));
@@ -88,6 +87,7 @@ void GameLogic :: onApplicationUnload()
 {
 	_deleteLevelData();
 	deleteObject(m_playershipPrototype);
+	deleteObject(m_ebombPrototype);
 }
 
 
@@ -246,9 +246,10 @@ void GameLogic :: _checkEbombUncreation()
 	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
 
 	if (_seeIfPlayerCanCreateEbombAndReturnTypeOfBomb() == EBOMB_TYPE_UNKNOWN) {
-		EventManager::instance().fireEvent(Ebomb_Uncreated(m_currentEbomb));
-		cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << "uncreated" << endl;
+		EbombType ebombType = m_currentEbomb;
 		m_currentEbomb = EBOMB_TYPE_UNKNOWN;
+		EventManager::instance().fireEvent(Ebomb_Uncreated(ebombType));
+		cerr << "Ebomb of type " << StringFromEbombType(ebombType) << "uncreated" << endl;
 	}
 }
 
@@ -295,21 +296,21 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 {
 	Ebomb* ebomb = evt.getObject1();
 	Crater* crater = evt.getObject2();
+	ebomb->setToBeDeleted();
 	if (ebomb->getEbombType() == crater->getEbombType()) {
-		EventManager::instance().fireEvent(Life_Restored(crater));
+		EventManager::instance().fireEvent(Life_Restored(crater->getPosition()));
 		crater->setToBeDeleted();
 	}
 	else {
 		EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 	}
-	ebomb->setToBeDeleted();
 }
 
 void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
 {
 	Ebomb* ebomb = evt.getObject1();
-	EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 	ebomb->setToBeDeleted();
+	EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 }
 
 
@@ -354,7 +355,6 @@ void GameLogic :: update(float dt)
 Enemyship* GameLogic :: spawnEnemy( int type )
 {
 	Enemyship* es = EnemyFactory::instance().createEnemyship(type);
-	EventManager::instance().fireEvent(Enemy_Spawned(es));
 	m_enemyships.push_back(es);
 	Point3 pos = es->getPosition();
 	pos.setY(m_gamePlaneHeight);
@@ -426,6 +426,10 @@ void GameLogic :: loadLevel(const std::string& id)
 	assert(m_playership == 0);
 	assert(m_enemyships.empty());
 
+	// Reset variables
+	m_playerLaserSwapped = false;
+	m_playerLaserCooldownLeft = 0.0f;
+
 	// load level file
 	ConfParser cpLevel(std::string("config/levels/") + id + ".txt");
 	const ParserSection* psMap = cpLevel.getSection("Map");
@@ -473,11 +477,6 @@ void GameLogic :: loadLevel(const std::string& id)
 		m_spawnpoints.push_back(spawnPoint);
 		EventManager::instance().fireEvent(Spawnpoint_Spawned(spawnPoint));
 	}
-
-
-	// Reset variables
-	m_playerLaserSwapped = false;
-	m_playerLaserCooldownLeft = 0.0f;
 }
 
 

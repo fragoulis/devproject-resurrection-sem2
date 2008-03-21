@@ -24,6 +24,7 @@
 #include "../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ParticleSystem/PS_Manager.h"
 #include "../GameLogic/GameLogic.h"
+
 #include <gl/glu.h>
 
 using namespace std;
