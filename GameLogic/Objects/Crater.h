@@ -16,14 +16,6 @@ class ParserSection;
 class Crater : public WorldObject
 {
 public:
-	enum State {
-		SPAWNING,
-		ALIVE,
-		DYING,
-		TO_BE_DELETED,
-		UNKNOWN,
-	};
-
 
 	Crater();
 	virtual ~Crater();
@@ -37,6 +29,15 @@ public:
 	void loadSettings(const ParserSection&);
 
 private:
+	enum State {
+		SPAWNING, // not used yet
+		ALIVE,
+		DYING, // not used yet
+		TO_BE_DELETED,
+		UNKNOWN,
+	};
+
+
 	State m_state;
 	float m_radius;
 	EbombType m_ebombType;

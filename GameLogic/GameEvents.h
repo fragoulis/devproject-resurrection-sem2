@@ -222,3 +222,13 @@ EVENT_WITH_VALUE(Laser_Spawned, Laser*);
 // The object is in valid game state, but the "to be deleted" flag is set
 // The parameter is the Laser object
 EVENT_WITH_VALUE(Laser_Despawned, Laser*);
+
+// Signals player loses
+// Fires when player ship is destroyed and no spare lives remain
+SIMPLE_EVENT(Game_Over);
+
+// Signals the player ship respawns
+// Respawn is unrelated to spawn/despawn
+// Fires when the player is destroyed and at least 1 spare life remains
+// The parameter is the player ship object
+EVENT_WITH_VALUE(Player_Respawned, Playership*);
