@@ -11,6 +11,7 @@
 #include "IRenderer.h"
 #include "WorldRenderer.h"
 #include "LoadingRenderer.h"
+#include "HUDRenderer.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
 #include <cassert>
@@ -141,6 +142,7 @@ IRenderer* RenderEngine :: createRenderer(const std::string& name) const
 {
 	if (name == "world") return new WorldRenderer();
 	if (name == "loading") return new LoadingRenderer();
+	if (name == "hud") return new HUDRenderer();
 	return NULL;
 }
 

@@ -11,6 +11,9 @@
 # The GameLogic object loads and processes this data alone.
 #
 
+[Main]
+Lives = 3
+
 [Craters]
 test = 5
 

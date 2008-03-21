@@ -451,7 +451,9 @@ void GameLogic :: loadLevel(const std::string& id)
 
 	// load gameplay file
 	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));
-	const ParserSection* psMainMap = cpGameplay.getSection("main");
+	const ParserSection* psGameplayMain = cpGameplay.getSection("Main");
+	m_maxLives = FromString<int>(psGameplayMain->getVal("Lives"));
+	m_currentLives = m_maxLives;
 
 	// create terrain, fire event Terrain_Changed
 	m_terrain = new Terrain();
