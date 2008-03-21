@@ -31,7 +31,6 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-
 	//! activate a renderer. If it's not loaded yet, loads it.
 	void activateRenderer(const std::string& name);
 	void deactivateRenderer(const std::string& name);
@@ -43,6 +42,9 @@ public:
 	//! use to free memory
 	void unloadRenderer(const std::string& name);
 	void unloadAllRenderers();
+
+	//! use to get direct access to a renderer. If doesn't exist, creates it.
+	IRenderer* getRenderer(const std::string& name);
 
 	//! renders all active renderers, in the order they were activated
 	void render(Graphics& g) const;

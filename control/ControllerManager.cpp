@@ -12,6 +12,7 @@
 #include "IController.h"
 #include "LoadingController.h"
 #include "GameController.h"
+#include "MenuController.h"
 #include <cassert>
 
 ControllerManager :: ControllerManager() : m_activeController(NULL)
@@ -94,5 +95,6 @@ IController* ControllerManager::createController(const std::string &name) const
 	if (name == "empty") return new EmptyController();
 	if (name == "loading") return new LoadingController();
 	if (name == "game") return new GameController();
+	if (name == "menu") return new MenuController();
 	return NULL;
 }
