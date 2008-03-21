@@ -14,8 +14,7 @@ class Graphics;
 class IRenderer
 {
 public:
-	IRenderer() { }
-	//virtual ~IRenderer() { };
+	virtual ~IRenderer(){}
 	virtual void render(Graphics& g) const = 0;
 	virtual void update(float dt) = 0;
 };

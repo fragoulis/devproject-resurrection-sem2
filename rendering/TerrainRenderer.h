@@ -59,6 +59,8 @@ public:
 	void setShipRendererRef( const ShipRenderer * sr) {m_shipRendererRef = sr;}
 	void update(const float dt);
 
+	const Vector3& getMapExtents() const {return m_mapExtents;}
+
 private:
 
 	// STRUCT DECLARATIONS

@@ -21,8 +21,6 @@ class ConstRenderSettings
 	float m_spawnpointSize;
 	Texture * m_spawnpointTexture;
 	// other misc stuff
-	float m_treeGrowthInterval;
-	float m_treeBuriedHeight;
 	unsigned m_shadowTextureSize;
 	float m_tformTimePerUnit;
 
@@ -32,7 +30,7 @@ class ConstRenderSettings
 	float m_waveSpeed;
 	float m_waveRepeats;
 	std::string m_lakeTexture;
-
+	float m_reflectionTextureScreenRatio;
 
 	void _parseMiscEntities(const ParserSection * parsec);
 
@@ -45,7 +43,6 @@ public :
 	const float getSpawnPointInterval() const {return m_spawnpointInterval;}
 	const float getSpawnPointSize() const {return m_spawnpointSize;}
 	const Texture * getSpawnPointTexture() const {return m_spawnpointTexture;}
-	const float getTreeBuriedHeight() const {return m_treeBuriedHeight;}
 	const unsigned getShadowTextureSize() const {return m_shadowTextureSize;}
 	const float getTerraformingTimePerUnit() const {return m_tformTimePerUnit;}
 
@@ -55,6 +52,7 @@ public :
 	const float getWaveSpeed() const{return m_waveSpeed;}
 	const std::string& getLakeTexture() const {return m_lakeTexture;}
 	const float getWaveRepeats() const {return m_waveRepeats;}
+	const float getReflectionTextureScreenRatio() const {return m_reflectionTextureScreenRatio;}
 
 	void init(const ParserSection * parsec);
 
