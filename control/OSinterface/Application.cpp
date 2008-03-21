@@ -49,7 +49,7 @@ bool Application :: init()
 	cout.rdbuf(psbuf);
 
 	ControllerManager& cm = ControllerManager::safeInstance();
-	cm.activateController("loading");
+	//cm.activateController("loading");
 
 	// this blocks the loading screen from showing
 	// should fire a new thread that does some loadController and loadRenderers
@@ -72,7 +72,7 @@ bool Application :: init()
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
-	cm.activateController("game");
+	cm.activateController(new GameController());
 
 	return true;
 }
@@ -83,7 +83,6 @@ void Application :: destroy()
 	// would be nice to show "Unloading" or "Exiting" screen
 
 
-	ControllerManager::safeInstance().unloadAllControllers();
 	RenderEngine::safeInstance().unloadAllRenderers();
 
 	WorldObjectTypeManager::destroy();
