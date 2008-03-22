@@ -34,6 +34,7 @@
 #include "../GameLogic/Objects/Playership.h"
 #include "../gfx/Camera.h"
 #include "ShipRenderer.h"
+#include "LaserRenderer.h"
 
 using namespace std;
 
@@ -159,7 +160,6 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
 
-
 	const float mapsize = float(m_terrain->getTerrainDim());
 	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
 
@@ -196,6 +196,7 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
 	ShaderManager::instance()->setUniform1fv("waveSpeed",&ws);
 	ShaderManager::instance()->setUniform4fv("lightColor",m_lightColor.cfp());
+	ShaderManager::instance()->setUniform4fv("waterColor",m_waterColor.cfp());
 	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
 	ShaderManager::instance()->setUniform4fv("lightPosition",lightPos.cfp());
 
@@ -223,8 +224,8 @@ void TerrainRenderer :: render(Graphics& g) const
 	rto.setX(rts.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
 	rto.setY(rts.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
 
-	ShaderManager::instance()->setUniform2fv("reflectionTexCoordOffsets",rto.cfp());
-	ShaderManager::instance()->setUniform2fv("reflectionTexCoordScale",rts.cfp());
+	//ShaderManager::instance()->setUniform2fv("reflectionTexCoordOffsets",rto.cfp());
+	//ShaderManager::instance()->setUniform2fv("reflectionTexCoordScale",rts.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
 
@@ -404,6 +405,9 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	m_reflectionFBO.AttachRenderBuffer(m_reflectionDepthBuffer.GetId(),GL_DEPTH_ATTACHMENT_EXT);
 	m_reflectionFBO.IsValid();
 	FramebufferObject::Disable();
+
+	// Get water color
+	m_waterColor = FromString<Vector4>(parser.getSection("Misc")->getVal("WaterColor"));
 
 	// SHADOW STUFF
 	_initShadows(ldir);
@@ -748,43 +752,73 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// apply texture to the screen quad
-	glDepthMask(GL_FALSE);
-	float proj[4];
-	// Find the max quad at y=0
-	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
 	const float gph = GameLogic::instance().getGamePlaneHeight();
-	float edge_x  = (RenderEngine::instance().getCameraHeightAbovePlane() + 2.0f*gph)*proj[0] / proj[2];
-	float edge_y  = (RenderEngine::instance().getCameraHeightAbovePlane() + 2.0f*gph)*proj[1] / proj[2];
-	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
-	
-	ShaderManager::instance()->begin("blitShader");
-	m_transpReflection->bind();
-	ShaderManager::instance()->setUniform1i("tex",0);
-	RenderEngine::drawTexturedQuad(Vector3(-edge_x + off[0],-gph,edge_y + off[1]),
-								   Vector3(2.0f*edge_x,0.0f,0.0f),
-								   Vector3(0.0f,0.0f,-2.0f*edge_y),
-								   Vector2(0.0f,0.0f),
-								   Vector2(1.0f,1.0f));
-	glDepthMask(GL_TRUE);
 
-	// reverse camera - we're already in modelview
+	// compute the screen quad
+
+	Point3 pts[4];
+	RenderEngine::instance().getWsScreenEdges(pts);
+	Point3 ll(pts[0]);
+	Point3 lr(pts[1]);
+	Point3 tl(pts[3]);
+	Point3 tr(pts[2]);
+
+	Vector3 center = (ll.getVector() + lr.getVector() + tl.getVector() + tr.getVector())*0.25f;
+	Vector2 extents;
 	
-	
-	
+	extents.setX(max(max(max(lr.getX() - center.getX(),
+								  tr.getX() - center.getX()),
+							  center.getX() - tl.getX()),
+						  center.getX() - ll.getX()));
+	extents.setY(max(max(max(lr.getZ() - center.getZ(),
+								  ll.getZ() - center.getZ()),
+							  center.getZ() - tr.getZ()),
+						  center.getZ() - tl.getZ()));
+	extents.add(abs(center.getX()),abs(center.getZ()));
+
+	// Fix the camera
+
+	float proj[4];
+	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
+	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
-	glTranslatef(0.0f,gph,0.0f);
+	glLoadIdentity();
+	glOrtho(-extents.getX(),
+			extents.getX(),
+			-extents.getY(),
+			extents.getY(),
+			proj[2],
+			proj[3]);		// set our proj to look at just the extents we need
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	gluLookAt(center.getX(),
+			  center.getY() + RenderEngine::instance().getCameraHeightAbovePlane(),
+			  center.getZ(),
+			  center.getX(),
+			  center.getY(),
+			  center.getZ(),
+			  0.0f,
+			  0.0f,
+			  -1.0f);	// set mview as a top down view,from a really high point, at the center
+
+	
+	m_laserRendererRef->render(g);
+
 	glScalef(1.0f,-1.0f,1.0f);
 
-	RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
+	//RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
 
 	// draw ships
 	m_shipRendererRef->render(g);
 
-	RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
+	//RenderEngine::instance().setLevelLight(-RenderEngine::instance().getLevelLight());
 
 	
 	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 
 	//restore settings
 	FramebufferObject::Disable();

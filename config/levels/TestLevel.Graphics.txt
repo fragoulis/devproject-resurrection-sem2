@@ -5,6 +5,8 @@ LightDir = (0.142594, 0.983585, -0.110583, 0 )
 LightAmbDiff = (0.8, 1, 1, 1 )
 MapCellDim = 129
 MapExtents= (2048, 285.767, 2048 )
+WaterColor = (0.5, 0.9, 1.0, 1.0)
+//WaterColor = (0.0, 0.0, 0.4, 1.0)
 TreeModels = <"orange2">
 
 [DataFiles]
