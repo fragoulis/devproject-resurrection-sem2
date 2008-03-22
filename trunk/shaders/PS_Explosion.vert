@@ -21,7 +21,7 @@ const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
 const float sum_time = currentTime + particleLife - systemLife;
 
-//const vec3 ACCELERATION = vec3(0.0,-9.8,0.0);
+const vec3 ACCELERATION = vec3(9.8,9.8,9.8);
 
 void main(void)
 {	
@@ -33,7 +33,7 @@ void main(void)
 	if(sum_time <= velocity.w)
     {
 		// Add the start offset & the time-based velocity
-        vert    = vec4(velocity.xyz*t /*+ 0.5*ACCELERATION*t*t*/, 1.0);
+        vert    = vec4(velocity.xyz*t + 0.5*ACCELERATION*t*t, 1.0);
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;
