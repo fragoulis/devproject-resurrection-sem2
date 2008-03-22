@@ -207,12 +207,51 @@ Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
 	return Point3(pos.getX(),pos.getY(),pos.getZ());
 }
 
+Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p,const float h)
+{
+	// get world renderer
+	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(findRenderer("world"));
+	// get it's modelview & proj matrices
+	const double * mv = wr->getModelViewMatrixd();
+	const double * proj = wr->getProjectionMatrixd();
+	
+	// UnProject - get the ray
+	double ray1x,ray1y,ray1z,
+		   ray2x,ray2y,ray2z;
+	gluUnProject(p.getX(),m_viewport[3] - p.getY(),0.0,mv,proj,m_viewport,&ray1x,&ray1y,&ray1z);
+	gluUnProject(p.getX(),m_viewport[3] - p.getY(),1.0,mv,proj,m_viewport,&ray2x,&ray2y,&ray2z);
+
+	const Vector3 ray(float(ray2x - ray1x),float(ray2y - ray1y),float(ray2z - ray1z));
+	
+
+	const float planeheight = h;
+	const float pcent = float((planeheight - ray1y) / (ray2y - ray1y));
+	const Vector3 pos = ray*pcent + Vector3(float(ray1x),float(ray1y),float(ray1z));
+
+	return Point3(pos.getX(),pos.getY(),pos.getZ());
+}
+
 void RenderEngine :: drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
 											 const Vector2& tex_ll, const Vector2& extents)
 {
 	const Vector3 lr(ll + right);
 	const Vector3 ul(ll + up);
 	const Vector3 ur(ul + right);
+	glBegin(GL_QUADS);
+		glTexCoord2fv(tex_ll.cfp());
+		glVertex3fv(ll.cfp());
+		glTexCoord2f(tex_ll.getX() + extents.getX(),tex_ll.getY());
+		glVertex3fv(lr.cfp());
+		glTexCoord2f(tex_ll.getX() + extents.getX(),tex_ll.getY() + extents.getY());
+		glVertex3fv(ur.cfp());
+		glTexCoord2f(tex_ll.getX(),tex_ll.getY() + extents.getY());
+		glVertex3fv(ul.cfp());
+	glEnd();
+}
+
+void RenderEngine :: drawArbTexturedQuad(const Vector3& ll,const Vector3& lr,const Vector3& ur,const Vector3& ul,
+								 const Vector2& tex_ll, const Vector2& extents)
+{
 	glBegin(GL_QUADS);
 		glTexCoord2fv(tex_ll.cfp());
 		glVertex3fv(ll.cfp());
@@ -238,7 +277,7 @@ void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vecto
 	glEnd();
 }
 
-void RenderEngine :: getWsScreenEdges(Point3 pts[4]) const
+void RenderEngine :: getWsScreenEdges(Point3 pts[4])
 {
 	pts[0] = m_wsScreenEdges[0];
 	pts[1] = m_wsScreenEdges[1];
@@ -248,8 +287,16 @@ void RenderEngine :: getWsScreenEdges(Point3 pts[4]) const
 
 void RenderEngine :: computeWsScreenEdges()
 {
-	m_wsScreenEdges[0] = getMapPositionFromScreenPosition(Point2(m_viewport[0],m_viewport[1] + m_viewport[3]));
-	m_wsScreenEdges[1] = getMapPositionFromScreenPosition(Point2(m_viewport[0] + m_viewport[2],m_viewport[1] + m_viewport[3]));
-	m_wsScreenEdges[2] = getMapPositionFromScreenPosition(Point2(m_viewport[0] + m_viewport[2],m_viewport[1]));
-	m_wsScreenEdges[3] = getMapPositionFromScreenPosition(Point2(m_viewport[0],m_viewport[1]));
+	m_wsScreenEdges[0] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1] + m_viewport[3])));
+	m_wsScreenEdges[1] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0] + m_viewport[2]),float(m_viewport[1] + m_viewport[3])));
+	m_wsScreenEdges[2] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0] + m_viewport[2]),float(m_viewport[1])));
+	m_wsScreenEdges[3] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1])));
+}
+
+void RenderEngine :: getWsScreenEdges(Point3 pts[4],const float h)
+{
+	pts[0] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1] + m_viewport[3])),h);
+	pts[1] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0] + m_viewport[2]),float(m_viewport[1] + m_viewport[3])),h);
+	pts[2] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0] + m_viewport[2]),float(m_viewport[1])),h);
+	pts[3] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1])),h);
 }

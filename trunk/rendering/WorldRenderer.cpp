@@ -51,8 +51,8 @@ m_transpSurface(0)
 	m_transpFBO.IsValid();
 	FramebufferObject::Disable();
 
-	m_terrainRenderer.setTransparentReflection(m_transpSurface);
 	m_terrainRenderer.setShipRendererRef(&m_shipRenderer);
+	m_terrainRenderer.setLaserRendererRef(&m_laserRenderer);
 }
 
 WorldRenderer :: ~WorldRenderer()
@@ -74,6 +74,7 @@ WorldRenderer :: ~WorldRenderer()
 void WorldRenderer :: render(Graphics& g) const
 {
 	// Draw transparent 2D stuff in FBO
+	/*
 	m_transpFBO.Bind();
 	glClear(GL_COLOR_BUFFER_BIT);
 
@@ -81,15 +82,18 @@ void WorldRenderer :: render(Graphics& g) const
 	m_psRenderer.render(g);
 
 	FramebufferObject::Disable();
+	*/
 
 	// now render opaque 3D stuff
 
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
 	m_spawnPointRenderer.render(g);
+	m_laserRenderer.render(g);
+	m_psRenderer.render(g);
 
 	// now overlay the quad
-
+/*
 	glMatrixMode(GL_PROJECTION);
 	glPushMatrix();
 	glLoadIdentity();
@@ -117,6 +121,7 @@ void WorldRenderer :: render(Graphics& g) const
 	glMatrixMode(GL_PROJECTION);
 	glPopMatrix();
 	glMatrixMode(GL_MODELVIEW);	
+*/
 }
 
 void WorldRenderer :: update( float dt )

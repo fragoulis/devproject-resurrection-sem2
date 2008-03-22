@@ -71,15 +71,20 @@ public:
 
 
 	// mapping stuff
-	void getWsScreenEdges(Point3 pts[4]) const;
+	void getWsScreenEdges(Point3 pts[4]);
+	void getWsScreenEdges(Point3 pts[4],const float h);
 	void computeWsScreenEdges();
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
+	Point3 getMapPositionFromScreenPosition(const Point2& p,const float h);
 
 	// get entity settings
 	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
 
 	// Convenience functions
 	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
+								 const Vector2& tex_ll, const Vector2& extents);
+	
+	static void drawArbTexturedQuad(const Vector3& ll,const Vector3& lr,const Vector3& ur,const Vector3& ul,
 								 const Vector2& tex_ll, const Vector2& extents);
 
 	static void drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up);

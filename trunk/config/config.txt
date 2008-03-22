@@ -65,7 +65,7 @@ Speed = 700.0
 
 [MemManager : RawData]
 MinMemoryPOT = 4
-MaxMemoryPOT = 28
+MaxMemoryPOT = 27
 
 [MemManager : RawData : MemDistribution]
 FixedMemTree = 10000

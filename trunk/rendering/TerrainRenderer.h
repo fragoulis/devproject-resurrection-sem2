@@ -28,6 +28,7 @@ class VBO;
 class Texture;
 class Camera;
 class ShipRenderer;
+class LaserRenderer;
 
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
@@ -55,8 +56,8 @@ public:
 	void onEvent(Key_GoingDown&);
 
 	void setCamera(const Camera * cam) {m_cameraRef = cam;}
-	void setTransparentReflection(Texture * tex) {m_transpReflection = tex;}
 	void setShipRendererRef( const ShipRenderer * sr) {m_shipRendererRef = sr;}
+	void setLaserRendererRef( const LaserRenderer * sr) {m_laserRendererRef = sr;}
 	void update(const float dt);
 
 	const Vector3& getMapExtents() const {return m_mapExtents;}
@@ -107,9 +108,12 @@ private:
 	// For the lake
 	Texture * m_lakeTexture;
 	Texture * m_heightTexture;
-	Texture * m_transpReflection;		// gotten from WorldRenderer
 	Texture * m_lakeReflection;			// reflection to applied to the lake
+	Vector4	  m_waterColor;
+
 	const ShipRenderer * m_shipRendererRef;		// handle to call when redrawing the ships
+	const LaserRenderer * m_laserRendererRef;
+
 	FramebufferObject m_reflectionFBO;
 	Renderbuffer m_reflectionDepthBuffer;
 	float m_lakeTimer;

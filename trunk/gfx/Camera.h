@@ -29,6 +29,7 @@ private:
 
 public:
 	Camera();
+	virtual ~Camera(){}
 	void setPosition(Vector3 eye, Vector3 look, Vector3 up);
 	void roll(float angle);
 	void pitch(float angle);
