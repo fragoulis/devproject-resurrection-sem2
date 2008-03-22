@@ -24,7 +24,7 @@ void main(void)
 
 	if(sum_time <= velocity.w) {
 		// Add the start offset & the time-based velocity
-		vert    = vec4(velocity.xyz*t + 0.5*GRAVITY*t*t, 1.0);
+		vert    = vec4(velocity.xyz*t /*+ 0.5*GRAVITY*t*t*/, 1.0);
 
 		vert.xyz += velocity*currentTime*10;
 		float x = vert.x;

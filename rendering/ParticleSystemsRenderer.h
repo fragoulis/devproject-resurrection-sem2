@@ -18,7 +18,8 @@
 class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
 												  public EventListener<Enemy_Despawned>,
 												  public EventListener<Player_EnergyDrained>,
-												  public EventListener<Player_Spawned>
+												  public EventListener<Player_Spawned>,
+												  public EventListener<Ebomb_Despawned>
 {
 public:
 	//flag to check if a jet particle system is already created (there is only one needed)
@@ -34,6 +35,7 @@ public:
 	virtual void onEvent(Enemy_Despawned&);
 	virtual void onEvent(Player_EnergyDrained&);
 	virtual void onEvent(Player_Spawned&);
+	virtual void onEvent(Ebomb_Despawned&);
 
 private:
 	// bunch of ParticleSystems here I guess
