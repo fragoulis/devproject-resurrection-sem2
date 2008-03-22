@@ -13,6 +13,7 @@
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../GameLogic/Objects/Ebomb.h"
 #include "../ParticleSystem/PS_Jet.h"
 #include "../ParticleSystem/PS_EnergyLoss.h"
 #include "../ParticleSystem/PS_Fountain.h"
@@ -25,6 +26,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
+	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
 
 	m_isJetCreated = false;
 
@@ -178,6 +180,16 @@ void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
 		ps_jet->setEmitterShip(player.getValue());
 		m_psList.push_back(ps_jet);
 	}
+
+}
+
+void ParticleSystemsRenderer::onEvent(Ebomb_Despawned &eBomb) {
+
+	CoordinateFrame cf = eBomb.getValue()->getCoordinateFrame();
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+	m_psList.back()->setTransform(cf);
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+	m_psList.back()->setTransform(cf);
 
 }
 
