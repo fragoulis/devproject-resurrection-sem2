@@ -39,6 +39,14 @@ public:
 	int getType() const { return m_type; }
 	void setType(int type) { m_type = type; }
 
+	float getX() const { return m_coordinateFrame.getX(); }
+	float getY() const { return m_coordinateFrame.getY(); }
+	float getZ() const { return m_coordinateFrame.getZ(); }
+
+	void setX(float x) { m_coordinateFrame.setX(x); }
+	void setY(float y) { m_coordinateFrame.setY(y); }
+	void setZ(float z) { m_coordinateFrame.setZ(z); }
+
 private:
 	CoordinateFrame m_coordinateFrame;
 	int m_type;

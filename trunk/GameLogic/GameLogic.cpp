@@ -60,7 +60,6 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 
 	// Load data
 	const ParserSection* psGame = ps.getSection("main");
-	m_gamePlaneHeight = FromString<float>(psGame->getVal("GamePlaneHeight"));
 
 	// Load playership data
 	const ParserSection* psPlayer = ps.getSection("Playership");
@@ -454,6 +453,8 @@ void GameLogic :: loadLevel(const std::string& id)
 	const ParserSection* psGameplayMain = cpGameplay.getSection("Main");
 	m_maxLives = FromString<int>(psGameplayMain->getVal("Lives"));
 	m_currentLives = m_maxLives;
+	m_gamePlaneHeight = FromString<float>(psGameplayMain->getVal("GamePlaneHeight"));
+
 
 	// create terrain, fire event Terrain_Changed
 	m_terrain = new Terrain();
@@ -461,9 +462,10 @@ void GameLogic :: loadLevel(const std::string& id)
 
 	// Spawn player, fire event Player_Spawned
 	m_playership = new Playership(*m_playershipPrototype);
-	Point3 pos = FromString<Point3>(psMap->getVal("PlayerStart"));
-	pos.setY(m_gamePlaneHeight);
-	m_playership->setPosition(pos);
+	Point2 pos = FromString<Point2>(psMap->getVal("PlayerStart"));
+	m_playership->setX(pos.getX());
+	m_playership->setY(m_gamePlaneHeight);
+	m_playership->setZ(pos.getY());
 	m_playership->respawn();
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 
@@ -475,6 +477,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	{
 		Crater* crater = new Crater();
 		crater->loadSettings(**it);
+		crater->setY(m_terrain->getHeight(crater->getX(), crater->getZ()));
 		m_craters.push_back(crater);
 		EventManager::instance().fireEvent(Crater_Spawned(crater));
 	}
@@ -485,9 +488,7 @@ void GameLogic :: loadLevel(const std::string& id)
 	{
 		Spawnpoint* spawnPoint = new Spawnpoint();
 		spawnPoint->loadSettings(**it);
-		Point3 pos = spawnPoint->getPosition();
-		pos.setY(m_gamePlaneHeight);
-		spawnPoint->setPosition(pos);
+		spawnPoint->setY(m_gamePlaneHeight);
 		m_spawnpoints.push_back(spawnPoint);
 		EventManager::instance().fireEvent(Spawnpoint_Spawned(spawnPoint));
 	}

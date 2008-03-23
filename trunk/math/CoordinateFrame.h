@@ -47,6 +47,14 @@ public:
 	void reverseTransform(Vector3& v) const;
 	void reverseTransform(Point3& p) const;
 
+	float getX() const { return m_origin.getX(); }
+	float getY() const { return m_origin.getY(); }
+	float getZ() const { return m_origin.getZ(); }
+
+	void setX(float x) { m_origin.setX(x); }
+	void setY(float y) { m_origin.setY(y); }
+	void setZ(float z) { m_origin.setZ(z); }
+
 private:
 
 	void _updateMatrix();
