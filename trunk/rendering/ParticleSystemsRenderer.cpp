@@ -145,12 +145,21 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
 	EnergyType energyType = enemy.getValue()->getEnergyType();
 	//depending on the enemy energy type generates a different explosion
-	if (energyType == EnergyTypeFromString("red"))
+	if (energyType == EnergyTypeFromString("red")) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
-	else if (energyType == EnergyTypeFromString("yellow"))
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
+	}
+	else if (energyType == EnergyTypeFromString("yellow")) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-	else if (energyType == EnergyTypeFromString("blue")) 
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+	}
+	else if (energyType == EnergyTypeFromString("blue")) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
+	}
 	m_psList.back()->setTransform(cf);
 }
 
