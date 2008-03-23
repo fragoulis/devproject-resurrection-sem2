@@ -25,10 +25,31 @@ test = 5
 //EbombType = red
 //Position = "(-500, 100, 500)"
 
-[Craters : Crater2]
+[Craters : Crater0]
 Radius = 60.0
 EbombType = blue
-Position = "(500, 100, -100)"
+Position = "(-711.243, 100, -487.71)"
+
+[Craters : Crater1]
+Radius = 60.0
+EbombType = red
+Position = "(680.761, 100, -663.827)"
+
+[Craters : Crater2]
+Radius = 60.0
+EbombType = yellow
+Position = "(741.725, 100, 257.402)"
+
+[Craters : Crater3]
+Radius = 60.0
+EbombType = orange
+Position = "(-609.637, 100, 731.565)"
+
+[Craters : Crater4]
+Radius = 60.0
+EbombType = purple
+Position = "(30.4818, 100, 230.307)"
+
 
 [Spawnpoints : p1]
 Position = "(-500, 286, 500)"
