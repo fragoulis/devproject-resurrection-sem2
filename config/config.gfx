@@ -242,7 +242,7 @@ ModelHook = Stupship_proc.obj
 ModelHook = Stupship_proc.obj
 
 [EntitySettings : Ebomb]
-ModelHook = F-15_proc.obj
+ModelHook = bomb.obj
 
 [EntitySettings : Misc]
 SpawnPointInterval = 1.0
