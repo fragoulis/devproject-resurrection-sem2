@@ -17,7 +17,7 @@ public:
 	Point3() { }
 	Point3(const float components[]);
 	Point3(float x, float y, float z);
-	Point3(const Vector3& v);
+	explicit Point3(const Vector3& v);
 	~Point3();
 
 	float getX() const { return m_vector.getX(); }

@@ -18,7 +18,6 @@
 
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>
-GamePlaneHeight = 420
 TerrainHeight = 0.0 // used by collision detection to kill e-bombs ATM
 
 [EnemyFactory]

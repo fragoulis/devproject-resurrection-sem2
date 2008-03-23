@@ -4,6 +4,8 @@
 
 [Main]
 Lives = 3
+GamePlaneHeight = 420
+
 
 [Craters]
 test = 5
@@ -15,41 +17,41 @@ test = 5
 Radius = 159.796
 TFormRadius = 911.019
 EbombType = blue
-Position = (-1085.51, 100,  -1131.43)
+Location = (-1085.51, -1131.43)
 
 [Craters : Crater1]
 Radius = 176.326
 TFormRadius = 933.06
 EbombType = red
-Position = (1013.88, 100, -1858.77)
+Location = (1013.88, -1858.77)
 
 [Craters : Crater2]
 Radius = 110.204
 TFormRadius = 896.325
 EbombType = yellow
-Position = (1256.32, 100, -742.04)
+Location = (1256.32, -742.04)
 
 [Craters : Crater3]
 Radius = 220.408
 TFormRadius = 1021.22
 EbombType = orange
-Position = (-1873.47, 100, 925.713)
+Location = (-1873.47, 925.713)
 
 [Craters : Crater4]
 Radius = 148.775
 TFormRadius = 1013.88
 EbombType = purple
-Position = (-314.081, 100, 220.408)
+Location = (-314.081, 220.408)
 
 [Craters : Crater5]
 Radius = 154.286
 TFormRadius = 1072.65
 EbombType = green
-Position = (1201.22, 100, 1263.67)
+Location = (1201.22, 1263.67)
 
 
 [Spawnpoints : p1]
-Position = (-500, 420, 500)
+Location = (-500, 500)
 EnemyType = EnemyFighter            # string
 EnemyCount = 1                      # int
 EnergyType = red
@@ -63,7 +65,7 @@ MaximumPlayerDistance = 10000.0
 
 
 [Spawnpoints : p2]
-Position = (500, 420, -100)
+Location = (500, -100)
 EnemyType = EnemyFighter
 EnemyCount = 1                      # int
 EnergyType = blue
