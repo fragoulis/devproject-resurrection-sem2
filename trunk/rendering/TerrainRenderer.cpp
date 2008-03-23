@@ -32,6 +32,8 @@
 
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../GameLogic/Objects/Ebomb.h"
+#include "../GameLogic/Objects/Crater.h"
 #include "../gfx/Camera.h"
 #include "ShipRenderer.h"
 #include "LaserRenderer.h"
@@ -54,8 +56,15 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
+	EventManager::instance().registerEventListener< Crater_Spawned >(this);
+	EventManager::instance().registerEventListener< Crater_Despawned >(this);
+	EventManager::instance().registerEventListener< Life_Restored >(this);
 
 	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+
+	m_craterArrowTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getCraterArrowTexture());
 }
 
 TerrainRenderer :: ~TerrainRenderer()
@@ -107,7 +116,7 @@ void TerrainRenderer :: _clearResources()
 
 void TerrainRenderer :: render(Graphics& g) const
 {
-	_renderShadows2();
+	_renderShadows();
 	_updateTerraformContribution();
 
 	/*
@@ -171,10 +180,10 @@ void TerrainRenderer :: render(Graphics& g) const
 	// create the reflection Surface
 	_drawLakeReflection(g);
 
-	// Draw the lake
-
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
+
+	// Draw the lake
 	
 	ShaderManager::instance()->begin("lakeShader");
 	m_lakeTexture->bind(11);
@@ -236,7 +245,31 @@ void TerrainRenderer :: render(Graphics& g) const
 	Vector3 qup(0,0,-m_mapExtents.getX());
 	RenderEngine::drawTexturedQuad(qll,qright,qup,Vector2(0,0),Vector2(1.0f,1.0f));
 
-	ShaderManager::instance()->end();
+	
+	// Draw the crater arrows
+
+	const float cr_aty = GameLogic::instance().getGamePlaneHeight();
+	const float crwidth = 50.0f;
+	const float crheight = 100.0f;
+
+	ShaderManager::instance()->begin("craterArrowShader");
+	m_craterArrowTexture->bind(0);
+	ShaderManager::instance()->setUniform1i("tex",0);
+
+	for(std::vector<CraterInfo_t>::const_iterator it = m_craterList.begin();
+		it != m_craterList.end();
+		++it)
+	{
+		ShaderManager::instance()->setUniform4fv("color",it->color.cfp());
+		Vector3 ll(it->crater->getPosition().getVector());
+		ll.setY(cr_aty);
+		RenderEngine::drawTexturedQuad(ll - Vector3(crwidth * 0.5f,crheight * 0.5f,0.0f),
+									   Vector3(crwidth,0.0f,0.0f),
+									   Vector3(0.0f,crheight,0.0f),
+									   Vector2(0.0f,0.0f),
+									   Vector2(1.0f,1.0f));
+	}
+
 	glDisable(GL_BLEND);
 
 	// FIXME : DRAW A THICKLINE QUAD AT THE EDGES FOR DEBUG
@@ -565,8 +598,24 @@ void TerrainRenderer :: onEvent(Player_Despawned& evt)
 	_removeShadowCaster(cf);
 }
 
+void TerrainRenderer :: onEvent(Ebomb_Spawned& evt)
+{
+	// Get the const render settings of the ship
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	Model * model = ModelMgr::instance().getModel(settings.modelName);
+	_addShadowCaster(CoordinateModel(model,cf));
+}
 
-void TerrainRenderer :: _renderShadows2() const
+void TerrainRenderer :: onEvent(Ebomb_Despawned& evt)
+{
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_removeShadowCaster(cf);
+}
+
+
+void TerrainRenderer :: _renderShadows() const
 {
 	int drawbuf;
 	glGetIntegerv(GL_DRAW_BUFFER,&drawbuf);
@@ -818,4 +867,63 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	glDrawBuffer(drawbuf);
 	glViewport(vp[0],vp[1],vp[2],vp[3]);
 	
+}
+
+
+void TerrainRenderer::onEvent(Crater_Spawned& evt)
+{
+	Vector4 cratercolor;
+	switch(evt.getValue()->getEbombType())
+	{
+		case EBOMB_TYPE_RED : 
+			cratercolor.set(1.0f,0.0f,0.0f,1.0f);
+			break;
+		case EBOMB_TYPE_YELLOW : 
+			cratercolor.set(1.0f,1.0f,0.0f,1.0f);
+			break;
+		case EBOMB_TYPE_BLUE : 
+			cratercolor.set(0.0f,0.0f,1.0f,1.0f);
+			break;
+		case EBOMB_TYPE_ORANGE: 
+			cratercolor.set(1.0f,0.5f,0.0f,1.0f);
+			break;
+		case EBOMB_TYPE_GREEN: 
+			cratercolor.set(0.0f,1.0f,0.0f,1.0f);
+			break;
+		case EBOMB_TYPE_PURPLE: 
+			cratercolor.set(1.0f,0.0f,1.0f,1.0f);
+			break;
+	}
+	m_craterList.push_back(CraterInfo_t(evt.getValue(),cratercolor));
+}
+
+void TerrainRenderer::onEvent(Crater_Despawned& evt)
+{
+	for(std::vector<CraterInfo_t>::iterator it = m_craterList.begin();
+		it != m_craterList.end();
+		++it)
+	{
+		if(it->crater == evt.getValue())
+		{
+			m_craterList.erase(it);
+			break;
+		}
+	}
+}
+
+void TerrainRenderer::onEvent(Life_Restored& evt)
+{
+	for(std::vector<CraterInfo_t>::iterator it = m_craterList.begin();
+		it != m_craterList.end();
+		++it)
+	{
+		Vector3 diff(it->crater->getCoordinateFrame().getOrigin().getVector() - evt.getValue().getVector());
+		if((abs(diff.getX()) < THRESHOLD<float>()) &&
+		   (abs(diff.getY()) < THRESHOLD<float>()) &&
+		   (abs(diff.getZ()) < THRESHOLD<float>()))
+		{
+			m_craterList.erase(it);
+			break;
+		}
+	}
 }

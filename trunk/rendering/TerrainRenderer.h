@@ -29,6 +29,7 @@ class Texture;
 class Camera;
 class ShipRenderer;
 class LaserRenderer;
+class Crater;
 
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
@@ -37,7 +38,12 @@ class TerrainRenderer :
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
 	public EventListener< Player_Despawned >,
-	public EventListener<Key_GoingDown>
+	public EventListener<Key_GoingDown>,
+	public EventListener< Ebomb_Spawned >,
+	public EventListener< Ebomb_Despawned >,
+	public EventListener< Crater_Spawned >,
+	public EventListener< Crater_Despawned >,
+	public EventListener< Life_Restored >
 
 {
 public:
@@ -52,6 +58,11 @@ public:
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
 	void onEvent(Player_Despawned&);
+	void onEvent(Ebomb_Spawned&);
+	void onEvent(Ebomb_Despawned&);
+	void onEvent(Crater_Spawned&);
+	void onEvent(Crater_Despawned&);
+	void onEvent(Life_Restored&);
 
 	void onEvent(Key_GoingDown&);
 
@@ -73,6 +84,15 @@ private:
 		float currentTimeOffset;
 	};
 
+	struct CraterInfo_t
+	{
+		const Crater * crater;		// pointer to crater object
+		Vector4  color;			// color relative to crater, dep on energy type
+		bool	 lifeRestored;
+		CraterInfo_t(const Crater * crat,const Vector4& col):lifeRestored(false),crater(crat),
+			color(col){}
+	};
+
 	// PRIVATE FUNCS
 
 	void _clearResources();
@@ -84,7 +104,7 @@ private:
 
 	void _addShadowCaster(const CoordinateModel& model);
 	void _removeShadowCaster(const CoordinateFrame * cf);
-	void _renderShadows2() const;
+	void _renderShadows() const;
 	void _initShadows(const Vector4& lightdir);
 	void _drawLakeReflection(Graphics& g) const;
 
@@ -123,5 +143,10 @@ private:
 	Texture * m_shadowTexture;
 	FramebufferObject m_shadowFBO;
 	Vector3 m_lightDir;
+
+
+	// For the craters
+	std::vector<CraterInfo_t> m_craterList;
+	Texture * m_craterArrowTexture;
 
 };

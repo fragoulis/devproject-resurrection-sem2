@@ -30,7 +30,7 @@ ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
-				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">
+				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, <"craterArrowShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -257,4 +257,5 @@ WaveRepeats = 5
 CloudRepeats = 5
 LakeTexture = noiseVolume.dds
 ReflectionTextureSizeRatio = 1
+CraterArrowTexture = arrow.sgi
 
