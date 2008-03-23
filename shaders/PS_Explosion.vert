@@ -43,7 +43,7 @@ void main(void)
 					 quad_func);
 
 		//vert.xyz += offset.xyz;
-		vert.xyz += velocity*currentTime*30;
+		vert.xyz += velocity.xyz*currentTime*30.0;
 		vert.xyz *= cos(currentTime);
 		vert.z *= sin(currentTime);
 		vert = gl_ModelViewMatrix*vert;

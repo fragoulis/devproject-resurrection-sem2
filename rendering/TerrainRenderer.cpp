@@ -153,10 +153,10 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1i("texmap0",14);
 	m_terrainModel->matGroup(0).getTextureList()[1]->bind(15);
 	ShaderManager::instance()->setUniform1i("texmap1",15);
-	m_tformContribTex->bind(0);
+	m_tformContribTex->bind(13);
 	ShaderManager::instance()->setUniform1i("contribMap",0);
-	m_shadowTexture->bind(1);
-	ShaderManager::instance()->setUniform1i("shadowTex",1);
+	m_shadowTexture->bind(12);
+	ShaderManager::instance()->setUniform1i("shadowTex",12);
 	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
 
@@ -177,14 +177,14 @@ void TerrainRenderer :: render(Graphics& g) const
 	glEnable(GL_BLEND);
 	
 	ShaderManager::instance()->begin("lakeShader");
-	m_lakeTexture->bind(0);
-	ShaderManager::instance()->setUniform1i("noiseTex",0);
-	m_shadowTexture->bind(1);
-	ShaderManager::instance()->setUniform1i("shadowTex",1);
-	m_lakeReflection->bind(7);
-	ShaderManager::instance()->setUniform1i("reflTex",7);
-	m_heightTexture->bind(3);
-	ShaderManager::instance()->setUniform1i("heightTex",3);
+	m_lakeTexture->bind(11);
+	ShaderManager::instance()->setUniform1i("noiseTex",11);
+	m_shadowTexture->bind(12);
+	ShaderManager::instance()->setUniform1i("shadowTex",12);
+	m_lakeReflection->bind(10);
+	ShaderManager::instance()->setUniform1i("reflTex",10);
+	m_heightTexture->bind(9);
+	ShaderManager::instance()->setUniform1i("heightTex",9);
 
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	
@@ -238,13 +238,6 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	ShaderManager::instance()->end();
 	glDisable(GL_BLEND);
-
-	TextureMgr::instance()->setTextureUnit(3);
-	TextureMgr::instance()->setBoundTexture(0,3);
-	TextureMgr::instance()->setTextureUnit(2);
-	TextureMgr::instance()->setBoundTexture(0,2);
-	TextureMgr::instance()->setTextureUnit(1);
-	TextureMgr::instance()->setBoundTexture(0,1);
 
 	// FIXME : DRAW A THICKLINE QUAD AT THE EDGES FOR DEBUG
 /*

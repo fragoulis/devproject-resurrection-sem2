@@ -100,6 +100,8 @@ void ShaderManager :: loadShaderFile(const std::string& shaderfile)
 	assert(frag != "");
 	assert(shname != "");
 
+	cerr<<"Loading Shader : "<<shaderfile<<endl;
+
 
 	bool res = loadFile(shname,vert,frag);
 	assert(res);
