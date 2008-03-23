@@ -256,6 +256,6 @@ WaveSpeed = 0.02
 WaveRepeats = 5
 CloudRepeats = 5
 LakeTexture = noiseVolume.dds
-ReflectionTextureSizeRatio = 1
+ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.sgi
 

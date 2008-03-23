@@ -11,14 +11,14 @@
 # The root section of this is passed along with the Level_Load event.
 
 [Map]
-Dimensions = "(2048.0, 2048.0)"
-PlayerStart = "(0.0, 300, 0.0)"
+Dimensions = "(4096.0, 4096.0)"
+PlayerStart = "(0.0, 420, 0.0)"
 
 [Gameplay]
-file = "TestLevel.Gameplay.txt"
+file = "TestLevel2.Gameplay.txt"
 
 [Graphics]
-file = "TestLevel.Graphics.txt"
+file = "TestLevel2.Graphics.txt"
 
 [Sound]
 SoundsUsed = <EnemyDied1>, <EnemyDied2>
