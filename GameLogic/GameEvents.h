@@ -161,7 +161,7 @@ EVENT_WITH_VALUE(Crater_Despawned, Crater*);
 // Signals the restoration of life to an area centered around a location
 // Fires when a crater is hit by an ebomb of the same type
 // The parameter is the crater that got hit
-EVENT_WITH_VALUE(Life_Restored, const Point3&);
+EVENT_WITH_VALUE(Life_Restored, Crater*);
 
 // Fires when a Spawnpoint object is created in memory
 // The object is fully initialized and ready to go (in valid game state)

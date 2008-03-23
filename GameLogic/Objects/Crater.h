@@ -26,6 +26,8 @@ public:
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
 	void setToBeDeleted() { m_state = TO_BE_DELETED; }
 
+	float getAffectedAreaRadius() const { return m_affectedAreaRadius; }
+
 	void loadSettings(const ParserSection&);
 
 private:
@@ -41,4 +43,5 @@ private:
 	State m_state;
 	float m_radius;
 	EbombType m_ebombType;
+	float m_affectedAreaRadius;
 };

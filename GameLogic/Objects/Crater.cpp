@@ -27,6 +27,7 @@ Crater :: ~Crater()
 void Crater :: loadSettings(const ParserSection& ps)
 {
 	m_radius = FromString<float>(ps.getVal("Radius"));
+	m_affectedAreaRadius = FromString<float>(ps.getVal("AffectedAreaRadius"));
 	m_ebombType = EbombTypeFromString(ps.getVal("EbombType"));
 	WorldObject::loadSettings(ps);
 

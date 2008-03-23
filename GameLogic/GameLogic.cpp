@@ -307,7 +307,7 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 	Crater* crater = evt.getObject2();
 	ebomb->setToBeDeleted();
 	if (ebomb->getEbombType() == crater->getEbombType()) {
-		EventManager::instance().fireEvent(Life_Restored(crater->getPosition()));
+		EventManager::instance().fireEvent(Life_Restored(crater));
 		crater->setToBeDeleted();
 	}
 	else {

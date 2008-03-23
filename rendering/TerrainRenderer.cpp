@@ -11,6 +11,7 @@
 
 #include "TerrainRenderer.h"
 #include "../GameLogic/Objects/Terrain.h"
+#include "../GameLogic/Objects/Crater.h"
 #include "../GameLogic/GameEvents.h"
 #include "../GameLogic/GameLogic.h"
 
@@ -913,14 +914,13 @@ void TerrainRenderer::onEvent(Crater_Despawned& evt)
 
 void TerrainRenderer::onEvent(Life_Restored& evt)
 {
+	Crater* crater = evt.getValue();
+
 	for(std::vector<CraterInfo_t>::iterator it = m_craterList.begin();
 		it != m_craterList.end();
 		++it)
 	{
-		Vector3 diff(it->crater->getCoordinateFrame().getOrigin().getVector() - evt.getValue().getVector());
-		if((abs(diff.getX()) < THRESHOLD<float>()) &&
-		   (abs(diff.getY()) < THRESHOLD<float>()) &&
-		   (abs(diff.getZ()) < THRESHOLD<float>()))
+		if (it->crater == crater)
 		{
 			m_craterList.erase(it);
 			break;
@@ -928,8 +928,8 @@ void TerrainRenderer::onEvent(Life_Restored& evt)
 	}
 
 	TerraformInfo_t tfi;
-	tfi.center = evt.getValue().getVector();
-	tfi.radius = 1024;
+	tfi.center = crater->getPosition().getVector();
+	tfi.radius = crater->getAffectedAreaRadius();
 	tfi.currentTimeOffset = 0.0f;
 	m_tformInfo.push_back(tfi);
 }
