@@ -18,6 +18,7 @@
 #include "../GameLogic/Lasers/Laser.h"
 #include "../GameLogic/Objects/Ebomb.h"
 #include "../GameLogic/Objects/Crater.h"
+#include "../GameLogic/Objects/Terrain.h"
 #include "../math/maths.h"
 #include "../math/Vector3.h"
 #include "../math/Point3.h"
@@ -373,12 +374,13 @@ void PhysicsEngine :: _checkEbombTerrainCollisions()
 		const Point3& sphereCentre = ebomb->getPosition();
 		float sphereRadius = ebomb->getRadius();
 		float sphereY = sphereCentre.getY();
+		float terrainHeight = m_terrain->getHeight(sphereCentre.getX(), sphereCentre.getZ());
 
-		if ((sphereY - sphereRadius) < m_terrainHeight)
+		if ((sphereY - sphereRadius) < terrainHeight)
 		{
 			Vector3 normal(0.0f, 1.0f, 0.0f);
 			Point3 colpos = sphereCentre;
-			colpos.setY(m_terrainHeight);
+			colpos.setY(terrainHeight);
 			CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and terrain " + ToString<Terrain*>(m_terrain), 3);
 			EventManager::instance().fireEvent(Collision_Ebomb_Terrain(ebomb, m_terrain, colpos, normal));
 		}

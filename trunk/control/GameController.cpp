@@ -46,8 +46,13 @@ void GameController :: deactivate()
 	//GameLogic::safeInstance().unloadLevel();
 }
 
+
+inline Point3 getMouseMapPosition(float height) {
+	return RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition(), height);
+}
+
 inline Point3 getMouseMapPosition() {
-	return RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition());
+	return getMouseMapPosition(GameLogic::instance().getGamePlaneHeight());
 }
 
 #include "../math/Rotation.h"
@@ -90,7 +95,8 @@ void GameController :: update(float dt)
 	}
 
 	if (input.isKeyDown(32)) {
-		gl.dropEbomb(getMouseMapPosition());
+		Point3 pos = getMouseMapPosition();
+		gl.dropEbomb(getMouseMapPosition(gl.getTerrainHeight(pos.getX(), pos.getY())));
 	}
 
 
