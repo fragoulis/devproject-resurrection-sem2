@@ -65,7 +65,7 @@ void main(void)
 		vert.xyz += gl_Vertex.xyz*scale;
 		
 		alphaColor = vec4(1.0);
-		alphaColor.a = fountainType == 0 ? 100*currentTime/systemLife : 1.0-currentTime/systemLife;
+		alphaColor.a = fountainType == 0 ? 100.0*currentTime/systemLife : 1.0-currentTime/systemLife;
     }
     else
 		color.w = -1.0;

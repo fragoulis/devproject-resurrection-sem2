@@ -25,7 +25,7 @@ void main(void)
 		// Add the start offset & the time-based velocity
 		vert    = vec4(velocity.xyz*t, 1.0);
 
-		vert.xyz += velocity*currentTime*10;
+		vert.xyz += velocity.xyz*currentTime*10.0;
 		float x = vert.x;
 		float z = vert.z;
 		vert.x = cos(currentTime)*x + sin(currentTime)*z;
@@ -35,7 +35,7 @@ void main(void)
 
 		vColor = -(currentTime/systemLife);
 		alphaColor = vec4(1.0);
-		alphaColor.a = 1-currentTime/systemLife;
+		alphaColor.a = 1.0-currentTime/systemLife;
 		
 	} 
 		

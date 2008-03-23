@@ -12,15 +12,6 @@ StreamIndices = 200000
 [ModelSettings]
 ModelDir = "./resources/models/"
 
-# Ship models & stuff don't need to load/unload in a per-level basis. They can sit around in a VBO waiting to be referenced
-# They'll be cheap anyway
-# So, load one for now, and anything else afterwards.
-# Any object should ask the ModelMgr for the filename, without the extension
-
-#PersistentModels = <tri_cruiser4.obj>
-
-
-
 ########################### TEXTURES ##########################################################
 
 [Texture]

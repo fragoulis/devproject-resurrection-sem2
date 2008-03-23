@@ -34,8 +34,8 @@ void main(void)
     {
 		// Add the start offset & the time-based velocity
         vert    += vec4(velocity.xyz*t , 1.0);
-        vert.x *= 5;
-        vert.z +=  velocity.z*t*15;  
+        vert.x *= 5.0;
+        vert.z +=  velocity.z*t*15.0;  
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;

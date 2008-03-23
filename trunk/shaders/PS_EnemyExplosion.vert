@@ -26,7 +26,7 @@ void main(void)
 		// Add the start offset & the time-based velocity
 		vert    = vec4(velocity.xyz*t , 1.0);
 
-		vert.xyz += velocity*explosionPower*currentTime;
+		vert.xyz += velocity.xyz*explosionPower*currentTime;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
 

@@ -22,7 +22,7 @@ void main()
 	
 	//vec3 n = normalize(tbn * (texture2D(noiseTex,gl_TexCoord[0].st).rgb*2.0 - 1.0));
 	
-	float shadowContrib = texture2D(shadowTex, gl_TexCoord[1]).r;
+	float shadowContrib = texture2D(shadowTex, gl_TexCoord[1].st).r;
 	
 	// Compute the new .st for the clouds
 	vec3 refl = reflect(V,n);
