@@ -541,7 +541,7 @@ void TerrainRenderer :: _updateTerraformContribution() const
 	for(size_t i=0;i< m_tformInfo.size();++i)
 	{
 		const float timepcent = m_tformInfo[i].currentTimeOffset / (tpu*m_tformInfo[0].radius);
-		Vector2 v(m_tformInfo[i].center.getX(),m_tformInfo[i].center.getZ());
+		Vector2 v(m_tformInfo[i].center.getX(),-m_tformInfo[i].center.getZ());
 		ShaderManager::instance()->setUniform1fv("timePercent", &timepcent);
 		ShaderManager::instance()->setUniform2fv("center",v.cfp());
 		const float sqradius = m_tformInfo[i].radius*m_tformInfo[i].radius;
@@ -926,4 +926,10 @@ void TerrainRenderer::onEvent(Life_Restored& evt)
 			break;
 		}
 	}
+
+	TerraformInfo_t tfi;
+	tfi.center = evt.getValue().getVector();
+	tfi.radius = 1024;
+	tfi.currentTimeOffset = 0.0f;
+	m_tformInfo.push_back(tfi);
 }
