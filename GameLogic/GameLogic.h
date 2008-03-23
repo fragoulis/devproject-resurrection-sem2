@@ -62,6 +62,7 @@ public:
 	EbombType getCurrentEbombType() const { return m_currentEbomb; }
 	int getCurrentLives() const { return m_currentLives; }
 	const Playership* getPlayership() const { return m_playership; }
+	float getTerrainHeight(float x, float z);
 
 
 	// These are functions controller can call to change the game state

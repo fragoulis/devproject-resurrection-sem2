@@ -289,6 +289,7 @@ void GameLogic :: dropEbomb(const Point3& targetLocation)
 	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
 	ebomb->setEbombType(m_currentEbomb);
 	ebomb->setPosition(targetLocation);
+	ebomb->setY(m_gamePlaneHeight);
 	ebomb->setVelocity(Vector3(0.0f, -m_ebombInitialDownwardVelocity, 0.0f));
 	m_ebombs.push_back(ebomb);
 
@@ -538,4 +539,10 @@ void GameLogic :: _cleanUpList( std::list<T*>& list )
 			++it;
 		}
 	}
+}
+
+
+float GameLogic :: getTerrainHeight(float x, float z)
+{
+	return m_terrain->getHeight(x, z);
 }
