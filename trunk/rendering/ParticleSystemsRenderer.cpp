@@ -14,6 +14,7 @@
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Objects/Ebomb.h"
+#include "../GameLogic/Objects/Crater.h"
 #include "../ParticleSystem/PS_Jet.h"
 #include "../ParticleSystem/PS_EnergyLoss.h"
 #include "../ParticleSystem/PS_Fountain.h"
@@ -27,6 +28,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
 	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
+	EventManager::instance().registerEventListener<Life_Restored>(this);
 
 	m_isJetCreated = false;
 
@@ -198,6 +200,27 @@ void ParticleSystemsRenderer::onEvent(Ebomb_Despawned &eBomb) {
 	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
 	m_psList.back()->setTransform(cf);
 	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+	m_psList.back()->setTransform(cf);
+
+}
+
+void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
+{
+	PS_Fountain *ps_Fountain = NULL;
+	Crater* crater = restoredCrater.getValue();
+	CoordinateFrame cf = crater->getCoordinateFrame();
+	EbombType ebombType = crater->getEbombType();
+
+	if (ebombType == EbombTypeFromString("red"))
+		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_RedFountainIn");
+	else if (ebombType == EbombTypeFromString("yellow"))
+		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_YellowFountainIn");
+	else if (ebombType == EbombTypeFromString("blue"))
+		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainIn");
+
+	ps_Fountain->setRadiusScale(20.0f); //crater->getAffectedAreaRadius()/30.0f); 
+	m_psList.push_back(ps_Fountain);
+	cf.move(Vector3(0,0,0));  //?
 	m_psList.back()->setTransform(cf);
 
 }
