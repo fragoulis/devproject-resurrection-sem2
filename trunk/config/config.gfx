@@ -201,9 +201,9 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_RedFountainOut]
 Variations   = 1
-SystemLife   = 10
+SystemLife   = 15
 ParticleLife = 3
-ParticleSize = 5
+ParticleSize = 10
 ParticleNum  = 10000
 Shader       = "PS_Fountain"
 ParticleColor = 0
@@ -211,9 +211,9 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_YellowFountainOut]
 Variations   = 1
-SystemLife   = 10
+SystemLife   = 15
 ParticleLife = 3
-ParticleSize = 5
+ParticleSize = 10
 ParticleNum  = 10000
 Shader       = "PS_Fountain"
 ParticleColor = 1
@@ -221,9 +221,9 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_BlueFountainOut]
 Variations   = 1
-SystemLife   = 10
+SystemLife   = 15
 ParticleLife = 3
-ParticleSize = 5
+ParticleSize = 10
 ParticleNum  = 10000
 Shader       = "PS_Fountain"
 ParticleColor = 2
