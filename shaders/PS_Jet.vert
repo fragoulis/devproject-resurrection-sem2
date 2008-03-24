@@ -11,6 +11,7 @@ uniform float currentTime;
 uniform float particleLife;
 uniform float particleSize;
 uniform float systemLife;
+uniform float shipSpeed;
 attribute vec4 velocity;
 //attribute vec4 offset;
 
@@ -21,7 +22,7 @@ const vec3 scale = vec3(1.0)*particleSize;
 const float partLifeDenom = 1.0 / particleLife;
 const float sum_time = currentTime + particleLife - systemLife;
 
-//const vec3 ACCELERATION = vec3(0.0,-9.8,0.0);
+vec3 acceleration = vec3(0.0,0,50.0);
 
 void main(void)
 {	
@@ -32,10 +33,14 @@ void main(void)
 	float t = mod(tmpTime,particleLife);
 	if(sum_time <= velocity.w)
     {
-		// Add the start offset & the time-based velocity
-        vert    += vec4(velocity.xyz*t , 1.0);
-        vert.x *= 5.0;
-        vert.z +=  velocity.z*t*15.0;  
+		//acceleration.z = (1.0-velocity.y)*50.0;
+		acceleration.z += (1.0-abs(velocity.x))*100.0;
+		acceleration.z += (shipSpeed + 1.0)/2.0;
+        vert    += vec4(velocity.xyz*t + acceleration*t*t*0.5 , 1.0);
+        vert.x *= 4.0;
+        vert.z +=  velocity.z*t; 
+        vert.z = abs(vert.z); 
+        vert.z += 30.0; //OFFSET
         const float to_draw = t*partLifeDenom;	// know how far in it's life has passed (percent)
         const float to_draw2 = to_draw * to_draw;
         const float quad_func = 1.0 - to_draw2;
@@ -43,8 +48,12 @@ void main(void)
 					 0.1 + 0.2*quad_func,
 					 0.1*quad_func,
 					 quad_func);
+					 
+		/*color = vec4(0.5,
+			0.1 + 0.2*(1.0-to_draw),
+			0.7,
+			quad_func);*/
 
-		//vert.xyz += offset.xyz;
 		vert = gl_ModelViewMatrix*vert;
 		vert.xyz += gl_Vertex.xyz*scale;
     }

@@ -162,9 +162,9 @@ ShapeTexture = "Flare1_32.sgi"
 
 [ParticleSystem : PS_Jet]
 Variations   = 1
-SystemLife   = 2000
+SystemLife   = 10000
 ParticleLife = 1
-ParticleSize = 6
+ParticleSize = 4
 ParticleNum  = 1000
 Shader       = "PS_Jet"
 Texture      = "Flare1_32.sgi" 

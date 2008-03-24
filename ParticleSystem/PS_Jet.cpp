@@ -95,7 +95,7 @@ void  PS_Jet :: _generateData(VBO * vbo,Texture * tex)
 	for(unsigned i=0; i<totalVData ;i+=4)
 	{
 		Vector3 vel;
-		RandomGenerator::GET_RANDOM_VECTOR3(vel,Vector3(-0.2f,1,1),Vector3(0.2f,1,1));
+		RandomGenerator::GET_RANDOM_VECTOR3(vel,Vector3(-0.4f,-0.4f,1.0f),Vector3(0.4f,0.4f,1.0f));
 		vel.normalize();
 		vel.multiply(5.0f + RandomGenerator::GET_RANDOM_FLOAT(1.0f,2.5f));
 		//velocities[i] = velocities[i+1] = velocities[i+2] = velocities[i+3] = Vector4(0.0f,
@@ -165,6 +165,11 @@ void PS_Jet :: update(const float delta)
 
 void PS_Jet :: render() const
 {
+	float shipSpeed = 0.0f;
+	if (m_emitterShip != NULL)  {
+		shipSpeed = __max(abs(m_emitterShip->getVelocity().getZ()), abs(m_emitterShip->getVelocity().getX()));
+	}
+
 	// set uniforms, bind texture, transform & call VBO
 	CHECK_GL_ERROR();
 	VAttribStatus curstatus = VBOMgr::instance().getCurrentFlags();
@@ -176,6 +181,8 @@ void PS_Jet :: render() const
 	ShaderManager::instance()->begin(m_shaderIndex);
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("currentTime",&m_currentTime);
+	CHECK_GL_ERROR();
+	ShaderManager::instance()->setUniform1fv("shipSpeed",&shipSpeed);
 	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
 	CHECK_GL_ERROR();
