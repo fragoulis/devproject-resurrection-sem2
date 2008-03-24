@@ -171,7 +171,7 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_RedFountainIn]
 Variations   = 1
-SystemLife   = 2000
+SystemLife   = 20
 ParticleLife = 3
 ParticleSize = 5
 ParticleNum  = 10000
@@ -181,7 +181,7 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_YellowFountainIn]
 Variations   = 1
-SystemLife   = 2000
+SystemLife   = 20
 ParticleLife = 3
 ParticleSize = 5
 ParticleNum  = 10000
@@ -191,7 +191,7 @@ Texture      = "Flare1_32.sgi"
 
 [ParticleSystem : PS_BlueFountainIn]
 Variations   = 1
-SystemLife   = 2000
+SystemLife   = 20
 ParticleLife = 3
 ParticleSize = 5
 ParticleNum  = 10000
