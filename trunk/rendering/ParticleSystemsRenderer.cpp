@@ -217,6 +217,8 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_YellowFountainIn");
 	else if (ebombType == EbombTypeFromString("blue"))
 		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainIn");
+	else  //FIX ME:  add more olors
+		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainIn");
 
 	ps_Fountain->setRadiusScale(20.0f); //crater->getAffectedAreaRadius()/30.0f); 
 	m_psList.push_back(ps_Fountain);
