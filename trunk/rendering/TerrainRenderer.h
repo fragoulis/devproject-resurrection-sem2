@@ -127,6 +127,7 @@ private:
 	std::vector<TerraformInfo_t> m_tformInfo;
 
 	// For the lake
+	Texture * m_lakeNormalTexture;
 	Texture * m_lakeTexture;
 	Texture * m_heightTexture;
 	Texture * m_lakeReflection;			// reflection to applied to the lake

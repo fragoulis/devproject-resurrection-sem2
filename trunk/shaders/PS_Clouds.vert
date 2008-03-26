@@ -69,4 +69,6 @@ void main()
 	
 	viewVec = new_vertex.xyz;
 	lightVec = normalize((gl_ModelViewMatrix * vec4(lightPosition.xyz,0.0)).xyz);
+	// instead of inverting the normals in case the light is from the back side,invert the light's z
+	lightVec.z *= sign(lightVec.z);
 }
