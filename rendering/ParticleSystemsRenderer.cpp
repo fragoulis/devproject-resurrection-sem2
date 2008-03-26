@@ -29,6 +29,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
 	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
 	EventManager::instance().registerEventListener<Life_Restored>(this);
+	EventManager::instance().registerEventListener<Terrain_Changed>(this);
 
 	m_isJetCreated = false;
 
@@ -139,11 +140,14 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
 			m_psList.back()->setTransform(cf);
 			break;
-		case 'N':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Clouds"));
-			m_psList.back()->setTransform(cf);
-			break;
 	}
+}
+
+void ParticleSystemsRenderer::onEvent(Terrain_Changed &evt) 
+{
+	CoordinateFrame cf;
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Clouds"));
+	m_psList.back()->setTransform(cf);
 }
 
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
