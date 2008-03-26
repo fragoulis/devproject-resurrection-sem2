@@ -1,4 +1,3 @@
-
 [VBOSettings]
 StaticVData = 300000
 StaticIndices = 600000
@@ -30,7 +29,8 @@ ShaderDir = "./shaders/"
 ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
-				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, <"craterArrowShader.sh">
+				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
+				<"craterArrowShader.sh">, <"PS_Clouds.sh"> 
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -228,6 +228,16 @@ ParticleNum  = 10000
 Shader       = "PS_Fountain"
 ParticleColor = 2
 Texture      = "Flare1_32.sgi" 
+
+[ParticleSystem : PS_Clouds]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 120
+ParticleNum  = 200
+Shader       = "PS_Clouds"
+Texture      = "cloud2.sgi" 
+NoiseTexture = "noiseVolume.dds" 
 
 
 ################# ENTITY-MODEL SETTINGS ####################

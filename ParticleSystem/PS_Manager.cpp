@@ -12,6 +12,7 @@
 #include "PS_Explosion.h"
 #include "PS_MultiTexExplosion.h"
 #include "PS_Fountain.h"
+#include "PS_Clouds.h"
 #include "PS_Jet.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
@@ -127,6 +128,12 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const int particleColor = FromString<int>((*it)->getVal("ParticleColor"));
 				const string texname = (*it)->getVal("Texture");
 				created_ps = new PS_Fountain((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,particleColor,PS_Fountain::FOUNTAIN_TYPE_FADE_OUT,texname);
+			}
+			else if(pstype == "PS_Clouds")
+			{
+				const string texname = (*it)->getVal("Texture");
+				const string noisetexname = (*it)->getVal("NoiseTexture");
+				created_ps = new PS_Clouds((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,noisetexname);
 			}
 			
 			m_psList.push_back(created_ps);

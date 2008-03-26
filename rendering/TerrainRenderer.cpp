@@ -270,7 +270,6 @@ void TerrainRenderer :: render(Graphics& g) const
 									   Vector2(0.0f,0.0f),
 									   Vector2(1.0f,1.0f));
 	}
-
 	glDisable(GL_BLEND);
 
 	// FIXME : DRAW A THICKLINE QUAD AT THE EDGES FOR DEBUG
@@ -628,11 +627,6 @@ void TerrainRenderer :: _renderShadows() const
 	m_shadowFBO.Bind();
 	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
 
-	VAttribStatus vonly;
-	const VertexAttribute * vattr = ShaderManager::instance()->vertexAttribute("Vertex");
-	vonly.attrib[ShaderManager::instance()->vertexAttributeIndex(vattr)] = 0xFF;
-	VBOMgr::instance().setCurrentFlags(vonly);
-
 	/*
 		Get the info from renderEngine : 
 	*/
@@ -685,18 +679,17 @@ void TerrainRenderer :: _renderShadows() const
 	ShaderManager::instance()->begin("ShadowWrite2");
 	const Vector3 ldir(m_lightDir);
 
-	/*
-	float flat[16] = {1.0, -ldir.getX() / ldir.getY(), 0.0, 0.0,
-								0.0, 1.0, 0.0, 0.0,
-								0.0, -ldir.getZ() / ldir.getY(), 1.0, 0.0,
-								0.0,0.0 , 0.0, 1.0};
-	*/
 	float flat[16] = {1 , 0,0,0,
 					-ldir.getX() / ldir.getY(), 1, -ldir.getZ() / ldir.getY(), 0.0, 
 					0.0,0.0,1.0 , 0.0, 
 					0.0,0.0,0.0,1.0};
 
 	glMultMatrixf(flat);
+
+	VAttribStatus vonly;
+	const VertexAttribute * vattr = ShaderManager::instance()->vertexAttribute("Vertex");
+	vonly.attrib[ShaderManager::instance()->vertexAttributeIndex(vattr)] = 0xFF;
+	VBOMgr::instance().setCurrentFlags(vonly);
 
 	
 	for(std::vector<CoordinateModel>::const_iterator it = m_shadowCasters.begin();
@@ -710,6 +703,8 @@ void TerrainRenderer :: _renderShadows() const
 		glPopMatrix();
 	}
 
+	VBOMgr::instance().setCurrentFlags(vstatus);
+
 	// Restore stuff
 
 	glPopMatrix();
@@ -718,7 +713,6 @@ void TerrainRenderer :: _renderShadows() const
 	glMatrixMode(GL_MODELVIEW);
 	FramebufferObject::Disable();
 	glDrawBuffer(drawbuf);
-	VBOMgr::instance().setCurrentFlags(vstatus);
 	glViewport(vp[0],vp[1],vp[2],vp[3]);
 }
 
