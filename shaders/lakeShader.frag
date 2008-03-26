@@ -1,5 +1,6 @@
 uniform sampler3D noiseTex;
 uniform sampler2D shadowTex;
+uniform sampler2D normalTex;
 uniform sampler2D reflTex;
 uniform sampler2D heightTex;
 
@@ -18,11 +19,10 @@ void main()
 	
 	float bump = texture3D(noiseTex,gl_TexCoord[0].stp).r;
 	bump = bump * 2.0 - 1.0;
-	vec3 n = normalize(normal + -V*bump);
 	
-	//vec3 n = normalize(tbn * (texture2D(noiseTex,gl_TexCoord[0].st).rgb*2.0 - 1.0));
-	
-	float shadowContrib = texture2D(shadowTex, gl_TexCoord[1].st).r;
+	vec3 n = tbn * (texture2D(normalTex,gl_TexCoord[0].st).rgb*2.0 - 1.0);
+	n -= V*bump;
+	n = normalize(n);
 	
 	// Compute the new .st for the clouds
 	vec3 refl = reflect(V,n);
@@ -31,9 +31,12 @@ void main()
 	vec2 center_tex_pos = vec2(0.5);								//central tex coord on screen
 	vec2 diff = current_tex_pos - center_tex_pos;					// texcoord difference vector
 	vec2 dist_pcent = clamp(vec2(0.5) - abs(diff),vec2(0.0),vec2(0.5));	// 0.0 -> edge , 0.5 -> center
-	vec2 actual_coords = gl_TexCoord[1].st + 2.0*dist_pcent*offset.xy*0.2;
+	vec2 actual_coords = gl_TexCoord[1].st + 2.0*dist_pcent*offset.xy*0.05;
 	
 	vec4 reflColor = texture2D(reflTex,actual_coords);
+	vec3 shadow_offset = V - n;
+	vec2 shadow_coords = gl_TexCoord[1].st + 2.0*dist_pcent*shadow_offset.xy*0.05;
+	float shadowContrib = texture2D(shadowTex, shadow_coords).r;
 	
 	// compute lighting
 	float NdotL = clamp(dot(n,lightVec),0.0,1.0);
@@ -45,7 +48,7 @@ void main()
 	}
 	
 	// get height
-	float height = texture2D(heightTex,gl_TexCoord[3].st).r;
+	float height = texture2D(heightTex,gl_TexCoord[1].pq).r;
 	
 	vec4 color = (1.0 - shadowContrib)*NdotL*lightColor*waterColor + Is;
 	color.a = 1.0 - smoothstep(-15.0,1.0,height);

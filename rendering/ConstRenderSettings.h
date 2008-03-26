@@ -29,7 +29,8 @@ class ConstRenderSettings
 	float m_waveChangeRate;
 	float m_waveSpeed;
 	float m_waveRepeats;
-	std::string m_lakeTexture;
+	std::string m_lakeTexture,
+				m_lakeNormalTexture;
 	float m_reflectionTextureScreenRatio;
 
 	std::string m_craterArrowTexture;
@@ -53,6 +54,7 @@ public :
 	const float getWaveChangeRate() const{return m_waveChangeRate;}
 	const float getWaveSpeed() const{return m_waveSpeed;}
 	const std::string& getLakeTexture() const {return m_lakeTexture;}
+	const std::string& getLakeNormalTexture() const {return m_lakeNormalTexture;}
 	const std::string& getCraterArrowTexture() const {return m_craterArrowTexture;}
 	const float getWaveRepeats(const float mapExtent) const {return m_waveRepeats*mapExtent / 2048.0f;}
 	const float getReflectionTextureScreenRatio() const {return m_reflectionTextureScreenRatio;}

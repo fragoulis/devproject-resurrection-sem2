@@ -213,6 +213,8 @@ void TerrainRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1i("reflTex",10);
 	m_heightTexture->bind(9);
 	ShaderManager::instance()->setUniform1i("heightTex",9);
+	m_lakeNormalTexture->bind();
+	ShaderManager::instance()->setUniform1i("normalTex",0);
 
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
 	
@@ -289,24 +291,6 @@ void TerrainRenderer :: render(Graphics& g) const
 									   Vector2(1.0f,1.0f));
 	}
 	glDisable(GL_BLEND);
-
-	// FIXME : DRAW A THICKLINE QUAD AT THE EDGES FOR DEBUG
-/*
-	float proj[4];
-	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
-	glLineWidth(13.0f);
-	float edge_x  = 0.55f*(1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
-	float edge_y  = 0.55f*(1500.0f + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
-	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
-	glDisable(GL_DEPTH_TEST);
-	glBegin(GL_LINE_LOOP);
-		glVertex3f(-edge_x+off[0],0.0f,edge_y+off[1]);
-		glVertex3f(edge_x+off[0],0.0f,edge_y+off[1]);
-		glVertex3f(edge_x+off[0],0.0f,-edge_y+off[1]);
-		glVertex3f(-edge_x+off[0],0.0f,-edge_y+off[1]);
-	glEnd();
-	glEnable(GL_DEPTH_TEST);
-*/
 }
 
 
@@ -427,6 +411,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	// LAKE STUFF
 	
 	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
+	m_lakeNormalTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeNormalTexture());
 
 	// get the reflection tex size
 	int vp[4];
