@@ -300,3 +300,4 @@ void RenderEngine :: getWsScreenEdges(Point3 pts[4],const float h)
 	pts[2] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0] + m_viewport[2]),float(m_viewport[1])),h);
 	pts[3] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1])),h);
 }
+

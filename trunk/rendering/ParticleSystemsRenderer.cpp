@@ -139,6 +139,10 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
 			m_psList.back()->setTransform(cf);
 			break;
+		case 'N':
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Clouds"));
+			m_psList.back()->setTransform(cf);
+			break;
 	}
 }
 
