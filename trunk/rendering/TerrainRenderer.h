@@ -30,6 +30,7 @@ class Camera;
 class ShipRenderer;
 class LaserRenderer;
 class Crater;
+class PS_Base;
 
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
@@ -140,6 +141,7 @@ private:
 
 	// For the shadows
 	std::vector<CoordinateModel> m_shadowCasters;
+	PS_Base * m_cloudPS;
 	Texture * m_shadowTexture;
 	FramebufferObject m_shadowFBO;
 	Vector3 m_lightDir;

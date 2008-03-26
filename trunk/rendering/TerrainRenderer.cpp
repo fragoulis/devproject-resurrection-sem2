@@ -35,6 +35,8 @@
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Objects/Ebomb.h"
 #include "../GameLogic/Objects/Crater.h"
+#include "../ParticleSystem/PS_Base.h"
+#include "../ParticleSystem/PS_Manager.h"
 #include "../gfx/Camera.h"
 #include "ShipRenderer.h"
 #include "LaserRenderer.h"
@@ -49,7 +51,8 @@ TerrainRenderer :: TerrainRenderer() :
 	m_shadowTexture(0),
 	m_lakeTimer(0.0f),
 	m_heightTexture(0),
-	m_lakeReflection(0)
+	m_lakeReflection(0),
+	m_cloudPS(0)
 {
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
@@ -112,6 +115,11 @@ void TerrainRenderer :: _clearResources()
 		delete m_lakeReflection;
 		m_lakeReflection = 0;
 	}
+	if(m_cloudPS)
+	{
+		delete m_cloudPS;
+		m_cloudPS = 0;
+	}
 }
 
 
@@ -124,13 +132,21 @@ void TerrainRenderer :: render(Graphics& g) const
 		fetch terrain texcoords & scaling
 	*/
 	Point3 pts[4];
-	RenderEngine::instance().getWsScreenEdges(pts);
+	RenderEngine::instance().getWsScreenEdges(pts,0);
 	Point3 ll(pts[0]);
 	Point3 lr(pts[1]);
 	Point3 tl(pts[3]);
 	Point3 tr(pts[2]);
+
+	// For the lower edge ( +z ), use the val from gameplaneheight
+	Point3 pts_gph[4];
+	RenderEngine::instance().getWsScreenEdges(pts_gph,GameLogic::instance().getGamePlaneHeight());
+	ll.setZ(pts_gph[0].getZ());
+	lr.setZ(pts_gph[1].getZ());
+
 	Vector3 center = (pts[0].getVector() + pts[1].getVector() + pts[3].getVector() + pts[2].getVector())*0.25f;
 	Vector2 extents;
+	
 	
 	extents.setX(max(max(max(lr.getX() - center.getX(),
 								  tr.getX() - center.getX()),
@@ -140,7 +156,9 @@ void TerrainRenderer :: render(Graphics& g) const
 								  ll.getZ() - center.getZ()),
 							  center.getZ() - tr.getZ()),
 						  center.getZ() - tl.getZ()));
-	extents.add(abs(center.getX()),abs(center.getZ()));
+    
+	//extents.add(abs(center.getX()),abs(center.getZ()));
+	//extents.add(1800,1800);
 
 	// compute the tex scale
 	Vector2 terrain_tex_scale(0.5f*m_mapExtents.getX() / extents.getX(),
@@ -447,7 +465,10 @@ void TerrainRenderer :: onEvent(Terrain_Changed& evt)
 	m_terrain->fillData(m_heights,
 						m_mapExtents.getX(),
 						m_mapExtents.getY(),
-						m_terrainDimension);	
+						m_terrainDimension);
+	CoordinateFrame cf;
+	m_cloudPS = PS_Manager::instance().fetchNewPS("PS_Clouds");
+	m_cloudPS->setTransform(cf);
 	// Not allowed to do file loading here!
 	// Keep that restricted to Level_Load please
 	// If not possible at all: tell Joep :)
@@ -632,14 +653,21 @@ void TerrainRenderer :: _renderShadows() const
 	*/
 	
 	Point3 pts[4];
-	RenderEngine::instance().getWsScreenEdges(pts);
+	RenderEngine::instance().getWsScreenEdges(pts,0);
 	Point3 ll(pts[0]);
 	Point3 lr(pts[1]);
 	Point3 tl(pts[3]);
 	Point3 tr(pts[2]);
 
+	// For the lower edge ( +z ), use the val from gameplaneheight
+	Point3 pts_gph[4];
+	RenderEngine::instance().getWsScreenEdges(pts_gph,GameLogic::instance().getGamePlaneHeight());
+	ll.setZ(pts_gph[0].getZ());
+	lr.setZ(pts_gph[1].getZ());
+
 	Vector3 center = (ll.getVector() + lr.getVector() + tl.getVector() + tr.getVector())*0.25f;
 	Vector2 extents;
+	
 	
 	extents.setX(max(max(max(lr.getX() - center.getX(),
 								  tr.getX() - center.getX()),
@@ -649,7 +677,9 @@ void TerrainRenderer :: _renderShadows() const
 								  ll.getZ() - center.getZ()),
 							  center.getZ() - tr.getZ()),
 						  center.getZ() - tl.getZ()));
-	extents.add(abs(center.getX()),abs(center.getZ()));
+	
+	//extents.add(abs(center.getX()),abs(center.getZ()));
+	//extents.add(1800,1800);
 
 	float proj[4];
 	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
@@ -686,6 +716,8 @@ void TerrainRenderer :: _renderShadows() const
 
 	glMultMatrixf(flat);
 
+	// Draw Ships
+
 	VAttribStatus vonly;
 	const VertexAttribute * vattr = ShaderManager::instance()->vertexAttribute("Vertex");
 	vonly.attrib[ShaderManager::instance()->vertexAttributeIndex(vattr)] = 0xFF;
@@ -702,6 +734,11 @@ void TerrainRenderer :: _renderShadows() const
 			it->model->getMatGroup()[i].getVboDesc().call();
 		glPopMatrix();
 	}
+
+	// Draw Clouds
+	glEnable(GL_BLEND);
+	m_cloudPS->render();
+	glDisable(GL_BLEND);
 
 	VBOMgr::instance().setCurrentFlags(vstatus);
 
@@ -739,6 +776,7 @@ void TerrainRenderer :: update(const float dt)
 	// Also update trees & contrib tex
 	_updateTerraform(dt);
 	m_lakeTimer += dt;
+	m_cloudPS->update(dt);
 }
 
 void TerrainRenderer::onEvent(Key_GoingDown &key) 
@@ -794,11 +832,17 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 	// compute the screen quad
 
 	Point3 pts[4];
-	RenderEngine::instance().getWsScreenEdges(pts);
+	RenderEngine::instance().getWsScreenEdges(pts,0);
 	Point3 ll(pts[0]);
 	Point3 lr(pts[1]);
 	Point3 tl(pts[3]);
 	Point3 tr(pts[2]);
+
+	// For the lower edge ( +z ), use the val from gameplaneheight
+	Point3 pts_gph[4];
+	RenderEngine::instance().getWsScreenEdges(pts_gph,GameLogic::instance().getGamePlaneHeight());
+	ll.setZ(pts_gph[0].getZ());
+	lr.setZ(pts_gph[1].getZ());
 
 	Vector3 center = (ll.getVector() + lr.getVector() + tl.getVector() + tr.getVector())*0.25f;
 	Vector2 extents;
@@ -811,7 +855,7 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 								  ll.getZ() - center.getZ()),
 							  center.getZ() - tr.getZ()),
 						  center.getZ() - tl.getZ()));
-	extents.add(abs(center.getX()),abs(center.getZ()));
+	//extents.add(abs(center.getX()),abs(center.getZ()));
 
 	// Fix the camera
 

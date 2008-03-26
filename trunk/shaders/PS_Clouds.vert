@@ -6,6 +6,7 @@ uniform float currentTime;		// our currentTime
 uniform vec4 wind;		// wind (xz) & magnitude (w)
 uniform vec3 wind_tan;		// wind (xz) & magnitude (w)
 uniform float particleSize;
+uniform float height_scale;
 
 uniform vec4 lightPosition;
 
@@ -14,6 +15,8 @@ attribute vec4 genattrib1;	// starting offsets of the form (-1..1,0,-1..1)
 				// in the interval 0..1? 
 				// in the 2nd component we can store the deviation to the 
 				// wind direction in the interval -1..1
+				
+attribute vec4 genattrib2;		// stores the height offset in x component
 				
 				
 varying vec3 normal;		// the hacked normal
@@ -31,7 +34,9 @@ const float PI2 = 6.283185307179586476925286766559;
 void main()
 {
 	// initially set the position
-	vec3 position = vec3(genattrib1.x,plane_height,genattrib1.z);
+	vec3 position = vec3(genattrib1.x,
+						 plane_height + height_scale*genattrib2.x,
+						 genattrib1.z);
 	position.xz *= map_width;
 
 	// adjust the position by the wind direction & the wind resistance
@@ -56,7 +61,7 @@ void main()
 
 	// set the final position & transform	
 	vec4 new_vertex = gl_ModelViewMatrix * vec4(position,1.0);
-	new_vertex.xy += particleSize*gl_Vertex.xy;
+	new_vertex.xy += particleSize*(1.0 + 0.5*genattrib2.x)*gl_Vertex.xy;
 	gl_Position = gl_ProjectionMatrix * new_vertex;
 	
 	normal = vec3(0.0,0.0,1.0);		// make the basic normal in view space
