@@ -61,14 +61,17 @@ void main()
 
 	// set the final position & transform	
 	vec4 new_vertex = gl_ModelViewMatrix * vec4(position,1.0);
-	new_vertex.xy += particleSize*(1.0 + 0.5*genattrib2.x)*gl_Vertex.xy;
+	new_vertex.xy += particleSize*(1.0 + 0.5*genattrib2.x)*gl_Vertex.xy*vec2(1.5,1.0);
 	gl_Position = gl_ProjectionMatrix * new_vertex;
 	
 	normal = vec3(0.0,0.0,1.0);		// make the basic normal in view space
 	normal += gl_Vertex.xyz;		// spread it
 	
 	viewVec = new_vertex.xyz;
-	lightVec = normalize((gl_ModelViewMatrix * vec4(lightPosition.xyz,0.0)).xyz);
+	
 	// instead of inverting the normals in case the light is from the back side,invert the light's z
-	lightVec.z *= sign(lightVec.z);
+	vec3 alt_light = lightPosition.xyz;
+	alt_light.z = abs(alt_light.z);
+	lightVec = normalize((gl_ModelViewMatrix * vec4(alt_light,0.0)).xyz);
+	
 }

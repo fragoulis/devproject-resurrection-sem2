@@ -236,7 +236,7 @@ ParticleLife = 15000
 ParticleSize = 120
 ParticleNum  = 100
 Shader       = "PS_Clouds"
-Texture      = "cloud2.sgi" 
+Texture      = "cloud_new_handblur.sgi" 
 NoiseTexture = "noiseVolume.dds" 
 
 
