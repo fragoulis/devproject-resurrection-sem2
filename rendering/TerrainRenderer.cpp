@@ -773,7 +773,7 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 			{
 			TerraformInfo_t tfi;
 			tfi.center = Vector3(0.0f,0.0f,0.0f);
-			tfi.radius = 1024;
+			tfi.radius = 2048;
 			tfi.currentTimeOffset = 0.0f;
 			m_tformInfo.push_back(tfi);
 			}
