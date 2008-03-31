@@ -26,6 +26,7 @@ class PS_Jet : public PS_Base
 {
 private:
 	Playership *m_emitterShip;
+	float m_jetSpeed;
 
 public :
 	// 2 Ctors : Template & copy 

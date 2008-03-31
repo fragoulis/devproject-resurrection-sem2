@@ -29,7 +29,7 @@ PS_Jet :: PS_Jet(const std::string& name,
 			const unsigned pnum,
 			const int shindex,
 			const std::string& texture)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,true)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_jetSpeed(0.0f)
 {
 	// Initialize
 	_generateData(vbo,TextureIO::instance()->getTexture(texture));
@@ -46,7 +46,7 @@ PS_Jet :: PS_Jet(const std::string& name,
 			const unsigned pnum,
 			const int shindex,
 			const VAttribStatus& status)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,false)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_jetSpeed(0.0f)
 {
 	m_quadArray = model;
 	m_usedAttribs = status;
@@ -161,14 +161,23 @@ void PS_Jet :: update(const float delta)
 		CoordinateFrame cf = m_emitterShip->getCoordinateFrame();
 		setTransform(cf); 
 	} 
+
+	float shipSpeed = 0.0f;
+	if (m_emitterShip != NULL)  {
+		shipSpeed = __max(abs(m_emitterShip->getVelocity().getZ()), abs(m_emitterShip->getVelocity().getX()));
+		
+		if (m_jetSpeed < shipSpeed)
+			m_jetSpeed += 25;
+		else 
+			m_jetSpeed -= 25;
+
+		if (m_jetSpeed < 0)
+			m_jetSpeed = 0;
+	}
 }
 
 void PS_Jet :: render() const
 {
-	float shipSpeed = 0.0f;
-	if (m_emitterShip != NULL)  {
-		shipSpeed = __max(abs(m_emitterShip->getVelocity().getZ()), abs(m_emitterShip->getVelocity().getX()));
-	}
 
 	// set uniforms, bind texture, transform & call VBO
 	CHECK_GL_ERROR();
@@ -182,7 +191,7 @@ void PS_Jet :: render() const
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("currentTime",&m_currentTime);
 	CHECK_GL_ERROR();
-	ShaderManager::instance()->setUniform1fv("shipSpeed",&shipSpeed);
+	ShaderManager::instance()->setUniform1fv("shipSpeed",&m_jetSpeed);
 	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
 	CHECK_GL_ERROR();
