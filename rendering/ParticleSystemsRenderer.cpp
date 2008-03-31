@@ -110,15 +110,8 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			cf.move(Vector3(64,286,-64));
 			m_psList.back()->setTransform(cf);
 			break;
-		case 'T':
-			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainIn");
-			ps_Fountain->setRadiusScale(20.0f);
-			m_psList.push_back(ps_Fountain);
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			break;
 		case 'G':
-			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainOut");
+			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_Fountain");
 			ps_Fountain->setRadiusScale(20.0f);
 			m_psList.push_back(ps_Fountain);
 			cf.move(Vector3(64,286,-64));
@@ -219,14 +212,23 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 	CoordinateFrame cf = crater->getCoordinateFrame();
 	EbombType ebombType = crater->getEbombType();
 
-	if (ebombType == EbombTypeFromString("red"))
-		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_RedFountainOut");
-	else if (ebombType == EbombTypeFromString("yellow"))
-		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_YellowFountainOut");
-	else if (ebombType == EbombTypeFromString("blue"))
-		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainOut");
-	else  //FIX ME:  add more olors
-		ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_BlueFountainOut");
+	ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_Fountain");
+
+	if (ebombType == EbombTypeFromString("red")) {
+		ps_Fountain->setParticleColor(0);
+	} else if (ebombType == EbombTypeFromString("yellow")) {
+		ps_Fountain->setParticleColor(1);
+	} else if (ebombType == EbombTypeFromString("blue")) {
+		ps_Fountain->setParticleColor(2);
+	} else if (ebombType == EbombTypeFromString("green")) {
+		ps_Fountain->setParticleColor(3);
+	} else if (ebombType == EbombTypeFromString("orange")) {
+		ps_Fountain->setParticleColor(4);
+	} else if (ebombType == EbombTypeFromString("purple")) {
+		ps_Fountain->setParticleColor(5);
+	} else  {
+		ps_Fountain->setParticleColor(0);
+	}
 
 	ps_Fountain->setRadiusScale(20.0f); //crater->getAffectedAreaRadius()/30.0f); 
 	m_psList.push_back(ps_Fountain);
