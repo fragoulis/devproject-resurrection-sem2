@@ -45,7 +45,6 @@ public :
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
-			const int particleColor,
 			const FountainType fountainType,
 			const VAttribStatus& status);
 
@@ -56,7 +55,6 @@ public :
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
-			const int particleColor,
 			const FountainType fountainType,
 			const std::string& texture);
 
@@ -68,5 +66,6 @@ public :
 	virtual PS_Base * clone() const;					
 
 	void setRadiusScale(float radiusScale) { m_radiusScale = radiusScale; };
+	void setParticleColor(int particleColor) { m_particleColor = particleColor; };
 
 };

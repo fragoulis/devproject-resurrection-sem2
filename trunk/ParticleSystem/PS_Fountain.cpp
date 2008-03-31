@@ -28,10 +28,9 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
-			const int particleColor,
 			const FountainType fountainType,
 			const std::string& texture)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_particleColor(particleColor), m_fountainType(fountainType)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,true), m_particleColor(0), m_fountainType(fountainType)
 {
 	// Initialize
 	_generateData(vbo,TextureIO::instance()->getTexture(texture));
@@ -45,10 +44,9 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 			const float plife,
 			const unsigned pnum,
 			const int shindex,
-			const int particleColor,
 			const FountainType fountainType,
 			const VAttribStatus& status)
-:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_particleColor(particleColor), m_fountainType(fountainType)
+:PS_Base(name,psize,syslife,plife,pnum,shindex,false), m_particleColor(0), m_fountainType(fountainType)
 {
 	m_quadArray = model;
 	m_usedAttribs = status;
@@ -58,7 +56,7 @@ PS_Fountain :: PS_Fountain(const std::string& name,
 PS_Base * PS_Fountain :: clone() const
 {
 	return new PS_Fountain(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_particleNum,
-					 m_shaderIndex,m_particleColor,m_fountainType,m_usedAttribs);
+					 m_shaderIndex,m_fountainType,m_usedAttribs);
 }
 
 

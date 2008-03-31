@@ -58,6 +58,21 @@ void main(void)
 			0.1 + 0.2*quad_func,
 			1.0,
 			quad_func);
+		}  else if (particleColor == 3) {
+			color = vec4(0.0,
+			0.1 + 0.2*quad_func,
+			0.1*quad_func,
+			quad_func);
+		}  else if (particleColor == 4) {
+			color = vec4(1.0,
+			0.3,
+			0.1 + 0.2*quad_func,
+			quad_func);
+		}  else if (particleColor == 5) {
+			color = vec4(1.0,
+			0.1 + 0.2*quad_func,
+			1.0,
+			quad_func);
 		}
 
 		//vert.xyz += offset.xyz;
