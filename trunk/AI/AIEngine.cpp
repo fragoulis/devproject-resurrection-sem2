@@ -71,8 +71,8 @@ void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
 
-    // Give initial velocity
-    
+    // Give initial thruster power
+    enemyship->setThrusterPower(50000.0f);
 
     m_enemylist.push_back(enemyship);
 }
@@ -90,12 +90,10 @@ void AIEngine::update(float dt)
     for(; i != m_enemylist.end(); ++i )
     {
         Enemyship *enemyship = *i;
-        enemyship->setThrusterPower(10.0f);
-
+        
         // Get direction to the player ship
         Vector3 dir = m_playership->getPosition() - enemyship->getPosition();
         dir.normalize();
-    
         enemyship->setThrusterDirection( dir );
     }
 }
