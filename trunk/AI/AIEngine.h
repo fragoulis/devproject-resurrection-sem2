@@ -11,7 +11,7 @@
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"
 class ParserSection;
-
+class Enemyship;
 
 
 /**
@@ -25,6 +25,7 @@ class AIEngine :
 	public EventListener< Level_Unload >,
 	public EventListener< Player_Spawned >,
 	public EventListener< Enemy_Spawned >,
+    public EventListener< Enemy_Despawned >,
 	public EventListener< Player_Destroyed >
 {
 public:
@@ -36,12 +37,14 @@ public:
 	void onEvent(Level_Unload&);
 	void onEvent(Player_Spawned&);
 	void onEvent(Enemy_Spawned&);
+    void onEvent(Enemy_Despawned&);
 	void onEvent(Player_Destroyed&);
 
 	void update(float dt);
 
 private:
-
+    typedef std::list<Enemyship*> EnemyshipList;
+    EnemyshipList m_enemylist;
 	Playership* m_playership;
 
 
