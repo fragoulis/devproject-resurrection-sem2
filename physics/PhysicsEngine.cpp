@@ -86,16 +86,12 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
 	m_enemyships.push_back(evt.getValue());
 	m_spaceships.push_back(evt.getValue());
-    m_rigidbodies.push_back(evt.getValue());
-    m_movables.push_back(evt.getValue());
 }
 
 void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
 {
 	m_enemyships.remove(evt.getValue());
 	m_spaceships.remove(evt.getValue());
-    m_rigidbodies.remove(evt.getValue());
-	m_movables.remove(evt.getValue());
 }
 
 void PhysicsEngine :: onEvent( Ebomb_Spawned& evt )

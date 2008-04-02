@@ -14,8 +14,8 @@
 [EnemyFighter]
 EnergyType = red            # possible values: red yellow blue
 CollisionPower = 1.0       # integer
-InitialThrusterPower = 50000.0
-ThrusterMaxPower = 100000.0 # float
+InitialThrusterPower = 100000.0
+ThrusterMaxPower = 200000.0 # float
 Radius = 60.0               # float, collision detection and inertia calculation
 Mass = 200.0                # float
 AirdragCoefficient = 1.0    # float
