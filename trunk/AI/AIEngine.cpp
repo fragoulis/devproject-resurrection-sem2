@@ -78,6 +78,7 @@ void AIEngine::onEvent( Player_Destroyed& pd )
 void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
+    int type = enemyship->getType();
 
     // Give initial thruster power
     enemyship->setThrusterPower(m_initialThrusterPower);
