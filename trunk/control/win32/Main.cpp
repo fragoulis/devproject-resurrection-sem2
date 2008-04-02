@@ -14,6 +14,7 @@
 
 //#include <vld.h>
 #include <windows.h>
+#include <al/alut.h>
 #include "Window.h"
 #include "Win32Interface.h"
 #include "Win32Timer.h"
@@ -111,6 +112,9 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 int main(int ac,char *av[])
 {
+    alutInit(&ac, av);
+    alGetError();
+
     char buf[256];
     int i;
     HINSTANCE inst;
