@@ -48,7 +48,6 @@ LiftPower = 0.0              # doesn't lift, so gravity will pull it down quickl
 LiftVariance = 1.0
 InitialDownwardVelocity = 100
 
-
 [Laser : LaserPlayerPositive]
 Lifetime = 20.0
 MaxLength = 30.0
@@ -73,3 +72,10 @@ FixedMemTree = 10000
 Level = 2
 DisplayFileLine = 0
 Stream = stderr
+
+[Sound : Root]
+Dir = "resources/sounds/"
+
+[Sound : General]
+Count = 1
+Laser_Fired = "laser01.wav"
