@@ -28,6 +28,13 @@ class AIEngine :
     public EventListener< Enemy_Despawned >,
 	public EventListener< Player_Destroyed >
 {
+private:
+    typedef std::list<Enemyship*> EnemyshipList;
+    EnemyshipList m_enemylist;
+	Playership* m_playership;
+
+    float m_initialThrusterPower;
+
 public:
 
 	void onApplicationLoad(const ParserSection&);
@@ -43,11 +50,6 @@ public:
 	void update(float dt);
 
 private:
-    typedef std::list<Enemyship*> EnemyshipList;
-    EnemyshipList m_enemylist;
-	Playership* m_playership;
-
-
 	friend Singleton< AIEngine >;
 	AIEngine();
 	virtual ~AIEngine();

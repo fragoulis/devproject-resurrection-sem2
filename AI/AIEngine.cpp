@@ -11,8 +11,10 @@
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
-#include "../gfxutils/ConfParser/ParserSection.h"
+#include "../gfxutils/ConfParser/ConfParser.h"
+#include "../gfxutils/Misc/utils.h"
 #include <iostream>
+using namespace std;
 
 AIEngine::AIEngine() : m_playership(0)
 {
@@ -33,6 +35,12 @@ AIEngine::~AIEngine()
 void AIEngine::onApplicationLoad(const ParserSection& ps)
 {
 	// TODO: read ParserSection for info and load global AI data
+    const string file = ps.getSection("EnemyFactory")->getVal("file");
+    
+    ConfParser p(std::string("config/") + file);
+    const string itp = p.getSection("EnemyFighter")->getVal("InitialThrusterPower");
+
+    m_initialThrusterPower = FromString<float>(itp);
 }
 
 void AIEngine::onApplicationUnload()
@@ -72,7 +80,7 @@ void AIEngine::onEvent(Enemy_Spawned& es)
 	Enemyship* enemyship = es.getValue();
 
     // Give initial thruster power
-    enemyship->setThrusterPower(50000.0f);
+    enemyship->setThrusterPower(m_initialThrusterPower);
 
     m_enemylist.push_back(enemyship);
 }
@@ -85,7 +93,6 @@ void AIEngine::onEvent(Enemy_Despawned& es)
 
 void AIEngine::update(float dt)
 {
-	// TODO: do update for all enemies
     EnemyshipList::iterator i = m_enemylist.begin();
     for(; i != m_enemylist.end(); ++i )
     {
@@ -97,4 +104,3 @@ void AIEngine::update(float dt)
         enemyship->setThrusterDirection( dir );
     }
 }
-
