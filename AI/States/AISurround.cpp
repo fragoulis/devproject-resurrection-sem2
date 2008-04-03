@@ -8,7 +8,7 @@
 
 AISurround::AISurround()
 {
-    float da = RandomGenerator::GET_RANDOM_FLOAT(10.0f, 60.0f);
+    float da = RandomGenerator::GET_RANDOM_FLOAT(30.0f, 90.0f);
     m_angle = da * Math::DEG_TO_RAD;
 }
 
