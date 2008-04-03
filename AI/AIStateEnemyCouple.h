@@ -31,4 +31,5 @@ public:
     void setState( IAIState *state ) { m_state = state; }
 
     const Enemyship* getEnemyship() const { return m_enemy; }
+    Enemyship* getEnemyship() { return m_enemy; }
 };
