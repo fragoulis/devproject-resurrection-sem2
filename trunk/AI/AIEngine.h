@@ -12,7 +12,14 @@
 #include "../GameLogic/GameEvents.h"
 class ParserSection;
 class Enemyship;
+class IAIState;
 
+// Enemy with his current state
+struct AIStateEnemyCouple
+{
+    IAIState *state;
+    Enemyship *enemy;
+};
 
 /**
  * This controls the AI.
@@ -29,11 +36,13 @@ class AIEngine :
 	public EventListener< Player_Destroyed >
 {
 private:
-    typedef std::list<Enemyship*> EnemyshipList;
-    EnemyshipList m_enemylist;
-	Playership* m_playership;
-
+    typedef std::list<AIStateEnemyCouple> StateEnemyCoupleList;
+	StateEnemyCoupleList m_enemylist;
     float m_initialThrusterPower;
+    Playership* m_playership;
+
+    IAIState **m_states;
+    int m_maxstates;
 
 public:
 
