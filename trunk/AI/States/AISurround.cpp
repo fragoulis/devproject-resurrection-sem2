@@ -1,24 +1,29 @@
 #include "AISurround.h"
+#include "../AIStateManager.h"
+#include "../AIStateEnemyCouple.h"
 #include "../../GameLogic/Objects/Playership.h"
-#include "../../GameLogic/Enemies/Enemyship.h"
 #include "../../math/Rotation.h"
-#define _USE_MATH_DEFINES
-#include <cmath>
-
-const float DEG_TO_RAD = (float)M_PI / 180.0f;
+#include "../../utility/RandomGenerator.h"
+#include "../../math/maths.h"
 
 AISurround::AISurround()
 {
-    m_angle = DEG_TO_RAD*45.0f;
+    float da = RandomGenerator::GET_RANDOM_FLOAT(10.0f, 60.0f);
+    m_angle = da * Math::DEG_TO_RAD;
 }
 
-void AISurround::update( Playership *player, Enemyship *enemy ) const
+void AISurround::update( Playership *player, AIStateEnemyCouple *couple, float dt )
 {    
     Rotation r(Vector3(0.0f, 1.0f, 0.0f), m_angle);
 
-    Vector3 dir = player->getPosition() - enemy->getPosition();
+    Vector3 dir = player->getPosition() - couple->getEnemyPosition();
     dir.normalize();
     r.applyTo(dir);
     
-    enemy->setThrusterDirection( dir );
+    couple->setEnemyThrusterDirection( dir );
+
+    if( couple->readyToChange(dt) )
+    {    
+        couple->setState( AIStateManager::instance().getState("Chase") );
+    }
 }

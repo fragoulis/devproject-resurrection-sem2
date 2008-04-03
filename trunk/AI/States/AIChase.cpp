@@ -1,11 +1,17 @@
 #include "AIChase.h"
+#include "../AIStateManager.h"
+#include "../AIStateEnemyCouple.h"
 #include "../../GameLogic/Objects/Playership.h"
-#include "../../GameLogic/Enemies/Enemyship.h"
 
-void AIChase::update( Playership *player, Enemyship *enemy ) const
+void AIChase::update( Playership *player, AIStateEnemyCouple *couple, float dt )
 {
     // Get direction to the player ship
-    Vector3 dir = player->getPosition() - enemy->getPosition();
+    Vector3 dir = player->getPosition() - couple->getEnemyPosition();
     dir.normalize();
-    enemy->setThrusterDirection( dir );
+    couple->setEnemyThrusterDirection( dir );
+
+    if( couple->readyToChange(dt) )
+    {    
+        couple->setState( AIStateManager::instance().getState("Surround") );
+    }
 }
