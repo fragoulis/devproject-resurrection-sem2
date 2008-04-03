@@ -8,15 +8,25 @@
 //*****************************************************************************
 
 #include "AIEngine.h"
+//#include "States/IAIState.h"
+#include "States/AIChase.h"
+#include "States/AISurround.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../utility/RandomGenerator.h"
 #include <iostream>
 using namespace std;
 
-AIEngine::AIEngine() : m_playership(0)
+
+
+
+AIEngine::AIEngine(): 
+m_playership(0),
+m_maxstates(0),
+m_states(0)
 {
 	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
@@ -37,28 +47,50 @@ void AIEngine::onApplicationLoad(const ParserSection& ps)
 	// TODO: read ParserSection for info and load global AI data
     const string file = ps.getSection("EnemyFactory")->getVal("file");
     
-    ConfParser p(std::string("config/") + file);
+    const ConfParser p(std::string("config/") + file);
     const string itp = p.getSection("EnemyFighter")->getVal("InitialThrusterPower");
 
     m_initialThrusterPower = FromString<float>(itp);
+
+	// Allocate ai states according to level of difficulty
+    m_maxstates = 2;
+    m_states = new IAIState*[m_maxstates];
+    m_states[0] = new AIChase;
+    m_states[1] = new AISurround;
 }
 
 void AIEngine::onApplicationUnload()
 {
-	// TODO: delete allocated memory
+	for( int i=0; i<m_maxstates; ++i )
+    {
+        delete m_states[i];
+        m_states[i] = 0;
+    }
+	delete[] m_states;
+    m_states = 0;
 }
 
 void AIEngine::onEvent(Level_Load& ll)
 {
-	const ParserSection* ps = ll.getValue1();
+	//const ParserSection* ps = ll.getValue1();
 
-	// TODO: make sure all AIs required for this level are loaded
-	// If not, load them now.
+	//// Allocate ai states according to level of difficulty
+ //   m_maxstates = 2;
+ //   
+ //   m_states = new IAIState*[m_maxstates];
+ //   m_states[0] = new AIChase;
+ //   m_states[1] = new AISurround;
 }
 
 void AIEngine::onEvent(Level_Unload&)
 {
-	// TODO: delete all level data
+ //   for( int i=0; i<m_maxstates; ++i )
+ //   {
+ //       delete m_states[i];
+ //       m_states[i] = 0;
+ //   }
+	//delete[] m_states;
+ //   m_states = 0;
 }
 
 void AIEngine::onEvent( Player_Spawned& es )
@@ -83,25 +115,39 @@ void AIEngine::onEvent(Enemy_Spawned& es)
     // Give initial thruster power
     enemyship->setThrusterPower(m_initialThrusterPower);
 
-    m_enemylist.push_back(enemyship);
+    // Pick random state
+    int index = RandomGenerator::GET_RANDOM_INT(0,m_maxstates);
+
+    AIStateEnemyCouple sec;
+    sec.enemy = enemyship;
+    sec.state = m_states[index];
+    m_enemylist.push_back(sec);
+        
+    //cerr << "Enemy spawned with ai state " << index << endl;
 }
 
 void AIEngine::onEvent(Enemy_Despawned& es)
 {
 	Enemyship* enemyship = es.getValue();
-    m_enemylist.remove(enemyship);
+
+    StateEnemyCoupleList::iterator i = m_enemylist.begin();
+    for(; i != m_enemylist.end(); ++i )
+    {
+        const AIStateEnemyCouple& couple = *i;
+        if( couple.enemy == enemyship )
+        {
+            m_enemylist.erase(i);
+            break;
+        }
+    }
 }
 
 void AIEngine::update(float dt)
 {
-    EnemyshipList::iterator i = m_enemylist.begin();
+    StateEnemyCoupleList::const_iterator i = m_enemylist.begin();
     for(; i != m_enemylist.end(); ++i )
     {
-        Enemyship *enemyship = *i;
-        
-        // Get direction to the player ship
-        Vector3 dir = m_playership->getPosition() - enemyship->getPosition();
-        dir.normalize();
-        enemyship->setThrusterDirection( dir );
+        const AIStateEnemyCouple& couple = *i;
+        couple.state->update( m_playership, couple.enemy );
     }
 }
