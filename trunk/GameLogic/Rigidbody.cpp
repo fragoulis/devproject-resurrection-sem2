@@ -17,6 +17,7 @@ Rigidbody :: Rigidbody()
 	m_airdrag.factor = 1.0f;
 	m_gravity.factor = 1.0f;
 	m_lift.factor = 1.0f;
+    m_forceAccum.set(0.0f, 0.0f, 0.0f);
 }
 
 Rigidbody :: ~Rigidbody()

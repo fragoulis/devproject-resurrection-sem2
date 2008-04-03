@@ -65,6 +65,10 @@ public:
 	void setGravityData(const GravityData& g) { m_gravity = g; }
 	void setLiftData(const LiftData& l) { m_lift = l; }
 
+    const Vector3& getForceAccum() const { return m_forceAccum; }
+    Vector3& getForceAccum() { return m_forceAccum; }
+    void addForce( const Vector3 &f ) { m_forceAccum += f; }
+
 	void loadSettings(const ParserSection& ps);
 
 private:
@@ -74,4 +78,5 @@ private:
 	AirdragData m_airdrag;
 	GravityData m_gravity;
 	LiftData m_lift;
+    Vector3 m_forceAccum;
 };
