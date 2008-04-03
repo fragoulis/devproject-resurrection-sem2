@@ -20,6 +20,7 @@ namespace Math
 	const double E = M_E;
 	const float almost_zero_f = 0.0001f;
 	const double almost_zero_d = 0.0001;
+    const float DEG_TO_RAD = (float)M_PI / 180.0f;
 
 	inline void srand(unsigned int seed) {
 		std::srand(seed);
