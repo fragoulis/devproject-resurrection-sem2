@@ -84,14 +84,25 @@ void PhysicsEngine :: onEvent( Player_Despawned& evt )
 
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
-	m_enemyships.push_back(evt.getValue());
-	m_spaceships.push_back(evt.getValue());
+	Enemyship *enemyship = evt.getValue();
+
+    // Add springs between all enemies
+    EnemyshipList::const_iterator i = m_enemyships.begin();
+    for(; i != m_enemyships.end(); ++i )
+    {
+        addSpring( enemyship, *i, 500.0f );
+    }
+    cerr << "Active springs " << m_springs.size() << endl;
+
+    m_enemyships.push_back(enemyship);
+	m_spaceships.push_back(enemyship);
 }
 
 void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
 {
-	m_enemyships.remove(evt.getValue());
-	m_spaceships.remove(evt.getValue());
+    Enemyship *enemyship = evt.getValue();
+	m_enemyships.remove(enemyship);
+	m_spaceships.remove(enemyship);
 }
 
 void PhysicsEngine :: onEvent( Ebomb_Spawned& evt )
@@ -141,6 +152,23 @@ void PhysicsEngine :: update( float dt )
 
 void PhysicsEngine :: _updatePhysics( float dt )
 {
+    for( SpringList::iterator i = m_springs.begin(); i != m_springs.end(); )
+    {
+        Spring &spring = *i;
+        const Enemyship *one = static_cast<const Enemyship*>(spring.getFirstObject());
+        const Enemyship *two = static_cast<const Enemyship*>(spring.getSecondObject());
+        if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
+        {
+            // Remove the spring
+            i = m_springs.erase(i);
+        } 
+        else
+        {
+            spring.compute();
+            ++i;
+        }
+    }
+
 	for (MovableList::iterator i = m_movables.begin(); i != m_movables.end(); ++i)
 	{
 		_updateMovable(*i, dt);
@@ -201,11 +229,12 @@ void PhysicsEngine :: _updateSpaceship( Spaceship* s, float dt )
 template< typename T, typename ForcesAndMomentsFunction >
 void PhysicsEngine :: _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt)
 {
-	Vector3 forces, moments;
-	forces.set(0.0f, 0.0f, 0.0f);
+	Vector3 moments;
+    Vector3& forces = t->getForceAccum();
 	moments.set(0.0f, 0.0f, 0.0f);
 	(this->*f)(t, forces, moments);
 	Vector3 acceleration = forces / t->getMass() * dt;
+    forces.set(0.0f, 0.0f, 0.0f);
 	t->setVelocity(t->getVelocity() + acceleration);
 	_updateMovable(t, dt);
 }
