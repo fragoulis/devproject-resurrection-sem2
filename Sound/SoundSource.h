@@ -19,7 +19,6 @@ private:
     Point3  m_position;
     Point3  m_velocity;
     bool    m_loop;
-    bool    m_playing;
 
 public:
     SoundSource();
@@ -27,12 +26,11 @@ public:
 
     bool init(const ALuint * const buffer, const ALuint count = 1);
     bool setBuffer(const ALuint * const buffer, const ALuint count = 1);
-    void play();
-    void stop();
-    void pause();
-    void toggle();
-
-    bool isPlaying() const { return m_playing; }
+    void play() const;
+    void stop() const;
+    void pause() const;
+    void toggle() const;
+    bool isPlaying() const;
 
     // Mutators
     void setLoop( const bool loop );

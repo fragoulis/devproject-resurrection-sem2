@@ -11,7 +11,6 @@
 
 SoundSource::SoundSource():
 m_source(0),
-m_playing(false),
 m_loop(false),
 m_pitch(1.0f),
 m_gain(1.0f) 
@@ -68,27 +67,31 @@ bool SoundSource::setBuffer( const ALuint * const buffer,
     return AL_TRUE;
 }
 
-void SoundSource::play()   
+bool SoundSource::isPlaying() const
+{
+    ALenum state;
+    alGetSourcei(m_source, AL_SOURCE_STATE, &state);
+    return (state == AL_PLAYING);
+}
+
+void SoundSource::play() const
 { 
     alSourcePlay(m_source);
-    m_playing = true;
 }
 
-void SoundSource::stop()
+void SoundSource::stop() const
 { 
     alSourceStop(m_source);
-    m_playing = false;
 }
 
-void SoundSource::pause() 
+void SoundSource::pause() const
 {
     alSourcePause(m_source);
-    m_playing = false;
 }
 
-void SoundSource::toggle()
+void SoundSource::toggle() const
 {
-    if( m_playing ) pause();
+    if( isPlaying() ) pause();
     else
         play();
 }
