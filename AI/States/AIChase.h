@@ -4,5 +4,5 @@
 class AIChase : public IAIState
 {
 public:
-    virtual void update( Playership *player, Enemyship *enemy ) const;
+    virtual void update( Playership*, AIStateEnemyCouple*, float );
 };

@@ -10,16 +10,9 @@
 #pragma once
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"
+#include "AIStateEnemyCouple.h"
 class ParserSection;
 class Enemyship;
-class IAIState;
-
-// Enemy with his current state
-struct AIStateEnemyCouple
-{
-    IAIState *state;
-    Enemyship *enemy;
-};
 
 /**
  * This controls the AI.
@@ -40,9 +33,6 @@ private:
 	StateEnemyCoupleList m_enemylist;
     float m_initialThrusterPower;
     Playership* m_playership;
-
-    IAIState **m_states;
-    int m_maxstates;
 
 public:
 

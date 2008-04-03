@@ -8,9 +8,7 @@
 //*****************************************************************************
 
 #include "AIEngine.h"
-//#include "States/IAIState.h"
-#include "States/AIChase.h"
-#include "States/AISurround.h"
+#include "AIStateManager.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
@@ -24,9 +22,7 @@ using namespace std;
 
 
 AIEngine::AIEngine(): 
-m_playership(0),
-m_maxstates(0),
-m_states(0)
+m_playership(0)
 {
 	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
@@ -52,45 +48,21 @@ void AIEngine::onApplicationLoad(const ParserSection& ps)
 
     m_initialThrusterPower = FromString<float>(itp);
 
-	// Allocate ai states according to level of difficulty
-    m_maxstates = 2;
-    m_states = new IAIState*[m_maxstates];
-    m_states[0] = new AIChase;
-    m_states[1] = new AISurround;
+    AIStateManager::safeInstance().init();
 }
 
 void AIEngine::onApplicationUnload()
 {
-	for( int i=0; i<m_maxstates; ++i )
-    {
-        delete m_states[i];
-        m_states[i] = 0;
-    }
-	delete[] m_states;
-    m_states = 0;
+    AIStateManager::destroy();
 }
 
 void AIEngine::onEvent(Level_Load& ll)
 {
-	//const ParserSection* ps = ll.getValue1();
-
-	//// Allocate ai states according to level of difficulty
- //   m_maxstates = 2;
- //   
- //   m_states = new IAIState*[m_maxstates];
- //   m_states[0] = new AIChase;
- //   m_states[1] = new AISurround;
+	const ParserSection* ps = ll.getValue1();
 }
 
 void AIEngine::onEvent(Level_Unload&)
 {
- //   for( int i=0; i<m_maxstates; ++i )
- //   {
- //       delete m_states[i];
- //       m_states[i] = 0;
- //   }
-	//delete[] m_states;
- //   m_states = 0;
 }
 
 void AIEngine::onEvent( Player_Spawned& es )
@@ -116,14 +88,13 @@ void AIEngine::onEvent(Enemy_Spawned& es)
     enemyship->setThrusterPower(m_initialThrusterPower);
 
     // Pick random state
-    int index = RandomGenerator::GET_RANDOM_INT(0,m_maxstates);
+    float time = RandomGenerator::GET_RANDOM_FLOAT(1.0f,10.0f);
 
     AIStateEnemyCouple sec;
-    sec.enemy = enemyship;
-    sec.state = m_states[index];
+    sec.setTimeToChange(time);
+    sec.setEnemyship( enemyship );
+    sec.setState( AIStateManager::instance().getRandomState() );
     m_enemylist.push_back(sec);
-        
-    //cerr << "Enemy spawned with ai state " << index << endl;
 }
 
 void AIEngine::onEvent(Enemy_Despawned& es)
@@ -134,7 +105,7 @@ void AIEngine::onEvent(Enemy_Despawned& es)
     for(; i != m_enemylist.end(); ++i )
     {
         const AIStateEnemyCouple& couple = *i;
-        if( couple.enemy == enemyship )
+        if( couple.getEnemyship() == enemyship )
         {
             m_enemylist.erase(i);
             break;
@@ -144,10 +115,10 @@ void AIEngine::onEvent(Enemy_Despawned& es)
 
 void AIEngine::update(float dt)
 {
-    StateEnemyCoupleList::const_iterator i = m_enemylist.begin();
+    StateEnemyCoupleList::iterator i = m_enemylist.begin();
     for(; i != m_enemylist.end(); ++i )
     {
-        const AIStateEnemyCouple& couple = *i;
-        couple.state->update( m_playership, couple.enemy );
+        AIStateEnemyCouple& couple = *i;
+        couple.update( m_playership, dt );
     }
 }
