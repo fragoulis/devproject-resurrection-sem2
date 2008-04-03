@@ -18,6 +18,12 @@
 
 namespace RandomGenerator {
 
+inline int GET_RANDOM_INT(int lowBound, int highBound) {
+	if( lowBound >= highBound ) 
+		return lowBound;
+	return (rand()%(highBound - lowBound)) + lowBound; 
+}
+
 inline float GET_RANDOM_FLOAT(float lowBound, float highBound) {
 	if( lowBound >= highBound ) 
 		return lowBound;
