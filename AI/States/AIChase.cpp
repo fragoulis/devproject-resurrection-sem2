@@ -9,9 +9,4 @@ void AIChase::update( Playership *player, AIStateEnemyCouple *couple, float dt )
     Vector3 dir = player->getPosition() - couple->getEnemyPosition();
     dir.normalize();
     couple->setEnemyThrusterDirection( dir );
-
-    if( couple->readyToChange(dt) )
-    {    
-        couple->setState( AIStateManager::instance().getState("Surround") );
-    }
 }
