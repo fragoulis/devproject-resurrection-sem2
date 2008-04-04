@@ -39,14 +39,14 @@ Application :: ~Application()
 }
 
 
-ofstream filestr;
+//ofstream filestr;
 
 bool Application :: init()
 {
-	streambuf* psbuf;
-	filestr.open("cout.txt");
-	psbuf = filestr.rdbuf();
-	cout.rdbuf(psbuf);
+	//streambuf* psbuf;
+	//filestr.open("cout.txt");
+	//psbuf = filestr.rdbuf();
+	//cout.rdbuf(psbuf);
 
 	ControllerManager& cm = ControllerManager::safeInstance();
 	//cm.activateController("loading");
@@ -98,7 +98,7 @@ void Application :: destroy()
 	MemMgrRaw::destroy();
 	Logger::destroy();
 
-	filestr.close();
+	//filestr.close();
 }
 
 void Application :: render(Graphics& g) const
