@@ -9,7 +9,7 @@
 
 #include "SoundEngine.h"
 #include "Sound.h"
-#include "SoundSource.h"
+#include "SoundObject.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Lasers/Laser.h"
 #include "../GameLogic/EnergyTypes.h"
@@ -17,13 +17,24 @@
 #include <iostream>
 using namespace std;
 
-SoundEngine :: SoundEngine()
+#define LOAD_SOUND( root, id ) \
+{ \
+    const string& sLaserFile = general.getVal(id); \
+    Sound *laser = new Sound; \
+    if( !laser->load( root + sLaserFile ) ) \
+        cerr << "Failed to load sound: " << id << endl; \
+    m_sounds.insert( make_pair( id, laser ) ); \
+}
+
+SoundEngine :: SoundEngine():
+m_listener(0)
 {
 	EventManager::instance().registerEventListener< Level_Load >(this);
     EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
     EventManager::instance().registerEventListener< Laser_Spawned >(this);
+    EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
 }
 
 SoundEngine :: ~SoundEngine()
@@ -40,27 +51,27 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     const ParserSection& general = *(ps.getSection("Sound:General"));
 
     // Loads sounds 
-    const string& sLaserFile = general.getVal("Laser_Fired");
-
-    Sound *laser = new Sound;
-    if( !laser->load( sRootDir + sLaserFile ) )
-        cerr << "Failed to load sound for laser" << endl;
-
-    m_soundlist.insert( make_pair( "Laser_Fired", laser ) );
+    LOAD_SOUND( sRootDir, "Laser_Fired" );
+    LOAD_SOUND( sRootDir, "Ambient" );
 }
 
 void SoundEngine :: onApplicationUnload()
 {
-    SoundList::iterator i = m_soundlist.begin();
-    for(; i != m_soundlist.end(); ++i )
+    for( SoundListIter i = m_sounds.begin();
+         i != m_sounds.end(); 
+         ++i )
     {
         delete i->second;
         i->second = 0;
     }
 
-    SoundSourceList::iterator ss = m_soundsourcelist.begin();
-    for(; ss != m_soundsourcelist.end(); ++ss )
-        delete *ss;
+    for( SoundObjectIter i = m_soundObjects.begin();
+         i != m_soundObjects.end(); 
+         ++i )
+    {
+        delete i->second;
+        i->second = 0;
+    }
 }
 
 void SoundEngine :: onEvent(Level_Load& ll)
@@ -68,22 +79,35 @@ void SoundEngine :: onEvent(Level_Load& ll)
 	const ParserSection* ps = ll.getValue1();
 
 	// TODO: make sure all sounds required for this level are loaded
-	// If not, load them now.
+	// If not, load them now.    
 }
 
 void SoundEngine :: onEvent(Player_Spawned& pd)
 {
-	Playership* ps = pd.getValue();
-    _setListener( ps->getPosition() );
+	m_listener = pd.getValue();
+
+    // Assign two sound sources to playership
+    // one for the lasers and one for the jet engines
+
+    _addSoundObject( m_listener, "Laser_Fired" );
+    _addSoundObject( m_listener, "Ambient" );
+
+    m_soundObjects["Ambient"]->play();
 }
 
 
 void SoundEngine :: onEvent(Player_Destroyed& pd)
 {
+    m_listener = 0;
+
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
 
 	// TODO: play sound effect for playership explosion
+}
+
+void SoundEngine :: onEvent(Enemy_Destroyed& pd)
+{
 }
 
 void SoundEngine :: onEvent(Player_EnergyDrained& pd)
@@ -91,59 +115,44 @@ void SoundEngine :: onEvent(Player_EnergyDrained& pd)
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
 	int amount = pd.getValue3();
-
 	// TODO: play sound effect for energy draining from playership
 }
-
 
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
     Laser *laser = pd.getValue();
-    _play( "Laser_Fired", laser->getPosition() );
+
+    m_soundObjects["Laser_Fired"]->play();
 }
 
-void SoundEngine::_play( const sound_id_t& sound_id, const Point3& at )
+void SoundEngine::update()
 {
-    // Get sound
-    const ALuint buffer = m_soundlist[ sound_id ]->getBuffer();
+    _updateListener();
 
-    SoundSource *source = _addSource( at );
-    if( source->init(&buffer) )
-        source->play();
+    SoundObjectIter i = m_soundObjects.begin();
+    for(; i != m_soundObjects.end(); ++i )
+        i->second->update();
 }
 
-SoundSource* SoundEngine::_addSource( const Point3& at )
+void SoundEngine::_updateListener()
 {
-    // Search for an inactive sound source, else allocate
-    SoundSource *source = 0;
-    
-    SoundSourceList::iterator i = m_soundsourcelist.begin();
-    for(; i != m_soundsourcelist.end(); ++i )
+    if( !m_listener ) return;
+
+    float orientation[] = 
     {
-        SoundSource *cur = *i;
-        if( !cur->isPlaying() )
-        {
-            source = cur;
-            break;
-        }
-    }
+        m_listener->getThrusterDirection().getX(),
+        m_listener->getThrusterDirection().getY(), 
+        m_listener->getThrusterDirection().getZ(),
+        0.0f, 1.0f, 0.0f
+    };
 
-    if( !source ) 
-    {
-        source = new SoundSource;
-        m_soundsourcelist.push_back(source);
-    }
-    source->setPosition( at );
-
-    return source;
+    alListenerfv(AL_POSITION,    m_listener->getPosition().cfp() );
+    alListenerfv(AL_VELOCITY,    m_listener->getVelocity().cfp() );
+    alListenerfv(AL_ORIENTATION, orientation );
 }
 
-void SoundEngine::_setListener( const Point3 &position )
+void SoundEngine::_addSoundObject( WorldObject *obj, const sound_id_t &id )
 {
-    m_listener = position;
-    cerr << "Listener places at " << position << endl;
-
-    alListenerfv(AL_POSITION,    m_listener.cfp() );
-    //alListenerfv(AL_VELOCITY,    ListenerVel);
-    //alListenerfv(AL_ORIENTATION, ListenerOri);
+    SoundObject *so = new SoundObject( obj, m_sounds[id] );
+    m_soundObjects.insert( std::make_pair( id, so ) );
 }
