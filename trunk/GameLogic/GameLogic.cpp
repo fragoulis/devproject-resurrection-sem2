@@ -27,6 +27,7 @@
 #include "../utility/deleters.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../Sound/SoundEngine.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -344,6 +345,7 @@ void GameLogic :: update(float dt)
 	{
 		(*it)->update(dt);
 	}
+    SoundEngine::instance().update();
 
 	// delete objects that died this round
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
