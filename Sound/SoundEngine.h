@@ -12,13 +12,13 @@
 #pragma comment (lib, "alut")
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"
-#include "../math/Point3.h"
 #include <map>
 #include <vector>
 #include <string>
 class ParserSection;
 class Sound;
-class SoundSource;
+class SoundObject;
+class WorldObject;
 
 /**
  * Listens for events and plays sounds when things happen
@@ -41,18 +41,19 @@ class SoundEngine :
     public EventListener< Player_Destroyed >,
 	public EventListener< Player_EnergyDrained >,
 	//public EventListener< Enemy_Hit >,
-    //public EventListener< Enemy_Destroyed >,
+    public EventListener< Enemy_Destroyed >,
     public EventListener< Laser_Spawned >
 {
 private:
     typedef std::string sound_id_t;
     typedef std::map< const sound_id_t, Sound*> SoundList;
-    typedef std::vector<SoundSource*> SoundSourceList;
+    typedef std::map< const std::string, SoundObject*> SoundObjectList;
+    typedef SoundList::iterator SoundListIter;
+    typedef SoundObjectList::iterator SoundObjectIter;
 
-    SoundList m_soundlist;
-    SoundSourceList m_soundsourcelist;
-
-    Point3 m_listener;
+    SoundObjectList m_soundObjects;
+    SoundList m_sounds;
+    Playership *m_listener;
 
 public:
 	void onApplicationLoad(const ParserSection&);
@@ -63,13 +64,14 @@ public:
 	void onEvent(Player_EnergyDrained&);
     void onEvent(Player_Spawned&);
     void onEvent(Laser_Spawned&);
+    void onEvent(Enemy_Destroyed&);
+
+    void update();
 
 private:
 	friend Singleton< SoundEngine >;
 	SoundEngine();
 	virtual ~SoundEngine();
-
-    void _setListener( const Point3& );
-    void _play( const sound_id_t&, const Point3& );
-    SoundSource* _addSource( const Point3& );
+    void _updateListener();
+    void _addSoundObject( WorldObject*, const sound_id_t& );
 };
