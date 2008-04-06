@@ -21,6 +21,13 @@ LoadingController :: LoadingController() :
 {
 }
 
+LoadingController :: LoadingController(ILoader* loader) :
+	m_needToDeleteLoader(false),
+	m_loader(loader),
+	m_timeTillWeCanLoad(TIME_TILL_LOAD)
+{
+}
+
 LoadingController :: ~LoadingController()
 {
 	_deleteLoader();
@@ -40,6 +47,7 @@ void LoadingController :: deactivate()
 {
 	RenderEngine& re = RenderEngine::instance();
 	re.deactivateAllRenderers();
+	_deleteLoader();
 }
 
 void LoadingController :: update(float dt)
@@ -47,7 +55,6 @@ void LoadingController :: update(float dt)
 	m_timeTillWeCanLoad -= dt;
 	if (m_timeTillWeCanLoad < 0.0f && m_loader != 0) {
 		m_loader->load();
-		_deleteLoader();
 	}
 }
 

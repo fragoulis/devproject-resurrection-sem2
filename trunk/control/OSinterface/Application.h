@@ -24,6 +24,7 @@ class Graphics;
  * Application::init calls onApplicationLoad for every engine
  * Application::destroy deletes all singletons.
  */
+
 class Application
 {
 public:
@@ -36,9 +37,15 @@ public:
 	//! Frees memory. Should be called after the last update.
 	void destroy();
 
-	//! Renders stuffz!
+	//! Calls RenderEngine::render
 	void render(Graphics& g) const;
 
-	//! Updates stuffz!
+	//! Calls ControllerManager::update
 	void update(float dt);
+
+	//! Loads up the game. Callback function for LoadingController
+	void load();
+
+	//! Unloads the game. Callback function for LoadingController
+	void unload();
 };

@@ -9,6 +9,7 @@
 
 
 #include "Application.h"
+#include "../LoadingController.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ControllerManager.h"
@@ -48,15 +49,34 @@ bool Application :: init()
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
 
+	LoadingController* lc = new LoadingController();
+	lc->setLoader(this, &Application::load);
+
 	ControllerManager& cm = ControllerManager::safeInstance();
-	//cm.activateController("loading");
+	cm.activateController(lc);
 
-	// this blocks the loading screen from showing
-	// should fire a new thread that does some loadController and loadRenderers
-	// but that doesn't work cuz loading needs rendering context
-	// so need to rethink how controllers and renderers and stuff are loaded and managed
-	// will see
+	return true;
+}
 
+void Application :: destroy()
+{
+	unload();
+
+	// This doesn't work!
+	// LoadingController waits for 0.1ms till the loading screen is rendered,
+	// before calling the callback. in that 0.1ms, no update is ever sent anymore
+	// LoadingController::update never gets called anymore
+
+	//LoadingController* lc = new LoadingController();
+	//lc->setLoader(this, &Application::unload);
+
+	//ControllerManager& cm = ControllerManager::safeInstance();
+	//cm.activateController(lc);
+}
+
+
+void Application :: load()
+{
 	ConfParser cp("./config/config.txt");
 	const ParserSection& ps = cp.rootSection();
 
@@ -72,17 +92,13 @@ bool Application :: init()
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
+	ControllerManager& cm = ControllerManager::safeInstance();
 	cm.activateController(new GameController());
-
-	return true;
 }
 
-void Application :: destroy()
+
+void Application :: unload()
 {
-	// TODO: rethink program flow
-	// would be nice to show "Unloading" or "Exiting" screen
-
-
 	RenderEngine::safeInstance().unloadAllRenderers();
 
 	WorldObjectTypeManager::destroy();
