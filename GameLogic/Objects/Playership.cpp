@@ -12,6 +12,7 @@
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
 #include "../WorldObjectTypeManager.h"
+#include "../../math/Point3.h"
 
 Playership :: Playership()
 {
@@ -35,6 +36,16 @@ void Playership :: update(float dt)
 			break;
 		}
 	}
+}
+
+void Playership :: confine(const Point3& minPoint, const Point3& maxPoint)
+{
+	const Point3& pos = getPosition();
+	setPosition(Point3(
+		min(maxPoint.getX(), max(minPoint.getX(), pos.getX())),
+		min(maxPoint.getY(), max(minPoint.getY(), pos.getY())),
+		min(maxPoint.getZ(), max(minPoint.getZ(), pos.getZ())))
+	);
 }
 
 int Playership :: getTotalEnergy()

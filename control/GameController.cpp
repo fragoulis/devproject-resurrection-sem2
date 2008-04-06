@@ -13,6 +13,7 @@
 #include "../GameLogic/GameLogic.h"
 #include "../AI/AIEngine.h"
 #include "../physics/PhysicsEngine.h"
+#include "../Sound/SoundEngine.h"
 #include "OSinterface/Input.h"
 #include "../math/Vector3.h"
 #include "../math/maths.h"
@@ -93,6 +94,7 @@ void GameController :: update(float dt)
 	}
 
 
+	SoundEngine::instance().update();
 	AIEngine::instance().update(dt);
 	PhysicsEngine::instance().update(dt);
 	gl.update(dt);

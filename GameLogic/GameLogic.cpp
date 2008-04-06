@@ -27,7 +27,6 @@
 #include "../utility/deleters.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
-#include "../Sound/SoundEngine.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -326,6 +325,17 @@ void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Send update on to objects that need it.
  * Deletes objects that want to be deleted (isToBeDeleted() returns true)
@@ -337,6 +347,7 @@ void GameLogic :: update(float dt)
 
 	// Send update to objects that need it
 	m_playership->update(dt);
+	//m_playership->confine();
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());
@@ -345,7 +356,6 @@ void GameLogic :: update(float dt)
 	{
 		(*it)->update(dt);
 	}
-    SoundEngine::instance().update();
 
 	// delete objects that died this round
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
@@ -356,6 +366,7 @@ void GameLogic :: update(float dt)
 	// Output debug info
 	//cout << m_playership->getPosition() << endl;
 }
+
 
 
 

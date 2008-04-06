@@ -11,6 +11,7 @@
 #pragma once
 #include "../Spaceship.h"
 #include "../EnergyTypes.h"
+class Point3;
 
 class Playership : public Spaceship
 {
@@ -19,6 +20,7 @@ public:
 	virtual ~Playership();
 
 	void update(float dt);
+	void confine(const Point3& minPoint, const Point3& maxPoint);
 
 	int getEnergy(EnergyType type) { return m_energy[type]; }
 	void setEnergy(EnergyType type, int amount) { m_energy[type] = amount; }
