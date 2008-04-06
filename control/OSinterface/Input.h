@@ -40,6 +40,8 @@ public:
 	bool isKeyGoingUp(int key) const { return m_keyState[key] == GOING_UP; }
 	bool isKeyDown(int key) const { return m_keyState[key] == DOWN; }
 	bool isKeyUp(int key) const { return m_keyState[key] == UP; }
+	bool isKeyDownOrGoingDown(int key) const { return isKeyDown(key) || isKeyGoingDown(key); }
+	bool isKeyUpOrGoingUp(int key) const { return isKeyUp(key) || isKeyGoingUp(key); }
 
 	void onKeyDown(int key) { m_keyDown[key] = true; }
 	void onKeyUp(int key) { m_keyDown[key] = false; }

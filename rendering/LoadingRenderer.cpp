@@ -8,10 +8,6 @@
 //*****************************************************************************
 
 #include "LoadingRenderer.h"
-#include "../math/Vector3.h"
-#include "../math/Point3.h"
-#include "../math/Point2.h"
-
 #include <gl/glee.h>
 
 LoadingRenderer :: LoadingRenderer()

@@ -12,7 +12,7 @@
 //#include <cstdlib>
 //#include <crtdbg.h>
 
-//#include <vld.h>
+#include <vld.h>
 #include <windows.h>
 #include <al/alut.h>
 #include "Window.h"
