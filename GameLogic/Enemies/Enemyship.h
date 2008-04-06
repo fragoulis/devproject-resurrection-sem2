@@ -12,6 +12,7 @@
 #include "../Spaceship.h"
 #include "../EnergyTypes.h"
 class ParserSection;
+class Playership;
 
 /**
  * Stores type, energy type, collision power and hit points.
@@ -32,6 +33,8 @@ public:
 	void setEnergyType(EnergyType et) { m_energyType = et; }
 	void setToBeDeleted() { m_state = TO_BE_DELETED; }
 	void reduceHitPoints(int amount) { m_hitPoints -= amount; }
+
+	virtual void collideWithPlayer(Playership* player);
 
 	void loadSettings(const ParserSection&);
 

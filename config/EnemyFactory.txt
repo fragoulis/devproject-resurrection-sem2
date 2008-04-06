@@ -23,3 +23,47 @@ LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 2               # integer
 EnergyPoints = 25
+//EnergyPoints = 1
+
+
+[EnemyInterceptor]
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 8               # integer
+EnergyPoints = 25
+//EnergyPoints = 2
+
+[EnemyDisrupter]
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 12               # integer
+EnergyPoints = 25
+//EnergyPoints = 2
+
+[EnemyCarrier]
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 100             # integer
+EnergyPoints = 25
+//EnergyPoints = 10

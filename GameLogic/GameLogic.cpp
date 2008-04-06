@@ -57,6 +57,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 
 	// Load data
 	const ParserSection* psGame = ps.getSection("main");
@@ -95,38 +96,25 @@ void GameLogic :: onApplicationUnload()
  * Reduces player energy by enemy.collisionPower
  * if not enough energy, fires event Player_Destroyed
  * otherwise fires Player_Drained
+ * This code is now located in EnemyShip and its subclasses
  */
 void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 {
 	Playership* player = coldata.getObject1();
 	Enemyship* enemy = coldata.getObject2();
+	enemy->collideWithPlayer(player);
+}
 
-	// remove enemy from the game
-	enemy->setToBeDeleted();
-
-	// check if player is invulnerable
-	if (player->isInvulnerable()) return;
-
-	// get player energy, reduce it by enemy's collision power
-	EnergyType type = enemy->getEnergyType();
-	int enemyPower = enemy->getCollisionPower();
-	int playerEnergy = player->getEnergy(type) - enemyPower;
-
-	// check if player can sustain the damage taken
-	if (playerEnergy < 0) {
-		EventManager::instance().fireEvent(Player_Destroyed(player, type));
-		m_currentLives--;
-		if (m_currentLives == 0) {
-			EventManager::instance().fireEvent(Game_Over());
-		}
-		else {
-			player->respawn();
-			EventManager::instance().fireEvent(Player_Respawned(player));
-		}
+void GameLogic :: onEvent(Player_Destroyed& evt)
+{
+	Playership* player = evt.getValue1();
+	m_currentLives--;
+	if (m_currentLives == 0) {
+		EventManager::instance().fireEvent(Game_Over());
 	}
 	else {
-		player->setEnergy(type, playerEnergy);
-		EventManager::instance().fireEvent(Player_EnergyDrained(player, type, enemyPower));
+		player->respawn();
+		EventManager::instance().fireEvent(Player_Respawned(player));
 	}
 }
 
