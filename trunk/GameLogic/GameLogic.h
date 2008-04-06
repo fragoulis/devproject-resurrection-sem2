@@ -45,7 +45,8 @@ class GameLogic :
 	public EventListener< Collision_Ebomb_Terrain >,
 	public EventListener< Player_EnergyGained >,
 	public EventListener< Player_EnergyDrained >,
-	public EventListener< Player_EnergyDispersed >
+	public EventListener< Player_EnergyDispersed >,
+	public EventListener< Player_Destroyed >
 {
 public:
 
@@ -82,6 +83,7 @@ public:
 	void onEvent(Player_EnergyGained&);
 	void onEvent(Player_EnergyDrained&);
 	void onEvent(Player_EnergyDispersed&);
+	void onEvent(Player_Destroyed&);
 
 private:
 
