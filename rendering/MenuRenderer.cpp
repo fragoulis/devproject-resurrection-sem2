@@ -19,6 +19,7 @@ MenuRenderer::~MenuRenderer()
 
 void MenuRenderer :: render(Graphics& g) const
 {
+	// Render the menu here :D
 }
 
 void MenuRenderer :: update(float dt)

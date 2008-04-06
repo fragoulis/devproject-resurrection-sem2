@@ -48,6 +48,9 @@ public:
 	virtual void load() {
 		(m_object->*m_function)();
 	}
+private:
+	ObjectType* m_object;
+	Function m_function;
 };
 
 
@@ -55,12 +58,13 @@ class LoadingController : public IController
 {
 public:
 	LoadingController();
+	LoadingController(ILoader* loader);
 	virtual ~LoadingController();
 
 	template< typename ObjectType, typename Function >
 	void setLoader(ObjectType* obj, Function f) {
 		_deleteLoader();
-		m_loader = new ILoaderWrapper(obj, f);
+		m_loader = new ILoaderWrapper<ObjectType, Function>(obj, f);
 		m_needToDeleteLoader = true;
 	}
 	void setLoader(ILoader* loader) {
