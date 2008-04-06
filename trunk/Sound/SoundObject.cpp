@@ -15,7 +15,7 @@ void SoundObject::set( WorldObject *object, Sound *sound )
     m_object = object;
     m_sound = sound;
 
-    unsigned b = m_sound->getBuffer();
+    const unsigned b = m_sound->getBuffer();
     m_source.init(&b);
 }
 

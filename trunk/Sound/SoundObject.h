@@ -17,6 +17,8 @@ public:
     void set( WorldObject*, Sound* );
     void update();
 
-    void play() const { m_source.play(); }
-
+    void play() const        { m_source.play(); }
+    void setPitch( float p ) { m_source.setPitch(p); }
+    void setGain( float g )  { m_source.setGain(g); }
+    void setLoop( bool l )   { m_source.setLoop(l); }
 };

@@ -52,7 +52,8 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 
     // Loads sounds 
     LOAD_SOUND( sRootDir, "Laser_Fired" );
-    LOAD_SOUND( sRootDir, "Ambient" );
+    //LOAD_SOUND( sRootDir, "Ambient" );
+    //LOAD_SOUND( sRootDir, "PlayerEngine" );
 }
 
 void SoundEngine :: onApplicationUnload()
@@ -89,25 +90,32 @@ void SoundEngine :: onEvent(Player_Spawned& pd)
     // Assign two sound sources to playership
     // one for the lasers and one for the jet engines
 
-    _addSoundObject( m_listener, "Laser_Fired" );
-    _addSoundObject( m_listener, "Ambient" );
+    _addSoundObject( "PlayerLaser", m_listener, "Laser_Fired" );
+    //SoundObject *ambient = _addSoundObject( "Ambient", m_listener, "Ambient" );
+    //ambient->play();
+    
+    //SoundObject *engine = _addSoundObject( "PlayerEngine", m_listener, "PlayerEngine" );
+    //engine->setPitch(0.1f);
+    //engine->setLoop(true);
+    //engine->play();
 
-    m_soundObjects["Ambient"]->play();
+    //cerr << "Player spawned!" << endl;
 }
-
 
 void SoundEngine :: onEvent(Player_Destroyed& pd)
 {
-    m_listener = 0;
+    //m_listener = 0;
 
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
 
+    //cerr << "Player destroyed!" << endl;
 	// TODO: play sound effect for playership explosion
 }
 
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
+    //cerr << "Enemy destroyed!" << endl;
 }
 
 void SoundEngine :: onEvent(Player_EnergyDrained& pd)
@@ -116,13 +124,15 @@ void SoundEngine :: onEvent(Player_EnergyDrained& pd)
 	EnergyType type = pd.getValue2();
 	int amount = pd.getValue3();
 	// TODO: play sound effect for energy draining from playership
+
+    //cerr << "Energy drained!" << endl;
 }
 
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
     Laser *laser = pd.getValue();
 
-    m_soundObjects["Laser_Fired"]->play();
+    m_soundObjects["PlayerLaser"]->play();
 }
 
 void SoundEngine::update()
@@ -151,8 +161,13 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
-void SoundEngine::_addSoundObject( WorldObject *obj, const sound_id_t &id )
+SoundObject* SoundEngine::_addSoundObject( 
+    const std::string &key, 
+    WorldObject *obj, 
+    const sound_id_t &id 
+    )
 {
     SoundObject *so = new SoundObject( obj, m_sounds[id] );
-    m_soundObjects.insert( std::make_pair( id, so ) );
+    m_soundObjects.insert( std::make_pair( key, so ) );
+    return so;
 }
