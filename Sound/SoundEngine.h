@@ -73,5 +73,5 @@ private:
 	SoundEngine();
 	virtual ~SoundEngine();
     void _updateListener();
-    void _addSoundObject( WorldObject*, const sound_id_t& );
+    SoundObject* _addSoundObject( const std::string&, WorldObject*, const sound_id_t& );
 };

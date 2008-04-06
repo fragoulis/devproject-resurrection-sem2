@@ -79,3 +79,5 @@ Dir = "resources/sounds/"
 [Sound : General]
 Count = 1
 Laser_Fired = "laser01.wav"
+Ambient = "ambient01.wav"
+PlayerEngine = "engine01.wav"
