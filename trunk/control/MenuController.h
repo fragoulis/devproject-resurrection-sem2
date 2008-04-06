@@ -25,4 +25,13 @@ public:
 private:
 	MenuRenderer* m_renderer;
 	// Menu data
+
+
+	void _continueGame();
+	void _newGame();
+	void _exit();
+
+	// Callback for LoadingController
+	// New game simply loads the very first level
+	void _loadFirstLevel();
 };

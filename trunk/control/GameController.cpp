@@ -32,18 +32,11 @@ void GameController :: activate()
 	re.deactivateAllRenderers();
 	re.activateRenderer("world");
 	re.activateRenderer("hud");
-
-	// Hack to get things working
-	// TODO: think about control flow to fix this
-
-	GameLogic::safeInstance().loadLevel("TestLevel");
 }
 
 void GameController :: deactivate()
 {
 	// deactivate controls, but leaves renderers alone
-	// Hack again?
-	//GameLogic::safeInstance().unloadLevel();
 }
 
 
@@ -94,7 +87,7 @@ void GameController :: update(float dt)
 		gl.fireNegativeLaser(getMouseMapPosition());
 	}
 
-	if (input.isKeyDown(32)) {
+	if (input.isKeyDownOrGoingDown(32)) {
 		Point3 pos = getMouseMapPosition();
 		gl.dropEbomb(getMouseMapPosition(gl.getTerrainHeight(pos.getX(), pos.getY())));
 	}

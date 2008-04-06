@@ -13,7 +13,7 @@
 #include "../../gfxutils/ConfParser/ConfParser.h"
 #include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ControllerManager.h"
-#include "../GameController.h"
+#include "../MenuController.h"
 #include "../../GameLogic/GameLogic.h"
 #include "../../rendering/RenderEngine.h"
 #include "../../sound/SoundEngine.h"
@@ -93,7 +93,7 @@ void Application :: load()
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
 	ControllerManager& cm = ControllerManager::safeInstance();
-	cm.activateController(new GameController());
+	cm.activateController(new MenuController());
 }
 
 
