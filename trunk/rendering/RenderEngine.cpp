@@ -14,6 +14,7 @@
 #include "HUDRenderer.h"
 #include "MenuRenderer.h"
 #include "PlanetRenderer.h"
+#include "PauseRenderer.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
 #include <cassert>
@@ -160,6 +161,7 @@ IRenderer* RenderEngine :: createRenderer(const std::string& name) const
 	if (name == "hud") return new HUDRenderer();
 	if (name == "menu") return new MenuRenderer();
 	if (name == "planet") return new PlanetRenderer();
+	if (name == "pause") return new PauseRenderer();
 	return NULL;
 }
 

@@ -9,6 +9,8 @@
 
 
 #include "GameController.h"
+#include "ControllerManager.h"
+#include "PauseController.h"
 #include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
 #include "../AI/AIEngine.h"
@@ -80,17 +82,25 @@ void GameController :: update(float dt)
 
 
 
+	// Left mouse --> fire positive laser
 	if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {
 		gl.firePositiveLaser(getMouseMapPosition());
 	}
-		
+	// Right mouse --> fire negative laser
 	if (input.isMouseButtonDown(2) || input.isMouseButtonGoingDown(2)) {
 		gl.fireNegativeLaser(getMouseMapPosition());
 	}
 
-	if (input.isKeyDownOrGoingDown(32)) {
+	// SPACE --> drop e-bomb
+	if (input.isKeyGoingDown(32)) {
 		Point3 pos = getMouseMapPosition();
 		gl.dropEbomb(getMouseMapPosition(gl.getTerrainHeight(pos.getX(), pos.getY())));
+	}
+
+	// ESC --> pause game
+	if (input.isKeyGoingDown(27))
+	{
+		ControllerManager::instance().activateController(new PauseController());
 	}
 
 
