@@ -4,6 +4,7 @@
 #include "ControllerManager.h"
 #include "OSinterface/Input.h"
 #include "LoadingController.h"
+#include "../Sound/SoundEngine.h"
 
 PlanetController::PlanetController()
 {
@@ -19,7 +20,7 @@ PlanetController::~PlanetController()
 void PlanetController :: activate()
 {
 	RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers(); // can do this, or not :D
+	re.deactivateAllRenderers();
 	re.activateRenderer("planet");
 }
 
@@ -31,19 +32,8 @@ void PlanetController :: deactivate()
 
 void PlanetController :: update(float dt)
 {
-	// check user input here
-	// if something in menu needs to change, update data
-	// and ask MenuRenderer to change the graphics.
-	// if you want to exit the menu back to the game:
-	// ControllerManager::instance().activateController("game")
-	// GameController is currently hacked to load the TestLevel when it is activated
-	// Later on we shall have to have communication between controllers hmm...
-
-
-	// if you want the game to run: GameLogic::instance().update(dt)
-	// if you want the graphics to update: RenderEngine::instance().update(dt)
-	// problem: can't have some renderers update and others not ATM
-	// this design sucks!
+	m_renderer->update(dt);
+	SoundEngine::instance().update();
 
 
 	Input& input = Input::instance();
@@ -51,6 +41,6 @@ void PlanetController :: update(float dt)
 	if (input.isKeyDownOrGoingDown(27))
 	{
 		LoadingController* lc = new LoadingController();
-
+		// TODO!
 	}
 }

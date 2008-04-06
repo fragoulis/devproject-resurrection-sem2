@@ -453,6 +453,8 @@ void GameLogic :: loadLevel(const std::string& id)
 	// Reset variables
 	m_playerLaserSwapped = false;
 	m_playerLaserCooldownLeft = 0.0f;
+	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
+
 
 	// load level file
 	ConfParser cpLevel(std::string("config/levels/") + id + ".txt");

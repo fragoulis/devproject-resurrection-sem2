@@ -16,6 +16,7 @@
 #include "GameController.h"
 #include "OSinterface/IOSInterface.h"
 #include "../GameLogic/GameLogic.h"
+#include "../Sound/SoundEngine.h"
 
 MenuController::MenuController()
 {
@@ -30,7 +31,7 @@ MenuController :: ~MenuController()
 void MenuController :: activate()
 {
 	RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers(); // can do this, or not :D
+	re.deactivateAllRenderers();
 	re.activateRenderer("menu");
 }
 
@@ -56,14 +57,18 @@ void MenuController :: update(float dt)
 	// problem: can't have some renderers update and others not ATM
 	// this design sucks!
 
+	// do updates here
+	m_renderer->update(dt);
+	SoundEngine::instance().update();
+
 
 	Input& input = Input::instance();
 
 	// ESC --> exit
-	if (input.isKeyDownOrGoingDown(27)) _exit();
+	if (input.isKeyGoingDown(27)) _exit();
 
 	// ENTER --> new game
-	if (input.isKeyDownOrGoingDown(13)) _newGame();
+	if (input.isKeyGoingDown(13)) _newGame();
 }
 
 void MenuController :: _continueGame()
