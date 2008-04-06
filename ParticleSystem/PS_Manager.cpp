@@ -81,8 +81,6 @@ void PS_Manager :: init(const ParserSection * parsec)
 			}
 			else if(pstype == "PS_Explosion")
 			{
-				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
-				// If so,parse them & create the particle system
 
 				const string texname = (*it)->getVal("Texture");
 				created_ps = new PS_Explosion((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
@@ -90,8 +88,6 @@ void PS_Manager :: init(const ParserSection * parsec)
 			}
 			else if(pstype == "PS_ColouredExplosion")
 			{
-				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
-				// If so,parse them & create the particle system
 
 				const string texname = (*it)->getVal("Texture");
 				const string shapetexname = (*it)->getVal("ShapeTexture");
@@ -100,8 +96,6 @@ void PS_Manager :: init(const ParserSection * parsec)
 			}
 			else if(pstype == "PS_RedEnemyExplosion" || pstype == "PS_YellowEnemyExplosion" || pstype == "PS_BlueEnemyExplosion")
 			{
-				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
-				// If so,parse them & create the particle system
 
 				const string texname = (*it)->getVal("Texture");
 				const string shapetexname = (*it)->getVal("ShapeTexture");
@@ -110,8 +104,6 @@ void PS_Manager :: init(const ParserSection * parsec)
 			}
 			else if(pstype == "PS_Jet")
 			{
-				// The PS_SomeOther class, derived from PS_Base, might need extra variables.
-				// If so,parse them & create the particle system
 
 				const string texname = (*it)->getVal("Texture");
 				created_ps = new PS_Jet((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
