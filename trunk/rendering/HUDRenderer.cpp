@@ -8,7 +8,11 @@
 //*****************************************************************************
 
 #include "HUDRenderer.h"
+#include "RenderEngine.h"
+#include "../gfx/Shaders/ShaderManager.h"
+#include "../gfx/Texture/Texture.h"
 #include "../GameLogic/GameLogic.h"
+#include "gl/glu.h"
 
 HUDRenderer::HUDRenderer() : m_playership(0)
 {
@@ -28,6 +32,36 @@ void HUDRenderer :: render(Graphics& g) const
 	// but asking GameLogic about it is just as easy :)
 	// if type is unknown, no ebomb exists
 	EbombType ebombType = GameLogic::instance().getCurrentEbombType();
+
+	int viewPortDims[4];
+	RenderEngine::instance().getViewport(viewPortDims);
+	int screenWidth = viewPortDims[2];
+	int screenHeight = viewPortDims[3];
+
+
+	//glDisable(GL_LIGHTING);
+	glDisable(GL_DEPTH_TEST);
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+		glLoadIdentity();
+		gluOrtho2D(0, screenWidth, 0, screenHeight);
+	glMatrixMode(GL_MODELVIEW);
+	//here goes all the 2D rendering
+	glPushMatrix();
+		glLoadIdentity();
+
+		/*glColor4f(1,0,0,1);
+		RenderEngine::drawQuad(Vector3(0, 0, 0), Vector3(200, 0, 0), Vector3(0, 200, 0));*/
+
+
+
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+
+	glEnable(GL_DEPTH_TEST);
+	glMatrixMode(GL_MODELVIEW);
+	//glEnable(GL_LIGHTING);
 }
 
 void HUDRenderer :: update(float dt)
