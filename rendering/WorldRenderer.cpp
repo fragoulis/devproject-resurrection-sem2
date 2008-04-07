@@ -92,6 +92,8 @@ void WorldRenderer :: render(Graphics& g) const
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
 
+	m_hudRenderer.render(g);
+
 	// now overlay the quad
 /*
 	glMatrixMode(GL_PROJECTION);
