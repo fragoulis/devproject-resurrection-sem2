@@ -1,11 +1,17 @@
 #pragma once
 
 class Playership;
-class AIStateEnemyCouple;
+class AIEnemy;
+
+/**
+ * A state is independent of any enemy.
+ * This means that for any number of enemies only one instance
+ * of each behaviour will exist.
+ */
 
 class IAIState
 {
 public:
     virtual ~IAIState() = 0 {};
-    virtual void update( Playership*, AIStateEnemyCouple*, float ) = 0;
+    virtual void update( float, Playership*, AIEnemy* ) = 0;
 };
