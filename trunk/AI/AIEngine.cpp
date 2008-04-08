@@ -8,7 +8,10 @@
 //*****************************************************************************
 
 #include "AIEngine.h"
-#include "AIStateManager.h"
+#include "Behaviours/AIBehaviour.h"
+#include "Behaviours/States/AIChase.h"
+#include "Behaviours/States/AISurround.h"
+#include "Behaviours/States/AIChaseCarefull.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
@@ -38,87 +41,207 @@ AIEngine::~AIEngine()
 	onApplicationUnload();
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onApplicationLoad(const ParserSection& ps)
 {
-	// TODO: read ParserSection for info and load global AI data
-    const string file = ps.getSection("EnemyFactory")->getVal("file");
-    
-    const ConfParser p(std::string("config/") + file);
-    const string itp = p.getSection("EnemyFighter")->getVal("InitialThrusterPower");
+    const std::string conf_root("config/");
 
-    m_initialThrusterPower = FromString<float>(itp);
+    // Get Ai file name
+    const std::string ai_file = ps.getSection("AI")->getVal("file");
+    const ConfParser ai_conf( conf_root + ai_file );
 
-    AIStateManager::safeInstance().init();
+    readStates(ai_conf);
+    readBehaviours(ai_conf);
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onApplicationUnload()
 {
-    AIStateManager::destroy();
+    for(StateListIt i = m_states.begin(); i != m_states.end(); ++i)
+    {
+        delete i->second;
+        i->second = 0;
+    }
+
+    for(BehaviourListIt i = m_behaviours.begin(); i != m_behaviours.end(); ++i)
+    {
+        delete i->second;
+        i->second = 0;
+    }
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent(Level_Load& ll)
 {
-	const ParserSection* ps = ll.getValue1();
+    typedef std::vector<std::string> StringList;
+
+	const ParserSection *ps = ll.getValue1();
+    const std::string conf_root("config/levels/");
+
+    // Open AI config file
+    const std::string ai_file = ps->getSection("AI")->getVal("file");
+    const ConfParser ai_conf( conf_root + ai_file );
+
+    // Load LOD data for the level
+    /* - Color sequence probability */
+
+    const ParserSection *s_behaviours = ai_conf.getSection("Behaviours");
+    const StringList behaviours = s_behaviours->getValVector("Names");
+
+    StringList::const_iterator i = behaviours.begin();
+    for(; i != behaviours.end(); ++i )
+    {
+        m_behaviours[ *i ]->enable();
+    }
+
+    m_minThrusterPower = FromString<float>(s_behaviours->getVal("MinEnemyThrusterPower"));
+    m_maxThrusterPower = FromString<float>(s_behaviours->getVal("MaxEnemyThrusterPower"));
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent(Level_Unload&)
 {
+    // Disable all behaviours
+    BehaviourListIt i = m_behaviours.begin();
+    for(; i != m_behaviours.end(); ++i)
+        i->second->disable();
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent( Player_Spawned& es )
 {
 	m_playership = es.getValue();
 }
 
-
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent( Player_Destroyed& pd )
 {
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
-
-	// TODO: despawn all enemies? no idea!
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
     int type = enemyship->getType();
 
     // Give initial thruster power
-    enemyship->setThrusterPower(m_initialThrusterPower);
+    float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, 
+                                                     m_maxThrusterPower );
+    enemyship->setThrusterPower(power);
 
-    // Pick random state
-    float time = RandomGenerator::GET_RANDOM_FLOAT(1.0f,10.0f);
-
-    AIStateEnemyCouple sec;
-    sec.setTimeToChange(time);
+    AIEnemy sec;
+    sec.setBehaviour( getRandomBehaviour() );
     sec.setEnemyship( enemyship );
-    sec.setState( AIStateManager::instance().getRandomState() );
-    m_enemylist.push_back(sec);
+    m_enemyList.push_back(sec);
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::onEvent(Enemy_Despawned& es)
 {
 	Enemyship* enemyship = es.getValue();
 
-    StateEnemyCoupleList::iterator i = m_enemylist.begin();
-    for(; i != m_enemylist.end(); ++i )
+    for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
     {
-        const AIStateEnemyCouple& couple = *i;
+        const AIEnemy& couple = *i;
         if( couple.getEnemyship() == enemyship )
         {
-            m_enemylist.erase(i);
+            m_enemyList.erase(i);
             break;
         }
     }
 }
 
+// ----------------------------------------------------------------------------
 void AIEngine::update(float dt)
 {
-    StateEnemyCoupleList::iterator i = m_enemylist.begin();
-    for(; i != m_enemylist.end(); ++i )
+    for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
     {
-        AIStateEnemyCouple& couple = *i;
-        couple.update( m_playership, dt );
+        AIEnemy& couple = *i;
+        couple.update( dt, m_playership );
     }
+}
+
+// ----------------------------------------------------------------------------
+void AIEngine::readStates(const ConfParser& conf)
+{
+    typedef std::vector<std::string> StringList;
+
+    const ParserSection& states_section = *(conf.getSection("States"));
+    const StringList states = states_section.getValVector("Enum");
+
+    m_states.insert( std::make_pair( "Chase", new AIChase ) );
+    m_states.insert( std::make_pair( "Surround", new AISurround ) );
+}
+
+// ----------------------------------------------------------------------------
+void AIEngine::readBehaviours(const ConfParser& conf)
+{
+    typedef std::vector<std::string> StringList;
+
+    const ParserSection& behaviours_section = *(conf.getSection("Behaviours"));
+    const StringList behaviours = behaviours_section.getValVector("Enum");
+
+    StringList::const_iterator i = behaviours.begin();
+    for(; i != behaviours.end(); ++i )
+    {
+        AIBehaviour *b = new AIBehaviour;
+
+        const std::string behaviour     = *i;
+        const std::string s_section     = "Behaviours:" + behaviour;
+        const ParserSection& b_section  = *(conf.getSection( s_section ));
+
+        const StringList states = b_section.getValVector("States");
+        
+        // Push states to behaviour
+        StringList::const_iterator k = states.begin();
+        for(; k != states.end(); ++k )
+        {
+            b->addState( m_states[ *k ] );
+        }
+        
+        // Read additional data
+        if( states.size() > 1 )
+        {
+            float minTime = FromString<float>(b_section.getVal("MinTime"));
+            float maxTime = FromString<float>(b_section.getVal("MaxTime"));
+            b->setMinTime(minTime);
+            b->setMaxTime(maxTime);
+        }
+
+        m_behaviours.insert( std::make_pair( behaviour, b ) );
+    }
+}
+
+// ----------------------------------------------------------------------------
+AIBehaviour* AIEngine::getRandomBehaviour()
+{
+    AIBehaviour *out = 0;
+    
+    int max = (int)m_behaviours.size(); // cache array size
+    int index = RandomGenerator::GET_RANDOM_INT(0,max);
+
+    do
+    {
+        //std::cerr << "index = " << index << std::endl;
+
+        assert(index<max);
+        BehaviourListIt iter = m_behaviours.begin();
+        for( int i=0; i<index; ++i ) 
+            ++iter;
+
+        if( iter->second->isEnabled() ) 
+        {
+            out = iter->second;
+            std::cerr << "Enemy spawned with behaviour: " << iter->first << std::endl;
+        }
+
+        index++;
+        index %= max;
+    }
+    while(!out);
+
+    assert(out);
+    return out;
 }
