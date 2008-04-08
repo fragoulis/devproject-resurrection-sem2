@@ -92,7 +92,7 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
     {
         addSpring( enemyship, *i, 500.0f );
     }
-    cerr << "Active springs " << m_springs.size() << endl;
+    //cerr << "Active springs " << m_springs.size() << endl;
 
     m_enemyships.push_back(enemyship);
 	m_spaceships.push_back(enemyship);
