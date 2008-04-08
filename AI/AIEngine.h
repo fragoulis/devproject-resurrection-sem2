@@ -10,9 +10,13 @@
 #pragma once
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"
-#include "AIStateEnemyCouple.h"
+#include "AIEnemy.h"
+#include <map>
 class ParserSection;
+class ConfParser;
 class Enemyship;
+class AIBehaviour;
+class IAIState;
 
 /**
  * This controls the AI.
@@ -29,10 +33,23 @@ class AIEngine :
 	public EventListener< Player_Destroyed >
 {
 private:
-    typedef std::list<AIStateEnemyCouple> StateEnemyCoupleList;
-	StateEnemyCoupleList m_enemylist;
-    float m_initialThrusterPower;
-    Playership* m_playership;
+    // Typedef containers
+    typedef std::list<AIEnemy> EnemyList;
+    typedef std::map<const std::string, AIBehaviour*> BehaviourList;
+    typedef std::map<const std::string, IAIState*> StateList;
+
+    // Typedef iterators
+    typedef EnemyList::iterator EnemyListIt;
+    typedef BehaviourList::iterator BehaviourListIt;
+    typedef StateList::iterator StateListIt;
+
+    EnemyList       m_enemyList;
+    BehaviourList   m_behaviours;
+    StateList       m_states;
+    Playership      *m_playership;
+
+    float m_maxThrusterPower;
+    float m_minThrusterPower;
 
 public:
 
@@ -52,4 +69,8 @@ private:
 	friend Singleton< AIEngine >;
 	AIEngine();
 	virtual ~AIEngine();
+
+    void readStates(const ConfParser&);
+    void readBehaviours(const ConfParser&);
+    AIBehaviour* getRandomBehaviour();
 };
