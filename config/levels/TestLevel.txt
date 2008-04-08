@@ -23,3 +23,6 @@ file = "TestLevel2.Graphics.txt"
 [Sound]
 SoundsUsed = <EnemyDied1>, <EnemyDied2>
 
+[AI]
+file = "TestLevel.AI.txt"
+
