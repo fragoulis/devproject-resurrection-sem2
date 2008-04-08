@@ -23,6 +23,8 @@ TerrainHeight = 0.0 // used by collision detection to kill e-bombs ATM
 [EnemyFactory]
 file = "EnemyFactory.txt"
 
+[AI]
+file = "AI.txt"
 
 // Defines a prototype for playership
 // This is used to create a new playership object when a new level is loaded

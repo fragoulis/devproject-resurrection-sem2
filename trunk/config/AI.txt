@@ -1,0 +1,24 @@
+# Here we write down the states and behaviours of the game.
+# Each level will use a selection of these, using its individual AI level config.
+
+# Enumerate the states of the game
+[States]
+Enum = <Chase>, <Surround>, <Chase_Carefull>, <Flee>
+
+# Enumerate the behaviours of the game
+[Behaviours]
+Enum = <Chase>, <Surround>, <Carefull>
+
+# Define the behaviours
+[Behaviours : Chase]
+States = <Chase>
+
+[Behaviours : Surround]
+States = <Surround>, <Chase>
+MinTime   = 1.0
+MaxTime   = 10.0
+
+[Behaviours : Carefull]
+States = <Chase_Carefull>, <Flee>, <Chase>
+MinTime   = 1.0
+MaxTime   = 10.0
