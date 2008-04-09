@@ -11,11 +11,21 @@
 #include "IRenderer.h"
 #include "../GameLogic/GameEvents.h"
 #include "../utility/EventManager.h"
+#include <vector>
+
+class Texture;
+
+using namespace std;
 
 class HUDRenderer : public IRenderer,
 					public EventListener< Player_Spawned >,
 					public EventListener< Player_Despawned >
 {
+private:
+	enum {
+		TEXTURE_RED_BAR,
+		NUM_TEXTURES
+	};
 public:
 	HUDRenderer();
 	virtual ~HUDRenderer();
@@ -30,4 +40,6 @@ public:
 
 private:
 	Playership* m_playership;
+	vector<Texture *> m_textureList;
+
 };
