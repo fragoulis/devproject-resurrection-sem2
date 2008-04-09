@@ -12,6 +12,7 @@
 #include "Behaviours/States/AIChase.h"
 #include "Behaviours/States/AISurround.h"
 #include "Behaviours/States/AIChaseCarefull.h"
+#include "Behaviours/States/AIFlee.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
@@ -173,6 +174,8 @@ void AIEngine::readStates(const ConfParser& conf)
 
     m_states.insert( std::make_pair( "Chase", new AIChase ) );
     m_states.insert( std::make_pair( "Surround", new AISurround ) );
+    m_states.insert( std::make_pair( "Chase_Carefull", new AIChaseCarefull ) );
+    m_states.insert( std::make_pair( "Flee", new AIFlee ) );
 }
 
 // ----------------------------------------------------------------------------
