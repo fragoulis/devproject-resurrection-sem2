@@ -11,11 +11,14 @@
 #include "RenderEngine.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfx/Texture/Texture.h"
+#include "../gfx/Texture/TextureIO.h"
 #include "../GameLogic/GameLogic.h"
 #include "gl/glu.h"
 
 HUDRenderer::HUDRenderer() : m_playership(0)
 {
+	Texture *tex = TextureIO::instance()->getTexture("flare0.bmp");
+	m_textureList.push_back(tex);
 }
 
 HUDRenderer::~HUDRenderer()
@@ -50,10 +53,23 @@ void HUDRenderer :: render(Graphics& g) const
 	glPushMatrix();
 		glLoadIdentity();
 
-		/*glColor4f(1,0,0,1);
-		RenderEngine::drawQuad(Vector3(0, 0, 0), Vector3(200, 0, 0), Vector3(0, 200, 0));*/
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		ShaderManager::instance()->begin("hudShader");
+		m_textureList[TEXTURE_RED_BAR]->bind(0);
+		CHECK_GL_ERROR();
+		ShaderManager::instance()->setUniform1i("tex",0);
+		CHECK_GL_ERROR();
+		const GLfloat transparency = 0.5f;
+		ShaderManager::instance()->setUniform1fv("transparency", &transparency);
+		CHECK_GL_ERROR();
 
+		RenderEngine::drawTexturedQuad(Vector3(0, 0, 0), Vector3(200, 0, 0), Vector3(0, 200, 0), Vector2(0,0), Vector2(1,1));
+
+		ShaderManager::instance()->end();
+
+		glDisable(GL_BLEND);
 
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);

@@ -30,7 +30,7 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
-				<"craterArrowShader.sh">, <"PS_Clouds.sh"> 
+				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
