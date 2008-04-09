@@ -71,7 +71,6 @@ private:
 	ShipRenderer	m_shipRenderer;
 	LaserRenderer   m_laserRenderer;
 	SpawnPointRenderer m_spawnPointRenderer;
-	HUDRenderer m_hudRenderer;
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;

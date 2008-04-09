@@ -92,7 +92,9 @@ void WorldRenderer :: render(Graphics& g) const
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
 
-	m_hudRenderer.render(g);
+	// This is called by RenderEngine automatically
+	// HUDRenderer sits next to WorldRenderer, not below it
+	//m_hudRenderer.render(g);
 
 	// now overlay the quad
 /*
@@ -151,8 +153,11 @@ void WorldRenderer :: update( float dt )
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
-	m_hudRenderer.update(dt);
 	//m_shipRenderer.update(dt);
+
+	// HUDrenderer sits next to WorldRenderer, not below it
+	// RenderEngine calls this automatically
+	//m_hudRenderer.update(dt);
 }
 
 void WorldRenderer :: newCamera(Camera * cam)
