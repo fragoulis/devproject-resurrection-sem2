@@ -59,6 +59,9 @@ HitPoints = 12               # integer
 EnergyPoints = 25
 //EnergyPoints = 2
 
+
+// Carrier has same options as spawnpoint
+// Yeah I CnPd the code :)
 [EnemyCarrier]
 Class = Carrier
 EnergyType = red            # possible values: red yellow blue
@@ -73,3 +76,14 @@ LiftVariance = 1.0          # float
 HitPoints = 100             # integer
 EnergyPoints = 25
 //EnergyPoints = 10
+
+EnemyType = EnemyDisrupter
+EnemyCount = 1                      # int
+SpawnedEnergyType = blue
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 1.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 5.0
+MinimumPlayerDistance = 128.0
+MaximumPlayerDistance = 10000.0

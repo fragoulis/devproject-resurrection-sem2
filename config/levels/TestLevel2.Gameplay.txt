@@ -66,13 +66,13 @@ MaximumPlayerDistance = 10000.0
 
 [Spawnpoints : p2]
 Location = (500, -100)
-EnemyType = EnemyDisrupter
-EnemyCount = 1                      # int
-EnergyType = blue
+EnemyType = EnemyDisupter // EnemyCarrier works too, but need new AI :)
+EnemyCount = 1
+EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 5.0
+TimeBetweenSessionEndAndSessionStart = 500.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
