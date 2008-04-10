@@ -15,10 +15,6 @@
 #include "../../utility/EventManager.h"
 #include "../GameEvents.h"
 
-Enemyship :: Enemyship() : m_state(ALIVE)
-{
-}
-
 Enemyship :: Enemyship(int type)
 {
 	m_state = ALIVE;
@@ -29,12 +25,21 @@ Enemyship :: ~Enemyship()
 {
 }
 
+void Enemyship :: update(float dt)
+{
+}
+
+Enemyship* Enemyship :: clone()
+{
+	return new Enemyship(*this);
+}
+
 
 void Enemyship :: loadSettings( const ParserSection& ps )
 {
 	m_energyType = EnergyTypeFromString(ps.getVal("EnergyType"));
 	m_collisionPower = FromString<int>(ps.getVal("CollisionPower"));
-	m_hitPoints = FromString<int>(ps.getVal("HitPoints"));
+	m_hitPoints = float(FromString<int>(ps.getVal("HitPoints")));
 	m_energyPoints = FromString<int>(ps.getVal("EnergyPoints"));
 	Spaceship::loadSettings(ps);
 }

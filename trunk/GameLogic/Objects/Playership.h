@@ -11,6 +11,7 @@
 #pragma once
 #include "../Spaceship.h"
 #include "../EnergyTypes.h"
+#include "../Buffs/BuffContainer.h"
 class Point3;
 
 class Playership : public Spaceship
@@ -33,6 +34,10 @@ public:
 
 	bool isInvulnerable() const { return m_state == INVULNERABLE; }
 
+	void addBuff(int type) { m_buffContainer.addBuff(type); }
+	bool hasBuff(int type) { return m_buffContainer.hasBuff(type); }
+	int getBuffStacks(int type) { return m_buffContainer.getBuffStacks(type); }
+
 	void loadSettings(const ParserSection&);
 
 private:
@@ -49,4 +54,5 @@ private:
 	float m_respawnInvulnerableTime;
 	int m_energy[ENERGY_TYPE_COUNT];
 	int m_energyCapacity;
+	BuffContainer m_buffContainer;
 };

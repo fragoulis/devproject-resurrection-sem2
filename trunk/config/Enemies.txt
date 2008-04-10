@@ -1,0 +1,75 @@
+//*****************************************************************************
+//**
+//**   File:               Enemies.txt
+//**   Author:             $Author: Joep.Moritz $
+//**   Last Change:        $Date: 2008-03-20 16:56:56 +0000 (Thu, 20 Mar 2008) $
+//**   Last Revision:      $Revision: 214 $
+//**
+//*****************************************************************************
+
+# This file contains gameplay data about every enemy type in the game
+# Variables are explained below
+
+
+[EnemyFighter]
+Class = Fighter            # string that specifies the C++ class to use
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 2               # integer
+EnergyPoints = 25
+//EnergyPoints = 1
+
+
+[EnemyInterceptor]
+Class = Debuffer
+Debuff = SpeedReduction
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 8               # integer
+EnergyPoints = 25
+//EnergyPoints = 2
+
+[EnemyDisrupter]
+Class = Debuffer
+Debuff = LaserSwap
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 12               # integer
+EnergyPoints = 25
+//EnergyPoints = 2
+
+[EnemyCarrier]
+Class = Carrier
+EnergyType = red            # possible values: red yellow blue
+CollisionPower = 1.0       # integer
+InitialThrusterPower = 150000.0
+ThrusterMaxPower = 200000.0 # float
+Radius = 60.0               # float, collision detection and inertia calculation
+Mass = 200.0                # float
+AirdragCoefficient = 1.0    # float
+LiftPower = 1.0             # float
+LiftVariance = 1.0          # float
+HitPoints = 100             # integer
+EnergyPoints = 25
+//EnergyPoints = 10

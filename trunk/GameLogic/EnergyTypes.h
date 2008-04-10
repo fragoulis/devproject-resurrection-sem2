@@ -37,3 +37,12 @@ inline std::string StringFromEnergyType(EnergyType type)
 	assert(0);
 	return "unknown";
 }
+
+inline std::string CStringFromEnergyType(EnergyType type)
+{
+	if (type == ENERGY_TYPE_RED) return "Red";
+	if (type == ENERGY_TYPE_YELLOW) return "Yellow";
+	if (type == ENERGY_TYPE_BLUE) return "Blue";
+	assert(0);
+	return "Unknown";
+}

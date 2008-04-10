@@ -40,6 +40,7 @@ public:
 	void setThrusterDirection(const Vector3& d) { m_thrusterData.direction = d; }
 
 	float getThrusterFactor() const { return m_thrusterData.factor; }
+	void multiplyThrusterFactor(float f) { m_thrusterData.factor *= f; }
 	void setThrusterFactor(float f) { m_thrusterData.factor = f; }
 
 	float getThrusterPower() const { return m_thrusterData.power; }

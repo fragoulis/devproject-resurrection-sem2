@@ -34,6 +34,10 @@ public:
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
 	bool isEnding() const { return m_state == ENDING; }
 
+	void setMaxLength(float l) { m_maxLength = l; }
+	void setWidth(float w) { m_width = w; }
+
+
 	//! Starts this laser at given position
 	void start(const Point3& pos, const Vector3& direction);
 

@@ -21,6 +21,7 @@
 #include "../../Physics/PhysicsEngine.h"
 #include "../../GameLogic/Enemies/EnemyFactory.h"
 #include "../../GameLogic/Lasers/LaserFactory.h"
+#include "../../GameLogic/Buffs/BuffFactory.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
 #include "Input.h"
@@ -84,6 +85,7 @@ void Application :: load()
 	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
 
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
+	BuffFactory::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);
 	EnemyFactory::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
@@ -104,6 +106,7 @@ void Application :: unload()
 	WorldObjectTypeManager::destroy();
 	LaserFactory::destroy();
 	EnemyFactory::destroy();
+	BuffFactory::destroy();
 	PhysicsEngine::destroy();
 	AIEngine::destroy();
 	SoundEngine::destroy();

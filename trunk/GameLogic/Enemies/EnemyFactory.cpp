@@ -10,10 +10,21 @@
 
 #include "EnemyFactory.h"
 #include "Enemyship.h"
+//#include "EnemyInterceptor.h"
+//#include "EnemyDisrupter.h"
+#include "EnemyCarrier.h"
+#include "EnemyPlayerDebuffer.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
 #include "../../utility/deleters.h"
 #include "../WorldObjectTypeManager.h"
 using namespace std;
+
+const char* FIGHTER_CLASS = "Fighter";
+//const char* INTERCEPTOR_CLASS = "Interceptor";
+//const char* DISRUPTER_CLASS = "Disrupter";
+const char* CARRIER_CLASS = "Carrier";
+const char* DEBUFFER_CLASS = "Debuffer";
+
 
 EnemyFactory :: EnemyFactory()
 {
@@ -40,8 +51,7 @@ Enemyship* EnemyFactory :: createEnemyship(int type) const
 {
 	Enemyship* prototype = m_enemyPrototypes[type];
 	assert(prototype != 0);
-	Enemyship* newship = new Enemyship(*prototype);
-	return newship;
+	return prototype->clone();
 }
 
 
@@ -68,7 +78,13 @@ void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 	{
 		const ParserSection* ps = *it;
 		int type = WorldObjectTypeManager::instance().getTypeFromName(ps->getName());
-		Enemyship* es = new Enemyship(type);
+		Enemyship* es = 0;
+		std::string className = ps->getVal("Class");
+		if (className == FIGHTER_CLASS) es = new Enemyship(type);
+		//else if (className == INTERCEPTOR_CLASS) es = new EnemyInterceptor(type);
+		//else if (className == DISRUPTER_CLASS) es = new EnemyDisrupter(type);
+		else if (className == CARRIER_CLASS) es = new EnemyCarrier(type);
+		else if (className == DEBUFFER_CLASS) es = new EnemyPlayerDebuffer(type);
 		es->loadSettings(*ps);
 		m_enemyPrototypes[type] = es;
 	}
