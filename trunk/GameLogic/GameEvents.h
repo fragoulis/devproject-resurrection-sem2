@@ -22,6 +22,7 @@ class Spawnpoint;
 class Laser;
 class Ebomb;
 class Point3;
+class EnemyCarrier;
 
 // In general, all events fire AFTER the game state has been updated to reflect the change
 // The exception is Despawned and Level_Unload.
@@ -232,3 +233,16 @@ SIMPLE_EVENT(Game_Over);
 // Fires when the player is destroyed and at least 1 spare life remains
 // The parameter is the player ship object
 EVENT_WITH_VALUE(Player_Respawned, Playership*);
+
+
+
+// Signals the start of a spawning session
+// Spawn points operate in sessions.
+// During a single session, multiple enemies can spawn
+// No enemies spawn if the spawnpoint is not currently "in session"
+// The parameter is the spawnpoint
+EVENT_WITH_VALUE(Carrier_SessionStarted, EnemyCarrier*);
+
+// Signals the end of a spawning session
+// The parameter is the spawnpoint
+EVENT_WITH_VALUE(Carrier_SessionEnded, EnemyCarrier*);

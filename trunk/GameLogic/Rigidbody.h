@@ -66,7 +66,7 @@ public:
 	void setLiftData(const LiftData& l) { m_lift = l; }
 
     const Vector3& getForceAccum() const { return m_forceAccum; }
-    Vector3& getForceAccum() { return m_forceAccum; }
+    Vector3& getForceAccum() { return m_forceAccum; } // might as well make it public...
     void addForce( const Vector3 &f ) { m_forceAccum += f; }
 
 	void loadSettings(const ParserSection& ps);
