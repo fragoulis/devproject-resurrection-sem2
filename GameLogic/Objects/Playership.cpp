@@ -26,6 +26,7 @@ Playership :: ~Playership()
 
 void Playership :: update(float dt)
 {
+	m_buffContainer.update(dt, this);
 	m_timeTillNextEvent -= dt;
 	switch (m_state) {
 		case INVULNERABLE :
@@ -66,6 +67,7 @@ void Playership :: respawn()
 	resetAllEnergy();
 	m_state = INVULNERABLE;
 	m_timeTillNextEvent = m_respawnInvulnerableTime;
+	m_buffContainer.removeAll();
 }
 
 void Playership :: loadSettings(const ParserSection& ps)

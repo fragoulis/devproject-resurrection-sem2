@@ -24,6 +24,7 @@
 #include "Lasers/Laser.h"
 #include "Lasers/LaserFactory.h"
 #include "WorldObjectTypeManager.h"
+#include "Buffs/BuffFactory.h"
 #include "../utility/deleters.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
@@ -37,7 +38,8 @@ GameLogic :: GameLogic() :
 	m_terrain(0),
 	m_playership(0),
 	m_playershipPrototype(0),
-	m_currentEbomb(EBOMB_TYPE_UNKNOWN)
+	m_currentEbomb(EBOMB_TYPE_UNKNOWN),
+	m_lasersSwapped(false)
 {
 }
 
@@ -68,11 +70,21 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	m_playershipPrototype->loadSettings(*psPlayer);
 
 	// load laser data
-	m_playerLaserCooldownTime = FromString<float>(psPlayer->getVal("LaserCooldown"));
-	m_laserStartOffset = FromString<float>(psPlayer->getVal("LaserStartOffset"));
+	const ParserSection* psLaser = ps.getSection("Laser");
 
+	m_playerLaserCooldownTime = FromString<float>(psLaser->getVal("Cooldown"));
+	m_laserStartOffset = FromString<float>(psLaser->getVal("StartOffset"));
+	m_laserPowerFactor = FromString<float>(psLaser->getVal("PowerFactor"));
 	m_laserTypePositive = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
 	m_laserTypeNegative = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
+	m_laserSwapDebuffType = BuffFactory::instance().getTypeFromName("LaserSwap");
+
+	for (int type = 0; type < ENERGY_TYPE_COUNT; type++)
+	{
+		std::string name = std::string("LaserPower") + CStringFromEnergyType(EnergyType(type));
+		m_laserPowerType[type] = BuffFactory::instance().getTypeFromName(name);
+	}
+
 
 	// load e-bomb data
 	const ParserSection* psEbomb = ps.getSection("Ebomb");
@@ -132,11 +144,12 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 	int laserType = laser->getType();
 
 	// reduce enemy hitpoints by 1
-	enemy->reduceHitPoints(1);
+	EnergyType type = enemy->getEnergyType();
+	int power = m_playership->getBuffStacks(m_laserPowerType[type]);
+	enemy->reduceHitPoints(1.0f + power * m_laserPowerFactor);
 
 	// check if enemy can sustain the damage taken
 	if (enemy->getHitPoints() <= 0) {
-		EnergyType type = enemy->getEnergyType();
 		int oldPlayerEnergy = m_playership->getEnergy(type);
 		int enemyEnergy = enemy->getEnergyPoints();
 
@@ -295,11 +308,14 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 	Ebomb* ebomb = evt.getObject1();
 	Crater* crater = evt.getObject2();
 	ebomb->setToBeDeleted();
-	if (ebomb->getEbombType() == crater->getEbombType()) {
+	if (ebomb->getEbombType() == crater->getEbombType())
+	{
 		EventManager::instance().fireEvent(Life_Restored(crater));
 		crater->setToBeDeleted();
+		_addLaserPowerBuffs(ebomb->getEbombType());
 	}
-	else {
+	else
+	{
 		EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 	}
 }
@@ -309,6 +325,52 @@ void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
 	Ebomb* ebomb = evt.getObject1();
 	ebomb->setToBeDeleted();
 	EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
+}
+
+void GameLogic :: _addLaserPowerBuffs(EbombType ebombType)
+{
+	int type1, type2;
+	switch (ebombType)
+	{
+		case EBOMB_TYPE_RED :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+			type2 = m_laserPowerType[ENERGY_TYPE_RED];
+			break;
+		}
+		case EBOMB_TYPE_YELLOW :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+			break;
+		}
+		case EBOMB_TYPE_BLUE :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_BLUE];
+			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+			break;
+		}
+		case EBOMB_TYPE_ORANGE :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+			break;
+		}
+		case EBOMB_TYPE_GREEN :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+			break;
+		}
+		case EBOMB_TYPE_PURPLE :
+		{
+			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+			break;
+		}
+	}
+	m_playership->addBuff(type1);
+	m_playership->addBuff(type2);
 }
 
 
@@ -344,6 +406,10 @@ void GameLogic :: update(float dt)
 	{
 		(*it)->update(dt);
 	}
+	for (EnemyshipList::iterator i = m_enemyships.begin(); i != m_enemyships.end(); ++i)
+	{
+		(*i)->update(dt);
+	}
 
 	// delete objects that died this round
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
@@ -372,6 +438,17 @@ Enemyship* GameLogic :: spawnEnemy( int type )
 	pos.setY(m_gamePlaneHeight);
 	es->setPosition(pos);
 	return es;
+}
+
+void GameLogic :: swapLasers()
+{
+	m_lasersSwapped = true;
+	EventManager::instance().fireEvent(Player_Laser_Swapped());
+}
+
+void GameLogic :: unSwapLasers()
+{
+	m_lasersSwapped = false;
 }
 
 
@@ -406,7 +483,10 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		direction.normalize();
 		Point3 startingPosition = playerPosition + direction * m_laserStartOffset;
 		startingPosition.setY(m_gamePlaneHeight);
-		if (m_playerLaserSwapped) {
+
+		// same thing :-/
+		if (m_lasersSwapped) {
+		//if (m_playership->hasBuff(m_laserSwapDebuffType)) {
 			if (type == m_laserTypePositive) type = m_laserTypeNegative;
 			else type = m_laserTypePositive;
 		}
@@ -417,6 +497,9 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		EventManager::instance().fireEvent(Laser_Spawned(laser));
 	}
 }
+
+
+
 
 
 
@@ -439,7 +522,6 @@ void GameLogic :: loadLevel(const std::string& id)
 	assert(m_enemyships.empty());
 
 	// Reset variables
-	m_playerLaserSwapped = false;
 	m_playerLaserCooldownLeft = 0.0f;
 	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
 
@@ -503,7 +585,6 @@ void GameLogic :: unloadLevel()
 {
 	EventManager::instance().fireEvent(Level_Unload());
 	_deleteLevelData();
-	m_playerLaserSwapped = false;
 }
 
 

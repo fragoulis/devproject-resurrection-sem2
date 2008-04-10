@@ -27,7 +27,6 @@ public:
 
 private:
 	typedef std::vector<std::string> StringVector;
-
 	StringVector m_typeNames;
 
 

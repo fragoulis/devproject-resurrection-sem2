@@ -92,7 +92,7 @@ EVENT_WITH_2VALUES(Player_Destroyed, Playership*, EnergyType);
 
 // Signals  that the player's lasers are swapped
 // This happens when a special type of enemy attached to the player's ship
-SIMPLE_EVENT(Player_LaserType_Swapped);
+SIMPLE_EVENT(Player_Laser_Swapped);
 
 // Signals energy lost when the player collides with an enemy
 // The player is not destroyed. If the player is destroyed (has not enough energy),

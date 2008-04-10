@@ -75,6 +75,8 @@ public:
 	void firePositiveLaser(const Point3& targetPosition);
 	void fireNegativeLaser(const Point3& targetPosition);
 	void dropEbomb(const Point3& targetLocation); // attempts, won't drop if no bomb is available
+	void swapLasers();
+	void unSwapLasers();
 
 	void onEvent(Collision_Player_Enemy&);
 	void onEvent(Collision_Enemy_Laser&);
@@ -118,14 +120,18 @@ private:
 	LaserList m_lasers;
 
 	// Player laser firing data
-	bool m_playerLaserSwapped;
 	float m_playerLaserCooldownTime;
 	float m_playerLaserCooldownLeft;
 	float m_laserStartOffset;
 	int m_laserTypePositive;
 	int m_laserTypeNegative;
+	int m_laserSwapDebuffType;
+	int m_laserPowerType[ENERGY_TYPE_COUNT];
+	float m_laserPowerFactor;
+	bool m_lasersSwapped;
 
 	// helper functions
+	void _addLaserPowerBuffs(EbombType);
 	EbombType _seeIfPlayerCanCreateEbombAndReturnTypeOfBomb();
 	bool _checkNormalEbombCreation(EnergyType);
 	bool _checkCombinedEbombCreation(EnergyType, EnergyType);

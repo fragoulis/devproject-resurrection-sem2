@@ -20,23 +20,24 @@ class Playership;
 class Enemyship : public Spaceship
 {
 public:
-	Enemyship();
 	Enemyship(int type);
 	virtual ~Enemyship();
 
 	EnergyType getEnergyType() const { return m_energyType; }
 	int getCollisionPower() const { return m_collisionPower; }
-	int getHitPoints() const { return m_hitPoints; }
+	int getHitPoints() const { return int(m_hitPoints); }
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
 	int getEnergyPoints() const { return m_energyPoints; }
 
 	void setEnergyType(EnergyType et) { m_energyType = et; }
 	void setToBeDeleted() { m_state = TO_BE_DELETED; }
-	void reduceHitPoints(int amount) { m_hitPoints -= amount; }
+	void reduceHitPoints(int amount) { m_hitPoints -= float(amount); }
+	void reduceHitPoints(float amount) { m_hitPoints -= amount; }
 
 	virtual void collideWithPlayer(Playership* player);
-
-	void loadSettings(const ParserSection&);
+	virtual void loadSettings(const ParserSection&);
+	virtual void update(float dt);
+	virtual Enemyship* clone();
 
 private:
 	enum State {
@@ -50,6 +51,6 @@ private:
 	EnergyType m_energyType;
 	State m_state;
 	int m_collisionPower;
-	int m_hitPoints;
+	float m_hitPoints;
 	int m_energyPoints;
 };

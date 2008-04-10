@@ -200,6 +200,12 @@ ModelHook = Stupship_proc.obj
 [EntitySettings : EnemyInterceptor]
 ModelHook = Stupship_proc.obj
 
+[EntitySettings : EnemyDisrupter]
+ModelHook = Stupship_proc.obj
+
+[EntitySettings : EnemyCarrier]
+ModelHook = Stupship_proc.obj
+
 [EntitySettings : Ebomb]
 ModelHook = bomb.obj
 

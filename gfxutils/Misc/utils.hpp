@@ -26,3 +26,10 @@ T FromString(const std::string& strval)
 	return val;
 	
 }
+
+//template<>
+//bool FromString<bool>(const std::string& strval)
+//{
+//	if (strval == "true") return true;
+//	return false;
+//}

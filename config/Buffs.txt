@@ -1,0 +1,47 @@
+//*****************************************************************************
+//**
+//**   File:               Buffs.txt
+//**   Author:             $Author: Joep.Moritz $
+//**   Last Change:        $Date: 2008-03-20 16:56:56 +0000 (Thu, 20 Mar 2008) $
+//**   Last Revision:      $Revision: 214 $
+//**
+//*****************************************************************************
+
+
+# This file contains buff prototype data
+# To add new buffs/debuffs using existing classes, first add a new world object type
+# then add a section here with the same name
+# All buffs have Class, MaxStacks and Debuff
+# subclasses usually have some extra data
+
+
+[SpeedReduction]
+Class = SpeedReduction
+Duration = 10.0
+MaxStacks = 1
+Debuff = true
+Factor = 2.0		# reduces it by this factor. Multiplies thruster.factor by 1/Factor
+
+[LaserSwap]
+Class = LaserSwap
+Duration = 10.0
+MaxStacks = 1
+Debuff = true
+
+[LaserPowerRed]
+Class = Generic      # Generic buff has no code, just exists. Other classes use it
+Duration = 10000.0
+MaxStacks = 10
+Debuff = false
+
+[LaserPowerBlue]
+Class = Generic
+Duration = 10000.0
+MaxStacks = 10
+Debuff = false
+
+[LaserPowerYellow]
+Class = Generic
+Duration = 10000.0
+MaxStacks = 10
+Debuff = false
