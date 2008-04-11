@@ -13,9 +13,10 @@
 #include "../gfx/Texture/Texture.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../GameLogic/GameLogic.h"
+#include "../GameLogic/Objects/Playership.h"
 #include "gl/glu.h"
 
-HUDRenderer::HUDRenderer() : m_playership(0)
+HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
 {
 	Texture *tex = TextureIO::instance()->getTexture("flare0.bmp");
 	m_textureList.push_back(tex);
@@ -29,12 +30,14 @@ HUDRenderer::~HUDRenderer()
 
 void HUDRenderer :: render(Graphics& g) const
 {
+	
+
 	// draw energy bars
 	// draw number of lives
 	// draw type of e-bomb. You could listen to events for e-bomb created/uncreated
 	// but asking GameLogic about it is just as easy :)
 	// if type is unknown, no ebomb exists
-	EbombType ebombType = GameLogic::instance().getCurrentEbombType();
+	
 
 	int viewPortDims[4];
 	RenderEngine::instance().getViewport(viewPortDims);
@@ -65,9 +68,44 @@ void HUDRenderer :: render(Graphics& g) const
 		ShaderManager::instance()->setUniform1fv("transparency", &transparency);
 		CHECK_GL_ERROR();
 
-		RenderEngine::drawTexturedQuad(Vector3(0, 0, 0), Vector3(200, 0, 0), Vector3(0, 200, 0), Vector2(0,0), Vector2(1,1));
+		//DRAW LIFES INFO
+		for (int i = 0; i < m_currentLives; i++)
+			RenderEngine::drawTexturedQuad(Vector3((float) (i*50.0f), 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+
+		//DRAW E-BOMB INFO
+		switch (m_ebombType) {
+			case EBOMB_TYPE_UNKNOWN:
+				break;
+			default:
+				RenderEngine::drawTexturedQuad(Vector3(screenWidth-80.0f, 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+				break;
+
+		}
+
+		//DRAW ENERGY BARS
+		if (m_playership != NULL) {
+			int energyCapacity = m_playership->getEnergyCapacity();
+			int redEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_RED);
+			int yellowEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_YELLOW);
+			int blueEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_BLUE);
+			//RED BAR
+			for (int i = 0; i < redEnergyAmount; i++) {
+				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 30.0f, 0), Vector3(10.0f, 0.0f, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
+			}
+			//YELLOW BAR
+			for (int i = 0; i < yellowEnergyAmount; i++) {
+				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 20.0f, 0), Vector3(10.0f, 0, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
+			}
+			//BLUE BAR
+			for (int i = 0; i < blueEnergyAmount; i++) {
+				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 10.0f, 0), Vector3(10.0f, 0, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
+			}
+		}
+
 
 		ShaderManager::instance()->end();
+
+		
 
 		glDisable(GL_BLEND);
 
@@ -82,6 +120,9 @@ void HUDRenderer :: render(Graphics& g) const
 
 void HUDRenderer :: update(float dt)
 {
+	m_playership = GameLogic::instance().getPlayership();
+	m_currentLives = GameLogic::instance().getCurrentLives();
+	m_ebombType = GameLogic::instance().getCurrentEbombType();
 }
 
 

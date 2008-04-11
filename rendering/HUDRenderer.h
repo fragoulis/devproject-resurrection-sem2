@@ -14,6 +14,7 @@
 #include <vector>
 
 class Texture;
+class Playership;
 
 using namespace std;
 
@@ -39,7 +40,10 @@ public:
 	void onEvent(Player_Despawned&);
 
 private:
-	Playership* m_playership;
+	const Playership* m_playership;
+	int m_currentLives;
+	EbombType m_ebombType; 
+
 	vector<Texture *> m_textureList;
 
 };
