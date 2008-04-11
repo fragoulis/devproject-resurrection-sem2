@@ -23,10 +23,10 @@ public:
 	void update(float dt);
 	void confine(const Point3& minPoint, const Point3& maxPoint);
 
-	int getEnergy(EnergyType type) { return m_energy[type]; }
+	int getEnergy(EnergyType type) const { return m_energy[type]; }
 	void setEnergy(EnergyType type, int amount) { m_energy[type] = amount; }
 
-	int getEnergyCapacity() { return m_energyCapacity; }
+	int getEnergyCapacity() const { return m_energyCapacity; }
 	int getTotalEnergy();
 
 	void resetAllEnergy();
