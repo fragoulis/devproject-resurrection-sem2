@@ -18,8 +18,32 @@
 
 HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
 {
-	Texture *tex = TextureIO::instance()->getTexture("flare0.bmp");
+	Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.bmp");
 	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudBar.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudEnergyBg.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("redBar.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("yellowBar.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("blueBar.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudBar2.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudRedBomb.bmp");
+	m_textureList.push_back(tex);
+	/*tex = TextureIO::instance()->getTexture("hudYellowBomb.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudBlueBomb.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudGreenBomb.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudOrangeBomb.bmp");
+	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("hudPurpleBomb.bmp");
+	m_textureList.push_back(tex);*/
 }
 
 HUDRenderer::~HUDRenderer()
@@ -60,43 +84,91 @@ void HUDRenderer :: render(Graphics& g) const
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		ShaderManager::instance()->begin("hudShader");
-		m_textureList[TEXTURE_RED_BAR]->bind(0);
+		m_textureList[1]->bind(0);
 		CHECK_GL_ERROR();
 		ShaderManager::instance()->setUniform1i("tex",0);
 		CHECK_GL_ERROR();
-		const GLfloat transparency = 0.5f;
+		const GLfloat transparency = 0.6f;
 		ShaderManager::instance()->setUniform1fv("transparency", &transparency);
 		CHECK_GL_ERROR();
 
-		//DRAW LIFES INFO
-		for (int i = 0; i < m_currentLives; i++)
-			RenderEngine::drawTexturedQuad(Vector3((float) (i*50.0f), 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
-
-		//DRAW E-BOMB INFO
-		switch (m_ebombType) {
-			case EBOMB_TYPE_UNKNOWN:
-				break;
-			default:
-				RenderEngine::drawTexturedQuad(Vector3(screenWidth-80.0f, 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
-				break;
-
-		}
-
-		//DRAW ENERGY BARS
 		if (m_playership != NULL) {
 			int energyCapacity = m_playership->getEnergyCapacity();
 			int redEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_RED);
 			int yellowEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_YELLOW);
 			int blueEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_BLUE);
+
+			//DRAW HUD BARS
+			//life bar
+			RenderEngine::drawTexturedQuad(Vector3(0.0f, 0, 0), Vector3(180.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+			m_textureList[2]->bind(0);
+			//energy bar
+			RenderEngine::drawTexturedQuad(Vector3((screenWidth/2.0f-(energyCapacity*10)/2)-10, 5, 0), Vector3(energyCapacity*10+20, 0, 0), Vector3(0, 40.0f, 0), Vector2(0,0), Vector2(1,1));
+			m_textureList[6]->bind(0);
+			RenderEngine::drawTexturedQuad(Vector3(screenWidth - 100.0f, 0, 0), Vector3(100.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+
+			const GLfloat transparency2 = 1.0f;
+			ShaderManager::instance()->setUniform1fv("transparency", &transparency2);
+			CHECK_GL_ERROR();
+
+			m_textureList[0]->bind(0);
+			//DRAW LIFES INFO
+			for (int i = 0; i < m_currentLives; i++)
+				RenderEngine::drawTexturedQuad(Vector3((float) (i*50.0f), 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+
+			
+
+			//DRAW E-BOMB INFO
+			switch (m_ebombType) {
+				case EBOMB_TYPE_UNKNOWN:
+					break;
+				/*case EBOMB_TYPE_RED:
+					m_textureList[7]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+				case EBOMB_TYPE_YELLOW:
+					m_textureList[8]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+				case EBOMB_TYPE_BLUE:
+					m_textureList[9]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+				case EBOMB_TYPE_GREEN:
+					m_textureList[10]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+				case EBOMB_TYPE_ORANGE:
+					m_textureList[11]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+				case EBOMB_TYPE_PURPLE:
+					m_textureList[12]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;*/
+				default:
+					m_textureList[7]->bind(0);
+					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
+					break;
+
+					
+
+			}
+
+
+			//DRAW ENERGY BARS
 			//RED BAR
+			m_textureList[3]->bind(0);
 			for (int i = 0; i < redEnergyAmount; i++) {
 				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 30.0f, 0), Vector3(10.0f, 0.0f, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
 			}
 			//YELLOW BAR
+			m_textureList[4]->bind(0);
 			for (int i = 0; i < yellowEnergyAmount; i++) {
 				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 20.0f, 0), Vector3(10.0f, 0, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
 			}
 			//BLUE BAR
+			m_textureList[5]->bind(0);
 			for (int i = 0; i < blueEnergyAmount; i++) {
 				RenderEngine::drawTexturedQuad(Vector3((float) (i*10.0f) + (screenWidth/2.0f-(energyCapacity*10)/2), 10.0f, 0), Vector3(10.0f, 0, 0), Vector3(0, 10.0f, 0), Vector2(0,0), Vector2(1,1));
 			}
