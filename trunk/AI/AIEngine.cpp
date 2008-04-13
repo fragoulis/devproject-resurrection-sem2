@@ -11,11 +11,13 @@
 #include "Behaviours/AIBehaviour.h"
 #include "Behaviours/States/AIChase.h"
 #include "Behaviours/States/AISurround.h"
-#include "Behaviours/States/AIChaseCarefull.h"
+#include "Behaviours/States/AIFlank.h"
 #include "Behaviours/States/AIFlee.h"
+#include "Behaviours/States/AIIdle.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/EnergyTypes.h"
+#include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../gfxutils/Misc/utils.h"
 #include "../utility/RandomGenerator.h"
@@ -126,7 +128,11 @@ void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
     int type = enemyship->getType();
-
+    const std::string s_type = WorldObjectTypeManager::instance().getNameFromType(type);
+    
+    // Dont give any ai to carriers
+    if( s_type == "EnemyCarrier" ) return;
+    
     // Give initial thruster power
     float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, 
                                                      m_maxThrusterPower );
@@ -172,9 +178,10 @@ void AIEngine::readStates(const ConfParser& conf)
     const ParserSection& states_section = *(conf.getSection("States"));
     const StringList states = states_section.getValVector("Enum");
 
+    m_states.insert( std::make_pair( "Idle", new AIIdle ) );
     m_states.insert( std::make_pair( "Chase", new AIChase ) );
     m_states.insert( std::make_pair( "Surround", new AISurround ) );
-    m_states.insert( std::make_pair( "Chase_Carefull", new AIChaseCarefull ) );
+    m_states.insert( std::make_pair( "Flank", new AIFlank ) );
     m_states.insert( std::make_pair( "Flee", new AIFlee ) );
 }
 
