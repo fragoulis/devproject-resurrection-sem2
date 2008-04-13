@@ -147,7 +147,10 @@ void PhysicsEngine :: update( float dt )
 		_updatePhysics(MIN_DT);
 		dt -= MIN_DT;
 	}
-	_updatePhysics(dt);
+
+    if( dt > 0.0f )
+	    _updatePhysics(dt);
+
 	_checkCollisions();
 }
 
