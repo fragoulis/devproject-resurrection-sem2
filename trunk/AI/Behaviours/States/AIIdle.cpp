@@ -1,9 +1,14 @@
 #include "AIIdle.h"
 #include "../../AIEnemy.h"
+#include "../../../GameLogic/Objects/Playership.h"
 
 void AIIdle::update( float dt, Playership *player, AIEnemy *enemy )
 {    
-    /* do nothing */
+    // Get direction to the player ship
+    Vector3 dir = player->getPosition() - enemy->getEnemyPosition();
+    dir.normalize();
+
+    enemy->setEnemyThrusterDirection( dir );
 }
 
 void AIIdle::onBegin(AIEnemy *enemy)
