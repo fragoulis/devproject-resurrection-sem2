@@ -1,8 +1,8 @@
-#include "AIChaseCarefull.h"
+#include "AIFlank.h"
 #include "../../AIEnemy.h"
 #include "../../../GameLogic/Objects/Playership.h"
  
-void AIChaseCarefull::update( float dt, Playership *player, AIEnemy *enemy )
+void AIFlank::update( float dt, Playership *player, AIEnemy *enemy )
 {
     // Get direction to the player ship
     Vector3 dir = player->getPosition() - enemy->getEnemyPosition();
