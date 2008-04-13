@@ -32,18 +32,8 @@ HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBO
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("hudBar2.bmp");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudRedBomb.bmp");
+	tex = TextureIO::instance()->getTexture("hudBomb.bmp");
 	m_textureList.push_back(tex);
-	/*tex = TextureIO::instance()->getTexture("hudYellowBomb.bmp");
-	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudBlueBomb.bmp");
-	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudGreenBomb.bmp");
-	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudOrangeBomb.bmp");
-	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudPurpleBomb.bmp");
-	m_textureList.push_back(tex);*/
 }
 
 HUDRenderer::~HUDRenderer()
@@ -91,6 +81,9 @@ void HUDRenderer :: render(Graphics& g) const
 		const GLfloat transparency = 0.6f;
 		ShaderManager::instance()->setUniform1fv("transparency", &transparency);
 		CHECK_GL_ERROR();
+		const GLfloat white[4] = {1.0f,1.0f,1.0f,1.0f};
+		ShaderManager::instance()->setUniform4fv("constantColor", white);
+		CHECK_GL_ERROR();
 
 		if (m_playership != NULL) {
 			int energyCapacity = m_playership->getEnergyCapacity();
@@ -103,7 +96,7 @@ void HUDRenderer :: render(Graphics& g) const
 			RenderEngine::drawTexturedQuad(Vector3(0.0f, 0, 0), Vector3(180.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
 			m_textureList[2]->bind(0);
 			//energy bar
-			RenderEngine::drawTexturedQuad(Vector3((screenWidth/2.0f-(energyCapacity*10)/2)-10, 5, 0), Vector3(energyCapacity*10+20, 0, 0), Vector3(0, 40.0f, 0), Vector2(0,0), Vector2(1,1));
+			RenderEngine::drawTexturedQuad(Vector3((float) (screenWidth/2.0f-(energyCapacity*10)/2)-10, 5, 0), Vector3((float) (energyCapacity*10)+20, 0, 0), Vector3(0, 40.0f, 0), Vector2(0,0), Vector2(1,1));
 			m_textureList[6]->bind(0);
 			RenderEngine::drawTexturedQuad(Vector3(screenWidth - 100.0f, 0, 0), Vector3(100.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
 
@@ -116,43 +109,50 @@ void HUDRenderer :: render(Graphics& g) const
 			for (int i = 0; i < m_currentLives; i++)
 				RenderEngine::drawTexturedQuad(Vector3((float) (i*50.0f), 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
 
+			const GLfloat red[4] = {1.0f,0.0f,0.0f,1.0f};
+			const GLfloat yellow[4] = {1.0f,1.0f,0.0f,1.0f};
+			const GLfloat blue[4] = {0.0f,0.0f,1.0f,1.0f};
+			const GLfloat green[4] = {0.0f,1.0f,0.0f,1.0f};
+			const GLfloat orange[4] = {1.0f,0.5f,0.0f,1.0f};
+			const GLfloat purple[4] = {1.0f,0.0f,1.0f,1.0f};
 			
-
 			//DRAW E-BOMB INFO
+			m_textureList[7]->bind(0);
 			switch (m_ebombType) {
 				case EBOMB_TYPE_UNKNOWN:
 					break;
-				/*case EBOMB_TYPE_RED:
-					m_textureList[7]->bind(0);
+				case EBOMB_TYPE_RED:
+					ShaderManager::instance()->setUniform4fv("constantColor", red);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
 				case EBOMB_TYPE_YELLOW:
-					m_textureList[8]->bind(0);
+					ShaderManager::instance()->setUniform4fv("constantColor", yellow);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
 				case EBOMB_TYPE_BLUE:
-					m_textureList[9]->bind(0);
+					ShaderManager::instance()->setUniform4fv("constantColor", blue);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
 				case EBOMB_TYPE_GREEN:
-					m_textureList[10]->bind(0);
+					ShaderManager::instance()->setUniform4fv("constantColor", green);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
 				case EBOMB_TYPE_ORANGE:
-					m_textureList[11]->bind(0);
+					ShaderManager::instance()->setUniform4fv("constantColor", orange);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
 				case EBOMB_TYPE_PURPLE:
-					m_textureList[12]->bind(0);
-					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
-					break;*/
-				default:
-					m_textureList[7]->bind(0);
+					ShaderManager::instance()->setUniform4fv("constantColor", purple);
+					CHECK_GL_ERROR();
 					RenderEngine::drawTexturedQuad(Vector3(screenWidth-70.0f, 10, 0), Vector3(30.0f, 0, 0), Vector3(0, 30.0f, 0), Vector2(0,0), Vector2(1,1));
 					break;
-
-					
-
+				default:
+					break;
 			}
 
 
