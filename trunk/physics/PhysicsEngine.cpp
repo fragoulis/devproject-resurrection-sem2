@@ -58,7 +58,8 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 
 
 	const ParserSection* psGame = ps.getSection("main");
-	m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
+	//m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
+    m_safeDistance = FromString<float>(psGame->getVal("SafeDistance"));
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -90,7 +91,7 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
     EnemyshipList::const_iterator i = m_enemyships.begin();
     for(; i != m_enemyships.end(); ++i )
     {
-        addSpring( enemyship, *i, 500.0f );
+        addPusher( enemyship, *i, m_safeDistance );
     }
     //cerr << "Active springs " << m_springs.size() << endl;
 
@@ -152,19 +153,19 @@ void PhysicsEngine :: update( float dt )
 
 void PhysicsEngine :: _updatePhysics( float dt )
 {
-    for( SpringList::iterator i = m_springs.begin(); i != m_springs.end(); )
+    for( PusherList::iterator i = m_pushers.begin(); i != m_pushers.end(); )
     {
-        Spring &spring = *i;
-        const Enemyship *one = static_cast<const Enemyship*>(spring.getFirstObject());
-        const Enemyship *two = static_cast<const Enemyship*>(spring.getSecondObject());
+        Pusher &pusher= *i;
+        const Enemyship *one = static_cast<const Enemyship*>(pusher.getFirstObject());
+        const Enemyship *two = static_cast<const Enemyship*>(pusher.getSecondObject());
         if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
         {
             // Remove the spring
-            i = m_springs.erase(i);
+            i = m_pushers.erase(i);
         } 
         else
         {
-            spring.compute();
+            pusher.compute();
             ++i;
         }
     }
