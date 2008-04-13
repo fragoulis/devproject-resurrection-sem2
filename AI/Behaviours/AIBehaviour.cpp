@@ -17,8 +17,12 @@ void AIBehaviour::update( float dt, Playership *player, AIEnemy *enemy )
     {
         if( enemy->readyToChange( dt ) )
         {
+            m_stateList[state]->onEnd(enemy);
+
             state++;
             state %= (int)m_stateList.size();
+
+            m_stateList[state]->onBegin(enemy);
         }
     }
 

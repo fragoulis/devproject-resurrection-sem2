@@ -22,6 +22,9 @@ private:
     float m_timeToChange;
     float m_currentTime;
 
+    // Thruster power before state change
+    float m_previousThrusterPower;
+
 public:
     AIEnemy();
 
@@ -29,6 +32,9 @@ public:
     
     const Point3& getEnemyPosition() const;
     void setEnemyThrusterDirection( const Vector3& dir );
+    
+    void setEnemyThrusterPower( float power );
+    float getEnemyThrusterPower() const;
 
     void setEnemyship( Enemyship *enemy ) { m_enemy = enemy; }
     void setBehaviour( AIBehaviour *behaviour );
@@ -38,6 +44,9 @@ public:
 
     int getState() const { return m_state; }
     void setState( int i ) { m_state = i; }
+
+    void setPreviousThrusterPower( float ptp ) { m_previousThrusterPower = ptp; }
+    float getPreviousThrusterPower() const { return m_previousThrusterPower; }
 
     // Check time interval
     bool readyToChange( float dt );

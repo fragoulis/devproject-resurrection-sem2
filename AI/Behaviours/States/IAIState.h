@@ -14,4 +14,6 @@ class IAIState
 public:
     virtual ~IAIState() = 0 {};
     virtual void update( float, Playership*, AIEnemy* ) = 0;
+    virtual void onBegin(AIEnemy*) {}
+    virtual void onEnd(AIEnemy*) {}
 };
