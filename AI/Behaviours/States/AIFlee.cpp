@@ -5,7 +5,7 @@
 void AIFlee::update( float dt, Playership *player, AIEnemy *enemy )
 {
     // Get direction to the player ship
-    Vector3 dir = player->getPosition() - enemy->getEnemyPosition();
+    Vector3 dir = enemy->getEnemyPosition() - player->getPosition();
     dir.normalize();
     enemy->setEnemyThrusterDirection( dir );
 }
