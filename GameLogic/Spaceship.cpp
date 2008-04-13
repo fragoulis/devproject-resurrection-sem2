@@ -18,6 +18,7 @@ Spaceship :: Spaceship()
 	m_thrusterData.power = 0.0f;
 	m_thrusterData.maxPower = 0.0f;
 	m_thrusterData.factor = 1.0f;
+    m_thrusterData.direction.set( 0.0f, 0.0f, -1.0f );
 }
 
 Spaceship :: ~Spaceship()
