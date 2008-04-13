@@ -18,20 +18,26 @@ void AIEnemy::setBehaviour( AIBehaviour *behaviour )
     m_timeToChange = RandomGenerator::GET_RANDOM_FLOAT(min,max);
 }
 
-void AIEnemy::update( float dt, Playership *player )
-{
+void AIEnemy::update( float dt, Playership *player ){
     m_behaviour->update( dt, player, this );
 }
 
-const Point3& AIEnemy::getEnemyPosition() const 
-{ 
+const Point3& AIEnemy::getEnemyPosition() const { 
     return m_enemy->getPosition(); 
 }
 
-void AIEnemy::setEnemyThrusterDirection( const Vector3& dir ) 
-{ 
+void AIEnemy::setEnemyThrusterDirection( const Vector3& dir ) { 
     m_enemy->setThrusterDirection( dir ); 
 }
+
+void AIEnemy::setEnemyThrusterPower( float power ) { 
+    m_enemy->setThrusterPower( power ); 
+}
+
+float AIEnemy::getEnemyThrusterPower() const { 
+    return m_enemy->getThrusterPower(); 
+}
+
 
 bool AIEnemy::readyToChange( float dt )
 {
