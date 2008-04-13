@@ -13,7 +13,7 @@
 #include "../GameLogic/GameEvents.h"
 #include "../utility/EventManager.h"
 #include "../math/Vector3.h"
-#include "Spring.h"
+#include "Pusher.h"
 #include <list>
 class Terrain;
 class Playership;
@@ -69,9 +69,9 @@ public:
 
 	void update(float dt);
 
-    void addSpring( spring_obj_t *a, spring_obj_t *b, float restLength ) {
-        m_springs.push_back(
-            Spring( a, b, restLength )
+    void addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength ) {
+        m_pushers.push_back(
+            Pusher( a, b, restLength )
             );
     }
 
@@ -79,12 +79,12 @@ private:
 	Terrain* m_terrain;
 
 	// Physics: forces, movement and such
-    typedef std::list<Spring> SpringList;
+    typedef std::list<Pusher> PusherList;
 	typedef std::list<Movable*> MovableList;
 	typedef std::list<Rigidbody*> RigidbodyList;
 	typedef std::list<Spaceship*> SpaceshipList;
 
-    SpringList m_springs;
+    PusherList m_pushers;
 	MovableList m_movables;
 	RigidbodyList m_rigidbodies;
 	SpaceshipList m_spaceships;
@@ -100,7 +100,8 @@ private:
 	template< typename T, typename ForcesAndMomentsFunction >
 	void _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
 
-
+    // The minimum distance the planes must keep from each other
+    float m_safeDistance;
 
 	// Collision detection
 	typedef std::list<Enemyship*> EnemyshipList;
