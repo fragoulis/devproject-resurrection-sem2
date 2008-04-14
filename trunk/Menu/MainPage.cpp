@@ -1,9 +1,5 @@
 #include "MainPage.h"
 
-MainPage::~MainPage() {
-
-}
-
 void MainPage::init(int screenWidth, int screenHeight) {
 	MenuItem *startButton = new MenuItem();
 	startButton->init(screenWidth/2-256, 300, 256, 100, "menuPlay.bmp", "menuPlaySel.bmp", MenuItem::ITEM_STATE_SELECTED);

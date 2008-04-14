@@ -65,17 +65,33 @@ void MenuController :: update(float dt)
 	Input& input = Input::instance();
 
 	if (input.isKeyGoingDown('W')) {
-		m_renderer->testDecrementMenu();
+		m_renderer->selectPreviousItem();
 	}
 	if (input.isKeyGoingDown('S')) {
-		m_renderer->testIncrementMenu();
+		m_renderer->selectNextItem();
 	}
 
-	// ESC --> exit
-	if (input.isKeyGoingDown(27)) _exit();
+	//// ESC --> exit
+	//if (input.isKeyGoingDown(27)) _exit();
 
 	// ENTER --> new game
-	if (input.isKeyGoingDown(13)) _newGame();
+	if (input.isKeyGoingDown(13)) {
+		switch (m_renderer->getState()) {
+			case MenuRenderer::MENU_STATE_MAIN:
+				if (m_renderer->getSelectedItem() == 0)
+					_newGame();  //go to planet selection screen
+				else if (m_renderer->getSelectedItem() == 1)
+					m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
+				else if (m_renderer->getSelectedItem() == 2)
+					_exit();  //kill the application
+
+				break;
+			case MenuRenderer::MENU_STATE_CREDITS:
+				m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu 
+
+				break;
+		}
+	}
 }
 
 void MenuController :: _continueGame()
