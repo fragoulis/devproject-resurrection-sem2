@@ -47,7 +47,7 @@ class ParserSection
 	const ParserSection * getChild(const std::string& secname) const;		// returns subsection (search depth 1)
 	ParserSection * getCreateChild(const std::string& secname);				// returns subsection, creates if needed
 	const std::vector<const ParserSection * > getChildren() const;
-	
+	const std::vector<SectionData>& getSectionData() const {return _data;}
 	const std::string getVal(const std::string& tag) const;					// get first value
 	const std::vector<std::string> getValVector(const std::string& tag) const;	// get all values
 
