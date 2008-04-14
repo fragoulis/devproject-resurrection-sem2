@@ -49,7 +49,7 @@ void MenuPage::render(Graphics &g) const {
 	//glEnable(GL_LIGHTING);
 }
 
-int MenuPage::getSelectedItem() const {
+const int MenuPage::getSelectedItem() const {
 	for (int i = 0; i < (int) m_items.size(); i++) {
 		if(m_items[i]->getState()==MenuItem::ITEM_STATE_SELECTED)
 			return i;
@@ -80,5 +80,5 @@ void  MenuPage::selectPreviousItem() {
 	if (selectedItem > 0)
 		setSelectedItem(selectedItem-1);
 	else
-		setSelectedItem(m_items.size()-1);
+		setSelectedItem((int) m_items.size()-1);
 }

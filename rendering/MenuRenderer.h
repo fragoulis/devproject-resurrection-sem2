@@ -9,9 +9,7 @@
 
 #pragma once
 #include "IRenderer.h"
-#include <vector>
-
-#include "../Menu/MainPage.h"
+#include "../Menu/MenuPage.h"
 
 class Texture;
 
@@ -19,8 +17,18 @@ using namespace std;
 
 class MenuRenderer : public IRenderer
 {
+public:
+	enum MenuState {
+		MENU_STATE_MAIN,
+		MENU_STATE_CREDITS,
+		MENU_STATE_PLANET,
+		NUM_MENU_STATES
+	};
+
 private:
-	MainPage testItem;
+	MenuPage *m_currentMenu; //pointer to the current menu
+	MenuPage *m_menuPool[NUM_MENU_STATES];
+	MenuState m_state;
 
 public:
 	MenuRenderer();
@@ -29,14 +37,12 @@ public:
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
 
-	void testIncrementMenu() { testItem.selectNextItem(); };
-	void testDecrementMenu() { testItem.selectPreviousItem(); };
+	const MenuState getState() const { return m_state; };
+	void setState(MenuState state) { m_state = state; };
 
-	// add functions to change menu here
-	// like "addMenuOption(string name, point2 location, float width, float height"
-	// and "highlightMenuOption(int id)
-	// you figure it out!
-private:
-	vector<Texture *> m_textureList;
+	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
+
+	void selectNextItem() { m_currentMenu->selectNextItem(); };
+	void selectPreviousItem() { m_currentMenu->selectPreviousItem(); };
 
 };
