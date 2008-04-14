@@ -18,7 +18,8 @@
 class ParserSection;
 class SoundBuffer;
 class Sound;
-class WorldObject;
+
+using namespace std;
 
 /**
  * Listens for events and plays sounds when things happen
@@ -47,14 +48,12 @@ class SoundEngine :
     public EventListener< Laser_Spawned >
 {
 private:
-    typedef std::string sound_id_t;
-    typedef std::map< const sound_id_t, SoundBuffer*> SoundList;
-    typedef std::map< const std::string, Sound*> SoundObjectList;
-    typedef SoundList::iterator SoundListIter;
-    typedef SoundObjectList::iterator SoundObjectIter;
+    typedef std::map< const std::string, SoundBuffer*> SoundBuffers;
+    typedef std::vector< Sound*> Sounds;
 
-    SoundObjectList m_soundObjects;
-    SoundList m_sounds;
+    SoundBuffers m_buffers;
+    Sounds m_sounds;
+    Sound *m_soundMemoryPool;
     Playership *m_listener;
 
 public:
@@ -75,5 +74,5 @@ private:
 	SoundEngine();
 	virtual ~SoundEngine();
     void _updateListener();
-    Sound* _addSoundObject( const std::string&, WorldObject*, const sound_id_t& );
+    void _play( const string &id );
 };
