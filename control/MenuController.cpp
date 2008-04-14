@@ -59,7 +59,7 @@ void MenuController :: update(float dt)
 
 	// do updates here
 	m_renderer->update(dt);
-	SoundEngine::instance().update();
+	//SoundEngine::instance().update();
 
 
 	Input& input = Input::instance();
