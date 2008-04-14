@@ -28,6 +28,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
+	EventManager::instance().registerEventListener<Player_Destroyed>(this);
 	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
 	EventManager::instance().registerEventListener<Life_Restored>(this);
 	EventManager::instance().registerEventListener<Terrain_Changed>(this);
@@ -193,6 +194,20 @@ void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
 		PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
 		ps_jet->setEmitterShip(player.getValue());
 		m_psList.push_back(ps_jet);
+	}
+
+}
+
+void ParticleSystemsRenderer::onEvent(Player_Destroyed &player) {
+
+	CoordinateFrame cf = player.getValue1()->getCoordinateFrame();
+	if (!m_isJetCreated) {
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+		m_psList.back()->setTransform(cf);
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+		m_psList.back()->setTransform(cf);
 	}
 
 }
