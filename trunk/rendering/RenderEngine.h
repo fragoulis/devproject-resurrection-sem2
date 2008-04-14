@@ -69,6 +69,16 @@ public:
 	const float getCameraHeightAbovePlane() const {return m_camHeightAbovePlane;}
 	void setCameraHeightAbovePlane(const float val) {m_camHeightAbovePlane = val;}
 
+	// boundary stuff - represented in WCS as leftmost,rightmost,bottom-most?,topmost (looking at screen)
+	const Vector4& getPlayerBounds() const {return m_playerBounds;}
+	const Vector4& getCameraBounds() const {return m_cameraBounds;}
+
+	void boundPlayerPosition(Vector3& playerpos);
+	void boundCameraPosition(Vector3& camerapos);
+
+	void setPlayerBounds(const Vector4& pb) {m_playerBounds = pb;}
+	void setCameraBounds(const Vector4& cb) {m_cameraBounds = cb;}
+
 
 	// mapping stuff
 	void getWsScreenEdges(Point3 pts[4]);
@@ -107,6 +117,9 @@ private:
 	Point3 m_wsScreenEdges[4];		// ll, -> ccw
 
 	ConstRenderSettings m_settings;
+
+	Vector4 m_playerBounds;		// player boundaries for the current level
+	Vector4 m_cameraBounds;		// camera boundaries for the current level
 
 
 	// helper functions

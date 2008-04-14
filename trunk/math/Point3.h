@@ -87,8 +87,8 @@ inline const Point3 operator - (const Point3& lhs, const Vector3& rhs)
 
 inline const Point3 operator - (const Vector3& lhs, const Point3& rhs)
 {
-	Point3 ret(rhs);
-	ret -= lhs;
+	Point3 ret(lhs);
+	ret -= rhs.getVector();
 	return ret;
 }
 

@@ -55,6 +55,10 @@ public:
 	const float * getModelViewMatrixf() const {return m_mviewf;}
 	const float * getProjectionMatrixf() const {return m_projf;}
 
+	void computeBounds();	// compute player & camera bounds for the level
+
+
+
 	// Events
 	void onEvent(Player_Spawned&);
 	void onEvent(Player_Despawned&);
@@ -74,6 +78,7 @@ private:
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;
+	bool			m_boundsComputed;
 
 	// Transparent object FBO
 	FramebufferObject m_transpFBO;

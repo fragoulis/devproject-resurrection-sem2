@@ -26,14 +26,14 @@ using namespace std;
 WorldRenderer :: WorldRenderer()
 :m_camera(0),
 m_playerActive(false),
-m_transpSurface(0)
+m_transpSurface(0),
+m_boundsComputed(false)
 {
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 
 	m_camera = new Camera();
 	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
-	m_camera->setPosition(Vector3(0, 0, 0), Vector3(0, 0, 0), Vector3(0,0,-1));
 	m_terrainRenderer.setCamera(m_camera);
 
 	m_realCam = new Camera();
@@ -42,7 +42,7 @@ m_transpSurface(0)
 	// initialize transparent surface
 	vector<MipmapLevel> ml;
 	ml.push_back(MipmapLevel(0,0));
-	// FIXME : Get real window extents
+	
 	int vp[4];
 	RenderEngine::instance().getViewport(vp);
 	m_transpSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"transp fbo",false,false);
@@ -130,16 +130,29 @@ void WorldRenderer :: render(Graphics& g) const
 
 void WorldRenderer :: update( float dt )
 {	
+	// Yes, this is a hack
+	if(!m_boundsComputed)
+	{
+		computeBounds();
+		m_boundsComputed = true;
+	}
+
 	if(m_playerActive)
 	{
 		const Vector3 playerpos(m_playerCoordFrame->getOrigin().cfp());
-		m_camera->setPosition(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f),
-							  playerpos,
+		Vector3 camera_eye(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f));
+		Vector3 camera_look(playerpos);
+
+		RenderEngine::instance().boundCameraPosition(camera_eye);
+		RenderEngine::instance().boundCameraPosition(camera_look);
+
+		m_camera->setPosition(camera_eye,
+							  camera_look,
 							  Vector3(0.0f,0.0f,-1.0f));
 		glLoadIdentity();
 		
-		m_realCam->setPosition(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f),
-							  playerpos,
+		m_realCam->setPosition(camera_eye,
+							  camera_look,
 							  Vector3(0.0f,0.0f,-1.0f));
 		m_realCam->slide(0.0f,-tanf(30.0f*math_const<float>::DEG2RAD)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
 		m_realCam->pitch(30.0f);
@@ -188,4 +201,58 @@ void WorldRenderer :: _updateMatrices()
 		m_mviewd[i] = double(m_mviewf[i]);
 		m_projd[i] = double(m_projf[i]);
 	}
+}
+
+void WorldRenderer :: computeBounds()
+{
+	// compute the bounds for camera and player.
+
+	// set a dummy camera	
+	glPushAttrib(GL_MATRIX_MODE);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+	m_realCam->setPosition(Vector3(0.0f,GameLogic::instance().getGamePlaneHeight()+RenderEngine::instance().getCameraHeightAbovePlane(),0.0f),
+							  Vector3(0.0f,0.0f,0.0f),
+							  Vector3(0.0f,0.0f,-1.0f));
+	m_realCam->slide(0.0f,-tanf(30.0f*math_const<float>::DEG2RAD)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
+	m_realCam->pitch(30.0f);
+	_updateMatrices();
+
+	// get the 4 extents
+	Point3 edges[4];
+	RenderEngine::instance().getWsScreenEdges(edges,0.0f);
+
+	Point3 playeredges[4];
+	RenderEngine::instance().getWsScreenEdges(playeredges,GameLogic::instance().getGamePlaneHeight());
+
+	// get the map extents
+	Vector3 ext(m_terrainRenderer.getMapExtents());
+
+	// move our pos so that ll edge is ll of the map
+	Vector3 ll_mapedge(-ext.getX()*0.5f,0.0f,ext.getZ()*0.5f);
+	Vector3 to_ll_edge_vector = (ll_mapedge - edges[0]).getVector();
+	Point3 ll_topleftedge(edges[3] + to_ll_edge_vector);
+
+	// we compute the negative x boundary. The positive will be inverse.
+	// this boundary is the player's boundary.
+	float pl_xbound = -2.0f*ext.getX()*0.5f - ll_topleftedge.getX();
+	float cam_xbound = pl_xbound + (-edges[0].getX());
+
+	// move our pos so that ll edge is ll of the map
+	float u_map_edge = -ext.getZ()*0.5f;
+	float b_map_edge = ext.getZ()*0.5f;
+	float cam_zbound = u_map_edge - edges[2].getZ();
+
+	// below : actually I should use the plane at the max height of the map,get the edges, 
+	// & use one of the lower edges, but the difference is minimal
+	float cam_lowzbound = b_map_edge - playeredges[1].getZ();	
+
+	float pl_zbound = u_map_edge - edges[2].getZ() + playeredges[2].getZ();
+
+	RenderEngine::instance().setPlayerBounds(Vector4(pl_xbound,-pl_xbound,ext.getZ()*0.5f,pl_zbound));
+	RenderEngine::instance().setCameraBounds(Vector4(cam_xbound,-cam_xbound,cam_lowzbound,cam_zbound));
+
+	glPopMatrix();
+	glPopAttrib();
 }
