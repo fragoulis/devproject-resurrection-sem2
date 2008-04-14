@@ -181,7 +181,7 @@ void SoundEngine::_play( const string &id )
             SoundBuffer *buffer = m_buffers[id];
             if( !buffer ) return;
 
-            sound->set(  );
+            sound->set( buffer );
             sound->play();
             ok = true;
         }
