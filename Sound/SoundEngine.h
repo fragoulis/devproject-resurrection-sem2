@@ -53,8 +53,11 @@ private:
 
     SoundBuffers m_buffers;
     Sounds m_sounds;
-    Sound *m_soundMemoryPool;
     Playership *m_listener;
+
+    // Used only internaly at assignment and deletion
+    Sound *m_soundMemoryPool;
+    SoundBuffer *m_bufferMemoryPool;
 
 public:
 	void onApplicationLoad(const ParserSection&);

@@ -45,16 +45,19 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 
     typedef vector<ParserSection::SectionData> SectionList;
     const SectionList section_list = general->getSectionData();
+    const int section_list_size = (int)section_list.size();
 
-    // Loads sounds 
-    SectionList::const_iterator i = section_list.begin();
-    for(; i != section_list.end(); ++i )
+    // allocate sound buffers
+    m_bufferMemoryPool = new SoundBuffer[section_list_size];
+
+    // load sounds from file tou buffers
+    for( int i=0; i<section_list_size; i++ ) 
     {
-        const ParserSection::SectionData section = *i;
+        const ParserSection::SectionData section = section_list[i];
         const string& id   = section._tag;
         const string& file = section._val[0];
 
-        SoundBuffer *buffer = new SoundBuffer;
+        SoundBuffer *buffer = &m_bufferMemoryPool[i];
 
         if( !buffer->load( root + file ) ) 
         {
@@ -68,24 +71,18 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     assert(m_buffers.size());
     
     // allocate some sounds
-    const int size = FromString<int>(ps.getSection("Sound")->getVal("AllocationSize"));
-    m_sounds.resize(size);
+    const int sounds_count = FromString<int>(ps.getSection("Sound")->getVal("AllocationSize"));
+    m_sounds.resize(sounds_count);
     
-    m_soundMemoryPool = new Sound[size];
-    for( int i=0; i<size; i++ )
-    {
+    m_soundMemoryPool = new Sound[sounds_count];
+    for( int i=0; i<sounds_count; i++ ) {
         m_sounds[i] = &m_soundMemoryPool[i];
     }
 }
 
 void SoundEngine :: onApplicationUnload()
 {
-    SoundBuffers::iterator i = m_buffers.begin();
-    for(; i != m_buffers.end(); ++i ) {
-        delete i->second;
-        i->second = 0;
-    }
-
+    delete[] m_bufferMemoryPool;
     delete[] m_soundMemoryPool;
 }
 
