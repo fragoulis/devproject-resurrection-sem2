@@ -30,7 +30,8 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
-				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">
+				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">,
+				<"PS_CraterFlare.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -187,6 +188,17 @@ ParticleNum  = 100
 Shader       = "PS_Clouds"
 Texture      = "cloud_new_handblur.sgi" 
 NoiseTexture = "noiseVolume.dds" 
+
+[ParticleSystem : PS_CraterFlare]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 20
+ParticleNum  = 60
+Shader       = "PS_CraterFlare"
+Texture      = "Flare1_32.sgi"
+TailSize	 = 0.375
+Speed		 = 0.5
 
 
 ################# ENTITY-MODEL SETTINGS ####################

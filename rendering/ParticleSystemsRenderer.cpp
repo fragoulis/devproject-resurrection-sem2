@@ -18,6 +18,7 @@
 #include "../ParticleSystem/PS_Jet.h"
 #include "../ParticleSystem/PS_EnergyLoss.h"
 #include "../ParticleSystem/PS_Fountain.h"
+#include "../ParticleSystem/PS_CraterFlare.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -30,6 +31,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
 	EventManager::instance().registerEventListener<Life_Restored>(this);
 	EventManager::instance().registerEventListener<Terrain_Changed>(this);
+	EventManager::instance().registerEventListener<Crater_Spawned>(this);
 
 	m_isJetCreated = false;
 
@@ -235,5 +237,25 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 	cf.move(Vector3(0,0,0));  //?
 	m_psList.back()->setTransform(cf);
 
+	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		if((*it)->getName() == "PS_CraterFlare")
+		{
+			if(reinterpret_cast<PS_CraterFlare *>(*it)->getCrater() == restoredCrater.getValue())
+			{
+				m_psList.erase(it);
+				break;
+			}
+		}
+	}
 }
 
+void ParticleSystemsRenderer::onEvent(Crater_Spawned &crater) {
+
+	CoordinateFrame cf = crater.getValue()->getCoordinateFrame();
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_CraterFlare"));
+	m_psList.back()->setTransform(cf);
+	reinterpret_cast<PS_CraterFlare *>(m_psList.back())->setCrater(crater.getValue());
+}

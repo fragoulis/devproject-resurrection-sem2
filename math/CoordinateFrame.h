@@ -51,9 +51,9 @@ public:
 	float getY() const { return m_origin.getY(); }
 	float getZ() const { return m_origin.getZ(); }
 
-	void setX(float x) { m_origin.setX(x); }
-	void setY(float y) { m_origin.setY(y); }
-	void setZ(float z) { m_origin.setZ(z); }
+	void setX(float x) { m_origin.setX(x); _updateMatrix();}
+	void setY(float y) { m_origin.setY(y); _updateMatrix();}
+	void setZ(float z) { m_origin.setZ(z); _updateMatrix();}
 
 private:
 

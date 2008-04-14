@@ -13,6 +13,7 @@
 #include "PS_MultiTexExplosion.h"
 #include "PS_Fountain.h"
 #include "PS_Clouds.h"
+#include "PS_CraterFlare.h"
 #include "PS_Jet.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
@@ -120,6 +121,13 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const string texname = (*it)->getVal("Texture");
 				const string noisetexname = (*it)->getVal("NoiseTexture");
 				created_ps = new PS_Clouds((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,noisetexname);
+			}
+			else if(pstype == "PS_CraterFlare")
+			{
+				const string texname = (*it)->getVal("Texture");
+				const float tailSize = FromString<float>((*it)->getVal("TailSize"));
+				const float speed = FromString<float>((*it)->getVal("Speed"));
+				created_ps = new PS_CraterFlare((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
 			
 			m_psList.push_back(created_ps);
