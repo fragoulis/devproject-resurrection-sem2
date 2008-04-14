@@ -91,7 +91,7 @@ void  PS_CraterFlare :: _generateData(VBO * vbo,Texture * tex)
 		float ioffset = i / (totalVData - 1.0f);
 
 		Vector3 out;
-		RandomGenerator::GET_RANDOM_VECTOR3(out,Vector3(-0.2,-0.2,-0.2),Vector3(0.2,0.2,0.2));
+		RandomGenerator::GET_RANDOM_VECTOR3(out,Vector3(-0.2f,-0.2f,-0.2f),Vector3(0.2f,0.2f,0.2f));
 	
 		velocities[i] = velocities[i+1] = velocities[i+2] = velocities[i+3] = Vector4(ioffset,
 																					  out.getX(),
