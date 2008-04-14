@@ -254,8 +254,6 @@ void TerrainRenderer :: render(Graphics& g) const
 	rto.setX(rts.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
 	rto.setY(rts.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
 
-	//ShaderManager::instance()->setUniform2fv("reflectionTexCoordOffsets",rto.cfp());
-	//ShaderManager::instance()->setUniform2fv("reflectionTexCoordScale",rts.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
 
@@ -269,10 +267,24 @@ void TerrainRenderer :: render(Graphics& g) const
 	
 	// Draw the crater arrows
 
-	const float cr_aty = GameLogic::instance().getGamePlaneHeight();
-	const float crwidth = 50.0f;
-	const float crheight = 100.0f;
+	// use pts & pts_gph
+	pts_gph[2].setZ(pts_gph[2].getZ() + 50.0f);
+	pts_gph[3].setZ(pts_gph[3].getZ() + 50.0f);
 
+	const float cr_aty = GameLogic::instance().getGamePlaneHeight();
+	const float crsize = 30.0f;
+	const float crsize_rad = crsize * 1.4142135623730950488016887242097f;	// for bounding circle
+	Vector3 arrow_up = m_cameraRef->getEye() - m_cameraRef->getLookAt();
+	arrow_up.normalize();
+
+	static const Rotation arrow_rot(Vector3(0.0f,1.0f,0.0f),-90.0f*math_const<float>::DEG2RAD);
+
+	Point3 sum((pts[0].getVector() + pts[1].getVector() + pts[2].getVector() + pts[3].getVector())*0.25f);
+	const Vector3 map_center(sum.getVector());
+
+	glDisable(GL_BLEND);
+	glAlphaFunc(GL_GREATER,0.1f);
+	glEnable(GL_ALPHA_TEST);
 	ShaderManager::instance()->begin("craterArrowShader");
 	m_craterArrowTexture->bind(0);
 	ShaderManager::instance()->setUniform1i("tex",0);
@@ -281,16 +293,137 @@ void TerrainRenderer :: render(Graphics& g) const
 		it != m_craterList.end();
 		++it)
 	{
+		//check to see if it needs drawing
+		const Point3& craterpos(it->crater->getPosition());
+		Vector3 arrow_pos(float(0xFFFFFFFF),cr_aty,float(0xFFFFFFFF));
+		
+		
+		// determine region
+		/* Regions :
+			1 2 3
+			4 5 6
+			7 8 9
+
+			'Points'
+			D C
+			A B
+		*/
+
+		
+		// first , near z test
+		if(craterpos.getZ() < pts_gph[1].getZ())
+		{
+			// Reduce to regions 1 2 3 4 5 6
+			if(craterpos.getZ() > pts_gph[2].getZ())
+			{
+				// Reduce to regions 4 5 6
+				// compare w/ point on line AD
+				float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
+				float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
+				if(craterpos.getX() > (neg_x + crsize_rad))
+				{
+					// Reduce to regions 5 6
+					float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
+					if(craterpos.getX() < (pos_x - crsize_rad))
+					{
+						// Region = 5, continue
+						continue;
+					}
+					else
+					{
+						// Region = 6, set arrow
+						arrow_pos.setX(pos_x - crsize);
+						arrow_pos.setZ(craterpos.getZ());
+					}
+				}
+				else
+				{
+					// Region = 4, set arrow
+					arrow_pos.setX(neg_x + crsize);
+					arrow_pos.setZ(craterpos.getZ());
+				}
+			}
+			else 
+			{
+				// Reduce to regions 1 2 3
+				// compare w/ point on line AD
+				float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
+				float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
+				if(craterpos.getX() > (neg_x + crsize_rad))
+				{
+					// Reduce to regions 2 3
+					float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
+					if(craterpos.getX() < (pos_x - crsize_rad))
+					{
+						// Region = 2, set arrow
+						arrow_pos.setX(craterpos.getX());
+						arrow_pos.setZ(pts_gph[2].getZ() + crsize_rad);
+					}
+					else
+					{
+						// Region = 3, set arrow
+						arrow_pos.setX(pts_gph[2].getX() - crsize_rad);
+						arrow_pos.setZ(pts_gph[2].getZ() + crsize_rad);
+					}
+				}
+				else
+				{
+					// Region = 1, set arrow
+					arrow_pos.setX(pts_gph[3].getX() + crsize_rad);
+					arrow_pos.setZ(pts_gph[3].getZ() + crsize_rad);
+				}
+			}
+		}
+		else
+		{
+			// Reduce to regions 7 8 9
+			// compare w/ point on line AD
+			float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
+			float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
+			if(craterpos.getX() > (neg_x + crsize_rad))
+			{
+				// Reduce to regions 8 9
+				float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
+				if(craterpos.getX() < (pos_x - crsize_rad))
+				{
+					// Region = 8, set arrow
+					arrow_pos.setX(craterpos.getX());
+					arrow_pos.setZ(pts_gph[1].getZ() - crsize_rad);
+				}
+				else
+				{
+					// Region = 9, set arrow
+					arrow_pos.setX(pts_gph[1].getX() - crsize_rad);
+					arrow_pos.setZ(pts_gph[1].getZ() - crsize_rad);
+				}
+			}
+			else
+			{
+				// Region = 7, set arrow
+				arrow_pos.setX(pts_gph[0].getX() + crsize_rad);
+				arrow_pos.setZ(pts_gph[0].getZ() - crsize_rad);
+			}
+		}
+
+		// get direction from center map pos to crater & normalize it
+		Vector3 arrow_dir(it->crater->getPosition().getVector() - map_center);
+		arrow_dir.normalize();
+		Point3 arrow_right(arrow_dir);
+		arrow_rot.applyTo(arrow_right);
+		Vector3 arrow_r(arrow_right.getVector());
+		arrow_r.normalize();
+
+
 		ShaderManager::instance()->setUniform4fv("color",it->color.cfp());
-		Vector3 ll(it->crater->getPosition().getVector());
-		ll.setY(cr_aty);
-		RenderEngine::drawTexturedQuad(ll - Vector3(crwidth * 0.5f,crheight * 0.5f,0.0f),
-									   Vector3(crwidth,0.0f,0.0f),
-									   Vector3(0.0f,crheight,0.0f),
+		Vector3 ll(arrow_pos - arrow_r*crsize - arrow_dir*crsize);
+		
+		RenderEngine::drawTexturedQuad(ll,
+									   arrow_r*crsize*2.0f,
+									   arrow_dir*crsize*2.0f,
 									   Vector2(0.0f,0.0f),
 									   Vector2(1.0f,1.0f));
 	}
-	glDisable(GL_BLEND);
+	glDisable(GL_ALPHA_TEST);
 }
 
 
@@ -423,7 +556,6 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 	reflTexSize[0] += reflTexSize[0]%2;
 	reflTexSize[1] += reflTexSize[1]%2;
 
-	// FIXME : get the REAL dims of the screen - or get a lesser one dep on opts
 	m_lakeReflection = new Texture2D(reflTexSize[0],reflTexSize[1],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"lake reflection",false,false);
 	m_lakeReflection->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
 	m_lakeReflection->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
