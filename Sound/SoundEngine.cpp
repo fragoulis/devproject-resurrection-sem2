@@ -11,16 +11,18 @@
 #include "Sound.h"
 #include "SoundObject.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Lasers/Laser.h"
 #include "../GameLogic/EnergyTypes.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
+#include "../GameLogic/WorldObjectTypeManager.h"
 #include <iostream>
 using namespace std;
 
 #define LOAD_SOUND( root, id ) \
 { \
     const string& sLaserFile = general.getVal(id); \
-    Sound *laser = new Sound; \
+    SoundBuffer *laser = new SoundBuffer; \
     if( !laser->load( root + sLaserFile ) ) \
         cerr << "Failed to load sound: " << id << endl; \
     m_sounds.insert( make_pair( id, laser ) ); \
@@ -116,6 +118,12 @@ void SoundEngine :: onEvent(Player_Destroyed& pd)
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
     //cerr << "Enemy destroyed!" << endl;
+    //const Enemyship *enemy = pd.getValue();
+    //const int iType = enemy->getType();
+    //std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
+    //sType += "_Destroyed";
+
+    //m_sounds[sType]->play();
 }
 
 void SoundEngine :: onEvent(Player_EnergyDrained& pd)

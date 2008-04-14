@@ -9,16 +9,16 @@
 
 #include "Sound.h"
 
-Sound::Sound():
+SoundBuffer::SoundBuffer():
 m_buffer(0) 
 {}
 
-Sound::~Sound()
+SoundBuffer::~SoundBuffer()
 { 
     alDeleteBuffers(1, &m_buffer); 
 }
 
-bool Sound::load( const std::string &filename )
+bool SoundBuffer::load( const std::string &filename )
 {
     // Load wav data into a buffer.
     m_buffer = alutCreateBufferFromFile( filename.c_str() );

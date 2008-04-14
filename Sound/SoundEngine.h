@@ -16,7 +16,7 @@
 #include <vector>
 #include <string>
 class ParserSection;
-class Sound;
+class SoundBuffer;
 class SoundObject;
 class WorldObject;
 
@@ -25,7 +25,7 @@ class WorldObject;
  * Events it listens to:
  * - When players spawns, it saves its position to the main listener
  * - When laser fires, it plays a sound
- * - When laser hits an enemy, it plays a sound
+ * - When laser hits an enemy, it plays a sound depending on the enemy type
  * - When an enemy is destroyed, it plays a sound
  * - When player is destroyed, it plays a sound
  * - When ebomb is ready
@@ -33,6 +33,8 @@ class WorldObject;
  * - When ebomb hits successfully
  * - When ebomb hits unsuccessfully
  * - When level is done
+ * - engine?
+ * - ambient
  */
 class SoundEngine :
 	public Singleton< SoundEngine >,
@@ -46,7 +48,7 @@ class SoundEngine :
 {
 private:
     typedef std::string sound_id_t;
-    typedef std::map< const sound_id_t, Sound*> SoundList;
+    typedef std::map< const sound_id_t, SoundBuffer*> SoundList;
     typedef std::map< const std::string, SoundObject*> SoundObjectList;
     typedef SoundList::iterator SoundListIter;
     typedef SoundObjectList::iterator SoundObjectIter;
