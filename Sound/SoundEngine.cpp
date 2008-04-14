@@ -53,28 +53,28 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     const ParserSection& general = *(ps.getSection("Sound:General"));
 
     // Loads sounds 
-    LOAD_SOUND( sRootDir, "Laser_Fired" );
+    //LOAD_SOUND( sRootDir, "Laser_Fired" );
     //LOAD_SOUND( sRootDir, "Ambient" );
     //LOAD_SOUND( sRootDir, "PlayerEngine" );
 }
 
 void SoundEngine :: onApplicationUnload()
 {
-    for( SoundListIter i = m_sounds.begin();
-         i != m_sounds.end(); 
-         ++i )
-    {
-        delete i->second;
-        i->second = 0;
-    }
+    //for( SoundListIter i = m_sounds.begin();
+    //     i != m_sounds.end(); 
+    //     ++i )
+    //{
+    //    delete i->second;
+    //    i->second = 0;
+    //}
 
-    for( SoundObjectIter i = m_soundObjects.begin();
-         i != m_soundObjects.end(); 
-         ++i )
-    {
-        delete i->second;
-        i->second = 0;
-    }
+    //for( SoundObjectIter i = m_soundObjects.begin();
+    //     i != m_soundObjects.end(); 
+    //     ++i )
+    //{
+    //    delete i->second;
+    //    i->second = 0;
+    //}
 }
 
 void SoundEngine :: onEvent(Level_Load& ll)
@@ -89,24 +89,13 @@ void SoundEngine :: onEvent(Player_Spawned& pd)
 {
 	m_listener = pd.getValue();
 
-    // Assign two sound sources to playership
-    // one for the lasers and one for the jet engines
+    //_addSoundObject( "PlayerLaser", m_listener, "Laser_Fired" );
 
-    _addSoundObject( "PlayerLaser", m_listener, "Laser_Fired" );
-    //SoundObject *ambient = _addSoundObject( "Ambient", m_listener, "Ambient" );
-    //ambient->play();
-    
-    //SoundObject *engine = _addSoundObject( "PlayerEngine", m_listener, "PlayerEngine" );
-    //engine->setPitch(0.1f);
-    //engine->setLoop(true);
-    //engine->play();
-
-    //cerr << "Player spawned!" << endl;
 }
 
 void SoundEngine :: onEvent(Player_Destroyed& pd)
 {
-    //m_listener = 0;
+    m_listener = 0;
 
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
@@ -140,7 +129,7 @@ void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
     Laser *laser = pd.getValue();
 
-    m_soundObjects["PlayerLaser"]->play();
+    //m_soundObjects["PlayerLaser"]->play();
 }
 
 void SoundEngine::update()
@@ -169,13 +158,13 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
-SoundObject* SoundEngine::_addSoundObject( 
+Sound* SoundEngine::_addSoundObject( 
     const std::string &key, 
     WorldObject *obj, 
     const sound_id_t &id 
     )
 {
-    SoundObject *so = new SoundObject( obj, m_sounds[id] );
+    Sound *so = new Sound( obj, m_sounds[id] );
     m_soundObjects.insert( std::make_pair( key, so ) );
     return so;
 }

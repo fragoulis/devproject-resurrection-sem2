@@ -2,15 +2,15 @@
 #include "SoundBuffer.h"
 #include "../GameLogic/WorldObject.h"
 
-SoundObject::SoundObject()
+Sound::Sound()
 {}
 
-SoundObject::SoundObject( WorldObject *object, SoundBuffer *sound )
+Sound::Sound( WorldObject *object, SoundBuffer *sound )
 {
     set(object, sound);
 }
 
-void SoundObject::set( WorldObject *object, SoundBuffer *sound )
+void Sound::set( WorldObject *object, SoundBuffer *sound )
 {
     m_object = object;
     m_sound = sound;
@@ -21,7 +21,7 @@ void SoundObject::set( WorldObject *object, SoundBuffer *sound )
 
 // Updates the position of the sound source by copying the 
 // position of the connected object
-void SoundObject::update()
+void Sound::update()
 {
     m_source.setPosition( m_object->getPosition() );
 }
