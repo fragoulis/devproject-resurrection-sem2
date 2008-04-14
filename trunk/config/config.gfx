@@ -18,7 +18,7 @@ DefaultDir = "./resources/textures/"
 
 [Texture : MemDistribution]
 Texture1D = 10
-Texture2D = 30
+Texture2D = 100
 Texture3D = 2
 TextureCube = 3
 

@@ -9,9 +9,19 @@
 
 #pragma once
 #include "IRenderer.h"
+#include <vector>
+
+#include "../Menu/MainPage.h"
+
+class Texture;
+
+using namespace std;
 
 class MenuRenderer : public IRenderer
 {
+private:
+	MainPage testItem;
+
 public:
 	MenuRenderer();
 	virtual ~MenuRenderer();
@@ -23,4 +33,7 @@ public:
 	// like "addMenuOption(string name, point2 location, float width, float height"
 	// and "highlightMenuOption(int id)
 	// you figure it out!
+private:
+	vector<Texture *> m_textureList;
+
 };
