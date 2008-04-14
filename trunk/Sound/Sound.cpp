@@ -1,4 +1,4 @@
-#include "SoundObject.h"
+#include "Sound.h"
 #include "SoundBuffer.h"
 #include "../GameLogic/WorldObject.h"
 
