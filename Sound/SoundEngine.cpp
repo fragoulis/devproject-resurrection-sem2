@@ -16,17 +16,8 @@
 #include "../GameLogic/EnergyTypes.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
+#include "../gfxutils/Misc/utils.h"
 #include <iostream>
-using namespace std;
-
-#define LOAD_SOUND( root, id ) \
-{ \
-    const string& sLaserFile = general.getVal(id); \
-    SoundBuffer *laser = new SoundBuffer; \
-    if( !laser->load( root + sLaserFile ) ) \
-        cerr << "Failed to load sound: " << id << endl; \
-    m_sounds.insert( make_pair( id, laser ) ); \
-}
 
 SoundEngine :: SoundEngine():
 m_listener(0)
@@ -47,34 +38,55 @@ SoundEngine :: ~SoundEngine()
 
 void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 {
-    const string& sRootDir = ps.getSection("Sound:Root")->getVal("Dir");
-    
+    const string& root = ps.getSection("Sound")->getVal("Dir");
+
     // Read the number of sounds
-    const ParserSection& general = *(ps.getSection("Sound:General"));
+    const ParserSection *general = ps.getSection("Sound:Files");
+
+    typedef vector<ParserSection::SectionData> SectionList;
+    const SectionList section_list = general->getSectionData();
 
     // Loads sounds 
-    //LOAD_SOUND( sRootDir, "Laser_Fired" );
-    //LOAD_SOUND( sRootDir, "Ambient" );
-    //LOAD_SOUND( sRootDir, "PlayerEngine" );
+    SectionList::const_iterator i = section_list.begin();
+    for(; i != section_list.end(); ++i )
+    {
+        const ParserSection::SectionData section = *i;
+        const string& id   = section._tag;
+        const string& file = section._val[0];
+
+        SoundBuffer *buffer = new SoundBuffer;
+
+        if( !buffer->load( root + file ) ) 
+        {
+            cerr << "Failed to load sound: " << id << endl;
+            continue;
+        }
+
+        m_buffers.insert( make_pair( id, buffer ) );
+    }
+
+    assert(m_buffers.size());
+    
+    // allocate some sounds
+    const int size = FromString<int>(ps.getSection("Sound")->getVal("AllocationSize"));
+    m_sounds.resize(size);
+    
+    m_soundMemoryPool = new Sound[size];
+    for( int i=0; i<size; i++ )
+    {
+        m_sounds[i] = &m_soundMemoryPool[i];
+    }
 }
 
 void SoundEngine :: onApplicationUnload()
 {
-    //for( SoundListIter i = m_sounds.begin();
-    //     i != m_sounds.end(); 
-    //     ++i )
-    //{
-    //    delete i->second;
-    //    i->second = 0;
-    //}
+    SoundBuffers::iterator i = m_buffers.begin();
+    for(; i != m_buffers.end(); ++i ) {
+        delete i->second;
+        i->second = 0;
+    }
 
-    //for( SoundObjectIter i = m_soundObjects.begin();
-    //     i != m_soundObjects.end(); 
-    //     ++i )
-    //{
-    //    delete i->second;
-    //    i->second = 0;
-    //}
+    delete[] m_soundMemoryPool;
 }
 
 void SoundEngine :: onEvent(Level_Load& ll)
@@ -107,12 +119,12 @@ void SoundEngine :: onEvent(Player_Destroyed& pd)
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
     //cerr << "Enemy destroyed!" << endl;
-    //const Enemyship *enemy = pd.getValue();
-    //const int iType = enemy->getType();
-    //std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
-    //sType += "_Destroyed";
+    const Enemyship *enemy = pd.getValue();
+    const int iType = enemy->getType();
+    std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
+    sType += "_Destroyed";
 
-    //m_sounds[sType]->play();
+    _play(sType);
 }
 
 void SoundEngine :: onEvent(Player_EnergyDrained& pd)
@@ -127,18 +139,16 @@ void SoundEngine :: onEvent(Player_EnergyDrained& pd)
 
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
-    Laser *laser = pd.getValue();
-
-    //m_soundObjects["PlayerLaser"]->play();
+    _play("Laser_Fired");
 }
 
 void SoundEngine::update()
 {
     _updateListener();
 
-    SoundObjectIter i = m_soundObjects.begin();
-    for(; i != m_soundObjects.end(); ++i )
-        i->second->update();
+    Sounds::iterator i = m_sounds.begin();
+    for(; i != m_sounds.end(); ++i )
+        (*i)->update( m_listener->getPosition() );
 }
 
 void SoundEngine::_updateListener()
@@ -158,13 +168,21 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
-Sound* SoundEngine::_addSoundObject( 
-    const std::string &key, 
-    WorldObject *obj, 
-    const sound_id_t &id 
-    )
+void SoundEngine::_play( const string &id )
 {
-    Sound *so = new Sound( obj, m_sounds[id] );
-    m_soundObjects.insert( std::make_pair( key, so ) );
-    return so;
+    // search though the sound list to find an empty slot
+    bool ok = false;
+    Sounds::const_iterator i = m_sounds.begin();
+    for(; i != m_sounds.end() && !ok; ++i )
+    {
+        Sound *sound = *i;
+        if( !sound->isPlaying() )
+        {
+            sound->set( m_buffers[id] );
+            sound->play();
+            ok = true;
+        }
+    }
+
+    assert(ok);
 }
