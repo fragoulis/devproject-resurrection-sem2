@@ -8,7 +8,7 @@
 //*****************************************************************************
 
 #include "SoundEngine.h"
-#include "Sound.h"
+#include "SoundBuffer.h"
 #include "SoundObject.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
