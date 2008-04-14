@@ -7,7 +7,7 @@
 //**
 //*****************************************************************************
 
-#include "Sound.h"
+#include "SoundBuffer.h"
 
 SoundBuffer::SoundBuffer():
 m_buffer(0) 

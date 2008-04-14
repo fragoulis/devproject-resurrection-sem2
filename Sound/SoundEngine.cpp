@@ -9,7 +9,7 @@
 
 #include "SoundEngine.h"
 #include "SoundBuffer.h"
-#include "SoundObject.h"
+#include "Sound.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Lasers/Laser.h"
