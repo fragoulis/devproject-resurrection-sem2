@@ -94,7 +94,7 @@ AllocationSize = 100
 
 [Sound : Files]
 Laser_Fired                     = "laser01.wav"
-EnemyFighter_Destroyed          = "laser01.wav"
-EnemyInterceptor_Destroyed      = "laser01.wav"
-EnemyDisrupter_Destroyed        = "laser01.wav"
-EnemyCarrier_Destroyed          = "laser01.wav"
+EnemyFighter_Destroyed          = "exp01.wav"
+EnemyInterceptor_Destroyed      = "exp02.wav"
+EnemyDisrupter_Destroyed        = "exp03.wav"
+EnemyCarrier_Destroyed          = "exp04.wav"
