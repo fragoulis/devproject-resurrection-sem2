@@ -18,6 +18,7 @@
 
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
+SafeDistance = 150.0
 
 [EnemyFactory]
 file = "Enemies.txt"
@@ -84,11 +85,16 @@ Level = 2
 DisplayFileLine = 0
 Stream = stderr
 
-[Sound : Root]
-Dir = "resources/sounds/"
+[Sound]
+Dir     = "resources/sounds/"
+AllocationSize = 100
 
-[Sound : General]
-Count = 1
-Laser_Fired = "laser01.wav"
-Ambient = "ambient01.wav"
-PlayerEngine = "engine01.wav"
+# Important: "_Destroyed" extension is hardocoded to the code so dont change it unless you change it 
+#            at the code as well. file: soundengine.cpp, line: 124
+
+[Sound : Files]
+Laser_Fired                     = "laser01.wav"
+EnemyFighter_Destroyed          = "laser01.wav"
+EnemyInterceptor_Destroyed      = "laser01.wav"
+EnemyDisrupter_Destroyed        = "laser01.wav"
+EnemyCarrier_Destroyed          = "laser01.wav"
