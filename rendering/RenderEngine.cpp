@@ -34,7 +34,10 @@
 using namespace std;
 
 
-RenderEngine :: RenderEngine() : m_confParser(0)
+RenderEngine :: RenderEngine() 
+: m_confParser(0),
+m_cameraBounds(0.0f,0.0f,0.0f,0.0f),
+m_playerBounds(0.0f,0.0f,0.0f,0.0f)
 {
 	setViewport(0,0,1024,768);
 	glShadeModel(GL_SMOOTH);
