@@ -29,6 +29,9 @@ public:
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
 
+	void testIncrementMenu() { testItem.selectNextItem(); };
+	void testDecrementMenu() { testItem.selectPreviousItem(); };
+
 	// add functions to change menu here
 	// like "addMenuOption(string name, point2 location, float width, float height"
 	// and "highlightMenuOption(int id)

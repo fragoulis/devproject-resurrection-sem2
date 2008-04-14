@@ -23,4 +23,9 @@ public:
 	virtual void init(int screenWidth, int screenHeigth)=0;
 	virtual void update(float dt)=0;
 	virtual void render(Graphics &g) const;
+
+	int getSelectedItem() const;
+	void setSelectedItem(int itemNumber);
+	void selectNextItem();
+	void selectPreviousItem();
 };
