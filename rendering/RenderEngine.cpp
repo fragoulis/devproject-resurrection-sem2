@@ -156,7 +156,11 @@ void RenderEngine :: update ( float dt )
 
 IRenderer* RenderEngine :: createRenderer(const std::string& name) const
 {
-	if (name == "world") return new WorldRenderer();
+	if (name == "world") 
+	{
+		WorldRenderer * wr = new WorldRenderer();
+		return wr;
+	}
 	if (name == "loading") return new LoadingRenderer();
 	if (name == "hud") return new HUDRenderer();
 	if (name == "menu") return new MenuRenderer();
@@ -305,3 +309,14 @@ void RenderEngine :: getWsScreenEdges(Point3 pts[4],const float h)
 	pts[3] = getMapPositionFromScreenPosition(Point2(float(m_viewport[0]),float(m_viewport[1])),h);
 }
 
+void RenderEngine :: boundPlayerPosition(Vector3& playerpos)
+{
+	playerpos.setX(min(max(playerpos.getX(),m_playerBounds.getX()),m_playerBounds.getY()));
+	playerpos.setZ(min(max(playerpos.getZ(),m_playerBounds.getW()),m_playerBounds.getZ()));
+}
+
+void RenderEngine :: boundCameraPosition(Vector3& camerapos)
+{
+	camerapos.setX(min(max(camerapos.getX(),m_cameraBounds.getX()),m_cameraBounds.getY()));
+	camerapos.setZ(min(max(camerapos.getZ(),m_cameraBounds.getW()),m_cameraBounds.getZ()));
+}

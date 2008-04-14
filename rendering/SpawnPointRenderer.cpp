@@ -6,6 +6,8 @@
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../GameLogic/GameLogic.h"
 
+#include "../gfxutils/Misc/Logger.h"
+
 using namespace std;
 
 SpawnPointRenderer :: SpawnPointRenderer()
@@ -48,6 +50,7 @@ void SpawnPointRenderer :: render(Graphics& g) const
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 
+	unsigned i=0;
 	for(std::vector<SpawnPointInfo_t>::const_iterator it = m_spawnPoints.begin();
 		it != m_spawnPoints.end();
 		++it)
@@ -91,7 +94,6 @@ void SpawnPointRenderer :: update(const float dt)
 		it->elapsedTime += dt;
 		if((it->elapsedTime > interval) && it->hasEnded)
 			it->isActive = false;
-		break;
 	}
 }
 
@@ -111,9 +113,10 @@ void SpawnPointRenderer :: onEvent(Spawnpoint_Despawned& evt)
 		if(it->sp == sp)
 		{
 			m_spawnPoints.erase(it);
-			break;
+			return;
 		}
 	}
+	assert(0);
 }
 
 
@@ -130,9 +133,10 @@ void SpawnPointRenderer :: onEvent(Spawnpoint_SessionStarted& evt)
 			it->isActive = true;
 			it->elapsedTime = 0.0f;
 			it->hasEnded = false;
-			break;
+			return;
 		}
 	}
+	assert(0);
 }
 
 void SpawnPointRenderer :: onEvent(Spawnpoint_SessionEnded& evt)
@@ -147,7 +151,8 @@ void SpawnPointRenderer :: onEvent(Spawnpoint_SessionEnded& evt)
 		{
 			it->elapsedTime = 0.0f;
 			it->hasEnded = true;
-			break;
+			return;
 		}
 	}
+	assert(0);
 }
