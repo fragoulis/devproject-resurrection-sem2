@@ -1,27 +1,27 @@
 #include "Sound.h"
 #include "SoundBuffer.h"
-#include "../GameLogic/WorldObject.h"
 
-Sound::Sound()
+Sound::Sound():
+m_buffer(0)
 {}
 
-Sound::Sound( WorldObject *object, SoundBuffer *sound )
+Sound::Sound( SoundBuffer *sound ):
+m_buffer(0)
 {
-    set(object, sound);
+    set(sound);
 }
 
-void Sound::set( WorldObject *object, SoundBuffer *sound )
+void Sound::set( SoundBuffer *sound )
 {
-    m_object = object;
-    m_sound = sound;
+    m_buffer = sound;
 
-    const unsigned b = m_sound->getBuffer();
+    const unsigned b = m_buffer->getBuffer();
     m_source.init(&b);
 }
 
 // Updates the position of the sound source by copying the 
 // position of the connected object
-void Sound::update()
+void Sound::update( const Point3 &position )
 {
-    m_source.setPosition( m_object->getPosition() );
+    m_source.setPosition( position );
 }
