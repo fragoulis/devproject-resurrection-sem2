@@ -21,6 +21,7 @@
 */
 class ParserSection
 {
+public:
 	// Parser Section data - holds a [tag, value] pair
 	class SectionData
 	{
@@ -29,6 +30,7 @@ class ParserSection
 			std::vector<std::string> _val;		// data value
 	};
 
+private:
 	std::string     _name;					// Section name
 	std::vector<SectionData> _data;			// Section data
 	std::vector<ParserSection> _children;	// Subsections
