@@ -33,7 +33,7 @@ void PlanetController :: deactivate()
 void PlanetController :: update(float dt)
 {
 	m_renderer->update(dt);
-	SoundEngine::instance().update();
+	//SoundEngine::instance().update();
 
 
 	Input& input = Input::instance();
