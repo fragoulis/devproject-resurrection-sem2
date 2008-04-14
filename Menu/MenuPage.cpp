@@ -48,3 +48,37 @@ void MenuPage::render(Graphics &g) const {
 	glMatrixMode(GL_MODELVIEW);
 	//glEnable(GL_LIGHTING);
 }
+
+int MenuPage::getSelectedItem() const {
+	for (int i = 0; i < (int) m_items.size(); i++) {
+		if(m_items[i]->getState()==MenuItem::ITEM_STATE_SELECTED)
+			return i;
+	}
+
+	return -1;
+}
+
+void MenuPage::setSelectedItem(int itemNumber) {
+	//first deselect all the items
+	for (int i = 0; i < (int) m_items.size(); i++) {
+		m_items[i]->setState(MenuItem::ITEM_STATE_UNSELECTED);
+	}
+	//then select the new one
+	m_items[itemNumber]->setState(MenuItem::ITEM_STATE_SELECTED);
+}
+
+void  MenuPage::selectNextItem() {
+	int selectedItem = getSelectedItem();
+	if (selectedItem < (int) m_items.size()-1)
+		setSelectedItem(selectedItem+1);
+	else
+		setSelectedItem(0);
+}
+
+void  MenuPage::selectPreviousItem() {
+	int selectedItem = getSelectedItem();
+	if (selectedItem > 0)
+		setSelectedItem(selectedItem-1);
+	else
+		setSelectedItem(m_items.size()-1);
+}

@@ -64,6 +64,13 @@ void MenuController :: update(float dt)
 
 	Input& input = Input::instance();
 
+	if (input.isKeyGoingDown('W')) {
+		m_renderer->testDecrementMenu();
+	}
+	if (input.isKeyGoingDown('S')) {
+		m_renderer->testIncrementMenu();
+	}
+
 	// ESC --> exit
 	if (input.isKeyGoingDown(27)) _exit();
 

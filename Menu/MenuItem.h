@@ -30,6 +30,6 @@ public:
 	void render(Graphics& g) const;
 
 	const ItemState &getState() const { return m_state; };
-	void setItemState(ItemState state) { m_state = state; };
+	void setState(ItemState state) { m_state = state; };
 
 };
