@@ -3,7 +3,7 @@
 class SoundBuffer;
 class WorldObject;
 
-class SoundObject
+class Sound
 {
 private:
     SoundSource m_source;
@@ -11,8 +11,8 @@ private:
     SoundBuffer* m_sound;
 
 public:
-    SoundObject();
-    SoundObject( WorldObject*, SoundBuffer* );
+    Sound();
+    Sound( WorldObject*, SoundBuffer* );
 
     void set( WorldObject*, SoundBuffer* );
     void update();

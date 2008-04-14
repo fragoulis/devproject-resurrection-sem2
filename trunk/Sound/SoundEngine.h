@@ -17,7 +17,7 @@
 #include <string>
 class ParserSection;
 class SoundBuffer;
-class SoundObject;
+class Sound;
 class WorldObject;
 
 /**
@@ -49,7 +49,7 @@ class SoundEngine :
 private:
     typedef std::string sound_id_t;
     typedef std::map< const sound_id_t, SoundBuffer*> SoundList;
-    typedef std::map< const std::string, SoundObject*> SoundObjectList;
+    typedef std::map< const std::string, Sound*> SoundObjectList;
     typedef SoundList::iterator SoundListIter;
     typedef SoundObjectList::iterator SoundObjectIter;
 
@@ -75,5 +75,5 @@ private:
 	SoundEngine();
 	virtual ~SoundEngine();
     void _updateListener();
-    SoundObject* _addSoundObject( const std::string&, WorldObject*, const sound_id_t& );
+    Sound* _addSoundObject( const std::string&, WorldObject*, const sound_id_t& );
 };
