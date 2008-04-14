@@ -1,6 +1,6 @@
 #pragma once
 #include "SoundSource.h"
-class Sound;
+class SoundBuffer;
 class WorldObject;
 
 class SoundObject
@@ -8,13 +8,13 @@ class SoundObject
 private:
     SoundSource m_source;
     WorldObject *m_object;
-    Sound* m_sound;
+    SoundBuffer* m_sound;
 
 public:
     SoundObject();
-    SoundObject( WorldObject*, Sound* );
+    SoundObject( WorldObject*, SoundBuffer* );
 
-    void set( WorldObject*, Sound* );
+    void set( WorldObject*, SoundBuffer* );
     void update();
 
     void play() const        { m_source.play(); }

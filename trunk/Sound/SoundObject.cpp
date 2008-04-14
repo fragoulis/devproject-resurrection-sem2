@@ -5,12 +5,12 @@
 SoundObject::SoundObject()
 {}
 
-SoundObject::SoundObject( WorldObject *object, Sound *sound )
+SoundObject::SoundObject( WorldObject *object, SoundBuffer *sound )
 {
     set(object, sound);
 }
 
-void SoundObject::set( WorldObject *object, Sound *sound )
+void SoundObject::set( WorldObject *object, SoundBuffer *sound )
 {
     m_object = object;
     m_sound = sound;

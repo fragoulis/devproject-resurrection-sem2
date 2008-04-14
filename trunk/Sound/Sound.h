@@ -10,14 +10,14 @@
 #include <al/alut.h>
 #include <string>
 
-class Sound
+class SoundBuffer
 {
 private:
     ALuint  m_buffer;
 
 public:
-    Sound();
-    ~Sound();
+    SoundBuffer();
+    ~SoundBuffer();
 
     const ALuint getBuffer() const { return m_buffer; }
     bool load( const std::string &filename );
