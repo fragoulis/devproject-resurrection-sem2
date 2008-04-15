@@ -18,13 +18,14 @@
 #include "../ParticleSystem/PS_Jet.h"
 #include "../ParticleSystem/PS_EnergyLoss.h"
 #include "../ParticleSystem/PS_Fountain.h"
-#include "../ParticleSystem/PS_CraterFlare.h"
+#include "../ParticleSystem/PS_RotatingFlare.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
 
 	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
+	EventManager::instance().registerEventListener<Enemy_Spawned>(this);
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
@@ -167,6 +168,29 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
 	}
 	m_psList.back()->setTransform(cf);
+
+
+	/*
+	assert(0);
+	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		if((*it)->getName() == "PS_RotatingShipFlare")
+		{
+			//if(reinterpret_cast<PS_RotatingFlare *>(*it)->getCrater() == restoredCrater.getValue())
+			{
+				m_psList.erase(it);
+				break;
+			}
+		}
+	}
+	*/
+}
+
+void ParticleSystemsRenderer::onEvent(Enemy_Spawned &player) 
+{
+	//assert(0);
 }
 
 void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
@@ -187,6 +211,7 @@ void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {
 	//m_psList.back()->setTransform(cf);
 
 }
+
 
 void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
 
@@ -256,9 +281,9 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 		it != m_psList.end();
 		++it)
 	{
-		if((*it)->getName() == "PS_CraterFlare")
+		if((*it)->getName() == "PS_RotatingFlare")
 		{
-			if(reinterpret_cast<PS_CraterFlare *>(*it)->getCrater() == restoredCrater.getValue())
+			if(reinterpret_cast<PS_RotatingFlare *>(*it)->getCrater() == restoredCrater.getValue())
 			{
 				m_psList.erase(it);
 				break;
@@ -270,7 +295,7 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 void ParticleSystemsRenderer::onEvent(Crater_Spawned &crater) {
 
 	CoordinateFrame cf = crater.getValue()->getCoordinateFrame();
-	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_CraterFlare"));
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RotatingFlare"));
 	m_psList.back()->setTransform(cf);
-	reinterpret_cast<PS_CraterFlare *>(m_psList.back())->setCrater(crater.getValue());
+	reinterpret_cast<PS_RotatingFlare *>(m_psList.back())->setCrater(crater.getValue());
 }

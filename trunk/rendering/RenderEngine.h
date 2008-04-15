@@ -17,6 +17,7 @@
 #include "../math/Vector2.h"
 #include "../math/Vector4.h"
 #include "../math/Point3.h"
+#include "../GameLogic/EbombTypes.h"
 class Graphics;
 class IRenderer;
 class ConfParser;
@@ -90,6 +91,11 @@ public:
 	// get entity settings
 	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
 
+	const Vector4 getColorFromEbombType (const EbombType& et) const ;
+
+	const Vector3& getLevelExtents() const {return m_levelExtents;}
+	void setLevelExtents(const Vector3& le) {m_levelExtents = le;}
+
 	// Convenience functions
 	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
 								 const Vector2& tex_ll, const Vector2& extents);
@@ -120,6 +126,8 @@ private:
 
 	Vector4 m_playerBounds;		// player boundaries for the current level
 	Vector4 m_cameraBounds;		// camera boundaries for the current level
+
+	Vector3 m_levelExtents;
 
 
 	// helper functions

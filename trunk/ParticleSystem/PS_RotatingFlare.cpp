@@ -1,4 +1,4 @@
-#include "PS_CraterFlare.h"
+#include "PS_RotatingFlare.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../gfx/Texture/Texture.h"
 #include "../gfx/Shaders/ShaderManager.h"
@@ -8,12 +8,13 @@
 #include "../utility/RandomGenerator.h"
 #include "../GameLogic/Objects/Crater.h"
 #include "../GameLogic/GameLogic.h"
+#include "../Rendering/RenderEngine.h"
 
 #include <iostream>
 
 
 // TEMPLATE CREATION CTOR
-PS_CraterFlare :: PS_CraterFlare(const std::string& name,
+PS_RotatingFlare :: PS_RotatingFlare(const std::string& name,
 			VBO * vbo,
 			const float psize,
 			const float syslife,
@@ -33,7 +34,7 @@ m_tailSize(tailSize)
 }
 
 // TEMPLATE CREATION CTOR
-PS_CraterFlare :: PS_CraterFlare(const std::string& name,
+PS_RotatingFlare :: PS_RotatingFlare(const std::string& name,
 			Model * model,
 			const float psize,
 			const float syslife,
@@ -52,14 +53,14 @@ m_tailSize(tailSize)
 }
 
 
-PS_Base * PS_CraterFlare :: clone() const
+PS_Base * PS_RotatingFlare :: clone() const
 {
-	return new PS_CraterFlare(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_particleNum,
+	return new PS_RotatingFlare(m_nameId,m_quadArray,m_particleSize,m_systemLife,m_particleLife,m_particleNum,
 					 m_shaderIndex,m_usedAttribs,m_speed,m_tailSize);
 }
 
 
-void  PS_CraterFlare :: _generateData(VBO * vbo,Texture * tex)
+void  PS_RotatingFlare :: _generateData(VBO * vbo,Texture * tex)
 {
 	const unsigned totalVData = m_particleNum*4;
 	const unsigned totalIData = m_particleNum*6;
@@ -135,12 +136,12 @@ void  PS_CraterFlare :: _generateData(VBO * vbo,Texture * tex)
 	//MemMgrRaw::instance()->free(offsets);
 }
 
-void PS_CraterFlare :: update(const float delta)
+void PS_RotatingFlare :: update(const float delta)
 {
 	m_currentTime += delta;
 }
 
-void PS_CraterFlare :: render() const
+void PS_RotatingFlare :: render() const
 {
 
 	// set uniforms, bind texture, transform & call VBO
@@ -157,32 +158,11 @@ void PS_CraterFlare :: render() const
 	CHECK_GL_ERROR();
 	ShaderManager::instance()->setUniform1fv("tailSize",&m_tailSize);
 	ShaderManager::instance()->setUniform1fv("radsPerSec",&m_speed);
-	Vector4 cratercolor;
-	switch(m_crater->getEbombType())
-	{
-		case EBOMB_TYPE_RED : 
-			cratercolor.set(1.0f,0.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_YELLOW : 
-			cratercolor.set(1.0f,1.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_BLUE : 
-			cratercolor.set(0.0f,0.0f,1.0f,1.0f);
-			break;
-		case EBOMB_TYPE_ORANGE: 
-			cratercolor.set(1.0f,0.5f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_GREEN: 
-			cratercolor.set(0.0f,1.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_PURPLE: 
-			cratercolor.set(1.0f,0.0f,1.0f,1.0f);
-			break;
-	}
+	Vector4 cratercolor(RenderEngine::instance().getColorFromEbombType(m_crater->getEbombType()));
 	ShaderManager::instance()->setUniform4fv("craterColor",cratercolor.cfp());
 	const float radius = m_crater->getRadius();
 	ShaderManager::instance()->setUniform1fv("craterRadius",&radius);
-	const float height = GameLogic::instance().getGamePlaneHeight();
+	const float height = RenderEngine::instance().getLevelExtents().getY();
 	ShaderManager::instance()->setUniform1fv("height",&height);
 	CHECK_GL_ERROR();
 	m_quadArray->getMatGroup()[0].getTextureList()[0]->bind(0);
@@ -198,7 +178,7 @@ void PS_CraterFlare :: render() const
 	CHECK_GL_ERROR();
 }
 
-void PS_CraterFlare :: reset()
+void PS_RotatingFlare :: reset()
 {
 	m_currentTime = 0.0f;
 }

@@ -16,6 +16,7 @@
 #include <vector>
 
 class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
+												  public EventListener<Enemy_Spawned>,
 												  public EventListener<Enemy_Despawned>,
 												  public EventListener<Player_EnergyDrained>,
 												  public EventListener<Player_Spawned>,
@@ -36,6 +37,7 @@ public:
 	virtual void update(float dt);
 
 	virtual void onEvent(Key_GoingDown&);
+	virtual void onEvent(Enemy_Spawned&);
 	virtual void onEvent(Enemy_Despawned&);
 	virtual void onEvent(Player_EnergyDrained&);
 	virtual void onEvent(Player_Spawned&);

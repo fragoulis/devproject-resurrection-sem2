@@ -73,17 +73,6 @@ WorldRenderer :: ~WorldRenderer()
 
 void WorldRenderer :: render(Graphics& g) const
 {
-	// Draw transparent 2D stuff in FBO
-	/*
-	m_transpFBO.Bind();
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	m_laserRenderer.render(g);
-	m_psRenderer.render(g);
-
-	FramebufferObject::Disable();
-	*/
-
 	// now render opaque 3D stuff
 
 	m_shipRenderer.render(g);
@@ -91,41 +80,6 @@ void WorldRenderer :: render(Graphics& g) const
 	m_spawnPointRenderer.render(g);
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
-
-	// This is called by RenderEngine automatically
-	// HUDRenderer sits next to WorldRenderer, not below it
-	//m_hudRenderer.render(g);
-
-	// now overlay the quad
-/*
-	glMatrixMode(GL_PROJECTION);
-	glPushMatrix();
-	glLoadIdentity();
-	glOrtho(0,1,0,1,-1,1);
-	glMatrixMode(GL_MODELVIEW);
-	glPushMatrix();
-	glLoadIdentity();
-
-	
-	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-	glEnable(GL_BLEND);
-
-	ShaderManager::instance()->begin("blitShader");
-	m_transpSurface->bind();
-	ShaderManager::instance()->setUniform1i("tex",0);
-	RenderEngine::drawTexturedQuad(Vector3(0.0f,0.0f,0.0f),
-								   Vector3(1.0f,0.0f,0.0f),
-								   Vector3(0.0f,1.0f,0.0f),
-								   Vector2(0.0f,0.0f),
-								   Vector2(1.0f,1.0f));
-
-	glDisable(GL_BLEND);
-
-	glPopMatrix();
-	glMatrixMode(GL_PROJECTION);
-	glPopMatrix();
-	glMatrixMode(GL_MODELVIEW);	
-*/
 }
 
 void WorldRenderer :: update( float dt )

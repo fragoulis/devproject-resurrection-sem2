@@ -505,6 +505,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 
 	// Get the heights & stuff for Terrain *, at the moment assume the scale is 1 & ymax = 100
 	m_mapExtents = FromString<Vector3>(parser.getSection("Misc")->getVal("MapExtent"));
+	RenderEngine::instance().setLevelExtents(m_mapExtents);
 	m_heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
 	for(unsigned i=0;i<dataSize;++i)
 		m_heights[i] = vertexData[i].getY();
@@ -1028,29 +1029,8 @@ void TerrainRenderer::_drawLakeReflection(Graphics& g) const
 
 void TerrainRenderer::onEvent(Crater_Spawned& evt)
 {
-	Vector4 cratercolor;
-	switch(evt.getValue()->getEbombType())
-	{
-		case EBOMB_TYPE_RED : 
-			cratercolor.set(1.0f,0.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_YELLOW : 
-			cratercolor.set(1.0f,1.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_BLUE : 
-			cratercolor.set(0.0f,0.0f,1.0f,1.0f);
-			break;
-		case EBOMB_TYPE_ORANGE: 
-			cratercolor.set(1.0f,0.5f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_GREEN: 
-			cratercolor.set(0.0f,1.0f,0.0f,1.0f);
-			break;
-		case EBOMB_TYPE_PURPLE: 
-			cratercolor.set(1.0f,0.0f,1.0f,1.0f);
-			break;
-	}
-	m_craterList.push_back(CraterInfo_t(evt.getValue(),cratercolor));
+	m_craterList.push_back(CraterInfo_t(evt.getValue(),
+										RenderEngine ::instance().getColorFromEbombType(evt.getValue()->getEbombType())));
 }
 
 void TerrainRenderer::onEvent(Crater_Despawned& evt)
