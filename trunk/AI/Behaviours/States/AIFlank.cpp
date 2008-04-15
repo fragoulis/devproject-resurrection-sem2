@@ -1,7 +1,8 @@
 #include "AIFlank.h"
 #include "../../AIEnemy.h"
 #include "../../../GameLogic/Objects/Playership.h"
- 
+#include "../../../math/maths.h"
+
 void AIFlank::update( float dt, Playership *player, AIEnemy *enemy )
 {
     // Get direction to the player ship
@@ -9,11 +10,15 @@ void AIFlank::update( float dt, Playership *player, AIEnemy *enemy )
     dir.normalize();
 
     const Vector3 &player_dir = player->getThrusterDirection();
-    const float per = player_dir.dot( dir );
+    const float dot = player_dir.dot( dir );
 
-    const Rotation r(Vector3(0.0f, 1.0f, 0.0f), per);
-    r.applyTo(dir);
-
-
-    enemy->setEnemyThrusterDirection( dir );
+    // if enemy is ahead of the player
+    if( dot > 0.2f )
+    {
+        enemy->setEnemyThrusterDirection( player_dir );
+    }
+    else
+    {
+        enemy->setForceChange();
+    }
 }

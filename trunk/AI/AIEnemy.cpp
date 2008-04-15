@@ -7,7 +7,8 @@
 AIEnemy::AIEnemy():
 m_currentTime(0.0f),
 m_timeToChange(0.0f),
-m_state(0)
+m_state(0),
+m_forceChange(0)
 {}
 
 void AIEnemy::setBehaviour( AIBehaviour *behaviour ) 
@@ -41,6 +42,11 @@ float AIEnemy::getEnemyThrusterPower() const {
 
 bool AIEnemy::readyToChange( float dt )
 {
+    if( m_forceChange ) {
+        m_forceChange = false;
+        return true;
+    }
+
     m_currentTime += dt;
     if( m_currentTime > m_timeToChange )
     {
