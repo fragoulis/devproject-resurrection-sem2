@@ -1,35 +1,39 @@
-#include "PauseRenderer.h"
+#include "PlanetRenderer.h"
 #include <gl/glee.h>
 
-PauseRenderer::PauseRenderer()
+PlanetRenderer::PlanetRenderer()
 {
 }
 
-PauseRenderer::~PauseRenderer()
+PlanetRenderer::~PlanetRenderer()
 {
 }
 
 
-void PauseRenderer :: render(Graphics& g) const
+void PlanetRenderer :: render(Graphics& g) const
 {
 	// Render the menu here :D
 
-
-	glDisable(GL_TEXTURE_2D);
-	glEnable(GL_COLOR_MATERIAL);
-	glColor4f(0.3f, 0.9f, 0.3f, 0.5f);
-	glBegin(GL_QUADS);
+	glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_LIGHTING_BIT | GL_TEXTURE_BIT);
 	{
-		glVertex3f(-1.0f, -1.0f, 0.0f);
-		glVertex3f(1.0f, -1.0f, 0.0f);
-		glVertex3f(1.0f, 1.0f, 0.0f);
-		glVertex3f(-1.0f, 1.0f, 0.0f);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDisable(GL_TEXTURE_2D);
+		glEnable(GL_COLOR_MATERIAL);
+		glColor4f(0.3f, 0.5f, 0.9f, 1.0f);
+		glBegin(GL_QUADS);
+		{
+			glVertex3f(-1.0f, -1.0f, 0.0f);
+			glVertex3f(1.0f, -1.0f, 0.0f);
+			glVertex3f(1.0f, 1.0f, 0.0f);
+			glVertex3f(-1.0f, 1.0f, 0.0f);
+		}
+		glEnd();
 	}
-	glEnd();
-	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_COLOR_MATERIAL);
+
+	glPopAttrib();
 }
 
-void PauseRenderer :: update(float dt)
+void PlanetRenderer :: update(float dt)
 {
 }

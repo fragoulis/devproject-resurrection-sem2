@@ -71,10 +71,7 @@ void MenuController :: update(float dt)
 		m_renderer->selectNextItem();
 	}
 
-	//// ESC --> exit
-	//if (input.isKeyGoingDown(27)) _exit();
-
-	// ENTER --> new game
+	//ENTER
 	if (input.isKeyGoingDown(13)) {
 		switch (m_renderer->getState()) {
 			case MenuRenderer::MENU_STATE_MAIN:
