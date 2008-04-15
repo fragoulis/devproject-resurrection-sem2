@@ -134,8 +134,7 @@ void AIEngine::onEvent(Enemy_Spawned& es)
     if( s_type == "EnemyCarrier" ) return;
     
     // Give initial thruster power
-    float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, 
-                                                     m_maxThrusterPower );
+    float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, m_maxThrusterPower );
     enemyship->setThrusterPower(power);
 
     AIEnemy sec;
@@ -163,20 +162,19 @@ void AIEngine::onEvent(Enemy_Despawned& es)
 // ----------------------------------------------------------------------------
 void AIEngine::update(float dt)
 {
-    for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
+    EnemyListIt i = m_enemyList.begin();
+    for(; i != m_enemyList.end(); ++i ) 
     {
-        AIEnemy& couple = *i;
-        couple.update( dt, m_playership );
+        (*i).update( dt, m_playership );
     }
 }
 
 // ----------------------------------------------------------------------------
 void AIEngine::readStates(const ConfParser& conf)
 {
-    typedef std::vector<std::string> StringList;
-
-    const ParserSection& states_section = *(conf.getSection("States"));
-    const StringList states = states_section.getValVector("Enum");
+    //typedef std::vector<std::string> StringList;
+    //const ParserSection& states_section = *(conf.getSection("States"));
+    //const StringList states = states_section.getValVector("Enum");
 
     m_states.insert( std::make_pair( "Idle", new AIIdle ) );
     m_states.insert( std::make_pair( "Chase", new AIChase ) );
@@ -244,7 +242,7 @@ AIBehaviour* AIEngine::getRandomBehaviour()
         if( iter->second->isEnabled() ) 
         {
             out = iter->second;
-            std::cerr << "Enemy spawned with behaviour: " << iter->first << std::endl;
+            //std::cerr << "Enemy spawned with behaviour: " << iter->first << std::endl;
         }
 
         index++;

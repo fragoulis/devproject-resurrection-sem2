@@ -25,11 +25,15 @@ private:
     // Thruster power before state change
     float m_previousThrusterPower;
 
+    bool m_forceChange;
+
 public:
     AIEnemy();
 
     void update( float dt, Playership *player );
     
+    void setForceChange() { m_forceChange = true; }
+
     const Point3& getEnemyPosition() const;
     void setEnemyThrusterDirection( const Vector3& dir );
     
