@@ -68,6 +68,10 @@ void MenuPage::setSelectedItem(int itemNumber) {
 }
 
 void  MenuPage::selectNextItem() {
+
+	if (m_items.size() == 0)
+		return;
+
 	int selectedItem = getSelectedItem();
 	if (selectedItem < (int) m_items.size()-1)
 		setSelectedItem(selectedItem+1);
@@ -76,6 +80,10 @@ void  MenuPage::selectNextItem() {
 }
 
 void  MenuPage::selectPreviousItem() {
+
+	if (m_items.size() == 0)
+		return;
+
 	int selectedItem = getSelectedItem();
 	if (selectedItem > 0)
 		setSelectedItem(selectedItem-1);
