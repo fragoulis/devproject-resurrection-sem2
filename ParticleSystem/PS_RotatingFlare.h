@@ -13,7 +13,7 @@ struct VAttribStatus;
 	In the ctor for the copies, the m_usedAttribs should be modified appropriately
 */
 
-class PS_CraterFlare : public PS_Base
+class PS_RotatingFlare : public PS_Base
 {
 private:
 	float m_tailSize;
@@ -23,7 +23,7 @@ private:
 public :
 	// 2 Ctors : Template & copy 
 	// Template gets the vbo, copy gets the model
-	PS_CraterFlare(const std::string& name,
+	PS_RotatingFlare(const std::string& name,
 			Model * model,
 			const float psize,
 			const float syslife,
@@ -34,7 +34,7 @@ public :
 			const float speed,
 			const float tailsize);
 
-	PS_CraterFlare(const std::string& name,
+	PS_RotatingFlare(const std::string& name,
 			VBO * vbo,
 			const float psize,
 			const float syslife,

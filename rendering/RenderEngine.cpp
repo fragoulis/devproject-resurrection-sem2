@@ -323,3 +323,17 @@ void RenderEngine :: boundCameraPosition(Vector3& camerapos)
 	camerapos.setX(min(max(camerapos.getX(),m_cameraBounds.getX()),m_cameraBounds.getY()));
 	camerapos.setZ(min(max(camerapos.getZ(),m_cameraBounds.getW()),m_cameraBounds.getZ()));
 }
+
+const Vector4 RenderEngine :: getColorFromEbombType  (const EbombType& et) const
+{
+	static const Vector4 EbombColours[6] = 
+	{
+		Vector4(1.0f,0.0f,0.0f,1.0f),
+		Vector4(1.0f,1.0f,0.0f,1.0f),
+		Vector4(0.0f,0.0f,1.0f,1.0f),
+		Vector4(1.0f,0.5f,0.0f,1.0f),
+		Vector4(0.0f,1.0f,0.0f,1.0f),
+		Vector4(1.0f,0.0f,1.0f,1.0f)
+	};
+	return (EbombColours[unsigned(et)]);
+}

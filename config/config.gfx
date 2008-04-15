@@ -31,7 +31,7 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
 				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">,
-				<"PS_CraterFlare.sh">
+				<"PS_RotatingFlare.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -189,15 +189,26 @@ Shader       = "PS_Clouds"
 Texture      = "cloud_new_handblur.sgi" 
 NoiseTexture = "noiseVolume.dds" 
 
-[ParticleSystem : PS_CraterFlare]
+[ParticleSystem : PS_RotatingFlare]
 Variations   = 1
 SystemLife   = 15000
 ParticleLife = 15000
 ParticleSize = 20
 ParticleNum  = 60
-Shader       = "PS_CraterFlare"
+Shader       = "PS_RotatingFlare"
 Texture      = "Flare1_32.sgi"
 TailSize	 = 0.375
+Speed		 = 0.5
+
+[ParticleSystem : PS_RotatingShipFlare]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 10
+ParticleNum  = 150
+Shader       = "PS_RotatingFlare"
+Texture      = "Flare1_32.sgi"
+TailSize	 = 1
 Speed		 = 0.5
 
 
