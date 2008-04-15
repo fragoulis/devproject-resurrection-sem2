@@ -1,39 +1,34 @@
-#include "PlanetRenderer.h"
+#include "PauseRenderer.h"
+#include "RenderEngine.h"
+#include "../gfx/Shaders/ShaderManager.h"
+#include "../gfx/Texture/Texture.h"
+#include "../gfx/Texture/TextureIO.h"
+#include "../Menu/PausePage.h"
+#include "gl/glu.h"
 #include <gl/glee.h>
 
-PlanetRenderer::PlanetRenderer()
+PauseRenderer::PauseRenderer()
 {
+	int viewPortDims[4];
+	RenderEngine::instance().getViewport(viewPortDims);
+	int screenWidth = viewPortDims[2];
+	int screenHeight = viewPortDims[3];
+
+
+	m_currentMenu = new PausePage();
+	m_currentMenu->init(screenWidth, screenHeight);
 }
 
-PlanetRenderer::~PlanetRenderer()
+PauseRenderer::~PauseRenderer()
 {
+	delete m_currentMenu;
 }
 
-
-void PlanetRenderer :: render(Graphics& g) const
+void PauseRenderer :: render(Graphics& g) const
 {
-	// Render the menu here :D
-
-	glPushAttrib(GL_ENABLE_BIT | GL_COLOR_BUFFER_BIT | GL_LIGHTING_BIT | GL_TEXTURE_BIT);
-	{
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDisable(GL_TEXTURE_2D);
-		glEnable(GL_COLOR_MATERIAL);
-		glColor4f(0.3f, 0.5f, 0.9f, 1.0f);
-		glBegin(GL_QUADS);
-		{
-			glVertex3f(-1.0f, -1.0f, 0.0f);
-			glVertex3f(1.0f, -1.0f, 0.0f);
-			glVertex3f(1.0f, 1.0f, 0.0f);
-			glVertex3f(-1.0f, 1.0f, 0.0f);
-		}
-		glEnd();
-	}
-
-	glPopAttrib();
+	m_currentMenu->render(g);
 }
 
-void PlanetRenderer :: update(float dt)
+void PauseRenderer :: update(float dt)
 {
 }

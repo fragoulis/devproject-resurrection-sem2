@@ -40,18 +40,24 @@ void PauseController :: update(float dt)
 
 	Input& input = Input::instance();
 
-	// ESC pressed --> back to game
-	if (input.isKeyGoingDown(27))
-	{
-		ControllerManager::instance().activateController(new GameController());
+	if (input.isKeyGoingDown('W')) {
+		m_renderer->selectPreviousItem();
+	}
+	if (input.isKeyGoingDown('S')) {
+		m_renderer->selectNextItem();
 	}
 
-	// ENTER pressed --> unload level and go back to main menu
-	if (input.isKeyGoingDown(13))
-	{
-		LoadingController* lc = new LoadingController();
-		lc->setLoader(this, &PauseController::_loadMainMenu);
-		ControllerManager::instance().activateController(lc);
+	//ENTER
+	if (input.isKeyGoingDown(13)) {
+		if (m_renderer->getSelectedItem() == 0) {  //resume game
+			ControllerManager::instance().activateController(new GameController());  
+		} else if (m_renderer->getSelectedItem() == 1) {  //go back to main menu
+			LoadingController* lc = new LoadingController();
+			lc->setLoader(this, &PauseController::_loadMainMenu);
+			ControllerManager::instance().activateController(lc);
+		}
+
+
 	}
 }
 
