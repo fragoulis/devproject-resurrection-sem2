@@ -91,15 +91,12 @@ void SoundEngine :: onEvent(Level_Load& ll)
 	const ParserSection* ps = ll.getValue1();
 
 	// TODO: make sure all sounds required for this level are loaded
-	// If not, load them now.    
+	// If not, load them now.
 }
 
 void SoundEngine :: onEvent(Player_Spawned& pd)
 {
 	m_listener = pd.getValue();
-
-    //_addSoundObject( "PlayerLaser", m_listener, "Laser_Fired" );
-
 }
 
 void SoundEngine :: onEvent(Player_Destroyed& pd)
@@ -121,7 +118,7 @@ void SoundEngine :: onEvent(Enemy_Destroyed& pd)
     std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
     sType += "_Destroyed";
 
-    _play(sType);
+    play(sType);
 }
 
 void SoundEngine :: onEvent(Player_EnergyDrained& pd)
@@ -136,7 +133,7 @@ void SoundEngine :: onEvent(Player_EnergyDrained& pd)
 
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
-    _play("Laser_Fired");
+    play("Laser_Fired");
 }
 
 void SoundEngine::update()
@@ -165,7 +162,7 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
-void SoundEngine::_play( const string &id )
+void SoundEngine::play( const string &id )
 {
     // search though the sound list to find an empty slot
     bool ok = false;
