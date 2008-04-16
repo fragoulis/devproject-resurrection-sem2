@@ -105,7 +105,7 @@ void MenuController :: _exit()
 
 void MenuController :: _loadFirstLevel()
 {
-	//RenderEngine::instance().unloadAllRenderers();
+	RenderEngine::instance().unloadAllRenderers();
 	//RenderEngine::instance().unloadRenderer("menu");
 	GameController::safeInstance().loadLevel("TestLevel");
 }

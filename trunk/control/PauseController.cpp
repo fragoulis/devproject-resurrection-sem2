@@ -60,7 +60,7 @@ void PauseController :: update(float dt)
 void PauseController :: _loadMainMenu()
 {
 	GameLogic::instance().unloadLevel();
-	//RenderEngine::instance().unloadAllRenderers();
+	RenderEngine::instance().unloadAllRenderers();
 	//RenderEngine::instance().unloadRenderer("pause");
 	MenuController::instance().load();
 }
