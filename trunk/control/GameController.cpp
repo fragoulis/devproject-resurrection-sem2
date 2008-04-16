@@ -22,6 +22,8 @@
 
 GameController :: GameController()
 {
+	EventManager::instance().registerEventListener<Level_Complete>(this);
+	EventManager::instance().registerEventListener<Game_Over>(this);
 }
 
 GameController :: ~GameController()
@@ -109,4 +111,15 @@ void GameController :: update(float dt)
 	PhysicsEngine::instance().update(dt);
 	gl.update(dt);
 	RenderEngine::instance().update(dt);
+}
+
+
+void GameController :: onEvent(Level_Complete&)
+{
+	//ControllerManager::instance().activateController(new LevelCompleteController());
+}
+
+void GameController :: onEvent(Game_Over&)
+{
+	//ControllerManager::instance().activateController(new GameOverController());
 }

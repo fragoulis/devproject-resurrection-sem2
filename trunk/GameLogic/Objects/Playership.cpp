@@ -13,6 +13,7 @@
 #include "../../gfxutils/Misc/utils.h"
 #include "../WorldObjectTypeManager.h"
 #include "../../math/Point3.h"
+#include "../../math/Point2.h"
 
 Playership :: Playership()
 {
@@ -39,13 +40,13 @@ void Playership :: update(float dt)
 	}
 }
 
-void Playership :: confine(const Point3& minPoint, const Point3& maxPoint)
+void Playership :: confine(const Point2& minPoint, const Point2& maxPoint)
 {
 	const Point3& pos = getPosition();
 	setPosition(Point3(
 		min(maxPoint.getX(), max(minPoint.getX(), pos.getX())),
-		min(maxPoint.getY(), max(minPoint.getY(), pos.getY())),
-		min(maxPoint.getZ(), max(minPoint.getZ(), pos.getZ())))
+		pos.getY(),
+		min(maxPoint.getY(), max(minPoint.getY(), pos.getZ())))
 	);
 }
 

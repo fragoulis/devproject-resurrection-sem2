@@ -1,17 +1,19 @@
 #include "MenuPage.h"
 #include "../rendering/RenderEngine.h"
 #include "../gfx/Shaders/ShaderManager.h"
+#include "../utility/deleters.h"
 #include "gl/glu.h"
 #include <gl/glee.h>
 
 MenuPage::~MenuPage() {
-	std::vector<MenuItem *>::iterator it = m_items.begin();
-	while(it != m_items.end())
-	{
-		MenuItem *item = *it;
-		it = m_items.erase(it);
-		delete item;
-	}
+	deleteVector(m_items);
+	//std::vector<MenuItem *>::iterator it = m_items.begin();
+	//while(it != m_items.end())
+	//{
+	//	MenuItem *item = *it;
+	//	it = m_items.erase(it);
+	//	delete item;
+	//}
 }
 
 void MenuPage::render(Graphics &g) const {

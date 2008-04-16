@@ -313,6 +313,16 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 		EventManager::instance().fireEvent(Life_Restored(crater));
 		crater->setToBeDeleted();
 		_addLaserPowerBuffs(ebomb->getEbombType());
+
+		// some craters may still be alive (aside from this one),
+		// but are set to be deleted
+		int unfixedCraters = 0;
+		for (CraterList::iterator it = m_craters.begin(); it != m_craters.end(); ++it)
+		{
+			Crater* crater = *it;
+			if (!crater->isToBeDeleted()) unfixedCraters++;
+		}
+		if (unfixedCraters == 0) EventManager::instance().fireEvent(Level_Complete());
 	}
 	else
 	{
@@ -397,7 +407,13 @@ void GameLogic :: update(float dt)
 
 	// Send update to objects that need it
 	m_playership->update(dt);
-	//m_playership->confine();
+
+	int width = int(m_terrain->getTerrainWidth());
+	int height = int(m_terrain->getTerrainHeight());
+
+	Point2 minpoint(-width * 13.5f, -height * 12.0f);
+	Point2 maxpoint(width * 13.5f, height * 15.0f);
+	m_playership->confine(minpoint, maxpoint);
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());

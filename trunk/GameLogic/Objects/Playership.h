@@ -13,6 +13,7 @@
 #include "../EnergyTypes.h"
 #include "../Buffs/BuffContainer.h"
 class Point3;
+class Point2;
 
 class Playership : public Spaceship
 {
@@ -21,7 +22,7 @@ public:
 	virtual ~Playership();
 
 	void update(float dt);
-	void confine(const Point3& minPoint, const Point3& maxPoint);
+	void confine(const Point2& minPoint, const Point2& maxPoint);
 
 	int getEnergy(EnergyType type) const { return m_energy[type]; }
 	void setEnergy(EnergyType type, int amount) { m_energy[type] = amount; }

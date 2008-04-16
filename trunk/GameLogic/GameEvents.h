@@ -228,11 +228,16 @@ EVENT_WITH_VALUE(Laser_Despawned, Laser*);
 // Fires when player ship is destroyed and no spare lives remain
 SIMPLE_EVENT(Game_Over);
 
+// Signals completion of level
+// Fires when player has fixed all craters
+SIMPLE_EVENT(Level_Complete);
+
 // Signals the player ship respawns
 // Respawn is unrelated to spawn/despawn
 // Fires when the player is destroyed and at least 1 spare life remains
 // The parameter is the player ship object
 EVENT_WITH_VALUE(Player_Respawned, Playership*);
+
 
 
 

@@ -26,7 +26,9 @@ public:
 	
 	void fillData(float * heights,const float xzscale,const float ymax,const unsigned dim);
 
-	unsigned getTerrainDim() const {return m_terrainDim;}
+	unsigned getTerrainDim() const { return m_terrainDim; }
+	unsigned getTerrainHeight() const { return m_terrainDim; }
+	unsigned getTerrainWidth() const { return m_terrainDim; }
 	
 private:
 
