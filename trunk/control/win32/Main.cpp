@@ -41,6 +41,9 @@
  */
 int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,int nCmdShow)
 {
+    alutInit(0,0);
+    alGetError();
+
 	//_CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
 	MSG winMsg;	//the window's message struct
 	ZeroMemory(&winMsg,sizeof(MSG));	//fill with 0's
@@ -112,9 +115,6 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 int main(int ac,char *av[])
 {
-    alutInit(&ac, av);
-    alGetError();
-
     char buf[256];
     int i;
     HINSTANCE inst;
