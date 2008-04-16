@@ -23,7 +23,6 @@
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
-
 	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	EventManager::instance().registerEventListener<Enemy_Spawned>(this);
@@ -51,6 +50,20 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 		it = m_psList.erase(it);
 		delete ps;
 	}
+
+	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+
+	EventManager::instance().unRegisterEventListener<Enemy_Spawned>(this);
+	EventManager::instance().unRegisterEventListener<Enemy_Despawned>(this);
+	EventManager::instance().unRegisterEventListener<Player_EnergyDrained>(this);
+	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
+	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
+	EventManager::instance().unRegisterEventListener<Ebomb_Despawned>(this);
+	EventManager::instance().unRegisterEventListener<Life_Restored>(this);
+	EventManager::instance().unRegisterEventListener<Terrain_Changed>(this);
+	EventManager::instance().unRegisterEventListener<Crater_Spawned>(this);
+	EventManager::instance().unRegisterEventListener<Level_Unload>(this);
+
 }
 
 void ParticleSystemsRenderer :: onEvent(Level_Unload& e)

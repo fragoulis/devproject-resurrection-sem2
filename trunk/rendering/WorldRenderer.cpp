@@ -29,6 +29,7 @@ m_playerActive(false),
 m_transpSurface(0),
 m_boundsComputed(false)
 {
+	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 
@@ -68,6 +69,10 @@ WorldRenderer :: ~WorldRenderer()
 		delete m_transpSurface;
 		m_transpSurface = 0;
 	}
+
+	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
 }
 
 void WorldRenderer :: onEvent(Level_Unload& evt)

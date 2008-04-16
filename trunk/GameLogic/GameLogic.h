@@ -67,8 +67,10 @@ public:
 
 
 	// These are functions controller can call to change the game state
-	void loadLevel(const std::string& id);
+	void loadLevel(const std::string& levelName);
 	void unloadLevel();
+	const std::string& getCurrentLevel() const { return m_levelName; }
+
 	Enemyship* spawnEnemy(int type);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);
@@ -78,6 +80,8 @@ public:
 	void swapLasers();
 	void unSwapLasers();
 
+
+	// events!
 	void onEvent(Collision_Player_Enemy&);
 	void onEvent(Collision_Enemy_Laser&);
 	void onEvent(Collision_Ebomb_Crater&);
@@ -88,6 +92,8 @@ public:
 	void onEvent(Player_Destroyed&);
 
 private:
+
+	std::string m_levelName;
 
 	float m_gamePlaneHeight; // Y coord of all gameplay things like laser, player, enemy
 
@@ -140,6 +146,8 @@ private:
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
 	void _deleteLevelData();
+
+
 
 	// Singleton stuff
 	friend Singleton< GameLogic >;

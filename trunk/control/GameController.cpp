@@ -11,6 +11,7 @@
 #include "GameController.h"
 #include "ControllerManager.h"
 #include "PauseController.h"
+#include "LoadingController.h"
 #include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
 #include "../AI/AIEngine.h"
@@ -102,7 +103,7 @@ void GameController :: update(float dt)
 	// ESC --> pause game
 	if (input.isKeyGoingDown(27))
 	{
-		ControllerManager::instance().activateController(new PauseController());
+		ControllerManager::instance().activateController(&m_pauseController);
 	}
 
 
@@ -116,10 +117,23 @@ void GameController :: update(float dt)
 
 void GameController :: onEvent(Level_Complete&)
 {
-	//ControllerManager::instance().activateController(new LevelCompleteController());
+	ControllerManager::instance().activateController(&m_levelCompleteController);
 }
 
 void GameController :: onEvent(Game_Over&)
 {
-	//ControllerManager::instance().activateController(new GameOverController());
+	ControllerManager::instance().activateController(&m_gameOverController);
+}
+
+void GameController :: loadLevel(const std::string& levelName)
+{
+	RenderEngine::instance().loadRenderer("world");
+	RenderEngine::instance().loadRenderer("hud");
+	GameLogic::safeInstance().loadLevel(levelName);
+	ControllerManager::instance().activateController(this);
+}
+
+void GameController :: continueGame()
+{
+	ControllerManager::instance().activateController(this);
 }

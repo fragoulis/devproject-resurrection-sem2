@@ -50,11 +50,7 @@ bool Application :: init()
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
 
-	LoadingController* lc = new LoadingController();
-	lc->setLoader(this, &Application::load);
-
-	ControllerManager& cm = ControllerManager::safeInstance();
-	cm.activateController(lc);
+	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
 }
@@ -94,8 +90,7 @@ void Application :: load()
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
-	ControllerManager& cm = ControllerManager::safeInstance();
-	cm.activateController(new MenuController());
+	MenuController::safeInstance().load();
 }
 
 

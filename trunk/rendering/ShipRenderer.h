@@ -28,7 +28,7 @@ class ShipRenderer : public EventListener< Player_Spawned >,
 {
 public:
 	ShipRenderer();
-	~ShipRenderer(){}
+	~ShipRenderer();
 
 	void render(Graphics& g) const;
 

@@ -230,7 +230,8 @@ SIMPLE_EVENT(Game_Over);
 
 // Signals completion of level
 // Fires when player has fixed all craters
-SIMPLE_EVENT(Level_Complete);
+// String is level name
+EVENT_WITH_VALUE(Level_Complete, const std::string&);
 
 // Signals the player ship respawns
 // Respawn is unrelated to spawn/despawn

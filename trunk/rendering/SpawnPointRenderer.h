@@ -17,7 +17,7 @@ class SpawnPointRenderer : public EventListener< Spawnpoint_Spawned >,
 {
 public:
 	SpawnPointRenderer();
-	~SpawnPointRenderer(){}
+	~SpawnPointRenderer();
 
 	void render(Graphics& g) const;
 	void update(const float dt);

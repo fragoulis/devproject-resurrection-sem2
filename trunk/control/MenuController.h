@@ -9,29 +9,38 @@
 
 #pragma once
 #include "IController.h"
+#include "../utility/Singleton.h"
 class MenuRenderer;
 
-class MenuController : public IController
+class MenuController :
+	public IController,
+	public Singleton< MenuController >
 {
 public:
-	MenuController();
-	virtual ~MenuController();
-
-
 	virtual void activate();
 	virtual void deactivate();
 	virtual void update(float dt);
+
+
+	// Helper to load menu
+	void load();
+
 
 private:
 	MenuRenderer* m_renderer;
 	// Menu data
 
 
-	void _continueGame();
 	void _newGame();
 	void _exit();
 
 	// Callback for LoadingController
 	// New game simply loads the very first level
 	void _loadFirstLevel();
+
+
+	// Singleton stuffz
+	friend Singleton< MenuController >;
+	MenuController();
+	virtual ~MenuController();
 };

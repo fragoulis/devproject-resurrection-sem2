@@ -15,7 +15,7 @@ class LaserRenderer : public EventListener< Laser_Spawned >,
 {
 public:
 	LaserRenderer();
-	~LaserRenderer(){}
+	~LaserRenderer();
 
 	void render(Graphics& g) const;
 
