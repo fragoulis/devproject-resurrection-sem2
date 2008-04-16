@@ -322,7 +322,7 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 			Crater* crater = *it;
 			if (!crater->isToBeDeleted()) unfixedCraters++;
 		}
-		if (unfixedCraters == 0) EventManager::instance().fireEvent(Level_Complete());
+		if (unfixedCraters == 0) EventManager::instance().fireEvent(Level_Complete(m_levelName));
 	}
 	else
 	{
@@ -530,12 +530,14 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
  * Fires Level_Load event.
  * Spawns terrain, playership, craters, spawnpoints
  */
-void GameLogic :: loadLevel(const std::string& id)
+void GameLogic :: loadLevel(const std::string& levelName)
 {
 	// should have gotten unload before this
 	assert(m_terrain == 0);
 	assert(m_playership == 0);
 	assert(m_enemyships.empty());
+
+	m_levelName = levelName;
 
 	// Reset variables
 	m_playerLaserCooldownLeft = 0.0f;
@@ -543,12 +545,12 @@ void GameLogic :: loadLevel(const std::string& id)
 
 
 	// load level file
-	ConfParser cpLevel(std::string("config/levels/") + id + ".txt");
+	ConfParser cpLevel(std::string("config/levels/") + levelName + ".txt");
 	const ParserSection* psMap = cpLevel.getSection("Map");
 	const ParserSection* psGameplay = cpLevel.getSection("Gameplay");
 
 	// fire event Level_Load
-	EventManager::instance().fireEvent(Level_Load(&cpLevel.rootSection(), id));
+	EventManager::instance().fireEvent(Level_Load(&cpLevel.rootSection(), levelName));
 
 	// load gameplay file
 	ConfParser cpGameplay(std::string("config/levels/") + psGameplay->getVal("file"));

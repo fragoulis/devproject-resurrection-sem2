@@ -21,13 +21,6 @@ LoadingController :: LoadingController() :
 {
 }
 
-LoadingController :: LoadingController(ILoader* loader) :
-	m_needToDeleteLoader(false),
-	m_loader(loader),
-	m_timeTillWeCanLoad(TIME_TILL_LOAD)
-{
-}
-
 LoadingController :: ~LoadingController()
 {
 	_deleteLoader();

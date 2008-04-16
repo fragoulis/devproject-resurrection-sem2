@@ -5,10 +5,10 @@
 #include "OSinterface/Input.h"
 #include "LoadingController.h"
 #include "../Sound/SoundEngine.h"
+#include <string>
 
 PlanetController::PlanetController()
 {
-	m_renderer = dynamic_cast<PlanetRenderer*>(RenderEngine::instance().getRenderer("planet"));
 }
 
 PlanetController::~PlanetController()
@@ -22,12 +22,13 @@ void PlanetController :: activate()
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.deactivateAllRenderers();
 	re.activateRenderer("planet");
+	m_renderer = dynamic_cast<PlanetRenderer*>(RenderEngine::instance().getRenderer("planet"));
 }
 
 void PlanetController :: deactivate()
 {
 	RenderEngine& re = RenderEngine::safeInstance();
-	re.deactivateRenderer("planet");
+	re.deactivateAllRenderers();
 }
 
 void PlanetController :: update(float dt)
@@ -40,7 +41,19 @@ void PlanetController :: update(float dt)
 
 	if (input.isKeyDownOrGoingDown(27))
 	{
-		LoadingController* lc = new LoadingController();
 		// TODO!
 	}
+}
+
+
+void PlanetController :: load()
+{
+	RenderEngine::instance().loadRenderer("planet");
+	ControllerManager::instance().activateController(this);
+}
+
+void PlanetController :: onEvent(Level_Complete& evt)
+{
+	// Fix planet screen so we set level to complete
+	const std::string& levelName = evt.getValue();
 }

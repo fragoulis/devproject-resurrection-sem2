@@ -10,6 +10,7 @@
 
 #pragma once
 #include "IController.h"
+#include "../utility/Singleton.h"
 
 
 /**
@@ -54,12 +55,14 @@ private:
 };
 
 
-class LoadingController : public IController
+
+
+
+class LoadingController :
+	public IController,
+	public Singleton< LoadingController>
 {
 public:
-	LoadingController();
-	LoadingController(ILoader* loader);
-	virtual ~LoadingController();
 
 	template< typename ObjectType, typename Function >
 	void setLoader(ObjectType* obj, Function f) {
@@ -76,10 +79,25 @@ public:
 	virtual void deactivate();
 	virtual void update(float dt);
 
+	// helper for ease of use
+	template< typename ObjectType, typename Function >
+	void load(ObjectType* obj, Function f)
+	{
+		LoadingController& lc = LoadingController::instance();
+		lc.setLoader(obj, f);
+		ControllerManager::safeInstance().activateController(&lc);
+	}
+
 private:
 	ILoader* m_loader;
 	bool m_needToDeleteLoader;
 	float m_timeTillWeCanLoad;
 
 	void _deleteLoader();
+
+
+
+	friend Singleton< LoadingController >;
+	LoadingController();
+	virtual ~LoadingController();
 };

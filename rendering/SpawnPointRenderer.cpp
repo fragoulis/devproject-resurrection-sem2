@@ -21,6 +21,15 @@ SpawnPointRenderer :: SpawnPointRenderer()
 	m_spawnPointTexture = RenderEngine::instance().getConstRenderSettings().getSpawnPointTexture();
 }
 
+SpawnPointRenderer :: ~SpawnPointRenderer()
+{
+	EventManager::instance().unRegisterEventListener< Spawnpoint_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Spawnpoint_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Spawnpoint_SessionStarted >(this);
+	EventManager::instance().unRegisterEventListener< Spawnpoint_SessionEnded >(this);
+	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+}
+
 void SpawnPointRenderer :: onEvent(Level_Unload& e)
 {
 	m_spawnPoints.clear();

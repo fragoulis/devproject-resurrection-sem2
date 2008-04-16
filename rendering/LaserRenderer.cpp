@@ -23,6 +23,14 @@ LaserRenderer :: LaserRenderer()
 	m_negColor = Vector4(0.0f,1.0f,0.0f,1.0f);
 }
 
+LaserRenderer :: ~LaserRenderer()
+{
+	EventManager::instance().unRegisterEventListener< Laser_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Laser_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+}
+
+
 void LaserRenderer :: onEvent(Level_Unload&)
 {
 	m_lasers.clear();

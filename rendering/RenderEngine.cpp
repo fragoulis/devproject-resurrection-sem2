@@ -83,19 +83,19 @@ void RenderEngine :: onApplicationUnload()
 
 void RenderEngine :: activateRenderer(const std::string& name)
 {
-	IRenderer* r = findRenderer(name);
+	IRenderer* r = _findRenderer(name);
 	if (r == NULL) {
-		r = createRenderer(name);
+		r = _createRenderer(name);
 		assert(r != NULL);
-		addRenderer(name, r);
+		_addRenderer(name, r);
 	}
-	activateRenderer(r);
+	_activateRenderer(r);
 }
 
 void RenderEngine :: deactivateRenderer(const std::string& name)
 {
-	IRenderer* r = findRenderer(name);
-	if (r != NULL) deactivateRenderer(r);
+	IRenderer* r = _findRenderer(name);
+	if (r != NULL) _deactivateRenderer(r);
 }
 
 void RenderEngine :: deactivateAllRenderers()
@@ -105,42 +105,44 @@ void RenderEngine :: deactivateAllRenderers()
 
 void RenderEngine :: loadRenderer(const std::string& name)
 {
-	IRenderer* r = findRenderer(name);
+	IRenderer* r = _findRenderer(name);
 	if (r == NULL) {
-		r = createRenderer(name);
+		r = _createRenderer(name);
 		assert(r != NULL);
-		addRenderer(name, r);
+		_addRenderer(name, r);
 	}
 }
 
 void RenderEngine :: unloadRenderer(const std::string& name)
 {
-	IRenderer* r = findRenderer(name);
+	IRenderer* r = _findRenderer(name);
 	if (r != NULL) {
-		deactivateRenderer(r);
-		removeRenderer(name);
+		_deactivateRenderer(r);
+		_removeRenderer(name);
 		delete r;
 	}
 }
 
 IRenderer* RenderEngine :: getRenderer(const std::string& name)
 {
-	IRenderer* r = findRenderer(name);
+	IRenderer* r = _findRenderer(name);
 	if (r == NULL) {
-		r = createRenderer(name);
+		r = _createRenderer(name);
 		assert(r != NULL);
-		addRenderer(name, r);
+		_addRenderer(name, r);
 	}
 	return r;
 }
 
 void RenderEngine::unloadAllRenderers()
 {
+	deactivateAllRenderers();
 	struct RendererDeleter
 	{
 		void operator () (const std::string&, IRenderer* r) { delete r; }
 	};
 	m_renderers.visitObjects(RendererDeleter());
+	m_renderers.clear();
 }
 
 
@@ -157,7 +159,7 @@ void RenderEngine :: update ( float dt )
 		(*i)->update(dt);
 }
 
-IRenderer* RenderEngine :: createRenderer(const std::string& name) const
+IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 {
 	if (name == "world") 
 	{
@@ -197,7 +199,7 @@ void RenderEngine :: getViewport(int vp[4]) const
 Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
 {
 	// get world renderer
-	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(findRenderer("world"));
+	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(_findRenderer("world"));
 	// get it's modelview & proj matrices
 	const double * mv = wr->getModelViewMatrixd();
 	const double * proj = wr->getProjectionMatrixd();
@@ -221,7 +223,7 @@ Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
 Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p,const float h)
 {
 	// get world renderer
-	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(findRenderer("world"));
+	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(_findRenderer("world"));
 	// get it's modelview & proj matrices
 	const double * mv = wr->getModelViewMatrixd();
 	const double * proj = wr->getProjectionMatrixd();

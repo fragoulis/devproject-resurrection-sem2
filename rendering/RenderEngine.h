@@ -133,14 +133,14 @@ private:
 
 
 	// helper functions
-	IRenderer* findRenderer(const std::string& name) { return m_renderers.findObjectReference(name); }
-	IRenderer* createRenderer(const std::string& name) const;
+	IRenderer* _findRenderer(const std::string& name) { return m_renderers.findObjectReference(name); }
+	IRenderer* _createRenderer(const std::string& name) const;
 
-	void addRenderer(const std::string& name, IRenderer* r) { m_renderers.addObjectReference(r, name); }
-	void removeRenderer(const std::string& name) { m_renderers.removeObjectReference(name); }
+	void _addRenderer(const std::string& name, IRenderer* r) { m_renderers.addObjectReference(r, name); }
+	void _removeRenderer(const std::string& name) { m_renderers.removeObjectReference(name); }
 
-	void activateRenderer(IRenderer* r) { m_activeRenderers.push_back(r); }
-	void deactivateRenderer(IRenderer* r) { remove(m_activeRenderers.begin(), m_activeRenderers.end(), r); }
+	void _activateRenderer(IRenderer* r) { m_activeRenderers.push_back(r); }
+	void _deactivateRenderer(IRenderer* r) { remove(m_activeRenderers.begin(), m_activeRenderers.end(), r); }
 
 
 	// singleton stuff

@@ -34,10 +34,17 @@ HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBO
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("hudBomb.bmp");
 	m_textureList.push_back(tex);
+
+	EventManager::instance().registerEventListener<Player_Spawned>(this);
+	EventManager::instance().registerEventListener<Player_Despawned>(this);
+	EventManager::instance().registerEventListener<Level_Unload>(this);
 }
 
 HUDRenderer::~HUDRenderer()
 {
+	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
+	EventManager::instance().unRegisterEventListener<Player_Despawned>(this);
+	EventManager::instance().unRegisterEventListener<Level_Unload>(this);
 }
 
 
@@ -202,6 +209,11 @@ void HUDRenderer :: onEvent(Player_Spawned& evt)
 }
 
 void HUDRenderer :: onEvent(Player_Despawned&)
+{
+	m_playership = 0;
+}
+
+void HUDRenderer :: onEvent(Level_Unload&)
 {
 	m_playership = 0;
 }

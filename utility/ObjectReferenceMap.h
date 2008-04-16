@@ -42,6 +42,8 @@ public:
 		return i->second;
 	}
 
+	void clear() { m_references.clear(); }
+
 
 
 	template< typename ObjectVisitor >

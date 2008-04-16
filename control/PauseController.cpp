@@ -11,7 +11,6 @@
 
 PauseController::PauseController()
 {
-	m_renderer = dynamic_cast<PauseRenderer*>(RenderEngine::instance().getRenderer("pause"));
 }
 
 PauseController::~PauseController()
@@ -25,6 +24,7 @@ void PauseController :: activate()
 	// We keep all renderers (world/hud) active and add pause on top of it
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.activateRenderer("pause");
+	m_renderer = dynamic_cast<PauseRenderer*>(RenderEngine::instance().getRenderer("pause"));
 }
 
 void PauseController :: deactivate()
@@ -50,19 +50,17 @@ void PauseController :: update(float dt)
 	//ENTER
 	if (input.isKeyGoingDown(13)) {
 		if (m_renderer->getSelectedItem() == 0) {  //resume game
-			ControllerManager::instance().activateController(new GameController());  
+			GameController::instance().continueGame();
 		} else if (m_renderer->getSelectedItem() == 1) {  //go back to main menu
-			LoadingController* lc = new LoadingController();
-			lc->setLoader(this, &PauseController::_loadMainMenu);
-			ControllerManager::instance().activateController(lc);
+			LoadingController::instance().load(this, &PauseController::_loadMainMenu);
 		}
-
-
 	}
 }
 
 void PauseController :: _loadMainMenu()
 {
 	GameLogic::instance().unloadLevel();
-	ControllerManager::instance().activateController(new MenuController());
+	//RenderEngine::instance().unloadAllRenderers();
+	//RenderEngine::instance().unloadRenderer("pause");
+	MenuController::instance().load();
 }

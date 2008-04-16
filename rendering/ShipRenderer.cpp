@@ -41,6 +41,17 @@ ShipRenderer :: ShipRenderer()
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 }
 
+ShipRenderer :: ~ShipRenderer()
+{
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+}
+
 void ShipRenderer :: onEvent(Level_Unload& e)
 {
 	m_ships.clear();

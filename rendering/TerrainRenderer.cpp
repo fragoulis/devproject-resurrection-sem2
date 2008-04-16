@@ -74,6 +74,21 @@ TerrainRenderer :: TerrainRenderer() :
 
 TerrainRenderer :: ~TerrainRenderer()
 {
+	EventManager::instance().unRegisterEventListener< Terrain_Changed >(this);
+	EventManager::instance().unRegisterEventListener< Level_Load >(this);
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Crater_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Crater_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Life_Restored >(this);
+	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+
+	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+
 	_clearResources();
 }
 

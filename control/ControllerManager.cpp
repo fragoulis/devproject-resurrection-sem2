@@ -15,6 +15,7 @@
 //#include "MenuController.h"
 #include <cassert>
 
+
 class EmptyController : public IController
 {
 public:
@@ -26,18 +27,21 @@ public:
 };
 
 
+EmptyController g_EmptyController;
+
+
 ControllerManager :: ControllerManager() : m_activeController(NULL)
 {
 	//IController* c = createController("empty");
 	//addController("empty", c);
 	//m_activeController = c;
-	m_activeController = new EmptyController();
+	m_activeController = &g_EmptyController;
 }
 
 ControllerManager :: ~ControllerManager()
 {
 	m_activeController->deactivate();
-	delete m_activeController;
+	//delete m_activeController;
 }
 
 void ControllerManager::update(float dt)
@@ -49,7 +53,7 @@ void ControllerManager::update(float dt)
 void ControllerManager :: activateController(IController* controller)
 {
 	m_activeController->deactivate();
-	delete m_activeController;
+	//delete m_activeController;
 	m_activeController = controller;
 	m_activeController->activate();
 }
