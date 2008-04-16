@@ -21,11 +21,13 @@ void GameOverController :: activate()
 	//re.deactivateAllRenderers();
 	//re.activateRenderer("world");
 	//re.activateRenderer("hud");
+	RenderEngine::instance().activateRenderer("GameOver");
 }
 
 void GameOverController :: deactivate()
 {
 	// deactivate controls, but leaves renderers alone
+	RenderEngine::instance().deactivateRenderer("GameOver");
 }
 
 

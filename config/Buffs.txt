@@ -45,3 +45,9 @@ Class = Generic
 Duration = 10000.0
 MaxStacks = 10
 Debuff = false
+
+[Invulnerability]
+Class = Generic
+Duration = 2.0
+MaxStacks = 1
+Debuff = false

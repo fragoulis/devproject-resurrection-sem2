@@ -15,6 +15,8 @@
 #include "MenuRenderer.h"
 #include "PlanetRenderer.h"
 #include "PauseRenderer.h"
+#include "LevelCompleteRenderer.h"
+#include "GameOverRenderer.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
 #include <cassert>
@@ -171,6 +173,8 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 	if (name == "menu") return new MenuRenderer();
 	if (name == "planet") return new PlanetRenderer();
 	if (name == "pause") return new PauseRenderer();
+	if (name == "LevelComplete") return new LevelCompleteRenderer();
+	if (name == "GameOver") return new GameOverRenderer();
 	return NULL;
 }
 

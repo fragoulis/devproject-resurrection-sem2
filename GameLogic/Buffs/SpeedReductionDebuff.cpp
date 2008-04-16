@@ -21,7 +21,7 @@ SpeedReductionDebuff :: ~SpeedReductionDebuff()
 {
 }
 
-Buff* SpeedReductionDebuff :: clone()
+Buff* SpeedReductionDebuff :: clone() const
 {
 	return new SpeedReductionDebuff(*this);
 }

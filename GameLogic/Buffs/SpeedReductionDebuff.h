@@ -18,7 +18,7 @@ public:
 	virtual ~SpeedReductionDebuff();
 
 	virtual void loadSettings(const ParserSection&);
-	virtual Buff* clone();
+	virtual Buff* clone() const;
 
 private:
 	float m_factor;
