@@ -108,6 +108,8 @@ void AIEngine::onEvent(Level_Unload&)
     BehaviourListIt i = m_behaviours.begin();
     for(; i != m_behaviours.end(); ++i)
         i->second->disable();
+
+	m_enemyList.clear();
 }
 
 // ----------------------------------------------------------------------------
