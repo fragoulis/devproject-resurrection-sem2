@@ -49,6 +49,6 @@ void GameOverController :: update(float dt)
 void GameOverController :: _loadMainMenu()
 {
 	GameLogic::instance().unloadLevel();
-	//RenderEngine::instance().unloadAllRenderers();
+	RenderEngine::instance().unloadAllRenderers();
 	MenuController::instance().load();
 }

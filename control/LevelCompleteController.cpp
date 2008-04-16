@@ -47,6 +47,6 @@ void LevelCompleteController :: update(float dt)
 void LevelCompleteController :: _loadPlanetSelectionScreen()
 {
 	GameLogic::instance().unloadLevel();
-	//RenderEngine::instance().unloadAllRenderers();
+	RenderEngine::instance().unloadAllRenderers();
 	PlanetController::instance().load();
 }
