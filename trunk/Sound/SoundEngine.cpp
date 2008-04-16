@@ -106,6 +106,8 @@ void SoundEngine :: onEvent(Player_Destroyed& pd)
 	Playership* ps = pd.getValue1();
 	EnergyType type = pd.getValue2();
 
+	m_listener = ps;
+
     //cerr << "Player destroyed!" << endl;
 	// TODO: play sound effect for playership explosion
 }
