@@ -21,7 +21,7 @@ Buff::~Buff()
 {
 }
 
-Buff* Buff :: clone()
+Buff* Buff :: clone() const
 {
 	return new Buff(*this);
 }

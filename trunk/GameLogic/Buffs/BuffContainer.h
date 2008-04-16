@@ -18,15 +18,15 @@ public:
 	BuffContainer();
 	virtual ~BuffContainer();
 
-	bool hasBuff(int type);
+	bool hasBuff(int type) const;
 	void addBuff(int type);
 	void removeBuff(int type);
 	void removeStack(int type);
 	void removeAll();
 	void removeAllBuffs();
 	void removeAllDebuffs();
-	const Buff* getBuff(int type);
-	int getBuffStacks(int type);
+	const Buff* getBuff(int type) const;
+	int getBuffStacks(int type) const;
 
 	// updates timers and removes expired buffs
 	void update(float dt, WorldObject* target);
@@ -34,10 +34,12 @@ public:
 private:
 	typedef std::vector<Buff*> BuffVector;
 	typedef BuffVector::iterator BuffVectorIt;
+	typedef BuffVector::const_iterator BuffVectorCIt;
 	BuffVector m_buffs;
 
 
 	BuffVectorIt _findBuff(int type);
-	Buff* _getBuff(int type);
+	BuffVectorCIt _findBuff(int type) const;
+	Buff* _getBuff(int type) const;
 	void _removeBuff(BuffVectorIt it);
 };

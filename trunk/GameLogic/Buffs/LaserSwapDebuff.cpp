@@ -19,7 +19,7 @@ LaserSwapDebuff::~LaserSwapDebuff()
 }
 
 
-Buff* LaserSwapDebuff :: clone()
+Buff* LaserSwapDebuff :: clone() const
 {
 	return new LaserSwapDebuff(*this);
 }

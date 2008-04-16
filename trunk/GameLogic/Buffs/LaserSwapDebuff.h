@@ -16,7 +16,7 @@ public:
 	LaserSwapDebuff(int type);
 	virtual ~LaserSwapDebuff();
 
-	virtual Buff* clone();
+	virtual Buff* clone() const;
 
 private:
 

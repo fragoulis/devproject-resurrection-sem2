@@ -38,7 +38,7 @@ public:
 
 	void update(float dt, WorldObject* target);
 	virtual void loadSettings(const ParserSection&);
-	virtual Buff* clone();
+	virtual Buff* clone() const;
 
 private:
 	int m_type;

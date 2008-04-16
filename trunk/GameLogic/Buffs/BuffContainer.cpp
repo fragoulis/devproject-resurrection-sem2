@@ -20,7 +20,7 @@ class BuffTypeEqualPredicate
 {
 public:
 	BuffTypeEqualPredicate(int type) : m_type(type) { }
-	inline bool operator() (Buff* a) { return a->getType() == m_type; }
+	inline bool operator() (const Buff* a) { return a->getType() == m_type; }
 private:
 	int m_type;
 };
@@ -36,14 +36,14 @@ BuffContainer :: ~BuffContainer()
 }
 
 
-int BuffContainer :: getBuffStacks(int type)
+int BuffContainer :: getBuffStacks(int type) const
 {
 	Buff* buff = _getBuff(type);
 	if (buff == 0) return 0;
 	return buff->getCurrentStacks();
 }
 
-bool BuffContainer :: hasBuff(int type)
+bool BuffContainer :: hasBuff(int type) const
 {
 	return _findBuff(type) != m_buffs.end();
 }
@@ -99,7 +99,7 @@ void BuffContainer :: removeAllDebuffs()
 	}
 }
 
-const Buff* BuffContainer :: getBuff(int type)
+const Buff* BuffContainer :: getBuff(int type) const
 {
 	return _getBuff(type);
 }
@@ -119,9 +119,14 @@ BuffContainer::BuffVectorIt BuffContainer :: _findBuff(int type)
 	return find_if(m_buffs.begin(), m_buffs.end(), BuffTypeEqualPredicate(type));
 }
 
-Buff* BuffContainer :: _getBuff(int type)
+BuffContainer::BuffVectorCIt BuffContainer :: _findBuff(int type) const
 {
-	BuffVectorIt it = _findBuff(type);
+	return find_if(m_buffs.begin(), m_buffs.end(), BuffTypeEqualPredicate(type));
+}
+
+Buff* BuffContainer :: _getBuff(int type) const
+{
+	BuffVectorCIt it = _findBuff(type);
 	if (it == m_buffs.end()) return 0;
 	return *it;
 }

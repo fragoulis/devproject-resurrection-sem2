@@ -33,10 +33,10 @@ public:
 	void resetAllEnergy();
 	void respawn();
 
-	bool isInvulnerable() const { return m_state == INVULNERABLE; }
+	bool isInvulnerable() const { return hasBuff(m_bufftypeInvulnerability); }
 
 	void addBuff(int type) { m_buffContainer.addBuff(type); }
-	bool hasBuff(int type) { return m_buffContainer.hasBuff(type); }
+	bool hasBuff(int type) const { return m_buffContainer.hasBuff(type); }
 	int getBuffStacks(int type) { return m_buffContainer.getBuffStacks(type); }
 
 	void loadSettings(const ParserSection&);
@@ -45,7 +45,6 @@ private:
 	enum State {
 		ALIVE,
 		DYING, // not used yet
-		INVULNERABLE, // set when player restarts
 		TO_BE_DELETED,
 		UNKNOWN,
 	};
@@ -56,4 +55,5 @@ private:
 	int m_energy[ENERGY_TYPE_COUNT];
 	int m_energyCapacity;
 	BuffContainer m_buffContainer;
+	int m_bufftypeInvulnerability;
 };

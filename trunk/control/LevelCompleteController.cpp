@@ -20,10 +20,12 @@ void LevelCompleteController :: activate()
 	// Level complete gfx is rendered directly somewhere else?
 	// OR we can add a renderer for it, dunno
 	// That IS better :D
+	RenderEngine::instance().activateRenderer("LevelComplete");
 }
 
 void LevelCompleteController :: deactivate()
 {
+	RenderEngine::instance().deactivateRenderer("LevelComplete");
 }
 
 
