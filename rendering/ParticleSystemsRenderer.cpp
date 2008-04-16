@@ -19,6 +19,7 @@
 #include "../ParticleSystem/PS_EnergyLoss.h"
 #include "../ParticleSystem/PS_Fountain.h"
 #include "../ParticleSystem/PS_RotatingFlare.h"
+#include "../ParticleSystem/PS_EnemyEnergyViz.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -182,27 +183,25 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 	m_psList.back()->setTransform(cf);
 
 
-	/*
-	assert(0);
 	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
 		it != m_psList.end();
 		++it)
 	{
-		if((*it)->getName() == "PS_RotatingShipFlare")
+		if((*it)->getName() == "PS_EnemyEnergyViz")
 		{
-			//if(reinterpret_cast<PS_RotatingFlare *>(*it)->getCrater() == restoredCrater.getValue())
+			if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy.getValue())
 			{
 				m_psList.erase(it);
 				break;
 			}
 		}
 	}
-	*/
 }
 
-void ParticleSystemsRenderer::onEvent(Enemy_Spawned &player) 
+void ParticleSystemsRenderer::onEvent(Enemy_Spawned &enemy) 
 {
-	//assert(0);
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyEnergyViz"));
+	reinterpret_cast<PS_EnemyEnergyViz *>(m_psList.back())->setEnemyship(enemy.getValue());
 }
 
 void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy) {

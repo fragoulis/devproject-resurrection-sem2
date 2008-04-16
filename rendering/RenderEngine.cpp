@@ -337,3 +337,14 @@ const Vector4 RenderEngine :: getColorFromEbombType  (const EbombType& et) const
 	};
 	return (EbombColours[unsigned(et)]);
 }
+
+const Vector4 RenderEngine :: getColorFromEnergyType (const EnergyType& et) const 
+{
+	static const Vector4 EnergyColours[3] = 
+	{
+		Vector4(1.0f,0.0f,0.0f,1.0f),
+		Vector4(1.0f,1.0f,0.0f,1.0f),
+		Vector4(0.0f,0.0f,1.0f,1.0f)
+	};
+	return (EnergyColours[unsigned(et)]);
+}

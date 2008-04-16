@@ -14,6 +14,7 @@
 #include "PS_Fountain.h"
 #include "PS_Clouds.h"
 #include "PS_RotatingFlare.h"
+#include "PS_EnemyEnergyViz.h"
 #include "PS_Jet.h"
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
@@ -129,12 +130,12 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const float speed = FromString<float>((*it)->getVal("Speed"));
 				created_ps = new PS_RotatingFlare((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
-			else if(pstype == "PS_RotatingShipFlare")
+			else if(pstype == "PS_EnemyEnergyViz")
 			{
 				const string texname = (*it)->getVal("Texture");
 				const float tailSize = FromString<float>((*it)->getVal("TailSize"));
 				const float speed = FromString<float>((*it)->getVal("Speed"));
-				created_ps = new PS_RotatingFlare((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
+				created_ps = new PS_EnemyEnergyViz((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
 			
 			m_psList.push_back(created_ps);
