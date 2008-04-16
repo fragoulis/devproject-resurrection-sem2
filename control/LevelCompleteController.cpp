@@ -48,5 +48,5 @@ void LevelCompleteController :: _loadPlanetSelectionScreen()
 {
 	GameLogic::instance().unloadLevel();
 	RenderEngine::instance().unloadAllRenderers();
-	PlanetController::instance().load();
+	PlanetController::safeInstance().load();
 }

@@ -13,25 +13,25 @@ test = 5
 [Spawnpoints]
 test = 5
 
-[Craters : Crater0]
+[CommentedOutCraters : Crater0]
 Radius = 159.796
 AffectedAreaRadius = 911.019
 EbombType = blue
 Location = (-1085.51, -1131.43)
 
-[Craters : Crater1]
+[CommentedOutCraters : Crater1]
 Radius = 176.326
 AffectedAreaRadius = 933.06
 EbombType = red
 Location = (1013.88, -1858.77)
 
-[Craters : Crater2]
+[CommentedOutCraters : Crater2]
 Radius = 110.204
 AffectedAreaRadius = 896.325
 EbombType = yellow
 Location = (1256.32, -742.04)
 
-[Craters : Crater3]
+[CommentedOutCraters : Crater3]
 Radius = 220.408
 AffectedAreaRadius = 1021.22
 EbombType = orange
@@ -43,7 +43,7 @@ AffectedAreaRadius = 1013.88
 EbombType = purple
 Location = (-314.081, 220.408)
 
-[Craters : Crater5]
+[CommentedOutCraters : Crater5]
 Radius = 154.286
 AffectedAreaRadius = 1072.65
 EbombType = green
@@ -52,8 +52,8 @@ Location = (1201.22, 1263.67)
 
 [Spawnpoints : p1]
 Location = (-500, 500)
-EnemyType = EnemyInterceptor            # string
-EnemyCount = 1                      # int
+EnemyType = EnemyFighter
+EnemyCount = 1
 EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
@@ -64,15 +64,29 @@ MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 
 
-[Spawnpoints : p2]
+[CommentedOutSpawnpoints : p2]
 Location = (500, -100)
 EnemyType = EnemyDisrupter // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1
-EnergyType = red
+EnergyType = blue
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 500.0
+TimeBetweenSessionEndAndSessionStart = 1.0
+MinimumPlayerDistance = 128.0
+MaximumPlayerDistance = 10000.0
+
+
+[Spawnpoints : p3]
+Location = (-800, -500)
+EnemyType = EnemyCarrier // EnemyCarrier works too, but need new AI :)
+EnemyCount = 1
+EnergyType = yellow
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 1.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 500000.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
