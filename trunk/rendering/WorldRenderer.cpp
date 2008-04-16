@@ -70,6 +70,13 @@ WorldRenderer :: ~WorldRenderer()
 	}
 }
 
+void WorldRenderer :: onEvent(Level_Unload& evt)
+{
+	m_playerActive = false;
+	m_boundsComputed = false;
+	m_playerCoordFrame = 0;
+}
+
 
 void WorldRenderer :: render(Graphics& g) const
 {

@@ -34,6 +34,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Life_Restored>(this);
 	EventManager::instance().registerEventListener<Terrain_Changed>(this);
 	EventManager::instance().registerEventListener<Crater_Spawned>(this);
+	EventManager::instance().registerEventListener<Level_Unload>(this);
 
 	m_isJetCreated = false;
 
@@ -51,6 +52,17 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 	}
 }
 
+void ParticleSystemsRenderer :: onEvent(Level_Unload& e)
+{
+	std::vector<PS_Base *>::iterator it = m_psList.begin();
+	while(it != m_psList.end())
+	{
+		PS_Base *ps = *it;
+		it = m_psList.erase(it);
+		delete ps;
+	}
+	m_psList.clear();
+}
 
 
 void ParticleSystemsRenderer :: render( Graphics& g ) const

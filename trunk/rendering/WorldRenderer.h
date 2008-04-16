@@ -34,7 +34,8 @@ class Texture;
 
 class WorldRenderer : public IRenderer,  
 					  public EventListener< Player_Spawned >,
-					  public EventListener< Player_Despawned >
+					  public EventListener< Player_Despawned >,
+					  public EventListener< Level_Unload >
 {
 public:
 	WorldRenderer();
@@ -62,6 +63,7 @@ public:
 	// Events
 	void onEvent(Player_Spawned&);
 	void onEvent(Player_Despawned&);
+	void onEvent(Level_Unload&);
 
 private:
 
@@ -70,11 +72,11 @@ private:
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
 	Camera		  * m_camera;				// The world renderer has our main camera
 	Camera		  * m_realCam;
-	TerrainRenderer m_terrainRenderer;
-	ParticleSystemsRenderer m_psRenderer;
-	ShipRenderer	m_shipRenderer;
-	LaserRenderer   m_laserRenderer;
-	SpawnPointRenderer m_spawnPointRenderer;
+	TerrainRenderer  m_terrainRenderer;
+	ParticleSystemsRenderer  m_psRenderer;
+	ShipRenderer	 m_shipRenderer;
+	LaserRenderer    m_laserRenderer;
+	SpawnPointRenderer  m_spawnPointRenderer;
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;

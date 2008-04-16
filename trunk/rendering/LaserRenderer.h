@@ -9,7 +9,8 @@
 class Graphics;
 class Texture;
 class LaserRenderer : public EventListener< Laser_Spawned >,
-						public EventListener< Laser_Despawned >
+						public EventListener< Laser_Despawned >,
+						public EventListener< Level_Unload >
 					 
 {
 public:
@@ -20,6 +21,7 @@ public:
 
 	void onEvent(Laser_Spawned&);
 	void onEvent(Laser_Despawned&);
+	void onEvent(Level_Unload&);
 
 private:
 

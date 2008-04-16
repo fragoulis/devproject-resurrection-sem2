@@ -38,6 +38,12 @@ ShipRenderer :: ShipRenderer()
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
+	EventManager::instance().registerEventListener< Level_Unload >(this);
+}
+
+void ShipRenderer :: onEvent(Level_Unload& e)
+{
+	m_ships.clear();
 }
 
 void ShipRenderer :: render(Graphics& g) const

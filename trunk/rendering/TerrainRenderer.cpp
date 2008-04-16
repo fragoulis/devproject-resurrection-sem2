@@ -65,6 +65,7 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Crater_Spawned >(this);
 	EventManager::instance().registerEventListener< Crater_Despawned >(this);
 	EventManager::instance().registerEventListener< Life_Restored >(this);
+	EventManager::instance().registerEventListener< Level_Unload >(this);
 
 	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
@@ -72,6 +73,11 @@ TerrainRenderer :: TerrainRenderer() :
 }
 
 TerrainRenderer :: ~TerrainRenderer()
+{
+	_clearResources();
+}
+
+void TerrainRenderer :: onEvent(Level_Unload& evt)
 {
 	_clearResources();
 }
