@@ -44,7 +44,8 @@ class TerrainRenderer :
 	public EventListener< Ebomb_Despawned >,
 	public EventListener< Crater_Spawned >,
 	public EventListener< Crater_Despawned >,
-	public EventListener< Life_Restored >
+	public EventListener< Life_Restored >,
+	public EventListener< Level_Unload >
 
 {
 public:
@@ -54,6 +55,7 @@ public:
 	void render(Graphics& g) const;
 
 	void onEvent(Level_Load&);
+	void onEvent(Level_Unload&);
 	void onEvent(Terrain_Changed&);
 	void onEvent(Player_Spawned&);
 	void onEvent(Enemy_Spawned&);

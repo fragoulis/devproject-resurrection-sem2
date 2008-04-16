@@ -11,7 +11,8 @@ class Texture;
 class SpawnPointRenderer : public EventListener< Spawnpoint_Spawned >,
 						public EventListener< Spawnpoint_Despawned >,
 						public EventListener< Spawnpoint_SessionStarted >,
-						public EventListener< Spawnpoint_SessionEnded >
+						public EventListener< Spawnpoint_SessionEnded >,
+						public EventListener< Level_Unload >
 					 
 {
 public:
@@ -25,6 +26,7 @@ public:
 	void onEvent(Spawnpoint_Despawned&);
 	void onEvent(Spawnpoint_SessionStarted&);
 	void onEvent(Spawnpoint_SessionEnded&);
+	void onEvent(Level_Unload&);
 
 private:
 

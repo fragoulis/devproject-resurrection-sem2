@@ -24,7 +24,8 @@ class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_Going
 												  public EventListener<Ebomb_Despawned>,
 												  public EventListener<Life_Restored>,
 												  public EventListener<Terrain_Changed>,
-												  public EventListener<Crater_Spawned>
+												  public EventListener<Crater_Spawned>,
+												  public EventListener<Level_Unload>
 {
 public:
 	//flag to check if a jet particle system is already created (there is only one needed)
@@ -46,6 +47,7 @@ public:
 	virtual void onEvent(Life_Restored&);
 	virtual void onEvent(Terrain_Changed&);
 	virtual void onEvent(Crater_Spawned&);
+	virtual void onEvent(Level_Unload&);
 
 private:
 	// bunch of ParticleSystems here I guess

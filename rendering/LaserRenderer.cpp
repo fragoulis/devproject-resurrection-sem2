@@ -11,6 +11,7 @@ LaserRenderer :: LaserRenderer()
 {
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
+	EventManager::instance().registerEventListener< Level_Unload >(this);
 
 	m_laserTypePos = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
 	m_laserTypeNeg = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
@@ -20,6 +21,11 @@ LaserRenderer :: LaserRenderer()
 	// FIXME : editable colors?
 	m_posColor = Vector4(1.0f,0.0f,0.0f,1.0f);
 	m_negColor = Vector4(0.0f,1.0f,0.0f,1.0f);
+}
+
+void LaserRenderer :: onEvent(Level_Unload&)
+{
+	m_lasers.clear();
 }
 
 void LaserRenderer :: render(Graphics& g) const
