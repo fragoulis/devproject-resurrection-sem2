@@ -68,7 +68,7 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
         m_buffers.insert( make_pair( id, buffer ) );
     }
 
-    assert(m_buffers.size());
+    //assert(m_buffers.size());
     
     // allocate some sounds
     const int sounds_count = FromString<int>(ps.getSection("Sound")->getVal("AllocationSize"));

@@ -10,6 +10,8 @@
 
 #pragma once
 #include "IController.h"
+#include "../utility/EventManager.h"
+#include "../GameLogic/GameEvents.h"
 
 
 /**
@@ -24,15 +26,19 @@
  * A different controller (PauseController) can decide not to call these functions.
  * That would effectively pause the game.
  */
-class GameController : public IController
+class GameController :
+	public IController,
+	public EventListener<Level_Complete>,
+	public EventListener<Game_Over>
 {
 public:
 	GameController();
 	virtual ~GameController();
 
-
 	virtual void activate();
 	virtual void deactivate();
 	virtual void update(float dt);
 
+	virtual void onEvent(Level_Complete&);
+	virtual void onEvent(Game_Over&);
 };
