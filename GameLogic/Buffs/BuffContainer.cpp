@@ -38,14 +38,16 @@ BuffContainer :: ~BuffContainer()
 
 int BuffContainer :: getBuffStacks(int type) const
 {
-	Buff* buff = _getBuff(type);
+	const Buff* buff = getBuff(type);
 	if (buff == 0) return 0;
 	return buff->getCurrentStacks();
 }
 
 bool BuffContainer :: hasBuff(int type) const
 {
-	return _findBuff(type) != m_buffs.end();
+	const Buff* buff = getBuff(type);
+	if (buff == 0) return false;
+	return buff->isActive();
 }
 
 void BuffContainer :: addBuff(int type)
@@ -99,10 +101,6 @@ void BuffContainer :: removeAllDebuffs()
 	}
 }
 
-const Buff* BuffContainer :: getBuff(int type) const
-{
-	return _getBuff(type);
-}
 
 void BuffContainer :: update(float dt, WorldObject* target)
 {
@@ -124,7 +122,14 @@ BuffContainer::BuffVectorCIt BuffContainer :: _findBuff(int type) const
 	return find_if(m_buffs.begin(), m_buffs.end(), BuffTypeEqualPredicate(type));
 }
 
-Buff* BuffContainer :: _getBuff(int type) const
+Buff* BuffContainer :: _getBuff(int type)
+{
+	BuffVectorIt it = _findBuff(type);
+	if (it == m_buffs.end()) return 0;
+	return *it;
+}
+
+const Buff* BuffContainer :: _getBuff(int type) const
 {
 	BuffVectorCIt it = _findBuff(type);
 	if (it == m_buffs.end()) return 0;
