@@ -16,7 +16,7 @@
 #include "../GameLogic/Objects/Playership.h"
 #include "gl/glu.h"
 
-HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
+HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
 {
 	Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.bmp");
 	m_textureList.push_back(tex);
@@ -35,16 +35,16 @@ HUDRenderer::HUDRenderer() : m_playership(0), m_currentLives(0), m_ebombType(EBO
 	tex = TextureIO::instance()->getTexture("hudBomb.bmp");
 	m_textureList.push_back(tex);
 
-	EventManager::instance().registerEventListener<Player_Spawned>(this);
-	EventManager::instance().registerEventListener<Player_Despawned>(this);
-	EventManager::instance().registerEventListener<Level_Unload>(this);
+	//EventManager::instance().registerEventListener<Player_Spawned>(this);
+	//EventManager::instance().registerEventListener<Player_Despawned>(this);
+	//EventManager::instance().registerEventListener<Level_Unload>(this);
 }
 
 HUDRenderer::~HUDRenderer()
 {
-	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
-	EventManager::instance().unRegisterEventListener<Player_Despawned>(this);
-	EventManager::instance().unRegisterEventListener<Level_Unload>(this);
+	//EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
+	//EventManager::instance().unRegisterEventListener<Player_Despawned>(this);
+	//EventManager::instance().unRegisterEventListener<Level_Unload>(this);
 }
 
 
@@ -62,6 +62,10 @@ void HUDRenderer :: render(Graphics& g) const
 	RenderEngine::instance().getViewport(viewPortDims);
 	int screenWidth = viewPortDims[2];
 	int screenHeight = viewPortDims[3];
+
+	const Playership* playership = GameLogic::instance().getPlayership();
+	int currentLives = GameLogic::instance().getCurrentLives();
+	EbombType ebombType = GameLogic::instance().getCurrentEbombType();
 
 
 	//glDisable(GL_LIGHTING);
@@ -90,11 +94,11 @@ void HUDRenderer :: render(Graphics& g) const
 		ShaderManager::instance()->setUniform4fv("constantColor", white);
 		CHECK_GL_ERROR();
 
-		if (m_playership != NULL) {
-			int energyCapacity = m_playership->getEnergyCapacity();
-			int redEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_RED);
-			int yellowEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_YELLOW);
-			int blueEnergyAmount = m_playership->getEnergy(ENERGY_TYPE_BLUE);
+		if (playership != NULL) {
+			int energyCapacity = playership->getEnergyCapacity();
+			int redEnergyAmount = playership->getEnergy(ENERGY_TYPE_RED);
+			int yellowEnergyAmount = playership->getEnergy(ENERGY_TYPE_YELLOW);
+			int blueEnergyAmount = playership->getEnergy(ENERGY_TYPE_BLUE);
 
 			//DRAW HUD BARS
 			//life bar
@@ -111,7 +115,7 @@ void HUDRenderer :: render(Graphics& g) const
 
 			m_textureList[0]->bind(0);
 			//DRAW LIFES INFO
-			for (int i = 0; i < m_currentLives; i++)
+			for (int i = 0; i < currentLives; i++)
 				RenderEngine::drawTexturedQuad(Vector3((float) (i*50.0f), 0, 0), Vector3(50.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
 
 			const GLfloat red[4] = {1.0f,0.0f,0.0f,1.0f};
@@ -123,7 +127,7 @@ void HUDRenderer :: render(Graphics& g) const
 			
 			//DRAW E-BOMB INFO
 			m_textureList[7]->bind(0);
-			switch (m_ebombType) {
+			switch (ebombType) {
 				case EBOMB_TYPE_UNKNOWN:
 					break;
 				case EBOMB_TYPE_RED:
@@ -197,23 +201,23 @@ void HUDRenderer :: render(Graphics& g) const
 
 void HUDRenderer :: update(float dt)
 {
-	m_playership = GameLogic::instance().getPlayership();
-	m_currentLives = GameLogic::instance().getCurrentLives();
-	m_ebombType = GameLogic::instance().getCurrentEbombType();
+	//m_playership = GameLogic::instance().getPlayership();
+	//m_currentLives = GameLogic::instance().getCurrentLives();
+	//m_ebombType = GameLogic::instance().getCurrentEbombType();
 }
 
 
-void HUDRenderer :: onEvent(Player_Spawned& evt)
-{
-	m_playership = evt.getValue();
-}
-
-void HUDRenderer :: onEvent(Player_Despawned&)
-{
-	m_playership = 0;
-}
-
-void HUDRenderer :: onEvent(Level_Unload&)
-{
-	m_playership = 0;
-}
+//void HUDRenderer :: onEvent(Player_Spawned& evt)
+//{
+//	m_playership = evt.getValue();
+//}
+//
+//void HUDRenderer :: onEvent(Player_Despawned&)
+//{
+//	m_playership = 0;
+//}
+//
+//void HUDRenderer :: onEvent(Level_Unload&)
+//{
+//	m_playership = 0;
+//}
