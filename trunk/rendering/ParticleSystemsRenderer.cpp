@@ -20,6 +20,7 @@
 #include "../ParticleSystem/PS_Fountain.h"
 #include "../ParticleSystem/PS_RotatingFlare.h"
 #include "../ParticleSystem/PS_EnemyEnergyViz.h"
+#include "../utility/deleters.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
@@ -42,14 +43,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
-
-	std::vector<PS_Base *>::iterator it = m_psList.begin();
-	while(it != m_psList.end())
-	{
-		PS_Base *ps = *it;
-		it = m_psList.erase(it);
-		delete ps;
-	}
+	deleteVector(m_psList);
 
 	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
@@ -68,14 +62,7 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 
 void ParticleSystemsRenderer :: onEvent(Level_Unload& e)
 {
-	std::vector<PS_Base *>::iterator it = m_psList.begin();
-	while(it != m_psList.end())
-	{
-		PS_Base *ps = *it;
-		it = m_psList.erase(it);
-		delete ps;
-	}
-	m_psList.clear();
+	deleteVector(m_psList);
 }
 
 

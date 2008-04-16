@@ -18,10 +18,10 @@ class Playership;
 
 using namespace std;
 
-class HUDRenderer : public IRenderer,
-					public EventListener< Player_Spawned >,
-					public EventListener< Player_Despawned >,
-					public EventListener< Level_Unload >
+class HUDRenderer : public IRenderer
+					//public EventListener< Player_Spawned >,
+					//public EventListener< Player_Despawned >,
+					//public EventListener< Level_Unload >
 {
 private:
 	enum {
@@ -37,14 +37,14 @@ public:
 
 
 	// Events
-	void onEvent(Player_Spawned&);
-	void onEvent(Player_Despawned&);
-	void onEvent(Level_Unload&);
+	//void onEvent(Player_Spawned&);
+	//void onEvent(Player_Despawned&);
+	//void onEvent(Level_Unload&);
 
 private:
-	const Playership* m_playership;
-	int m_currentLives;
-	EbombType m_ebombType; 
+	//const Playership* m_playership;
+	//int m_currentLives;
+	//EbombType m_ebombType; 
 
 	vector<Texture *> m_textureList;
 
