@@ -44,8 +44,6 @@ HUDRenderer::~HUDRenderer()
 
 void HUDRenderer :: render(Graphics& g) const
 {
-	
-
 	// draw energy bars
 	// draw number of lives
 	// draw type of e-bomb. You could listen to events for e-bomb created/uncreated

@@ -18,6 +18,7 @@
 #include "../math/Vector4.h"
 #include "../math/Point3.h"
 #include "../GameLogic/EbombTypes.h"
+#include "../GameLogic/EnergyTypes.h"
 class Graphics;
 class IRenderer;
 class ConfParser;
@@ -92,6 +93,7 @@ public:
 	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
 
 	const Vector4 getColorFromEbombType (const EbombType& et) const ;
+	const Vector4 getColorFromEnergyType (const EnergyType& et) const ;
 
 	const Vector3& getLevelExtents() const {return m_levelExtents;}
 	void setLevelExtents(const Vector3& le) {m_levelExtents = le;}

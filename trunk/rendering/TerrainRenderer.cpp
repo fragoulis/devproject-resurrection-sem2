@@ -126,6 +126,10 @@ void TerrainRenderer :: _clearResources()
 		delete m_cloudPS;
 		m_cloudPS = 0;
 	}
+
+	m_craterList.clear();
+	m_shadowCasters.clear();
+	m_tformInfo.clear();
 }
 
 
