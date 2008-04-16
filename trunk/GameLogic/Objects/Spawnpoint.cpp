@@ -100,10 +100,8 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 
 void Spawnpoint :: _spawnEnemy()
 {
-	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType);
-	es->setPosition(getPosition());
-	es->setEnergyType(m_energyType);
-	EventManager::instance().fireEvent(Enemy_Spawned(es));
+	const Point3& pos = getPosition();
+	GameLogic::instance().spawnEnemy(m_spawnType, m_energyType, pos.getX(), pos.getZ());
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_timeTillNextEvent = m_timeBetweenSpawns;

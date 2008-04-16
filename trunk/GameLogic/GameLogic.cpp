@@ -308,7 +308,7 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 	Ebomb* ebomb = evt.getObject1();
 	Crater* crater = evt.getObject2();
 	ebomb->setToBeDeleted();
-	if (ebomb->getEbombType() == crater->getEbombType())
+	if (ebomb->getEbombType() == crater->getEbombType() && !crater->isProtected())
 	{
 		EventManager::instance().fireEvent(Life_Restored(crater));
 		crater->setToBeDeleted();
@@ -426,6 +426,10 @@ void GameLogic :: update(float dt)
 	{
 		(*i)->update(dt);
 	}
+	for (CraterList::iterator i = m_craters.begin(); i != m_craters.end(); ++i)
+	{
+		(*i)->update(dt);
+	}
 
 	// delete objects that died this round
 	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
@@ -446,13 +450,13 @@ void GameLogic :: update(float dt)
 /**
  * Helper function for spawn points
  */
-Enemyship* GameLogic :: spawnEnemy( int type )
+Enemyship* GameLogic :: spawnEnemy( int type, EnergyType energyType, float x, float z )
 {
 	Enemyship* es = EnemyFactory::instance().createEnemyship(type);
 	m_enemyships.push_back(es);
-	Point3 pos = es->getPosition();
-	pos.setY(m_gamePlaneHeight);
-	es->setPosition(pos);
+	es->setPosition(Point3(x, m_gamePlaneHeight, z));
+	es->setEnergyType(energyType);
+	EventManager::instance().fireEvent(Enemy_Spawned(es));
 	return es;
 }
 

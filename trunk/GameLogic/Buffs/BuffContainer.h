@@ -25,7 +25,7 @@ public:
 	void removeAll();
 	void removeAllBuffs();
 	void removeAllDebuffs();
-	const Buff* getBuff(int type) const;
+	const Buff* getBuff(int type) const { return _getBuff(type); }
 	int getBuffStacks(int type) const;
 
 	// updates timers and removes expired buffs
@@ -40,6 +40,7 @@ private:
 
 	BuffVectorIt _findBuff(int type);
 	BuffVectorCIt _findBuff(int type) const;
-	Buff* _getBuff(int type) const;
+	Buff* _getBuff(int type);
+	const Buff* _getBuff(int type) const;
 	void _removeBuff(BuffVectorIt it);
 };

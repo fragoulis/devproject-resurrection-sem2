@@ -42,6 +42,9 @@ Radius = 148.775
 AffectedAreaRadius = 1013.88
 EbombType = purple
 Location = (-314.081, 220.408)
+ProtectorRespawnDelay = 5.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = yellow
 
 [CommentedOutCraters : Crater5]
 Radius = 154.286
@@ -51,7 +54,7 @@ Location = (1201.22, 1263.67)
 
 
 [Spawnpoints : p1]
-Location = (-500, 500)
+Location = (500, -500)
 EnemyType = EnemyFighter
 EnemyCount = 1
 EnergyType = red
@@ -64,8 +67,8 @@ MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 
 
-[CommentedOutSpawnpoints : p2]
-Location = (500, -100)
+[Spawnpoints : p2]
+Location = (-800, -500)
 EnemyType = EnemyDisrupter // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1
 EnergyType = blue
@@ -78,7 +81,7 @@ MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 
 
-[Spawnpoints : p3]
+[CommentedOutSpawnpoints : p3]
 Location = (-800, -500)
 EnemyType = EnemyCarrier // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1

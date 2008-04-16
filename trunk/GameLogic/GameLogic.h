@@ -71,7 +71,7 @@ public:
 	void unloadLevel();
 	const std::string& getCurrentLevel() const { return m_levelName; }
 
-	Enemyship* spawnEnemy(int type);
+	Enemyship* spawnEnemy(int type, EnergyType energyType, float x, float z);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);
 	void firePositiveLaser(const Point3& targetPosition);

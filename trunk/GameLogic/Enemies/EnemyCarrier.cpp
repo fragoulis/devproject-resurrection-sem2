@@ -111,12 +111,8 @@ void EnemyCarrier :: update(float dt)
 
 void EnemyCarrier :: _spawnEnemy()
 {
-	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType);
-	Point3 pos = getPosition();
-	pos.add(Vector3(0.0f, 0.0f, getRadius()));
-	es->setPosition(pos);
-	es->setEnergyType(m_spawnEnergyType);
-	EventManager::instance().fireEvent(Enemy_Spawned(es));
+	const Point3& pos = getPosition();
+	GameLogic::instance().spawnEnemy(m_spawnType, m_spawnEnergyType, pos.getX(), pos.getZ() + getRadius());
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_spawnTimeTillNextEvent = m_timeBetweenSpawns;

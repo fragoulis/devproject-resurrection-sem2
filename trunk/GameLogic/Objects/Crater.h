@@ -11,9 +11,15 @@
 #pragma once
 #include "../WorldObject.h"
 #include "../EbombTypes.h"
+#include "../EnergyTypes.h"
+#include "../GameEvents.h"
+#include "../../utility/EventManager.h"
 class ParserSection;
+class Enemyship;
 
-class Crater : public WorldObject
+class Crater :
+	public WorldObject,
+	public EventListener< Enemy_Destroyed >
 {
 public:
 
@@ -22,13 +28,17 @@ public:
 
 	float getRadius() const { return m_radius; }
 	EbombType getEbombType() const { return m_ebombType; }
+	float getAffectedAreaRadius() const { return m_affectedAreaRadius; }
+	bool isProtected() const { return m_protector != 0; }
 
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
 	void setToBeDeleted() { m_state = TO_BE_DELETED; }
 
-	float getAffectedAreaRadius() const { return m_affectedAreaRadius; }
 
 	void loadSettings(const ParserSection&);
+	void update(float dt);
+
+	virtual void onEvent(Enemy_Destroyed&);
 
 private:
 	enum State {
@@ -44,4 +54,10 @@ private:
 	float m_radius;
 	EbombType m_ebombType;
 	float m_affectedAreaRadius;
+	float m_timeTillNextEvent;
+
+	Enemyship* m_protector;
+	float m_protectorRespawnDelay;
+	int m_protectorType;
+	EnergyType m_protectorEnergyType;
 };
