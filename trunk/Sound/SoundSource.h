@@ -24,6 +24,8 @@ public:
     SoundSource();
     ~SoundSource();
 
+    ALuint GetSource() const { return m_source; }
+
     bool init(const ALuint * const buffer, const ALuint count = 1);
     bool setBuffer(const ALuint * const buffer, const ALuint count = 1);
     void play() const;

@@ -19,6 +19,6 @@ public:
     SoundBuffer();
     ~SoundBuffer();
 
-    const ALuint getBuffer() const { return m_buffer; }
+    ALuint getBuffer() const { return m_buffer; }
     bool load( const std::string &filename );
 };

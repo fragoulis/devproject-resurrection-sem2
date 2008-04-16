@@ -25,3 +25,5 @@ void Sound::update( const Point3 &position )
 {
     m_source.setPosition( position );
 }
+
+unsigned Sound::getBuffer() const { return m_buffer->getBuffer(); }
