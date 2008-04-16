@@ -164,24 +164,51 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
-void SoundEngine::play( const string &id )
+void SoundEngine::clearSoundPositions()
+{
+    Point3 position(0.0f, 0.0f, 0.0f);
+
+    Sounds::iterator i = m_sounds.begin();
+    for(; i != m_sounds.end(); ++i )
+        (*i)->update( position );
+}
+
+unsigned SoundEngine::play( const string &id, bool repeat )
 {
     // search though the sound list to find an empty slot
-    bool ok = false;
+    unsigned source = 0;
     Sounds::const_iterator i = m_sounds.begin();
-    for(; i != m_sounds.end() && !ok; ++i )
+    for(; i != m_sounds.end() && !source; ++i )
     {
         Sound *sound = *i;
         if( !sound->isPlaying() )
         {
             SoundBuffer *buffer = m_buffers[id];
-            if( !buffer ) return;
+            if( !buffer ) return 0;
 
             sound->set( buffer );
+            sound->setLoop( repeat );
             sound->play();
-            ok = true;
+            source = sound->getSource();
         }
     }
 
-    assert(ok);
+    assert(source);
+    return source;
+}
+
+bool SoundEngine::stop( unsigned id )
+{
+    Sounds::const_iterator i = m_sounds.begin();
+    for(; i != m_sounds.end(); ++i )
+    {
+        Sound *sound = *i;
+        if( sound->isPlaying() && sound->getSource() == id )
+        {
+            sound->stop();
+            return 1;
+        }
+    }
+
+    return 0;
 }

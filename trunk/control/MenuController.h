@@ -29,7 +29,9 @@ public:
 private:
 	MenuRenderer* m_renderer;
 	// Menu data
-
+    
+    // ambient sound id
+    unsigned m_ambientSound;
 
 	void _newGame();
 	void _exit();
