@@ -98,3 +98,6 @@ EnemyFighter_Destroyed          = "exp01.wav"
 EnemyInterceptor_Destroyed      = "exp02.wav"
 EnemyDisrupter_Destroyed        = "exp03.wav"
 EnemyCarrier_Destroyed          = "exp04.wav"
+
+InterfaceAmbient                = "iface.wav"
+MenuClick                       = "click01.wav"

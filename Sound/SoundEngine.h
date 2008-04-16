@@ -71,7 +71,9 @@ public:
     void onEvent(Enemy_Destroyed&);
 
     void update();
-    void play( const string &id );
+    void clearSoundPositions();
+    unsigned play( const string &id, bool repeat = false );
+    bool stop( unsigned id );
 
 private:
 	friend Singleton< SoundEngine >;

@@ -34,12 +34,17 @@ void MenuController :: activate()
 	re.deactivateAllRenderers();
 	re.activateRenderer("menu");
 	m_renderer = dynamic_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
+    
+    SoundEngine::instance().clearSoundPositions();
+    m_ambientSound = SoundEngine::instance().play("InterfaceAmbient", true);
 }
 
 void MenuController :: deactivate()
 {
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.deactivateAllRenderers();
+
+    SoundEngine::instance().stop( m_ambientSound );
 }
 
 void MenuController :: update(float dt)
@@ -60,16 +65,16 @@ void MenuController :: update(float dt)
 
 	// do updates here
 	m_renderer->update(dt);
-	//SoundEngine::instance().update();
-
 
 	Input& input = Input::instance();
 
 	if (input.isKeyGoingDown('W')) {
 		m_renderer->selectPreviousItem();
+        SoundEngine::instance().play("MenuClick");
 	}
-	if (input.isKeyGoingDown('S')) {
+	else if (input.isKeyGoingDown('S')) {
 		m_renderer->selectNextItem();
+        SoundEngine::instance().play("MenuClick");
 	}
 
 	//ENTER
