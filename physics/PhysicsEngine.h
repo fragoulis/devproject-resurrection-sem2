@@ -47,7 +47,8 @@ class PhysicsEngine :
 	public EventListener< Crater_Spawned >,
 	public EventListener< Crater_Despawned >,
 	public EventListener< Laser_Spawned >,
-	public EventListener< Laser_Despawned >
+	public EventListener< Laser_Despawned >,
+	public EventListener< Level_Unload>
 {
 public:
 
@@ -66,6 +67,7 @@ public:
 	void onEvent(Crater_Despawned&);
 	void onEvent(Laser_Spawned&);
 	void onEvent(Laser_Despawned&);
+	void onEvent(Level_Unload&);
 
 	void update(float dt);
 

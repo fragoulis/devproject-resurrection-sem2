@@ -55,6 +55,7 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Crater_Despawned >(this);
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
+	EventManager::instance().registerEventListener< Level_Unload >(this);
 
 
 	const ParserSection* psGame = ps.getSection("main");
@@ -138,6 +139,19 @@ void PhysicsEngine :: onEvent( Laser_Despawned& evt )
 	m_lasers.remove(evt.getValue());
 }
 
+void PhysicsEngine :: onEvent(Level_Unload&)
+{
+	m_terrain = 0;
+	m_pushers.clear();
+	m_movables.clear();
+	m_rigidbodies.clear();
+	m_spaceships.clear();
+	m_playership = 0;
+	m_enemyships.clear();
+	m_lasers.clear();
+	m_ebombs.clear();
+	m_craters.clear();
+}
 
 
 
