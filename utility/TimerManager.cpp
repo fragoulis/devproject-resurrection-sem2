@@ -39,7 +39,7 @@ void TimerManager :: update()
 	for (TimerListIt it = m_timers.begin(); it != m_timers.end(); )
 	{
 		Timer& timer = *it;
-		if (timer.getTime() > now)
+		if (timer.getTime() < now)
 		{
 			timer.call();
 			if (timer.isRepeating())
@@ -52,6 +52,10 @@ void TimerManager :: update()
 				timer.destroy();
 				it = m_timers.erase(it);
 			}
+		}
+		else
+		{
+			++it;
 		}
 	}
 }

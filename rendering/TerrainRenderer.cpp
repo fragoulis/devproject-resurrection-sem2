@@ -57,8 +57,10 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
@@ -77,8 +79,10 @@ TerrainRenderer :: ~TerrainRenderer()
 	EventManager::instance().unRegisterEventListener< Terrain_Changed >(this);
 	EventManager::instance().unRegisterEventListener< Level_Load >(this);
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
-	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Destroyed >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
@@ -739,6 +743,15 @@ void TerrainRenderer :: onEvent(Player_Spawned& evt)
 	_addShadowCaster(CoordinateModel(model,cf));
 }
 
+void TerrainRenderer :: onEvent(Player_Respawned& evt)
+{
+	// Get the const render settings of the ship
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	Model * model = ModelMgr::instance().getModel(settings.modelName);
+	_addShadowCaster(CoordinateModel(model,cf));
+}
+
 void TerrainRenderer :: onEvent(Enemy_Spawned& evt)
 {
 	// Get the const render settings of the ship
@@ -759,6 +772,13 @@ void TerrainRenderer :: onEvent(Player_Despawned& evt)
 {
 	// Fetch the player & remove, based on coordinate frame address
 	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_removeShadowCaster(cf);
+}
+
+void TerrainRenderer :: onEvent(Player_Destroyed& evt)
+{
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue1()->getCoordinateFrame());
 	_removeShadowCaster(cf);
 }
 

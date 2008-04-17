@@ -17,13 +17,13 @@ EnergyType = red            # possible values: red yellow blue
 CollisionPower = 1.0       # integer
 InitialThrusterPower = 150000.0
 ThrusterMaxPower = 200000.0 # float
-Radius = 60.0               # float, collision detection and inertia calculation
+Radius = 50.0               # float, collision detection and inertia calculation
 Mass = 200.0                # float
 AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 2               # integer
-EnergyPoints = 25
+EnergyPoints = 10
 //EnergyPoints = 1
 
 
@@ -34,13 +34,13 @@ EnergyType = red            # possible values: red yellow blue
 CollisionPower = 1.0       # integer
 InitialThrusterPower = 150000.0
 ThrusterMaxPower = 200000.0 # float
-Radius = 60.0               # float, collision detection and inertia calculation
+Radius = 50.0               # float, collision detection and inertia calculation
 Mass = 200.0                # float
 AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 8               # integer
-EnergyPoints = 25
+EnergyPoints = 10
 //EnergyPoints = 2
 
 [EnemyDisrupter]
@@ -56,7 +56,7 @@ AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 12               # integer
-EnergyPoints = 25
+EnergyPoints = 10
 //EnergyPoints = 2
 
 
@@ -68,14 +68,14 @@ EnergyType = red            # possible values: red yellow blue
 CollisionPower = 1.0       # integer
 InitialThrusterPower = 0.0
 ThrusterMaxPower = 0.0 # float
-Radius = 60.0               # float, collision detection and inertia calculation
+Radius = 100.0               # float, collision detection and inertia calculation
 Mass = 200.0                # float
 AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 100             # integer
-EnergyPoints = 25
-//EnergyPoints = 10
+//EnergyPoints = 25
+EnergyPoints = 10
 
 EnemyType = EnemyDisrupter
 EnemyCount = 1                      # int

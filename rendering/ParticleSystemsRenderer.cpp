@@ -28,6 +28,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 	EventManager::instance().registerEventListener<Enemy_Spawned>(this);
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
+	EventManager::instance().registerEventListener<Enemy_Destroyed>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
 	EventManager::instance().registerEventListener<Player_Respawned>(this);
@@ -50,6 +51,7 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 
 	EventManager::instance().unRegisterEventListener<Enemy_Spawned>(this);
 	EventManager::instance().unRegisterEventListener<Enemy_Despawned>(this);
+	EventManager::instance().unRegisterEventListener<Enemy_Destroyed>(this);
 	EventManager::instance().unRegisterEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
 	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
@@ -161,7 +163,8 @@ void ParticleSystemsRenderer::onEvent(Terrain_Changed &evt)
 	m_psList.back()->setTransform(cf);
 }
 
-void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
+void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
+{
 
 	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
 	EnergyType energyType = enemy.getValue()->getEnergyType();
@@ -183,14 +186,23 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 	}
 	m_psList.back()->setTransform(cf);
 
+	_removeEnemyViz(enemy.getValue());
+}
 
+void ParticleSystemsRenderer::onEvent(Enemy_Despawned &evt)
+{
+	_removeEnemyViz(evt.getValue());
+}
+
+void ParticleSystemsRenderer::_removeEnemyViz(Enemyship* enemy)
+{
 	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
 		it != m_psList.end();
 		++it)
 	{
 		if((*it)->getName() == "PS_EnemyEnergyViz")
 		{
-			if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy.getValue())
+			if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy)
 			{
 				delete *it;
 				m_psList.erase(it);
@@ -199,6 +211,8 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		}
 	}
 }
+
+
 
 void ParticleSystemsRenderer::onEvent(Enemy_Spawned &enemy) 
 {
@@ -232,6 +246,7 @@ void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
 		PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
 		ps_jet->setEmitterShip(player.getValue());
 		m_psList.push_back(ps_jet);
+		m_isJetCreated = true;
 	}
 
 }
@@ -242,6 +257,7 @@ void ParticleSystemsRenderer::onEvent(Player_Respawned &player) {
 		PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
 		ps_jet->setEmitterShip(player.getValue());
 		m_psList.push_back(ps_jet);
+		m_isJetCreated = true;
 	}
 
 }
