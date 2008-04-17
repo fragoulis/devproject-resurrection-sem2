@@ -20,6 +20,8 @@ void MenuItem::init(float posX, float posY, int width, int height, const string 
 	m_textureList.push_back(tex);
 
 	m_state = state;
+
+	m_selectable = true;
 }
 
 void MenuItem::update(float dt) {

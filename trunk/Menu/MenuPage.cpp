@@ -65,6 +65,9 @@ void MenuPage::setSelectedItem(int itemNumber) {
 	if (itemNumber > (int) m_items.size()-1)
 		return;
 
+	//if (!m_items[itemNumber]->isSelectable())
+	//	return;
+
 	//first deselect all the items
 	for (int i = 0; i < (int) m_items.size(); i++) {
 		m_items[i]->setState(MenuItem::ITEM_STATE_UNSELECTED);
@@ -79,10 +82,13 @@ bool  MenuPage::selectNextItem() {
 		return false;
 
 	int selectedItem = getSelectedItem();
-	if (selectedItem < (int) m_items.size()-1)
+	if (selectedItem < (int) m_items.size()-1) 
 		setSelectedItem(selectedItem+1);
 	else
 		setSelectedItem(0);
+
+	if (!m_items[getSelectedItem()]->isSelectable())
+		selectNextItem();
 
 	return true;
 }
@@ -93,10 +99,13 @@ bool  MenuPage::selectPreviousItem() {
 		return false;
 
 	int selectedItem = getSelectedItem();
-	if (selectedItem > 0)
+	if (selectedItem > 0) 
 		setSelectedItem(selectedItem-1);
 	else
 		setSelectedItem((int) m_items.size()-1);
+	
+	if (!m_items[getSelectedItem()]->isSelectable())
+		selectPreviousItem();
 
 	return true;
 }
