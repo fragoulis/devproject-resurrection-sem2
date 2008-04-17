@@ -68,13 +68,14 @@ void MenuController :: update(float dt)
 
 	Input& input = Input::instance();
 
+	//items selection
 	if (input.isKeyGoingDown('W')) {
-		m_renderer->selectPreviousItem();
-        SoundEngine::instance().play("MenuClick");
+		if (m_renderer->selectPreviousItem())
+			SoundEngine::instance().play("MenuClick");
 	}
 	else if (input.isKeyGoingDown('S')) {
-		m_renderer->selectNextItem();
-        SoundEngine::instance().play("MenuClick");
+		if (m_renderer->selectNextItem())
+			SoundEngine::instance().play("MenuClick");
 	}
 
 	//ENTER
@@ -83,19 +84,27 @@ void MenuController :: update(float dt)
 		switch (m_renderer->getState()) 
         {
 			case MenuRenderer::MENU_STATE_MAIN:
-				if (m_renderer->getSelectedItem() == 0)
-                {
-                    SoundEngine::instance().play("EnemyFighter_Destroyed");
-					_newGame();  //go to planet selection screen
-                }
-				else if (m_renderer->getSelectedItem() == 1)
+				if (m_renderer->getSelectedItem() == 0) {
+					m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);  //go to planet screen selection
+                } else if (m_renderer->getSelectedItem() == 1) {
 					m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
-				else if (m_renderer->getSelectedItem() == 2)
+				} else if (m_renderer->getSelectedItem() == 2) {
 					_exit();  //kill the application
+				}
+				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
 				break;
 			case MenuRenderer::MENU_STATE_CREDITS:
 				m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu 
+				SoundEngine::instance().play("EnemyFighter_Destroyed");
+				break;
+			case MenuRenderer::MENU_STATE_PLANET:
+				if (m_renderer->getSelectedItem() == 0)
+					m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu
+				else 
+					_newGame();  //go to new game
+
+				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
 				break;
         } // switch ( )

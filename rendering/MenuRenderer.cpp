@@ -38,10 +38,14 @@ MenuRenderer::MenuRenderer()
 
 	m_menuPool[MENU_STATE_MAIN] = new MainPage();
 	m_menuPool[MENU_STATE_CREDITS] = new CreditsPage();
-	m_menuPool[MENU_STATE_PLANET] = new MainPage();
+	m_menuPool[MENU_STATE_PLANET] = new PlanetPage();
 
-	for (int i = 0; i < NUM_MENU_STATES; i++)
+	for (int i = 0; i < NUM_MENU_STATES; i++) {
 		m_menuPool[i]->init(screenWidth, screenHeight);
+
+		if (dynamic_cast<PlanetPage*>(m_menuPool[i]))
+			m_menuPool[i]->setItemsNumber(6);
+	}
 
 	m_currentMenu = m_menuPool[(int) m_state];
 }
@@ -61,3 +65,4 @@ void MenuRenderer :: update(float dt)
 {
 	m_currentMenu = m_menuPool[(int) m_state];
 }
+

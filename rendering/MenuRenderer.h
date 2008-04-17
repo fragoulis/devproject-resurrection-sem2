@@ -42,7 +42,7 @@ public:
 
 	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
 
-	void selectNextItem() { m_currentMenu->selectNextItem(); };
-	void selectPreviousItem() { m_currentMenu->selectPreviousItem(); };
+	bool selectNextItem() { if (m_currentMenu->selectNextItem()) return true; return false; };
+	bool selectPreviousItem() { if (m_currentMenu->selectPreviousItem()) return true; return false; };
 
 };

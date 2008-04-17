@@ -24,8 +24,10 @@ public:
 	virtual void update(float dt)=0;
 	virtual void render(Graphics &g) const;
 
+	virtual void setItemsNumber(int itemsNumber) {};
+
 	const int getSelectedItem() const;
 	void setSelectedItem(int itemNumber);
-	void selectNextItem();
-	void selectPreviousItem();
+	bool selectNextItem();
+	bool selectPreviousItem();
 };
