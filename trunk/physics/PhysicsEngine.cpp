@@ -61,7 +61,7 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 
 	const ParserSection* psGame = ps.getSection("main");
 	//m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
-    m_safeDistance = FromString<float>(psGame->getVal("SafeDistance"));
+    m_minDistanceBetweenShips = FromString<float>(psGame->getVal("SafeDistance"));
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -91,23 +91,22 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
     int type = enemyship->getType();
 	int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
 
+	if (type != carrierType)
+	{
+		// Add springs between all enemies
+        EnemyshipList::const_iterator it = m_enemyships.begin();
+		for(; it != m_enemyships.end(); ++it )
+		{
+			Enemyship* es = *it;
+			if (es->getType() != carrierType)
+			{
+				addPusher( enemyship, es, m_minDistanceBetweenShips );
+			}
+		}
+	}
+
     m_enemyships.push_back(enemyship);
 	m_spaceships.push_back(enemyship);
-
-	//if (type != carrierType)
-	//{
-	//	// Add springs between all enemies
-	//	for ( EnemyshipList::const_iterator it = m_enemyships.begin(); it != m_enemyships.end(); ++it )
-	//	{
-	//		Enemyship* es = *it;
-	//		if (es->getType() != carrierType)
-	//		{
-	//			addPusher( enemyship, es, m_safeDistance );
-	//		}
-	//	}
-	//}
-    //cerr << "Active springs " << m_springs.size() << endl;
-
 }
 
 void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
