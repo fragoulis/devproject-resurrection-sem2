@@ -28,6 +28,7 @@
 #include "../utility/deleters.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../utility/TimerManager.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -125,6 +126,7 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 		EventManager::instance().fireEvent(Game_Over());
 	}
 	else {
+		//TimerManager::instance().
 		player->respawn();
 		EventManager::instance().fireEvent(Player_Respawned(player));
 	}
@@ -322,7 +324,11 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 			Crater* crater = *it;
 			if (!crater->isToBeDeleted()) unfixedCraters++;
 		}
-		if (unfixedCraters == 0) EventManager::instance().fireEvent(Level_Complete(m_levelName));
+		if (unfixedCraters == 0)
+		{
+			// Self-destruct all enemies and let player fly away
+			EventManager::instance().fireEvent(Level_Complete(m_levelName));
+		}
 	}
 	else
 	{

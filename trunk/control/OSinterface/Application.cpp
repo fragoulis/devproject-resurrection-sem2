@@ -27,6 +27,7 @@
 #include "../../GameLogic/WorldObjectTypeManager.h"
 #include "../../gfx/Texture/TextureMgr.h"
 #include "../../gfx/Shaders/ShaderManager.h"
+#include "../../utility/TimerManager.h"
 #include "Input.h"
 #include <al/alut.h>
 #include <iostream>
@@ -93,6 +94,7 @@ void Application :: load()
 
 	Logger::init(ps.getSection("Logger"));
 
+	TimerManager::safeInstance();
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	BuffFactory::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);
@@ -126,6 +128,7 @@ void Application :: unload()
 	GameLogic::destroy();
 	MemMgrRaw::destroy();
 	Logger::destroy();
+	TimerManager::destroy();
 
 	//filestr.close();
 }
@@ -138,6 +141,8 @@ void Application :: update(float dt)
 {
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
 	//if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN; // <--- BAD!! Just a quick bugfix
+
+	TimerManager::instance().update();
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
 }

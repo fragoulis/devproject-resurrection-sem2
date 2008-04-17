@@ -16,19 +16,19 @@
  * High performance timer used to get deltatime every frame.
  * Deltatime is passed to Application::update.
  */
-class Timer
+class Time
 {
 public:
-	Timer();
-	~Timer();
+	Time();
+	~Time();
 
-	double getLasttime() { return m_lasttime; }
-	double getCurrentTime();
-	double getDeltatime();
+	float getLasttime() { return m_lasttime; }
+	float getCurrentTime();
+	float getDeltatime();
 
 	void reset();
 
 private:
-	double m_starttime;
-	double m_lasttime;
+	float m_starttime;
+	float m_lasttime;
 };
