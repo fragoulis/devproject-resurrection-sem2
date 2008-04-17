@@ -78,11 +78,16 @@ void MenuController :: update(float dt)
 	}
 
 	//ENTER
-	if (input.isKeyGoingDown(13)) {
-		switch (m_renderer->getState()) {
+	if (input.isKeyGoingDown(13)) 
+    {
+		switch (m_renderer->getState()) 
+        {
 			case MenuRenderer::MENU_STATE_MAIN:
 				if (m_renderer->getSelectedItem() == 0)
+                {
+                    SoundEngine::instance().play("EnemyFighter_Destroyed");
 					_newGame();  //go to planet selection screen
+                }
 				else if (m_renderer->getSelectedItem() == 1)
 					m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
 				else if (m_renderer->getSelectedItem() == 2)
@@ -93,9 +98,9 @@ void MenuController :: update(float dt)
 				m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu 
 
 				break;
-		}
+        } // switch ( )
 	}
-}
+} // update()
 
 void MenuController :: _newGame()
 {
