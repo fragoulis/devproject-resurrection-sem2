@@ -62,6 +62,7 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Player_Respawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().registerEventListener< Crater_Spawned >(this);
@@ -84,6 +85,7 @@ TerrainRenderer :: ~TerrainRenderer()
 	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
 	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Destroyed >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Crater_Spawned >(this);
@@ -762,6 +764,13 @@ void TerrainRenderer :: onEvent(Enemy_Spawned& evt)
 }
 
 void TerrainRenderer :: onEvent(Enemy_Despawned& evt)
+{
+	// Fetch the enemy & remove
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_removeShadowCaster(cf);
+}
+
+void TerrainRenderer :: onEvent(Enemy_Destroyed& evt)
 {
 	// Fetch the enemy & remove
 	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());

@@ -32,6 +32,7 @@ m_boundsComputed(false)
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
+	EventManager::instance().registerEventListener< Level_Complete >(this);
 
 	m_camera = new Camera();
 	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
@@ -73,9 +74,17 @@ WorldRenderer :: ~WorldRenderer()
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Level_Complete >(this);
 }
 
 void WorldRenderer :: onEvent(Level_Unload& evt)
+{
+	m_playerActive = false;
+	m_boundsComputed = false;
+	m_playerCoordFrame = 0;
+}
+
+void WorldRenderer :: onEvent(Level_Complete& evt)
 {
 	m_playerActive = false;
 	m_boundsComputed = false;
@@ -103,7 +112,7 @@ void WorldRenderer :: update( float dt )
 		m_boundsComputed = true;
 	}
 
-	if(m_playerActive)
+	if (m_playerActive)
 	{
 		const Vector3 playerpos(m_playerCoordFrame->getOrigin().cfp());
 		Vector3 camera_eye(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f));

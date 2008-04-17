@@ -41,6 +41,7 @@ public:
 
 	bool isInvulnerable() const { return hasBuff(m_bufftypeInvulnerability); }
 	float getInvulnerableTimeLeft() const { return getBuffTimeLeft(m_bufftypeInvulnerability); }
+	void makeInvulnerable() { addBuff(m_bufftypeInvulnerability); }
 
 	void addBuff(int type) { m_buffContainer.addBuff(type); }
 	bool hasBuff(int type) const { return m_buffContainer.hasBuff(type); }

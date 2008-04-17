@@ -35,7 +35,8 @@ class Texture;
 class WorldRenderer : public IRenderer,  
 					  public EventListener< Player_Spawned >,
 					  public EventListener< Player_Despawned >,
-					  public EventListener< Level_Unload >
+					  public EventListener< Level_Unload >,
+					  public EventListener< Level_Complete >
 {
 public:
 	WorldRenderer();
@@ -64,6 +65,7 @@ public:
 	void onEvent(Player_Spawned&);
 	void onEvent(Player_Despawned&);
 	void onEvent(Level_Unload&);
+	void onEvent(Level_Complete&);
 
 private:
 

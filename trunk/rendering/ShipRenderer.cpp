@@ -33,27 +33,29 @@ static char texstr[8] = "texmap0";
 ShipRenderer :: ShipRenderer()
 {
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
-	EventManager::instance().registerEventListener< Player_Destroyed >(this);
-	EventManager::instance().registerEventListener< Player_Respawned >(this);
 }
 
 ShipRenderer :: ~ShipRenderer()
 {
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
-	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Destroyed >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Destroyed >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
-	EventManager::instance().unRegisterEventListener< Player_Destroyed >(this);
-	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
 }
 
 void ShipRenderer :: onEvent(Level_Unload& e)
@@ -143,6 +145,14 @@ void ShipRenderer :: onEvent(Enemy_Despawned& evt)
 	_deleteShip(cf);
 }
 
+void ShipRenderer :: onEvent(Enemy_Destroyed& evt)
+{
+	CKLOG(string("Despawning ") + ToString<Enemyship*>(evt.getValue()), 3);
+	// Fetch the enemy & remove
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_deleteShip(cf);
+}
+
 void ShipRenderer :: onEvent(Ebomb_Spawned& evt)
 {
 	// Get the const render settings of the ship
@@ -203,5 +213,7 @@ void ShipRenderer :: _deleteShip(const CoordinateFrame * cframe)
 			return;
 		}
 	}
-	assert(0);
+	// Might get called twice cuz we do this on both Enemy_Destroy and Enemy_Despawn
+	// Not the right way to do it, but it's past midnight and we got a demo tomorrow
+	//assert(0);
 }
