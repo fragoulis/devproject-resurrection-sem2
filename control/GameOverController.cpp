@@ -22,6 +22,7 @@ void GameOverController :: activate()
 	//re.activateRenderer("world");
 	//re.activateRenderer("hud");
 	RenderEngine::instance().activateRenderer("GameOver");
+    SoundEngine::instance().clearSoundPositions();
 }
 
 void GameOverController :: deactivate()
@@ -43,7 +44,6 @@ void GameOverController :: update(float dt)
 
 
 	// We update render engine so explosions and particles continue
-	SoundEngine::instance().update();
 	RenderEngine::instance().update(dt);
 }
 

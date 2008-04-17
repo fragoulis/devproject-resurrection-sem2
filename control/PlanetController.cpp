@@ -23,6 +23,8 @@ void PlanetController :: activate()
 	re.deactivateAllRenderers();
 	re.activateRenderer("planet");
 	m_renderer = dynamic_cast<PlanetRenderer*>(RenderEngine::instance().getRenderer("planet"));
+
+    SoundEngine::instance().clearSoundPositions();
 }
 
 void PlanetController :: deactivate()

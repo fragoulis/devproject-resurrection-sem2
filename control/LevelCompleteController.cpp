@@ -21,6 +21,7 @@ void LevelCompleteController :: activate()
 	// OR we can add a renderer for it, dunno
 	// That IS better :D
 	RenderEngine::instance().activateRenderer("LevelComplete");
+    SoundEngine::instance().clearSoundPositions();
 }
 
 void LevelCompleteController :: deactivate()
@@ -39,8 +40,6 @@ void LevelCompleteController :: update(float dt)
 		LoadingController::instance().load(this, &LevelCompleteController::_loadPlanetSelectionScreen);
 	}
 
-
-	SoundEngine::instance().update();
 	RenderEngine::instance().update(dt);
 }
 
