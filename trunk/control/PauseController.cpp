@@ -25,6 +25,8 @@ void PauseController :: activate()
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.activateRenderer("pause");
 	m_renderer = dynamic_cast<PauseRenderer*>(RenderEngine::instance().getRenderer("pause"));
+
+    SoundEngine::instance().clearSoundPositions();
 }
 
 void PauseController :: deactivate()
@@ -36,7 +38,6 @@ void PauseController :: deactivate()
 void PauseController :: update(float dt)
 {
 	m_renderer->update(dt);
-	SoundEngine::instance().update();
 
 	Input& input = Input::instance();
 

@@ -82,6 +82,8 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 
 void SoundEngine :: onApplicationUnload()
 {
+    m_buffers.clear();
+    m_sounds.clear();
     delete[] m_bufferMemoryPool;
     delete[] m_soundMemoryPool;
 }
@@ -167,6 +169,16 @@ void SoundEngine::_updateListener()
 void SoundEngine::clearSoundPositions()
 {
     Point3 position(0.0f, 0.0f, 0.0f);
+
+    float orientation[] = 
+    {
+        position.getX(), position.getY(), position.getZ(),
+        0.0f, 1.0f, 0.0f
+    };
+
+    alListenerfv(AL_POSITION,    position.cfp() );
+    alListenerfv(AL_VELOCITY,    position.cfp() );
+    alListenerfv(AL_ORIENTATION, orientation );
 
     Sounds::iterator i = m_sounds.begin();
     for(; i != m_sounds.end(); ++i )
