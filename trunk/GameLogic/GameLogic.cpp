@@ -127,25 +127,29 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 		EventManager::instance().fireEvent(Game_Over());
 	}
 	else {
-		cout << "Player Destroyed" << endl;
+		//cout << "Player Destroyed" << endl;
+		player->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
+		player->setThrusterDirection(Vector3(0.0f, 0.0f, 0.0f));
+		player->setThrusterPower(0.0f);
 		TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 1.0f);
 	}
 }
 
 void GameLogic :: _playerDestroyed1_DespawnEnemies()
 {
-	cout << "Despawning enemies" << endl;
+	//cout << "Despawning enemies" << endl;
+	int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
 	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
 		Enemyship* es = *it;
-		es->setToBeDeleted();
+		if (es->getType() != carrierType) es->setToBeDeleted();
 	}
 	TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
 }
 
 void GameLogic :: _playerDestroyed2_RespawnPlayer()
 {
-	cout << "Respawning player" << endl;
+	//cout << "Respawning player" << endl;
 	m_playership->respawn();
 	EventManager::instance().fireEvent(Player_Respawned(m_playership));
 }
@@ -502,6 +506,7 @@ void GameLogic :: unSwapLasers()
 void GameLogic :: setPlayerDirection( const Vector3& v )
 {
 	assert(m_playership != 0);
+	if (m_playership->isDying()) return;
 	m_playership->setThrusterDirection(v);
 	m_playership->setThrusterPower(m_playership->getMaxThrusterPower());
 }
@@ -598,7 +603,8 @@ void GameLogic :: loadLevel(const std::string& levelName)
 	m_playership->setX(pos.getX());
 	m_playership->setY(m_gamePlaneHeight);
 	m_playership->setZ(pos.getY());
-	m_playership->respawn();
+	// Not needed, and we don't want 2 sec invulnerability on level load
+	//m_playership->respawn();
 	EventManager::instance().fireEvent(Player_Spawned(m_playership));
 
 	// Read crater data from gameplay file and spawn craters

@@ -18,6 +18,7 @@
 class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
 												  public EventListener<Enemy_Spawned>,
 												  public EventListener<Enemy_Despawned>,
+												  public EventListener<Enemy_Destroyed>,
 												  public EventListener<Player_EnergyDrained>,
 												  public EventListener<Player_Spawned>,
 												  public EventListener<Player_Respawned>,
@@ -41,6 +42,7 @@ public:
 	virtual void onEvent(Key_GoingDown&);
 	virtual void onEvent(Enemy_Spawned&);
 	virtual void onEvent(Enemy_Despawned&);
+	virtual void onEvent(Enemy_Destroyed&);
 	virtual void onEvent(Player_EnergyDrained&);
 	virtual void onEvent(Player_Spawned&);
 	virtual void onEvent(Player_Respawned&);
@@ -53,5 +55,9 @@ public:
 
 private:
 	// bunch of ParticleSystems here I guess
-	std::vector<PS_Base *>	m_psList;
+	typedef std::vector<PS_Base *> PSBaseVector;
+	typedef PSBaseVector::iterator PSBaseVectorIt;
+	PSBaseVector m_psList;
+
+	void _removeEnemyViz(Enemyship* es);
 };
