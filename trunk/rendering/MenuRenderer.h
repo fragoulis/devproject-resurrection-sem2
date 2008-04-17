@@ -41,6 +41,7 @@ public:
 	void setState(MenuState state) { m_state = state; };
 
 	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
+	void setSelectedItem(int itemNumber) { m_currentMenu->setSelectedItem(itemNumber); };
 
 	bool selectNextItem() { if (m_currentMenu->selectNextItem()) return true; return false; };
 	bool selectPreviousItem() { if (m_currentMenu->selectPreviousItem()) return true; return false; };

@@ -61,6 +61,10 @@ const int MenuPage::getSelectedItem() const {
 }
 
 void MenuPage::setSelectedItem(int itemNumber) {
+	//prevent overflows
+	if (itemNumber > (int) m_items.size()-1)
+		return;
+
 	//first deselect all the items
 	for (int i = 0; i < (int) m_items.size(); i++) {
 		m_items[i]->setState(MenuItem::ITEM_STATE_UNSELECTED);
