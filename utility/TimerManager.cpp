@@ -1,6 +1,6 @@
 #include "TimerManager.h"
 
-int TimerManager :: Timer :: m_nextID;
+int TimerManager :: Timer :: m_nextID = 1;
 
 TimerManager :: TimerManager()
 {
@@ -13,10 +13,10 @@ TimerManager :: ~TimerManager()
 }
 
 
-int TimerManager :: add(Callback* cb, float time, float period)
+int TimerManager :: schedule(Callback* cb, float time, float period)
 {
-	Timer timer(cb, time, period);
-	timer.assignID();
+	Timer timer(cb, m_time.getCurrentTime() + time, period);
+	timer.create();
 	m_timers.push_back(timer);
 	return timer.getID();
 }
@@ -39,7 +39,7 @@ void TimerManager :: update()
 	for (TimerListIt it = m_timers.begin(); it != m_timers.end(); )
 	{
 		Timer& timer = *it;
-		if (timer.getTime() < now)
+		if (timer.getTime() > now)
 		{
 			timer.call();
 			if (timer.isRepeating())
@@ -49,6 +49,7 @@ void TimerManager :: update()
 			}
 			else
 			{
+				timer.destroy();
 				it = m_timers.erase(it);
 			}
 		}

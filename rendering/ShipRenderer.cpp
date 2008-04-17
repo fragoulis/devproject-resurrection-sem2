@@ -39,6 +39,8 @@ ShipRenderer :: ShipRenderer()
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
 }
 
 ShipRenderer :: ~ShipRenderer()
@@ -50,6 +52,8 @@ ShipRenderer :: ~ShipRenderer()
 	EventManager::instance().unRegisterEventListener< Ebomb_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Ebomb_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+	EventManager::instance().unRegisterEventListener< Player_Destroyed >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
 }
 
 void ShipRenderer :: onEvent(Level_Unload& e)
@@ -102,25 +106,39 @@ void ShipRenderer :: onEvent(Player_Spawned& evt)
 	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
 }
 
+void ShipRenderer :: onEvent(Player_Respawned& evt)
+{
+	// Get the const render settings of the ship
+	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
+	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+}
+
+void ShipRenderer :: onEvent(Player_Despawned& evt)
+{
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
+	_deleteShip(cf);
+}
+
+void ShipRenderer :: onEvent(Player_Destroyed& evt)
+{
+	// Fetch the player & remove, based on coordinate frame address
+	const CoordinateFrame * cf = &(evt.getValue1()->getCoordinateFrame());
+	_deleteShip(cf);
+}
+
 void ShipRenderer :: onEvent(Enemy_Spawned& evt)
 {
 	// Get the const render settings of the ship
 	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
 	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
-	CKLOG(string("Active ships : ") + ToString<unsigned>(unsigned(m_ships.size())), 2);
+	//CKLOG(string("Active ships : ") + ToString<unsigned>(unsigned(m_ships.size())), 2);
 }
 
 void ShipRenderer :: onEvent(Enemy_Despawned& evt)
 {
 	CKLOG(string("Despawning ") + ToString<Enemyship*>(evt.getValue()), 3);
 	// Fetch the enemy & remove
-	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
-	_deleteShip(cf);
-}
-
-void ShipRenderer :: onEvent(Player_Despawned& evt)
-{
-	// Fetch the player & remove, based on coordinate frame address
 	const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
 	_deleteShip(cf);
 }

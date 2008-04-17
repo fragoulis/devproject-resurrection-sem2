@@ -117,6 +117,7 @@ private:
 	typedef std::list<Crater*> CraterList;
 	typedef std::list<Ebomb*> EbombList;
 	typedef std::list<Laser*> LaserList;
+	typedef EnemyshipList::iterator EnemyshipListIt;
 
 	Terrain* m_terrain;
 	EnemyshipList m_enemyships;
@@ -146,6 +147,10 @@ private:
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
 	void _deleteLevelData();
+
+	// Player destroyed
+	void _playerDestroyed1_DespawnEnemies();
+	void _playerDestroyed2_RespawnPlayer();
 
 
 

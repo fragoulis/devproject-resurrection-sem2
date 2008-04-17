@@ -23,7 +23,9 @@ class ShipRenderer : public EventListener< Player_Spawned >,
 					 public EventListener< Player_Despawned >,
 					 public EventListener< Ebomb_Spawned >,
 					 public EventListener< Ebomb_Despawned >,
-					 public EventListener< Level_Unload >
+					 public EventListener< Level_Unload >,
+					 public EventListener< Player_Destroyed >,
+					 public EventListener< Player_Respawned >
 					 
 {
 public:
@@ -39,6 +41,8 @@ public:
 	void onEvent(Ebomb_Spawned&);
 	void onEvent(Ebomb_Despawned&);
 	void onEvent(Level_Unload&);
+	void onEvent(Player_Destroyed&);
+	void onEvent(Player_Respawned&);
 
 private:
 
