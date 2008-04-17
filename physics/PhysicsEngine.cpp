@@ -89,21 +89,25 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
 	Enemyship *enemyship = evt.getValue();
     int type = enemyship->getType();
-    const std::string s_type = WorldObjectTypeManager::instance().getNameFromType(type);
-    
-    // Dont give any ai to carriers
-    if( s_type == "EnemyCarrier" ) return;
-
-    // Add springs between all enemies
-    EnemyshipList::const_iterator i = m_enemyships.begin();
-    for(; i != m_enemyships.end(); ++i )
-    {
-        addPusher( enemyship, *i, m_safeDistance );
-    }
-    //cerr << "Active springs " << m_springs.size() << endl;
+	int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
 
     m_enemyships.push_back(enemyship);
 	m_spaceships.push_back(enemyship);
+
+	//if (type != carrierType)
+	//{
+	//	// Add springs between all enemies
+	//	for ( EnemyshipList::const_iterator it = m_enemyships.begin(); it != m_enemyships.end(); ++it )
+	//	{
+	//		Enemyship* es = *it;
+	//		if (es->getType() != carrierType)
+	//		{
+	//			addPusher( enemyship, es, m_safeDistance );
+	//		}
+	//	}
+	//}
+    //cerr << "Active springs " << m_springs.size() << endl;
+
 }
 
 void PhysicsEngine :: onEvent( Enemy_Despawned& evt )

@@ -1,5 +1,5 @@
 #include "LevelCompleteController.h"
-#include "PlanetController.h"
+#include "MenuController.h"
 #include "LoadingController.h"
 #include "ControllerManager.h"
 #include "../rendering/RenderEngine.h"
@@ -49,5 +49,5 @@ void LevelCompleteController :: _loadPlanetSelectionScreen()
 {
 	GameLogic::instance().unloadLevel();
 	RenderEngine::instance().unloadAllRenderers();
-	PlanetController::safeInstance().load();
+	MenuController::safeInstance().loadPlanetSelection();
 }
