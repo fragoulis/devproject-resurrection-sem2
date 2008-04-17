@@ -59,7 +59,7 @@ void Playership :: resetAllEnergy()
 void Playership :: respawn()
 {
 	resetAllEnergy();
-	m_state = ALIVE;
+	setAlive();
 	m_buffContainer.removeAll();
 	m_buffContainer.addBuff(m_bufftypeInvulnerability);
 }

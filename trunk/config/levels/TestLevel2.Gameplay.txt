@@ -69,7 +69,7 @@ MaximumPlayerDistance = 10000.0
 
 [Spawnpoints : p2]
 Location = (-800, -500)
-EnemyType = EnemyDisrupter // EnemyCarrier works too, but need new AI :)
+EnemyType = EnemyFighter // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1
 EnergyType = blue
 TimeBetweenInRangeAndFirstSession = 1.0

@@ -58,6 +58,8 @@ bool Application :: init()
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
 
+	TimerManager::safeInstance();
+
 	ConfParser* cp = new ConfParser("./config/config.gfx");
 	TextureMgr::init(cp->getSection("Texture"));
 	ShaderManager::init(cp->getSection("Shader"));
@@ -94,7 +96,6 @@ void Application :: load()
 
 	Logger::init(ps.getSection("Logger"));
 
-	TimerManager::safeInstance();
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	BuffFactory::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);

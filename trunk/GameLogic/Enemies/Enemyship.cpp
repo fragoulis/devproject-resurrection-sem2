@@ -50,7 +50,7 @@ void Enemyship :: collideWithPlayer(Playership* player)
 	setToBeDeleted();
 
 	// check if player is invulnerable
-	if (player->isInvulnerable()) return;
+	if (player->isInvulnerable() || player->isDying()) return;
 
 	// get player energy, reduce it by enemy's collision power
 	EnergyType type = getEnergyType();

@@ -32,6 +32,12 @@ public:
 
 	void resetAllEnergy();
 	void respawn();
+	void setDying() { m_state = DYING; }
+	void setAlive() { m_state = ALIVE; }
+	void setToBeDeleted() { m_state = TO_BE_DELETED; }
+	bool isDying() const { return m_state == DYING; }
+	bool isAlive() const { return m_state == ALIVE; }
+	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
 
 	bool isInvulnerable() const { return hasBuff(m_bufftypeInvulnerability); }
 	float getInvulnerableTimeLeft() const { return getBuffTimeLeft(m_bufftypeInvulnerability); }
@@ -46,7 +52,7 @@ public:
 private:
 	enum State {
 		ALIVE,
-		DYING, // not used yet
+		DYING,
 		TO_BE_DELETED,
 		UNKNOWN,
 	};

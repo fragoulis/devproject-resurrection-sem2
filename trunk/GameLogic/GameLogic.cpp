@@ -121,15 +121,33 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 void GameLogic :: onEvent(Player_Destroyed& evt)
 {
 	Playership* player = evt.getValue1();
+	player->setDying();
 	m_currentLives--;
 	if (m_currentLives == 0) {
 		EventManager::instance().fireEvent(Game_Over());
 	}
 	else {
-		//TimerManager::instance().
-		player->respawn();
-		EventManager::instance().fireEvent(Player_Respawned(player));
+		cout << "Player Destroyed" << endl;
+		TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 1.0f);
 	}
+}
+
+void GameLogic :: _playerDestroyed1_DespawnEnemies()
+{
+	cout << "Despawning enemies" << endl;
+	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
+	{
+		Enemyship* es = *it;
+		es->setToBeDeleted();
+	}
+	TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
+}
+
+void GameLogic :: _playerDestroyed2_RespawnPlayer()
+{
+	cout << "Respawning player" << endl;
+	m_playership->respawn();
+	EventManager::instance().fireEvent(Player_Respawned(m_playership));
 }
 
 /**
@@ -205,7 +223,7 @@ e-bombs in player's cargo bay
 
 void GameLogic :: onEvent( Player_EnergyGained& evt )
 {
-	cerr << "Gained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
+	//cerr << "Gained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 
 	// if we aready have an e-bomb, we can't create another
 	if (m_currentEbomb != EBOMB_TYPE_UNKNOWN) return;
@@ -214,17 +232,17 @@ void GameLogic :: onEvent( Player_EnergyGained& evt )
 	if (ebombType != EBOMB_TYPE_UNKNOWN) {
 		m_currentEbomb = ebombType;
 		EventManager::instance().fireEvent(Ebomb_Created(ebombType));
-		cerr << "Ebomb of type " << StringFromEbombType(ebombType) << " created" << endl;
+		//cerr << "Ebomb of type " << StringFromEbombType(ebombType) << " created" << endl;
 	}
 }
 void GameLogic :: onEvent( Player_EnergyDrained& evt )
 {
-	cerr << "Drained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
+	//cerr << "Drained " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 	_checkEbombUncreation();
 }
 void GameLogic :: onEvent( Player_EnergyDispersed& evt )
 {
-	cerr << "Dispersed " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
+	//cerr << "Dispersed " << evt.getValue3() << StringFromEnergyType(evt.getValue2()) << " energy" << endl;
 	_checkEbombUncreation();
 }
 
@@ -261,7 +279,7 @@ void GameLogic :: _checkEbombUncreation()
 		EbombType ebombType = m_currentEbomb;
 		m_currentEbomb = EBOMB_TYPE_UNKNOWN;
 		EventManager::instance().fireEvent(Ebomb_Uncreated(ebombType));
-		cerr << "Ebomb of type " << StringFromEbombType(ebombType) << "uncreated" << endl;
+		//cerr << "Ebomb of type " << StringFromEbombType(ebombType) << "uncreated" << endl;
 	}
 }
 
@@ -296,7 +314,7 @@ void GameLogic :: dropEbomb(const Point3& targetLocation)
 	ebomb->setVelocity(Vector3(0.0f, -m_ebombInitialDownwardVelocity, 0.0f));
 	m_ebombs.push_back(ebomb);
 
-	cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << " dropped" << endl;
+	//cerr << "Ebomb of type " << StringFromEbombType(m_currentEbomb) << " dropped" << endl;
 
 	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
 	m_playership->resetAllEnergy();

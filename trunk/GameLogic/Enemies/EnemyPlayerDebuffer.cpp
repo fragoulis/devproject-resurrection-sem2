@@ -33,7 +33,7 @@ void EnemyPlayerDebuffer :: collideWithPlayer(Playership* player)
 	setToBeDeleted();
 
 	// check if player is invulnerable
-	if (player->isInvulnerable()) return;
+	if (player->isInvulnerable() || player->isDying()) return;
 
 	// add debuff. If it is already present, will add another stack and restart timer
 	// Speed reduction is set to a max of 1 stack though
