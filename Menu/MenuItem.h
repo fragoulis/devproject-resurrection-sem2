@@ -22,6 +22,8 @@ private:
 	float m_posX, m_posY;
 	vector<Texture*> m_textureList;
 
+	bool m_selectable;
+
 public:
 	~MenuItem(); 
 
@@ -31,5 +33,8 @@ public:
 
 	const ItemState &getState() const { return m_state; };
 	void setState(ItemState state) { m_state = state; };
+
+	void setSelectable(bool selectable) { m_selectable = selectable; };
+	const bool isSelectable() const { return m_selectable; };
 
 };
