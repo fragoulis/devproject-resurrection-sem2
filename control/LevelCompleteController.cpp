@@ -6,6 +6,7 @@
 #include "../Sound/SoundEngine.h"
 #include "OSinterface/Input.h"
 #include "../GameLogic/GameLogic.h"
+#include "../physics/PhysicsEngine.h"
 
 LevelCompleteController::LevelCompleteController()
 {
@@ -40,6 +41,7 @@ void LevelCompleteController :: update(float dt)
 		LoadingController::instance().load(this, &LevelCompleteController::_loadPlanetSelectionScreen);
 	}
 
+	PhysicsEngine::instance().update(dt);
 	RenderEngine::instance().update(dt);
 }
 

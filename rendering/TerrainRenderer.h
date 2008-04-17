@@ -41,6 +41,7 @@ class TerrainRenderer :
 	public EventListener< Player_Respawned >,
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
+	public EventListener< Enemy_Destroyed >,
 	public EventListener<Key_GoingDown>,
 	public EventListener< Ebomb_Spawned >,
 	public EventListener< Ebomb_Despawned >,
@@ -65,6 +66,7 @@ public:
 	void onEvent(Player_Respawned&);
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
+	void onEvent(Enemy_Destroyed&);
 	void onEvent(Ebomb_Spawned&);
 	void onEvent(Ebomb_Despawned&);
 	void onEvent(Crater_Spawned&);

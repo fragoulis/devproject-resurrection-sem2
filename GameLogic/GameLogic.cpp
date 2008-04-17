@@ -29,6 +29,7 @@
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
 #include "../utility/TimerManager.h"
+#include "../utility/RandomGenerator.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -61,6 +62,7 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
 	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Level_Complete >(this);
 
 	// Load data
 	const ParserSection* psGame = ps.getSection("main");
@@ -163,6 +165,8 @@ void GameLogic :: _playerDestroyed2_RespawnPlayer()
  */
 void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 {
+	EventManager::instance().fireEvent(Level_Complete(m_levelName));
+
 	Enemyship* enemy = evt.getObject1();
 	Laser* laser = evt.getObject2();
 	int laserType = laser->getType();
@@ -410,6 +414,31 @@ void GameLogic :: _addLaserPowerBuffs(EbombType ebombType)
 	m_playership->addBuff(type1);
 	m_playership->addBuff(type2);
 }
+
+void GameLogic :: onEvent(Level_Complete&)
+{
+	Vector3 rnd;
+	RandomGenerator::GET_RANDOM_VECTOR3(rnd, Vector3(-1.0f, 0.0f, -1.0f), Vector3(1.0f, 0.0f, 1.0f));
+	rnd.normalize();
+	setPlayerDirection(rnd);
+	m_playership->makeInvulnerable();
+
+	TimerManager::instance().schedule(this, &GameLogic::_levelComplete1_DestroyEnemies, 1.0f);
+}
+
+void GameLogic :: _levelComplete1_DestroyEnemies()
+{
+	for (EnemyshipList::iterator it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
+	{
+		Enemyship* enemy = *it;
+		enemy->setToBeDeleted();
+		EventManager::instance().fireEvent(Enemy_Destroyed(enemy));
+	}
+}
+
+
+
+
 
 
 

@@ -46,7 +46,8 @@ class GameLogic :
 	public EventListener< Player_EnergyGained >,
 	public EventListener< Player_EnergyDrained >,
 	public EventListener< Player_EnergyDispersed >,
-	public EventListener< Player_Destroyed >
+	public EventListener< Player_Destroyed >,
+	public EventListener< Level_Complete >
 {
 public:
 
@@ -90,6 +91,7 @@ public:
 	void onEvent(Player_EnergyDrained&);
 	void onEvent(Player_EnergyDispersed&);
 	void onEvent(Player_Destroyed&);
+	void onEvent(Level_Complete&);
 
 private:
 
@@ -152,6 +154,8 @@ private:
 	void _playerDestroyed1_DespawnEnemies();
 	void _playerDestroyed2_RespawnPlayer();
 
+	// Level Complete
+	void _levelComplete1_DestroyEnemies();
 
 
 	// Singleton stuff
