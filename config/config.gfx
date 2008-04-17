@@ -218,16 +218,16 @@ Speed		 = 1.5
 ModelHook = enforcer_proc.obj
 
 [EntitySettings : EnemyFighter]
-ModelHook = Stupship_proc.obj
+ModelHook = fighter.obj
 
 [EntitySettings : EnemyInterceptor]
-ModelHook = Stupship_proc.obj
+ModelHook = interceptor.obj
 
 [EntitySettings : EnemyDisrupter]
-ModelHook = Stupship_proc.obj
+ModelHook = disrupter.obj
 
 [EntitySettings : EnemyCarrier]
-ModelHook = Stupship_proc.obj
+ModelHook = carrier.obj
 
 [EntitySettings : Ebomb]
 ModelHook = bomb.obj
