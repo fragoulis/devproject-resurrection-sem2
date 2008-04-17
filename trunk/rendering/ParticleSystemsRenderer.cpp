@@ -45,18 +45,18 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
 	deleteVector(m_psList);
 
-	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+	//EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
-	EventManager::instance().unRegisterEventListener<Enemy_Spawned>(this);
-	EventManager::instance().unRegisterEventListener<Enemy_Despawned>(this);
-	EventManager::instance().unRegisterEventListener<Player_EnergyDrained>(this);
-	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
-	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
-	EventManager::instance().unRegisterEventListener<Ebomb_Despawned>(this);
-	EventManager::instance().unRegisterEventListener<Life_Restored>(this);
-	EventManager::instance().unRegisterEventListener<Terrain_Changed>(this);
-	EventManager::instance().unRegisterEventListener<Crater_Spawned>(this);
-	EventManager::instance().unRegisterEventListener<Level_Unload>(this);
+	//EventManager::instance().unRegisterEventListener<Enemy_Spawned>(this);
+	//EventManager::instance().unRegisterEventListener<Enemy_Despawned>(this);
+	//EventManager::instance().unRegisterEventListener<Player_EnergyDrained>(this);
+	//EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
+	//EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
+	//EventManager::instance().unRegisterEventListener<Ebomb_Despawned>(this);
+	//EventManager::instance().unRegisterEventListener<Life_Restored>(this);
+	//EventManager::instance().unRegisterEventListener<Terrain_Changed>(this);
+	//EventManager::instance().unRegisterEventListener<Crater_Spawned>(this);
+	//EventManager::instance().unRegisterEventListener<Level_Unload>(this);
 
 }
 
@@ -191,6 +191,7 @@ void ParticleSystemsRenderer::onEvent(Enemy_Despawned &enemy) {
 		{
 			if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy.getValue())
 			{
+				delete *it;
 				m_psList.erase(it);
 				break;
 			}

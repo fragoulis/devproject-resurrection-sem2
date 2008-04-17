@@ -114,6 +114,7 @@ void Application :: unload()
 	ControllerManager::destroy();
 	GameController::destroy();
 	MenuController::destroy();
+	LoadingController::destroy();
     SoundEngine::destroy();
 	RenderEngine::destroy();
 	GameLogic::destroy();
