@@ -20,6 +20,7 @@ class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_Going
 												  public EventListener<Enemy_Despawned>,
 												  public EventListener<Player_EnergyDrained>,
 												  public EventListener<Player_Spawned>,
+												  public EventListener<Player_Respawned>,
 												  public EventListener<Player_Destroyed>,
 												  public EventListener<Ebomb_Despawned>,
 												  public EventListener<Life_Restored>,
@@ -42,6 +43,7 @@ public:
 	virtual void onEvent(Enemy_Despawned&);
 	virtual void onEvent(Player_EnergyDrained&);
 	virtual void onEvent(Player_Spawned&);
+	virtual void onEvent(Player_Respawned&);
 	virtual void onEvent(Player_Destroyed&);
 	virtual void onEvent(Ebomb_Despawned&);
 	virtual void onEvent(Life_Restored&);

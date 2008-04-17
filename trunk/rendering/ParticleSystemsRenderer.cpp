@@ -30,6 +30,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
 	EventManager::instance().registerEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().registerEventListener<Player_Spawned>(this);
+	EventManager::instance().registerEventListener<Player_Respawned>(this);
 	EventManager::instance().registerEventListener<Player_Destroyed>(this);
 	EventManager::instance().registerEventListener<Ebomb_Despawned>(this);
 	EventManager::instance().registerEventListener<Life_Restored>(this);
@@ -235,16 +236,38 @@ void ParticleSystemsRenderer::onEvent(Player_Spawned &player) {
 
 }
 
+void ParticleSystemsRenderer::onEvent(Player_Respawned &player) {
+
+	if (!m_isJetCreated) {
+		PS_Jet *ps_jet = (PS_Jet*) PS_Manager::instance().fetchNewPS("PS_Jet");
+		ps_jet->setEmitterShip(player.getValue());
+		m_psList.push_back(ps_jet);
+	}
+
+}
+
 void ParticleSystemsRenderer::onEvent(Player_Destroyed &player) {
 
 	CoordinateFrame cf = player.getValue1()->getCoordinateFrame();
-	if (!m_isJetCreated) {
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
-		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
-		m_psList.back()->setTransform(cf);
+
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+	m_psList.back()->setTransform(cf);
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+	m_psList.back()->setTransform(cf);
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+	m_psList.back()->setTransform(cf);
+
+	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		if((*it)->getName() == "PS_Jet")
+		{
+			delete *it;
+			m_psList.erase(it);
+			m_isJetCreated = false;
+			break;
+		}
 	}
 
 }
