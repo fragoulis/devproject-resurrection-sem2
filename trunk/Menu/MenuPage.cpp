@@ -69,26 +69,30 @@ void MenuPage::setSelectedItem(int itemNumber) {
 	m_items[itemNumber]->setState(MenuItem::ITEM_STATE_SELECTED);
 }
 
-void  MenuPage::selectNextItem() {
+bool  MenuPage::selectNextItem() {
 
 	if (m_items.size() == 0)
-		return;
+		return false;
 
 	int selectedItem = getSelectedItem();
 	if (selectedItem < (int) m_items.size()-1)
 		setSelectedItem(selectedItem+1);
 	else
 		setSelectedItem(0);
+
+	return true;
 }
 
-void  MenuPage::selectPreviousItem() {
+bool  MenuPage::selectPreviousItem() {
 
 	if (m_items.size() == 0)
-		return;
+		return false;
 
 	int selectedItem = getSelectedItem();
 	if (selectedItem > 0)
 		setSelectedItem(selectedItem-1);
 	else
 		setSelectedItem((int) m_items.size()-1);
+
+	return true;
 }

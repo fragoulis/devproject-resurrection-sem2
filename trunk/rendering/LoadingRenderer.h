@@ -9,6 +9,7 @@
 
 #pragma once
 #include "IRenderer.h"
+class Texture;
 
 class LoadingRenderer : public IRenderer
 {
@@ -18,4 +19,7 @@ public:
 
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
+
+private:
+	Texture* m_texture;
 };

@@ -14,7 +14,5 @@ public:
 
 private:
 	Texture* m_texture;
-	int m_screenWidth;
-	int m_screenHeight;
 
 };
