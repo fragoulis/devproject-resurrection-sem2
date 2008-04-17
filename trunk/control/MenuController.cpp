@@ -138,6 +138,14 @@ void MenuController :: load()
 	ControllerManager::instance().activateController(this);
 }
 
+void MenuController :: loadPlanetSelection()
+{
+	RenderEngine::instance().loadRenderer("menu");
+	m_renderer = dynamic_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
+	m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);
+	ControllerManager::instance().activateController(this);
+}
+
 //void MenuController :: _loadMenu()
 //{
 //	GameLogic::instance().unloadLevel();

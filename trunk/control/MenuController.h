@@ -24,6 +24,7 @@ public:
 
 	// Helper to load menu
 	void load();
+	void loadPlanetSelection();
 
 
 private:
