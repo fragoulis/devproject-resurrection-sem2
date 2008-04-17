@@ -87,7 +87,8 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 					break;
 			}
 		}
-		Application.update(float(timer.getDeltatime())); // bleh
+        const float dt = (float)timer.getDeltatime();
+		Application.update(dt); // bleh
 
 		// Can add window data to g to allow things like printing text
 		Graphics g;
