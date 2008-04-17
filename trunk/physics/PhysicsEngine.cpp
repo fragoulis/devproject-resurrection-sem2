@@ -19,6 +19,7 @@
 #include "../GameLogic/Objects/Ebomb.h"
 #include "../GameLogic/Objects/Crater.h"
 #include "../GameLogic/Objects/Terrain.h"
+#include "../GameLogic/WorldObjectTypeManager.h"
 #include "../math/maths.h"
 #include "../math/Vector3.h"
 #include "../math/Point3.h"
@@ -30,7 +31,7 @@
 #include <iostream>
 using namespace std;
 
-const float EARTH_GRAVITY = 9.81f;
+const float EARTH_GRAVITY = 0.81f;
 const float MIN_DT = 0.005f;
 
 PhysicsEngine :: PhysicsEngine()
@@ -87,6 +88,11 @@ void PhysicsEngine :: onEvent( Player_Despawned& evt )
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
 	Enemyship *enemyship = evt.getValue();
+    int type = enemyship->getType();
+    const std::string s_type = WorldObjectTypeManager::instance().getNameFromType(type);
+    
+    // Dont give any ai to carriers
+    if( s_type == "EnemyCarrier" ) return;
 
     // Add springs between all enemies
     EnemyshipList::const_iterator i = m_enemyships.begin();
