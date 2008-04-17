@@ -25,6 +25,7 @@
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
 #include "Input.h"
+#include <al/alut.h>
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -45,6 +46,9 @@ Application :: ~Application()
 
 bool Application :: init()
 {
+    alutInit(0,0);
+    alGetError();
+
 	//streambuf* psbuf;
 	//filestr.open("cout.txt");
 	//psbuf = filestr.rdbuf();
@@ -58,6 +62,8 @@ bool Application :: init()
 void Application :: destroy()
 {
 	unload();
+
+    alutExit();
 
 	// This doesn't work!
 	// LoadingController waits for 0.1ms till the loading screen is rendered,
