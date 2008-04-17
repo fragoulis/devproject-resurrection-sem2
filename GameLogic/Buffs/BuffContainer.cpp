@@ -83,11 +83,7 @@ void BuffContainer :: removeStack(int type)
 
 void BuffContainer :: removeAll()
 {
-	for (BuffVectorIt it = m_buffs.begin(); it != m_buffs.end(); ++it)
-	{
-		Buff* buff = *it;
-		buff->removeAllStacks();
-	}
+	for_each(m_buffs.begin(), m_buffs.end(), mem_fun(&Buff::removeAllStacks));
 }
 
 void BuffContainer :: removeAllBuffs()

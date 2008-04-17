@@ -9,11 +9,12 @@
 
 
 #include "Application.h"
-#include "../LoadingController.h"
-#include "../../gfxutils/ConfParser/ConfParser.h"
-#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../ControllerManager.h"
 #include "../MenuController.h"
+#include "../LoadingController.h"
+#include "../GameController.h"
+#include "../../gfxutils/ConfParser/ConfParser.h"
+#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../../GameLogic/GameLogic.h"
 #include "../../rendering/RenderEngine.h"
 #include "../../sound/SoundEngine.h"
@@ -111,9 +112,10 @@ void Application :: unload()
 	PhysicsEngine::destroy();
 	AIEngine::destroy();
 	ControllerManager::destroy();
+	GameController::destroy();
+	MenuController::destroy();
     SoundEngine::destroy();
 	RenderEngine::destroy();
-	SoundEngine::destroy();
 	GameLogic::destroy();
 	MemMgrRaw::destroy();
 	Logger::destroy();
