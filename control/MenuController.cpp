@@ -69,11 +69,11 @@ void MenuController :: update(float dt)
 	Input& input = Input::instance();
 
 	//items selection
-	if (input.isKeyGoingDown('W')) {
+	if (input.isKeyGoingDown('W') || input.isKeyGoingDown('A')) {
 		if (m_renderer->selectPreviousItem())
 			SoundEngine::instance().play("MenuClick");
 	}
-	else if (input.isKeyGoingDown('S')) {
+	else if (input.isKeyGoingDown('S') || input.isKeyGoingDown('D')) {
 		if (m_renderer->selectNextItem())
 			SoundEngine::instance().play("MenuClick");
 	}
@@ -104,6 +104,7 @@ void MenuController :: update(float dt)
 				else 
 					_newGame();  //go to new game
 
+				m_renderer->setSelectedItem(1); //select the first planet for the next visit
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
 				break;
