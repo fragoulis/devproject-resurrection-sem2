@@ -110,8 +110,8 @@ void Application :: unload()
 	BuffFactory::destroy();
 	PhysicsEngine::destroy();
 	AIEngine::destroy();
-	SoundEngine::destroy();
 	ControllerManager::destroy();
+    SoundEngine::destroy();
 	RenderEngine::destroy();
 	SoundEngine::destroy();
 	GameLogic::destroy();
