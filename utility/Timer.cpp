@@ -1,6 +1,6 @@
 //*****************************************************************************
 //**
-//**   File:               Win32Timer.cpp
+//**   File:               Timer.cpp
 //**   Author:             $Author: Joep.Moritz $
 //**   Last Change:        $Date: 2008-03-13 00:18:54 +0000 (Thu, 13 Mar 2008) $
 //**   Last Revision:      $Revision: 156 $
@@ -8,7 +8,7 @@
 //*****************************************************************************
 
 
-#include "Win32Timer.h"
+#include "Timer.h"
 #include <windows.h>
 #pragma comment(lib, "Winmm.lib")
 
@@ -38,25 +38,25 @@ double GetTime()
 }
 
 
-Win32Timer::Win32Timer()
+Timer :: Timer()
 {
 	timeBeginPeriod(1);
 	//if (frequency == 0) GetSystemFrequency();
 	reset();
 }
 
-Win32Timer::~Win32Timer()
+Timer::~Timer()
 {
 	timeEndPeriod(1);
 }
 
-double Win32Timer::getCurrentTime()
+double Timer::getCurrentTime()
 {
 	return GetTime() - m_starttime;
 	//return GetSystemTimestamp() - m_starttime;
 }
 
-double Win32Timer::getDeltatime()
+double Timer::getDeltatime()
 {
 	double time = getCurrentTime();
 	double deltatime = time - m_lasttime;
@@ -64,7 +64,7 @@ double Win32Timer::getDeltatime()
 	return deltatime;
 }
 
-void Win32Timer::reset()
+void Timer::reset()
 {
 	m_starttime = GetTime();
 	m_lasttime = 0.0;

@@ -16,9 +16,9 @@
 #include <windows.h>
 #include "Window.h"
 #include "Win32Interface.h"
-#include "Win32Timer.h"
 #include "../OSinterface/Application.h"
 #include "../../rendering/Graphics.h"
+#include "../../utility/Timer.h"
 #pragma warning( disable : 4996 )
 
 #pragma warning( push )
@@ -47,7 +47,7 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 	// Create some variables
 	Window GLWindow;
 	Application Application;
-	Win32Timer timer;
+	Timer timer;
 	Win32Interface Win32Interface;
 
 	IOSInterface::setInstance(&Win32Interface);
