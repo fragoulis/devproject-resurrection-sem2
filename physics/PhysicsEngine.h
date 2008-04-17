@@ -103,7 +103,7 @@ private:
 	void _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
 
     // The minimum distance the planes must keep from each other
-    float m_safeDistance;
+    float m_minDistanceBetweenShips;
 
 	// Collision detection
 	typedef std::list<Enemyship*> EnemyshipList;
