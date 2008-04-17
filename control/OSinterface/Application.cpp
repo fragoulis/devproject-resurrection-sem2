@@ -60,7 +60,8 @@ bool Application :: init()
 	ConfParser* cp = new ConfParser("./config/config.gfx");
 	TextureMgr::init(cp->getSection("Texture"));
 	ShaderManager::init(cp->getSection("Shader"));
-	
+	MemMgrRaw::init(cp->getSection("MemManager:RawData"));
+
 	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
@@ -91,7 +92,6 @@ void Application :: load()
 	const ParserSection& ps = cp.rootSection();
 
 	Logger::init(ps.getSection("Logger"));
-	MemMgrRaw::init(ps.getSection("MemManager:RawData"));
 
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	BuffFactory::safeInstance().onApplicationLoad(ps);
