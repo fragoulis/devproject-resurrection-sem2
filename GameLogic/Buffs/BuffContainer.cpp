@@ -43,6 +43,13 @@ int BuffContainer :: getBuffStacks(int type) const
 	return buff->getCurrentStacks();
 }
 
+float BuffContainer :: getBuffTimeLeft(int type) const
+{
+	const Buff* buff = getBuff(type);
+	if (buff == 0) return 0.0f;
+	return buff->getTimeLeft();
+}
+
 bool BuffContainer :: hasBuff(int type) const
 {
 	const Buff* buff = getBuff(type);

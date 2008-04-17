@@ -34,10 +34,12 @@ public:
 	void respawn();
 
 	bool isInvulnerable() const { return hasBuff(m_bufftypeInvulnerability); }
+	float getInvulnerableTimeLeft() const { return getBuffTimeLeft(m_bufftypeInvulnerability); }
 
 	void addBuff(int type) { m_buffContainer.addBuff(type); }
 	bool hasBuff(int type) const { return m_buffContainer.hasBuff(type); }
-	int getBuffStacks(int type) { return m_buffContainer.getBuffStacks(type); }
+	int getBuffStacks(int type) const { return m_buffContainer.getBuffStacks(type); }
+	float getBuffTimeLeft(int type) const { return m_buffContainer.getBuffTimeLeft(type); }
 
 	void loadSettings(const ParserSection&);
 
