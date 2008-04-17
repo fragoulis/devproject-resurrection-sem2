@@ -248,3 +248,19 @@ LakeNormalTexture = waternormal.bmp
 ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.sgi
 
+
+
+
+
+
+
+
+
+################# MEM MANAGER SETTINGS ####################
+
+[MemManager : RawData]
+MinMemoryPOT = 4
+MaxMemoryPOT = 27
+
+[MemManager : RawData : MemDistribution]
+FixedMemTree = 10000

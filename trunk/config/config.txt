@@ -73,13 +73,6 @@ Width = 18.0
 Speed = 700.0
 
 
-[MemManager : RawData]
-MinMemoryPOT = 4
-MaxMemoryPOT = 27
-
-[MemManager : RawData : MemDistribution]
-FixedMemTree = 10000
-
 [Logger]
 Level = 2
 DisplayFileLine = 0
