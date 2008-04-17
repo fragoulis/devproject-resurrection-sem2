@@ -25,6 +25,8 @@
 #include "../../GameLogic/Buffs/BuffFactory.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
+#include "../../gfx/Texture/TextureMgr.h"
+#include "../../gfx/Shaders/ShaderManager.h"
 #include "Input.h"
 #include <al/alut.h>
 #include <iostream>
@@ -55,6 +57,10 @@ bool Application :: init()
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
 
+	ConfParser* cp = new ConfParser("./config/config.gfx");
+	TextureMgr::init(cp->getSection("Texture"));
+	ShaderManager::init(cp->getSection("Shader"));
+	
 	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
