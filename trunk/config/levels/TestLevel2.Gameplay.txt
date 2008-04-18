@@ -42,7 +42,7 @@ Radius = 148.775
 AffectedAreaRadius = 1013.88
 EbombType = purple
 Location = (-314.081, 220.408)
-ProtectorRespawnDelay = 5.0
+ProtectorRespawnDelay = 10.0
 ProtectorType = EnemyCarrier
 ProtectorEnergyType = yellow
 
@@ -55,28 +55,28 @@ Location = (1201.22, 1263.67)
 
 [Spawnpoints : p1]
 Location = (500, -500)
-EnemyType = EnemyFighter
+EnemyType = EnemyDisrupter
 EnemyCount = 1
 EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 5.0
+TimeBetweenSessionEndAndSessionStart = 6.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 
 
 [Spawnpoints : p2]
 Location = (-800, -500)
-EnemyType = EnemyFighter // EnemyCarrier works too, but need new AI :)
+EnemyType = EnemyInterceptor // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1
 EnergyType = blue
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0
 TimeBetweenLastSpawnAndSessionEnd = 1.0
-TimeBetweenSessionEndAndSessionStart = 1.0
+TimeBetweenSessionEndAndSessionStart = 6.0
 MinimumPlayerDistance = 128.0
 MaximumPlayerDistance = 10000.0
 

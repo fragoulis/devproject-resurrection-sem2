@@ -12,6 +12,8 @@
 #include "../Buffs/BuffFactory.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
+#include "../../utility/EventManager.h"
+#include "../GameEvents.h"
 
 
 EnemyPlayerDebuffer :: EnemyPlayerDebuffer(int type) : Enemyship(type)
@@ -29,11 +31,16 @@ Enemyship* EnemyPlayerDebuffer :: clone()
 
 void EnemyPlayerDebuffer :: collideWithPlayer(Playership* player)
 {
-	// We delete ourselves
+	// remove enemy from the game
 	setToBeDeleted();
 
+	if (player->isDying()) return;
+
+	// Fire destroyed event
+	EventManager::instance().fireEvent(Enemy_Destroyed(this));
+
 	// check if player is invulnerable
-	if (player->isInvulnerable() || player->isDying()) return;
+	if (player->isInvulnerable()) return;
 
 	// add debuff. If it is already present, will add another stack and restart timer
 	// Speed reduction is set to a max of 1 stack though
