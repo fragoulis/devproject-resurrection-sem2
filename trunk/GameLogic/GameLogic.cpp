@@ -165,7 +165,7 @@ void GameLogic :: _playerDestroyed2_RespawnPlayer()
  */
 void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 {
-	EventManager::instance().fireEvent(Level_Complete(m_levelName));
+	//EventManager::instance().fireEvent(Level_Complete(m_levelName));
 
 	Enemyship* enemy = evt.getObject1();
 	Laser* laser = evt.getObject2();
