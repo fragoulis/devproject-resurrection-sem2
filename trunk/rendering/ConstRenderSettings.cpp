@@ -79,5 +79,6 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_reflectionTextureScreenRatio = FromString<float>(parsec->getVal("ReflectionTextureSizeRatio"));
 
 	m_craterArrowTexture = parsec->getVal("CraterArrowTexture");
+	m_crosshairTexture = TextureIO::instance()->getTexture(parsec->getVal("CrosshairTexture"));
 	
 }

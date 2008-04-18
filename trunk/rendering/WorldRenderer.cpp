@@ -86,9 +86,12 @@ void WorldRenderer :: onEvent(Level_Unload& evt)
 
 void WorldRenderer :: onEvent(Level_Complete& evt)
 {
+	/*
 	m_playerActive = false;
 	m_boundsComputed = false;
 	m_playerCoordFrame = 0;
+	*/
+	m_playerActive = false;
 }
 
 

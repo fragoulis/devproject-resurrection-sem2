@@ -113,6 +113,7 @@ void ShipRenderer :: onEvent(Player_Respawned& evt)
 	// Get the const render settings of the ship
 	const EntitySettings_t& settings = RenderEngine::instance().getConstRenderSettings().getEntitySettings(evt.getValue()->getType());
 	_insertShip(settings,&(evt.getValue()->getCoordinateFrame()));
+	// Throw an effect - ps here
 }
 
 void ShipRenderer :: onEvent(Player_Despawned& evt)

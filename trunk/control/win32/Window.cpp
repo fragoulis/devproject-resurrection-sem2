@@ -93,12 +93,11 @@ bool Window::createWindow(const char* title,int width,int height,bool fullscreen
 	DWORD ExStyle,Style;	//window extended style and style
 	
 
+	ShowCursor(false);
 	if (fullscreen)
 	{
 		ExStyle = WS_EX_APPWINDOW;	//create a normal window
 		Style = WS_POPUP;			// sets the window to be on-top and have no borders/title bar etc 
-
-		ShowCursor(false);	//its better to hide the cursor for fullscreen
 	}
 	else
 	{

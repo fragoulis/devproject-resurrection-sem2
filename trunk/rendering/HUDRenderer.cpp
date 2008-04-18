@@ -14,6 +14,9 @@
 #include "../gfx/Texture/TextureIO.h"
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Objects/Playership.h"
+#include "../Math/Point2.h"
+#include "../Math/Point2.h"
+#include "../Control/OSinterface/Input.h"
 #include "gl/glu.h"
 
 HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
@@ -183,12 +186,16 @@ void HUDRenderer :: render(Graphics& g) const
 			}
 		}
 
+		glDisable(GL_BLEND);
+		glEnable(GL_ALPHA_TEST);
+
+		// Draw the crosshair
+		Point2 mousep = Input::instance().getMousePosition();
+		RenderEngine::instance().getConstRenderSettings().getCrosshair()->bind();
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX()-25.0f,float(screenHeight) - mousep.getY() - 12.5f,0),Vector3(50,0,0),Vector3(0,25,0), Vector2(0,0), Vector2(1,1));
+		glDisable(GL_ALPHA_TEST);
 
 		ShaderManager::instance()->end();
-
-		
-
-		glDisable(GL_BLEND);
 
 	glPopMatrix();
 	glMatrixMode(GL_PROJECTION);
