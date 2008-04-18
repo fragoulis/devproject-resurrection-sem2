@@ -20,6 +20,7 @@ class ConstRenderSettings
 	float m_spawnpointInterval;
 	float m_spawnpointSize;
 	Texture * m_spawnpointTexture;
+	Texture * m_crosshairTexture;
 	// other misc stuff
 	unsigned m_shadowTextureSize;
 	float m_tformTimePerUnit;
@@ -58,6 +59,7 @@ public :
 	const std::string& getCraterArrowTexture() const {return m_craterArrowTexture;}
 	const float getWaveRepeats(const float mapExtent) const {return m_waveRepeats*mapExtent / 2048.0f;}
 	const float getReflectionTextureScreenRatio() const {return m_reflectionTextureScreenRatio;}
+	const Texture * getCrosshair() const {return m_crosshairTexture;}
 
 	void init(const ParserSection * parsec);
 
