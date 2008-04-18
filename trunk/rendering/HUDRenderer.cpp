@@ -23,7 +23,8 @@ HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(E
 {
 	Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.bmp");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudBar.bmp");
+	//tex = TextureIO::instance()->getTexture("hudBar.bmp");
+	tex = TextureIO::instance()->getTexture("hudBg.bmp");
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("hudEnergyBg.bmp");
 	m_textureList.push_back(tex);
@@ -105,12 +106,14 @@ void HUDRenderer :: render(Graphics& g) const
 
 			//DRAW HUD BARS
 			//life bar
-			RenderEngine::drawTexturedQuad(Vector3(0.0f, 0, 0), Vector3(180.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
-			m_textureList[2]->bind(0);
+			RenderEngine::drawTexturedQuad(Vector3(0.0f, 0, 0), Vector3(1024, 0, 0), Vector3(0, 50, 0), Vector2(0,0), Vector2(1,1));
+
+			//RenderEngine::drawTexturedQuad(Vector3(0.0f, 0, 0), Vector3(180.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+			//m_textureList[2]->bind(0);
 			//energy bar
-			RenderEngine::drawTexturedQuad(Vector3((float) (screenWidth/2.0f-(energyCapacity*10)/2)-10, 5, 0), Vector3((float) (energyCapacity*10)+20, 0, 0), Vector3(0, 40.0f, 0), Vector2(0,0), Vector2(1,1));
-			m_textureList[6]->bind(0);
-			RenderEngine::drawTexturedQuad(Vector3(screenWidth - 100.0f, 0, 0), Vector3(100.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
+			//RenderEngine::drawTexturedQuad(Vector3((float) (screenWidth/2.0f-(energyCapacity*10)/2)-10, 5, 0), Vector3((float) (energyCapacity*10)+20, 0, 0), Vector3(0, 40.0f, 0), Vector2(0,0), Vector2(1,1));
+			//m_textureList[6]->bind(0);
+			//RenderEngine::drawTexturedQuad(Vector3(screenWidth - 100.0f, 0, 0), Vector3(100.0f, 0, 0), Vector3(0, 50.0f, 0), Vector2(0,0), Vector2(1,1));
 
 			const GLfloat transparency2 = 1.0f;
 			ShaderManager::instance()->setUniform1fv("transparency", &transparency2);
