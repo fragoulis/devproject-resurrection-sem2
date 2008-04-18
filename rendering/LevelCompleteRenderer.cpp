@@ -60,7 +60,7 @@ void LevelCompleteRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform4fv("constantColor", white);
 	CHECK_GL_ERROR();
 
-	RenderEngine::drawTexturedQuad(Vector3((float) screenWidth/2 - 128, (float) screenHeight/2-64, 0.0f), Vector3(256, 0.0f, 0.0f), Vector3(0.0f, 128, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
+	RenderEngine::drawTexturedQuad(Vector3((float) screenWidth/2 - 256, (float) screenHeight/2-64, 0.0f), Vector3(512, 0.0f, 0.0f), Vector3(0.0f, 128, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
 	ShaderManager::instance()->end();
 
 	glDisable(GL_BLEND);
