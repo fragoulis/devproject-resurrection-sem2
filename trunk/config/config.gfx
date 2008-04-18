@@ -247,7 +247,7 @@ LakeTexture = noiseVolume.dds
 LakeNormalTexture = waternormal.bmp
 ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.sgi
-CrosshairTexture = crosshair.sgi
+CrosshairTexture = target.bmp
 
 
 
