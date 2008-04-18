@@ -23,7 +23,7 @@ AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 2               # integer
-EnergyPoints = 10
+EnergyPoints = 25
 //EnergyPoints = 1
 
 
@@ -40,7 +40,7 @@ AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 8               # integer
-EnergyPoints = 10
+EnergyPoints = 25
 //EnergyPoints = 2
 
 [EnemyDisrupter]
@@ -56,7 +56,7 @@ AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 12               # integer
-EnergyPoints = 10
+EnergyPoints = 25
 //EnergyPoints = 2
 
 
@@ -74,8 +74,8 @@ AirdragCoefficient = 1.0    # float
 LiftPower = 1.0             # float
 LiftVariance = 1.0          # float
 HitPoints = 100             # integer
-//EnergyPoints = 25
-EnergyPoints = 10
+EnergyPoints = 25
+//EnergyPoints = 10
 
 EnemyType = EnemyDisrupter
 EnemyCount = 1                      # int
