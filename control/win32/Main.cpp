@@ -56,7 +56,7 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 	bool inLoop = true;
 
 	//create the window
-	if (!GLWindow.createWindow("Resurrection", 1024,768, false))
+	if (!GLWindow.createWindow("Resurrection", 1024,768, true))
 	{
 		//if it fails, tell the user and exit
 		MessageBox (NULL, "Error making window", "OpenGL", MB_OK);

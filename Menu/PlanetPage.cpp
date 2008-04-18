@@ -35,7 +35,7 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 	//}
 
 	MenuItem *planet2Button = new MenuItem();
-	planet2Button->init(100, 500, 28, 28, "planet1_uns.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	planet2Button->init(100, 500, 28, 28, "planet1_uns.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_SELECTED);
 	m_items.push_back(planet2Button);
 
 	MenuItem *planet3Button = new MenuItem();
