@@ -13,6 +13,7 @@
 #include "../gfx/Texture/Texture.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../Menu/MainPage.h"
+#include "../Menu/InstructionPage.h"
 #include "../Menu/CreditsPage.h"
 #include "../Menu/PlanetPage.h"
 #include "gl/glu.h"
@@ -37,6 +38,7 @@ MenuRenderer::MenuRenderer()
 	m_state = MENU_STATE_MAIN;
 
 	m_menuPool[MENU_STATE_MAIN] = new MainPage();
+	m_menuPool[MENU_STATE_TUTORIAL] = new InstructionPage();
 	m_menuPool[MENU_STATE_CREDITS] = new CreditsPage();
 	m_menuPool[MENU_STATE_PLANET] = new PlanetPage();
 

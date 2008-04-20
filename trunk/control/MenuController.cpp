@@ -87,16 +87,25 @@ void MenuController :: update(float dt)
 				if (m_renderer->getSelectedItem() == 0) {
 					m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);  //go to planet screen selection
                 } else if (m_renderer->getSelectedItem() == 1) {
-					m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
+					m_renderer->setState(MenuRenderer::MENU_STATE_TUTORIAL);  //go to credits screen
 				} else if (m_renderer->getSelectedItem() == 2) {
+					m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
+				} else if (m_renderer->getSelectedItem() == 3) {
 					_exit();  //kill the application
 				}
+				SoundEngine::instance().play("EnemyFighter_Destroyed");
+
+				break;
+			case MenuRenderer::MENU_STATE_TUTORIAL:
+				_newGame();  //go to new game
+				m_renderer->setSelectedItem(1); //select the first planet for the next visit
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
 				break;
 			case MenuRenderer::MENU_STATE_CREDITS:
 				m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu 
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
+
 				break;
 			case MenuRenderer::MENU_STATE_PLANET:
 				if (m_renderer->getSelectedItem() == 0)
