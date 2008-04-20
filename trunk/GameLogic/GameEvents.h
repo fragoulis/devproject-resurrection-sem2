@@ -252,3 +252,8 @@ EVENT_WITH_VALUE(Carrier_SessionStarted, EnemyCarrier*);
 // Signals the end of a spawning session
 // The parameter is the spawnpoint
 EVENT_WITH_VALUE(Carrier_SessionEnded, EnemyCarrier*);
+
+// Signals the collision between an interceptor and the player.
+// Its an alternative to Enemy_Destroyed. The passed value is
+// a pointer the interceptor clamped.
+EVENT_WITH_VALUE(Interceptor_Clamped, Enemyship*);
