@@ -1,7 +1,6 @@
 #include "AIEnemy.h"
 #include "Behaviours/AIBehaviour.h"
 #include "Behaviours/States/IAIState.h"
-#include "../GameLogic/Enemies/Enemyship.h"
 #include "../utility/RandomGenerator.h"
 
 AIEnemy::AIEnemy():
@@ -13,6 +12,7 @@ m_forceChange(0)
 
 void AIEnemy::setBehaviour( AIBehaviour *behaviour ) 
 { 
+    m_state = 0;
     m_behaviour = behaviour;
     float min = behaviour->getMinTime();
     float max = behaviour->getMaxTime();
@@ -22,23 +22,6 @@ void AIEnemy::setBehaviour( AIBehaviour *behaviour )
 void AIEnemy::update( float dt, Playership *player ){
     m_behaviour->update( dt, player, this );
 }
-
-const Point3& AIEnemy::getEnemyPosition() const { 
-    return m_enemy->getPosition(); 
-}
-
-void AIEnemy::setEnemyThrusterDirection( const Vector3& dir ) { 
-    m_enemy->setThrusterDirection( dir ); 
-}
-
-void AIEnemy::setEnemyThrusterPower( float power ) { 
-    m_enemy->setThrusterPower( power ); 
-}
-
-float AIEnemy::getEnemyThrusterPower() const { 
-    return m_enemy->getThrusterPower(); 
-}
-
 
 bool AIEnemy::readyToChange( float dt )
 {

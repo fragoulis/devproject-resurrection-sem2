@@ -1,7 +1,7 @@
 #pragma once
+#include "../GameLogic/Enemies/Enemyship.h"
 
 class AIBehaviour;
-class Enemyship;
 class Playership;
 class Point3;
 class Vector3;
@@ -34,12 +34,15 @@ public:
     
     void setForceChange() { m_forceChange = true; }
 
-    const Point3& getEnemyPosition() const;
-    void setEnemyThrusterDirection( const Vector3& dir );
+    const Point3& getEnemyPosition() const { return m_enemy->getPosition(); }
     
-    void setEnemyThrusterPower( float power );
-    float getEnemyThrusterPower() const;
+    void setEnemyThrusterDirection( const Vector3& dir ) { m_enemy->setThrusterDirection( dir ); }
+    const Vector3& getEnemyThrusterDirection() const { return m_enemy->getThrusterDirection(); }
 
+    void setEnemyThrusterPower( float power ) { m_enemy->setThrusterPower( power ); }
+    float getEnemyThrusterPower() const { return m_enemy->getThrusterPower(); }
+
+    void setEnemyVelocity( const Vector3 &vel ) { m_enemy->setVelocity( vel ); }
     void setEnemyship( Enemyship *enemy ) { m_enemy = enemy; }
     void setBehaviour( AIBehaviour *behaviour );
 
