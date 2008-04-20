@@ -27,10 +27,12 @@ public:
 	int getCollisionPower() const { return m_collisionPower; }
 	int getHitPoints() const { return int(m_hitPoints); }
 	bool isToBeDeleted() const { return m_state == TO_BE_DELETED; }
+    bool isClamped() const { return m_state == ALIVE_CLAMPED; }
 	int getEnergyPoints() const { return m_energyPoints; }
 
 	void setEnergyType(EnergyType et) { m_energyType = et; }
 	void setToBeDeleted() { m_state = TO_BE_DELETED; }
+    void setClamped() { m_state = ALIVE_CLAMPED; }
 	void reduceHitPoints(int amount) { m_hitPoints -= float(amount); }
 	void reduceHitPoints(float amount) { m_hitPoints -= amount; }
 
@@ -43,6 +45,7 @@ private:
 	enum State {
 		SPAWNING, // not used yet
 		ALIVE,
+        ALIVE_CLAMPED,
 		DYING, // not used yet
 		TO_BE_DELETED,
 		UNKNOWN,
