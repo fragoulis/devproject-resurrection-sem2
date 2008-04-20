@@ -20,6 +20,7 @@ class MenuRenderer : public IRenderer
 public:
 	enum MenuState {
 		MENU_STATE_MAIN,
+		MENU_STATE_TUTORIAL,
 		MENU_STATE_CREDITS,
 		MENU_STATE_PLANET,
 		NUM_MENU_STATES

@@ -4,8 +4,17 @@
 
 class PauseRenderer : public IRenderer
 {
+public:
+	enum MenuState {
+			MENU_STATE_PAUSE,
+			MENU_STATE_INSTRUCTIONS,
+			NUM_MENU_STATES
+		};
+
 private:
-	MenuPage *m_currentMenu;
+	MenuPage *m_currentMenu; //pointer to the current menu
+	MenuPage *m_menuPool[NUM_MENU_STATES];
+	MenuState m_state;
 
 public:
 	PauseRenderer();
@@ -13,6 +22,9 @@ public:
 
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
+
+	const MenuState getState() const { return m_state; };
+	void setState(MenuState state) { m_state = state; };
 
 	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
 
