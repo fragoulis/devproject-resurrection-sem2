@@ -100,7 +100,7 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 		for(; it != m_enemyships.end(); ++it )
 		{
 			Enemyship* es = *it;
-			if (es->getType() != carrierType)
+			if( !es->isType(carrierType) )
 			{
 				_addPusher( enemyship, es, m_minDistanceBetweenShips );
 			}
