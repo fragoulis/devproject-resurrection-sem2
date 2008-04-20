@@ -57,7 +57,7 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Laser_Despawned >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
-
+    EventManager::instance().registerEventListener< Interceptor_Clamped >(this);
 
 	const ParserSection* psGame = ps.getSection("main");
 	//m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
@@ -79,10 +79,12 @@ void PhysicsEngine :: onEvent( Player_Spawned& evt )
 	m_playership = evt.getValue();
 	m_spaceships.push_back(evt.getValue());
 }
+
 void PhysicsEngine :: onEvent( Player_Despawned& evt )
 {
 	m_playership = 0;
 	m_spaceships.remove(evt.getValue());
+    m_springs.clear();
 }
 
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
@@ -100,7 +102,7 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 			Enemyship* es = *it;
 			if (es->getType() != carrierType)
 			{
-				addPusher( enemyship, es, m_minDistanceBetweenShips );
+				_addPusher( enemyship, es, m_minDistanceBetweenShips );
 			}
 		}
 	}
@@ -152,6 +154,7 @@ void PhysicsEngine :: onEvent(Level_Unload&)
 {
 	m_terrain = 0;
 	m_pushers.clear();
+    m_springs.clear();
 	m_movables.clear();
 	m_rigidbodies.clear();
 	m_spaceships.clear();
@@ -162,7 +165,12 @@ void PhysicsEngine :: onEvent(Level_Unload&)
 	m_craters.clear();
 }
 
+void PhysicsEngine :: onEvent(Interceptor_Clamped& evt)
+{
+    Enemyship *enemyship = evt.getValue();
 
+    _addSpring( m_playership, enemyship, 500.0f );
+}
 
 void PhysicsEngine :: update( float dt )
 {
@@ -179,22 +187,8 @@ void PhysicsEngine :: update( float dt )
 
 void PhysicsEngine :: _updatePhysics( float dt )
 {
-    for( PusherList::iterator i = m_pushers.begin(); i != m_pushers.end(); )
-    {
-        Pusher &pusher= *i;
-        const Enemyship *one = static_cast<const Enemyship*>(pusher.getFirstObject());
-        const Enemyship *two = static_cast<const Enemyship*>(pusher.getSecondObject());
-        if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
-        {
-            // Remove the spring
-            i = m_pushers.erase(i);
-        } 
-        else
-        {
-            pusher.compute();
-            ++i;
-        }
-    }
+    _updatePushers();
+    _updateSprings();
 
 	for (MovableList::iterator i = m_movables.begin(); i != m_movables.end(); ++i)
 	{
@@ -251,6 +245,45 @@ void PhysicsEngine :: _updateSpaceship( Spaceship* s, float dt )
 		Rotation r(Vector3(0.0f, 1.0f, 0.0f), angle);
 		s->rotateTowards(r, 0.1f);
 	}
+}
+
+void PhysicsEngine :: _updatePushers()
+{
+    for( PusherList::iterator i = m_pushers.begin(); i != m_pushers.end(); )
+    {
+        Pusher &pusher= *i;
+        const Enemyship *one = static_cast<const Enemyship*>(pusher.getFirstObject());
+        const Enemyship *two = static_cast<const Enemyship*>(pusher.getSecondObject());
+        if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
+        {
+            // Remove the spring
+            i = m_pushers.erase(i);
+        } 
+        else
+        {
+            pusher.compute();
+            ++i;
+        }
+    }
+}
+
+void PhysicsEngine :: _updateSprings()
+{
+    for( SpringList::iterator i = m_springs.begin(); i != m_springs.end(); )
+    {
+        Spring &spring= *i;
+        const Enemyship *two = static_cast<const Enemyship*>(spring.getSecondObject());
+        if( two->getHitPoints() <=0 )
+        {
+            // Remove the spring
+            i = m_springs.erase(i);
+        } 
+        else
+        {
+            spring.compute();
+            ++i;
+        }
+    }
 }
 
 template< typename T, typename ForcesAndMomentsFunction >

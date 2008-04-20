@@ -14,6 +14,7 @@
 #include "../utility/EventManager.h"
 #include "../math/Vector3.h"
 #include "Pusher.h"
+#include "Spring.h"
 #include <list>
 class Terrain;
 class Playership;
@@ -48,7 +49,8 @@ class PhysicsEngine :
 	public EventListener< Crater_Despawned >,
 	public EventListener< Laser_Spawned >,
 	public EventListener< Laser_Despawned >,
-	public EventListener< Level_Unload>
+	public EventListener< Level_Unload >,
+    public EventListener< Interceptor_Clamped >
 {
 public:
 
@@ -68,24 +70,21 @@ public:
 	void onEvent(Laser_Spawned&);
 	void onEvent(Laser_Despawned&);
 	void onEvent(Level_Unload&);
+    void onEvent(Interceptor_Clamped&);
 
 	void update(float dt);
-
-    void addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength ) {
-        m_pushers.push_back(
-            Pusher( a, b, restLength )
-            );
-    }
 
 private:
 	Terrain* m_terrain;
 
 	// Physics: forces, movement and such
     typedef std::list<Pusher> PusherList;
+    typedef std::list<Spring> SpringList;
 	typedef std::list<Movable*> MovableList;
 	typedef std::list<Rigidbody*> RigidbodyList;
 	typedef std::list<Spaceship*> SpaceshipList;
 
+    SpringList m_springs;
     PusherList m_pushers;
 	MovableList m_movables;
 	RigidbodyList m_rigidbodies;
@@ -95,6 +94,12 @@ private:
 	void _updateMovable(Movable* m, float dt);
 	void _updateRigidbody(Rigidbody* r, float dt);
 	void _updateSpaceship(Spaceship* s, float dt);
+    
+    inline void _addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength );
+    inline void _addSpring( spring_obj_t *a, spring_obj_t *b, float restLength );
+
+    void _updatePushers();
+    void _updateSprings();
 
 	void _getRigidbodyForcesAndMoments(Rigidbody* r, Vector3& forces, Vector3& moments);
 	void _getSpaceshipForcesAndMoments(Spaceship* s, Vector3& forces, Vector3& moments);
@@ -130,3 +135,15 @@ private:
 	PhysicsEngine();
 	virtual ~PhysicsEngine();
 };
+
+void PhysicsEngine::_addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength ) {
+    m_pushers.push_back(
+        Pusher( a, b, restLength )
+        );
+}
+
+void PhysicsEngine::_addSpring( spring_obj_t *a, spring_obj_t *b, float restLength ) {
+    m_springs.push_back(
+        Spring( a, b, restLength )
+        );
+}
