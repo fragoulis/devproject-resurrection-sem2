@@ -40,7 +40,7 @@ void Spring::compute()
     Vector3 total = ( spring - damp ) * normal;
 
     // Apply to particles
-    m_objects[0]->addForce( total );
+    //m_objects[0]->addForce( total );
     total.negate();
     m_objects[1]->addForce( total );
 }
