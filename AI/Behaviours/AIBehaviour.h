@@ -43,4 +43,6 @@ public:
 
     float getMinTime() const { return m_minTime; }
     float getMaxTime() const { return m_maxTime; }
+
+    IAIState* getState( int index ) { return m_stateList[index]; }
 };
