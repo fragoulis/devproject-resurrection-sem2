@@ -14,6 +14,7 @@
 #include "LoadingController.h"
 #include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
+#include "../Gamelogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../AI/AIEngine.h"
 #include "../physics/PhysicsEngine.h"
 #include "../Sound/SoundEngine.h"
@@ -109,6 +110,7 @@ void GameController :: update(float dt)
 
 	SoundEngine::instance().update();
 	AIEngine::instance().update(dt);
+    EnemyBuffCoupleManager::instance().update();
 	PhysicsEngine::instance().update(dt);
 	gl.update(dt);
 	RenderEngine::instance().update(dt);
