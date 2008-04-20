@@ -17,6 +17,8 @@ void AIEnemy::setBehaviour( AIBehaviour *behaviour )
     float min = behaviour->getMinTime();
     float max = behaviour->getMaxTime();
     m_timeToChange = RandomGenerator::GET_RANDOM_FLOAT(min,max);
+
+    m_behaviour->getState(m_state)->onBegin(this);
 }
 
 void AIEnemy::update( float dt, Playership *player ){

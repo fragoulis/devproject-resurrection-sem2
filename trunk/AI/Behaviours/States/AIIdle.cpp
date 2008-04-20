@@ -15,6 +15,7 @@ void AIIdle::onBegin(AIEnemy *enemy)
 {
     enemy->setPreviousThrusterPower( enemy->getEnemyThrusterPower() );
     enemy->setEnemyThrusterPower(0.0f);
+    enemy->setEnemyVelocity( Vector3( 0.0f, 0.0f, 0.0f ) );
 }
 
 void AIIdle::onEnd(AIEnemy *enemy)
