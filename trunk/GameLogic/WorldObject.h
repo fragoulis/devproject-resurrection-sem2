@@ -38,6 +38,7 @@ public:
 
 	int getType() const { return m_type; }
 	void setType(int type) { m_type = type; }
+    bool isType(int type) const { return m_type==type; }
 
 	float getX() const { return m_coordinateFrame.getX(); }
 	float getY() const { return m_coordinateFrame.getY(); }
