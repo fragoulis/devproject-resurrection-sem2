@@ -23,6 +23,7 @@
 #include "../../GameLogic/Enemies/EnemyFactory.h"
 #include "../../GameLogic/Lasers/LaserFactory.h"
 #include "../../GameLogic/Buffs/BuffFactory.h"
+#include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
 #include "../../gfx/Texture/TextureMgr.h"
@@ -107,6 +108,7 @@ void Application :: load()
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
 	MenuController::safeInstance().load();
+    EnemyBuffCoupleManager::safeInstance();
 }
 
 
@@ -130,6 +132,7 @@ void Application :: unload()
 	MemMgrRaw::destroy();
 	Logger::destroy();
 	TimerManager::destroy();
+    EnemyBuffCoupleManager::destroy();
 
 	//filestr.close();
 }
