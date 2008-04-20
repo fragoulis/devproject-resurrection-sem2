@@ -47,6 +47,7 @@ public:
 	bool hasBuff(int type) const { return m_buffContainer.hasBuff(type); }
 	int getBuffStacks(int type) const { return m_buffContainer.getBuffStacks(type); }
 	float getBuffTimeLeft(int type) const { return m_buffContainer.getBuffTimeLeft(type); }
+    const Buff *getBuff(int type) const { return m_buffContainer.getBuff(type); }
 
 	void loadSettings(const ParserSection&);
 
