@@ -18,7 +18,16 @@
 
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
-SafeDistance = 150.0
+
+[Physics : Pusher]
+Ks = 2000.0
+Kd = 1000.0
+MinDistanceBetweenShips = 150.0
+
+[Physics : Spring]
+Ks = 1000.0
+Kd = 1000.0
+MinDistanceForClampedShips = 100.0
 
 [EnemyFactory]
 file = "Enemies.txt"
@@ -93,4 +102,5 @@ EnemyDisrupter_Destroyed        = "exp03.wav"
 EnemyCarrier_Destroyed          = "exp04.wav"
 
 InterfaceAmbient                = "iface.wav"
+#InterfaceAmbient                = "test.ogg"
 MenuClick                       = "click01.wav"

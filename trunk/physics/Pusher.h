@@ -26,11 +26,11 @@ private:
 
 public:
     Pusher();
-    Pusher( pusher_obj_t*, pusher_obj_t*, float );
+    Pusher( pusher_obj_t*, pusher_obj_t* );
     
     // Accessors
-    float getK() const { return m_Ks; }
-    float getD() const { return m_Kd; }
+    float getKs() const { return m_Ks; }
+    float getKd() const { return m_Kd; }
     float getRestLength() const { return m_restLength; }
     const pusher_obj_t* getFirstObject() const { return m_objects[0]; }
     const pusher_obj_t* getSecondObject() const { return m_objects[1]; }
@@ -39,8 +39,8 @@ public:
     void setObjects( pusher_obj_t *a, pusher_obj_t *b ) { 
         m_objects[0] = a; m_objects[1] = b; 
     }
-    void setK( float k ) { m_Ks = k; }
-    void setD( float d ) { m_Kd = d; }
+    void setKs( float k ) { m_Ks = k; }
+    void setKd( float d ) { m_Kd = d; }
     void setRestLength( float l ) { m_restLength = l; }
     
     //! Computes the forces acting on the particles

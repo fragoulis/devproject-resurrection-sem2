@@ -59,9 +59,18 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Level_Unload >(this);
     EventManager::instance().registerEventListener< Interceptor_Clamped >(this);
 
-	const ParserSection* psGame = ps.getSection("main");
-	//m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
-    m_minDistanceBetweenShips = FromString<float>(psGame->getVal("SafeDistance"));
+    //const ParserSection* psGame = ps.getSection("main");
+    //m_terrainHeight = FromString<float>(psGame->getVal("TerrainHeight"));
+
+    const ParserSection* psPusher = ps.getSection("Physics:Pusher");
+    m_pusher.Ks = FromString<float>(psPusher->getVal("Ks"));
+    m_pusher.Kd = FromString<float>(psPusher->getVal("Kd"));
+    m_pusher.minDistanceBetweenShips = FromString<float>(psPusher->getVal("MinDistanceBetweenShips"));
+
+    const ParserSection* psSpring = ps.getSection("Physics:Spring");
+    m_spring.Ks = FromString<float>(psSpring->getVal("Ks"));
+    m_spring.Kd = FromString<float>(psSpring->getVal("Kd"));
+    m_spring.minDistanceForClampedShips = FromString<float>(psSpring->getVal("MinDistanceForClampedShips"));
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -102,7 +111,7 @@ void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 			Enemyship* es = *it;
 			if( !es->isType(carrierType) )
 			{
-				_addPusher( enemyship, es, m_minDistanceBetweenShips );
+				_addPusher( enemyship, es );
 			}
 		}
 	}
@@ -169,7 +178,7 @@ void PhysicsEngine :: onEvent(Interceptor_Clamped& evt)
 {
     Enemyship *enemyship = evt.getValue();
 
-    _addSpring( m_playership, enemyship, 500.0f );
+    _addSpring( m_playership, enemyship );
 }
 
 void PhysicsEngine :: update( float dt )

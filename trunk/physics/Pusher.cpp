@@ -2,17 +2,19 @@
 #include "../GameLogic/Spaceship.h"
 #include <cassert>
 
-Pusher::Pusher( pusher_obj_t *a, pusher_obj_t *b, float restLength )
+Pusher::Pusher( pusher_obj_t *a, pusher_obj_t *b )
 {
     m_objects[0] = a;
     m_objects[1] = b;
     m_Ks = 2000.0f;
     m_Kd = 1000.0f;
-    m_restLength = restLength;
+    m_restLength = 1.0;
 }
 
 Pusher::Pusher()
 {
+    m_objects[0] = 0;
+    m_objects[1] = 0;
     m_Ks = 100.0f;
     m_Kd = 100.0f;
     m_restLength = 1.0f;

@@ -27,6 +27,20 @@ class Ebomb;
 class Crater;
 
 
+struct DefaultPusher
+{
+    float minDistanceBetweenShips;
+    float Ks;
+    float Kd;
+};
+
+struct DefaultSpring
+{
+    float minDistanceForClampedShips;;
+    float Ks;
+    float Kd;
+};
+
 /**
  * Does two things separately:
  *   move objects according to their physics
@@ -95,8 +109,8 @@ private:
 	void _updateRigidbody(Rigidbody* r, float dt);
 	void _updateSpaceship(Spaceship* s, float dt);
     
-    inline void _addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength );
-    inline void _addSpring( spring_obj_t *a, spring_obj_t *b, float restLength );
+    inline void _addPusher( pusher_obj_t *a, pusher_obj_t *b );
+    inline void _addSpring( spring_obj_t *a, spring_obj_t *b );
 
     void _updatePushers();
     void _updateSprings();
@@ -108,7 +122,8 @@ private:
 	void _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt);
 
     // The minimum distance the planes must keep from each other
-    float m_minDistanceBetweenShips;
+    DefaultPusher m_pusher;
+    DefaultSpring m_spring;
 
 	// Collision detection
 	typedef std::list<Enemyship*> EnemyshipList;
@@ -136,14 +151,20 @@ private:
 	virtual ~PhysicsEngine();
 };
 
-void PhysicsEngine::_addPusher( pusher_obj_t *a, pusher_obj_t *b, float restLength ) {
-    m_pushers.push_back(
-        Pusher( a, b, restLength )
-        );
+void PhysicsEngine::_addPusher( pusher_obj_t *a, pusher_obj_t *b ) {
+    Pusher p( a, b );
+    p.setRestLength( m_pusher.minDistanceBetweenShips );
+    p.setKs( m_pusher.Ks );
+    p.setKd( m_pusher.Kd );
+
+    m_pushers.push_back( p );
 }
 
-void PhysicsEngine::_addSpring( spring_obj_t *a, spring_obj_t *b, float restLength ) {
-    m_springs.push_back(
-        Spring( a, b, restLength )
-        );
+void PhysicsEngine::_addSpring( spring_obj_t *a, spring_obj_t *b ) {
+    Spring s( a, b );
+    s.setRestLength( m_spring.minDistanceForClampedShips );
+    s.setKs( m_spring.Ks );
+    s.setKd( m_spring.Kd );
+
+    m_springs.push_back( s );
 }
