@@ -21,6 +21,7 @@
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../gfxutils/Misc/utils.h"
 #include "../utility/RandomGenerator.h"
+#include "../math/maths.h"
 #include <iostream>
 using namespace std;
 
@@ -34,8 +35,8 @@ m_playership(0)
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
-	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
-    EventManager::instance().registerEventListener< Player_Destroyed >(this);
+    EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+    EventManager::instance().registerEventListener< Interceptor_Clamped >(this);
 }
 
 AIEngine::~AIEngine()
@@ -53,8 +54,8 @@ void AIEngine::onApplicationLoad(const ParserSection& ps)
     const std::string ai_file = ps.getSection("AI")->getVal("file");
     const ConfParser ai_conf( conf_root + ai_file );
 
-    readStates(ai_conf);
-    readBehaviours(ai_conf);
+    _readStates(ai_conf);
+    _readBehaviours(ai_conf);
 }
 
 // ----------------------------------------------------------------------------
@@ -129,18 +130,18 @@ void AIEngine::onEvent( Player_Destroyed& pd )
 void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
-    int type = enemyship->getType();
-    const std::string s_type = WorldObjectTypeManager::instance().getNameFromType(type);
+    const int type = enemyship->getType();
+    const int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
     
     // Dont give any ai to carriers
-    if( s_type == "EnemyCarrier" ) return;
+    if( type == carrierType ) return;
     
     // Give initial thruster power
     float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, m_maxThrusterPower );
     enemyship->setThrusterPower(power);
 
     AIEnemy sec;
-    sec.setBehaviour( getRandomBehaviour() );
+    sec.setBehaviour( _getRandomBehaviour() );
     sec.setEnemyship( enemyship );
     m_enemyList.push_back(sec);
 }
@@ -149,6 +150,10 @@ void AIEngine::onEvent(Enemy_Spawned& es)
 void AIEngine::onEvent(Enemy_Despawned& es)
 {
 	Enemyship* enemyship = es.getValue();
+    const int type = enemyship->getType();
+    const int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
+    
+    if( type == carrierType ) return;
 
     for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
     {
@@ -156,6 +161,22 @@ void AIEngine::onEvent(Enemy_Despawned& es)
         if( couple.getEnemyship() == enemyship )
         {
             m_enemyList.erase(i);
+            break;
+        }
+    }
+}
+
+// ----------------------------------------------------------------------------
+void AIEngine::onEvent(Interceptor_Clamped& evt)
+{
+    Enemyship *enemyship = evt.getValue();
+
+    for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
+    {
+        AIEnemy& couple = *i;
+        if( couple.getEnemyship() == enemyship )
+        {
+            couple.setBehaviour(m_behaviours["Idle"]);
             break;
         }
     }
@@ -172,7 +193,7 @@ void AIEngine::update(float dt)
 }
 
 // ----------------------------------------------------------------------------
-void AIEngine::readStates(const ConfParser& conf)
+void AIEngine::_readStates(const ConfParser& conf)
 {
     //typedef std::vector<std::string> StringList;
     //const ParserSection& states_section = *(conf.getSection("States"));
@@ -186,7 +207,7 @@ void AIEngine::readStates(const ConfParser& conf)
 }
 
 // ----------------------------------------------------------------------------
-void AIEngine::readBehaviours(const ConfParser& conf)
+void AIEngine::_readBehaviours(const ConfParser& conf)
 {
     typedef std::vector<std::string> StringList;
 
@@ -225,7 +246,7 @@ void AIEngine::readBehaviours(const ConfParser& conf)
 }
 
 // ----------------------------------------------------------------------------
-AIBehaviour* AIEngine::getRandomBehaviour()
+AIBehaviour* AIEngine::_getRandomBehaviour()
 {
     AIBehaviour *out = 0;
     

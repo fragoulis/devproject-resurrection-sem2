@@ -17,6 +17,7 @@ class ConfParser;
 class Enemyship;
 class AIBehaviour;
 class IAIState;
+class Enemyship;
 
 /**
  * This controls the AI.
@@ -30,13 +31,15 @@ class AIEngine :
 	public EventListener< Player_Spawned >,
 	public EventListener< Enemy_Spawned >,
     public EventListener< Enemy_Despawned >,
-	public EventListener< Player_Destroyed >
+	public EventListener< Player_Destroyed >,
+    public EventListener< Interceptor_Clamped >
 {
 private:
     // Typedef containers
     typedef std::list<AIEnemy> EnemyList;
     typedef std::map<const std::string, AIBehaviour*> BehaviourList;
     typedef std::map<const std::string, IAIState*> StateList;
+    typedef std::list<Enemyship*> EnemyshipList;
 
     // Typedef iterators
     typedef EnemyList::iterator EnemyListIt;
@@ -62,6 +65,7 @@ public:
 	void onEvent(Enemy_Spawned&);
     void onEvent(Enemy_Despawned&);
 	void onEvent(Player_Destroyed&);
+    void onEvent(Interceptor_Clamped&);
 
 	void update(float dt);
 
@@ -70,7 +74,8 @@ private:
 	AIEngine();
 	virtual ~AIEngine();
 
-    void readStates(const ConfParser&);
-    void readBehaviours(const ConfParser&);
-    AIBehaviour* getRandomBehaviour();
+    void _readStates(const ConfParser&);
+    void _readBehaviours(const ConfParser&);
+    AIBehaviour* _getRandomBehaviour();
+
 };
