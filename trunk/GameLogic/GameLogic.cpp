@@ -557,7 +557,7 @@ void GameLogic :: fireNegativeLaser(const Point3& targetPosition) {
 
 void GameLogic :: _fireLaser(const Point3& target, int type)
 {
-	if (m_playerLaserCooldownLeft <= 0.0f) {
+	if (m_playerLaserCooldownLeft <= 0.0f && !m_playership->isDying()) {
 		const Point3& playerPosition = m_playership->getPosition();
 		Vector3 direction = target - playerPosition;
 		direction.normalize();
