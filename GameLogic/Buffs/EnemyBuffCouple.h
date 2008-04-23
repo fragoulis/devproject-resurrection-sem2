@@ -2,6 +2,12 @@
 #include "Buff.h"
 #include "../Enemies/Enemyship.h"
 
+
+
+/**
+ * A pair of an enemy and a buff.
+ *
+ */
 class EnemyBuffCouple
 {
 protected:

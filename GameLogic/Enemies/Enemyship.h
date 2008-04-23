@@ -15,6 +15,10 @@ class ParserSection;
 class Playership;
 
 /**
+ * Represents a generic enemy ship.
+ * Fighters use this class.
+ * When they collide with the player, the ship is destroyed,
+ * and the player loses energy.
  * Stores type, energy type, collision power and hit points.
  */
 class Enemyship : public Spaceship

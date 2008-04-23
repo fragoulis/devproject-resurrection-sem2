@@ -11,6 +11,18 @@
 class ParserSection;
 class WorldObject;
 
+
+
+/**
+ * Holds data for a generic buff.
+ * A buff is a powerup for the player or an NPC (think WoW).
+ * A buff has a fixed duration and number of stacks.
+ * Multiple stacks increase the effect of the buff.
+ * A buff that has a negative on its subject is called a debuff.
+ * Debuffs use this class as well.
+ * If a buff has 0 stacks or the timer has expired, it is inactive.
+ * Inactive buffs are not removed from the container, but simply flagged as inactive.
+ */
 class Buff
 {
 public:

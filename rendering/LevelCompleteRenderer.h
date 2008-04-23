@@ -2,6 +2,11 @@
 #include "IRenderer.h"
 class Texture;
 
+
+/**
+ * Renders Level complete text
+ *
+ */
 class LevelCompleteRenderer : public IRenderer
 {
 public:

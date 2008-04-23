@@ -5,6 +5,15 @@
 #include <list>
 
 
+/**
+ * Allows anyone to schedule a callback function.
+ *
+ * Usage:
+ * TimerManager::instance().schedule(someObject, &SomeClass::DoStuffLater);
+ *
+ */
+
+
 class TimerManager : public Singleton<TimerManager>
 {
 public:

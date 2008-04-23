@@ -26,6 +26,10 @@ class ParserSection;
 class Point2;
 class Point3;
 
+
+/**
+ * Main RenderEngine
+ */
 class RenderEngine : public Singleton< RenderEngine >
 {
 public:

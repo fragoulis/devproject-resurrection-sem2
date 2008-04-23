@@ -8,6 +8,12 @@
 //*****************************************************************************
 
 
+/**
+ * EnergyType is a simple enum.
+ * Additional functions are defined here to convert from and to a string.
+ *
+ */
+
 #pragma once
 #include <string>
 #include <cassert>

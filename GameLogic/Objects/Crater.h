@@ -17,6 +17,14 @@
 class ParserSection;
 class Enemyship;
 
+
+/**
+ * Represents a crater.
+ * In physics they are considered circles on the ground.
+ * They spawn a protector (an enemy ship).
+ * Crater cannot be e-bombed until the protector is destroyed.
+ * Crater will respawn its protector after a certain amount of time.
+ */
 class Crater :
 	public WorldObject,
 	public EventListener< Enemy_Destroyed >

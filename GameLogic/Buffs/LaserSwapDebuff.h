@@ -10,6 +10,12 @@
 #pragma once
 #include "Buff.h"
 
+
+
+/**
+ * Special buff that swapped the laser mouse buttons
+ *
+ */
 class LaserSwapDebuff : public Buff
 {
 public:

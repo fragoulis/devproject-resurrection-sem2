@@ -1,7 +1,7 @@
 //*****************************************************************************
 //**
 //**   File:               config.txt
-//**   Author:             $Author: Joep.Moritz $
+//**   Author:             Initial setup: Joep. Rest: everyone
 //**   Last Change:        $Date: 2008-03-20 16:56:56 +0000 (Thu, 20 Mar 2008) $
 //**   Last Revision:      $Revision: 214 $
 //**
@@ -91,7 +91,7 @@ Stream = stderr
 Dir     = "resources/sounds/"
 AllocationSize = 100
 
-# Important: "_Destroyed" extension is hardocoded to the code so dont change it unless you change it 
+# Important: "_Destroyed" extension is hardcoded to the code so dont change it unless you change it 
 #            at the code as well. file: soundengine.cpp, line: 124
 
 [Sound : Files]

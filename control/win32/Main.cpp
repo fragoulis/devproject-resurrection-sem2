@@ -7,6 +7,15 @@
 //**
 //*****************************************************************************
 
+
+/**
+ * Provides the main function
+ * Sets up a window and calls methods on Application, namely:
+ * init, destroy, update and render
+ *
+ */
+
+
 //#define _CRTDBG_MAP_ALLOC
 //#define _CRTDBG_MAP_ALLOC
 //#include <cstdlib>

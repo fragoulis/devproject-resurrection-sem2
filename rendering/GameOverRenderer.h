@@ -2,6 +2,10 @@
 #include "IRenderer.h"
 class Texture;
 
+/**
+ * Renders the game over text
+ *
+ */
 class GameOverRenderer : public IRenderer
 {
 public:

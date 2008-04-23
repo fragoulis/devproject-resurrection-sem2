@@ -18,6 +18,7 @@ class ParserSection;
 /**
  * Knows how to create a Buff object when given a type
  * Initializes the buff using a prototype
+ * Data for each buff is loaded from config/Buffs.txt
  */
 class BuffFactory : public Singleton< BuffFactory >
 {

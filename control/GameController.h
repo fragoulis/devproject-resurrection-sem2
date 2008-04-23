@@ -28,7 +28,7 @@
  *   GameLogic::update
  *   RenderEngine::update
  *
- * A different controller (PauseController) can decide not to call these functions.
+ * A different controller can decide not to call these functions.
  * That would effectively pause the game.
  */
 class GameController :

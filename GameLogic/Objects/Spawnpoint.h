@@ -14,6 +14,14 @@
 class ParserSection;
 class Point3;
 
+
+/**
+ * Represents a spawn point for enemies.
+ * Enemies spawn in waves (sessions).
+ * When a session starts, the portal opens, and spawns a few enemies in quick succession.
+ * When the session ends, the portal closes.
+ * A minimum and maximum distance to the player can be used to tweak gameplay
+ */
 class Spawnpoint : public WorldObject
 {
 public:

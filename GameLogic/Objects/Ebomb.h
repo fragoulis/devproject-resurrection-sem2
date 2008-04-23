@@ -12,6 +12,13 @@
 #include "../Rigidbody.h"
 #include "../EbombTypes.h"
 
+
+
+/**
+ * Represents a real e-bomb. That is, one that has been dropped by the player,
+ * and has a visual representation on the screen.
+ *
+ */
 class Ebomb : public Rigidbody
 {
 public:

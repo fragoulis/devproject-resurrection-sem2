@@ -15,6 +15,8 @@
 /**
  * High performance timer used to get deltatime every frame.
  * Deltatime is passed to Application::update.
+ * QueryPerformanceCounter doesn't work on AMD64 dual-core,
+ * so switched back to timeGetTime.
  */
 class Time
 {

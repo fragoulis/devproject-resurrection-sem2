@@ -17,7 +17,9 @@ class ParserSection;
 /**
  * All lasers are considered to be lines.
  * They have the following properties:
- * type, lifetime and length
+ * age, life time, max length, width, speed, direction, back point and state
+ * A laser starts at a specific point and grows until it reaches the max length.
+ * When it dies it shrinks again.
  */
 class Laser : public WorldObject
 {

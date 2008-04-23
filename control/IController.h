@@ -12,7 +12,8 @@
 
 
 /**
- * Interface for controllers
+ * Interface for controllers.
+ * Every controller has these methods.
  */
 class IController
 {

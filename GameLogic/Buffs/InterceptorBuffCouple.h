@@ -1,5 +1,12 @@
 #include "EnemyBuffCouple.h"
 
+
+/**
+ * An implementation of the BuffCouple.
+ * Fires the Interceptor_Clamped event when created.
+ * Destroys the interceptor when destroyed.
+ */
+
 class InterceptorBuffCouple : public EnemyBuffCouple
 {
 public:

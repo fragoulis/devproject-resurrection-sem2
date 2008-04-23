@@ -19,7 +19,6 @@
  * OS is responsible for instantiating a subclass of this,
  * calling setInstance, and deleting it on application shutdown.
  *
- * TODO: add get window size
  */
 class IOSInterface
 {

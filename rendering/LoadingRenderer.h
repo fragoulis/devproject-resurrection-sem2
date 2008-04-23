@@ -11,6 +11,11 @@
 #include "IRenderer.h"
 class Texture;
 
+/**
+ * Renders loading text.
+ *
+ */
+
 class LoadingRenderer : public IRenderer
 {
 public:
