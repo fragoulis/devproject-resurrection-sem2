@@ -14,6 +14,10 @@
 class ParserSection;
 
 
+/**
+ * When game loads a list of types is loaded from file,
+ * and an integer that represents the type
+ */
 class WorldObjectTypeManager : public Singleton< WorldObjectTypeManager >
 {
 public:

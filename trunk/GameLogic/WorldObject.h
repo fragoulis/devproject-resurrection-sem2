@@ -14,6 +14,7 @@ class ParserSection;
 
 /**
  * Any game object with a position and orientation in the world is a WorldObject.
+ * It also has a type.
  */
 class WorldObject
 {

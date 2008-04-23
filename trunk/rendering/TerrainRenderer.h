@@ -32,6 +32,12 @@ class LaserRenderer;
 class Crater;
 class PS_Base;
 
+
+/**
+ * Renders the terrain.
+ *
+ */
+
 class TerrainRenderer :
 	public EventListener< Terrain_Changed >,
 	public EventListener< Level_Load >,

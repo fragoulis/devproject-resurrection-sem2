@@ -11,6 +11,10 @@
 class Graphics;
 
 
+/**
+ * Interface for renderers
+ *
+ */
 class IRenderer
 {
 public:

@@ -8,6 +8,14 @@
 //*****************************************************************************
 
 
+/**
+ * This file defines all the events fired by the gameplay.
+ * This excludes events fired from physics or AI.
+ * The engine relies heavily on these events,
+ * so they are commented heavily.
+ * Macros from EventManager.h are used to actually create the events.
+ */
+
 #pragma once
 #include "../utility/EventManager.h"
 #include "EnergyTypes.h"

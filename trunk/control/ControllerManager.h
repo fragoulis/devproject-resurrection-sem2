@@ -17,8 +17,8 @@ class IController;
 /**
  * ControllerManager
  *
- * Loads, unloads controllers.
- * Exactly one controller is active at a time
+ * Keeps a pointer to the active controller,
+ * and sends an update to it every frame.
  */
 class ControllerManager : public Singleton< ControllerManager >
 {
@@ -29,6 +29,9 @@ public:
 
 	//! Sends update to active controller
 	void update(float dt);
+
+
+
 
 	////! deactivates current controller, activates new controller. Loads if needed.
 	//void activateController(const std::string& name);

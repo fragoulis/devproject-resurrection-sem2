@@ -14,7 +14,6 @@
 
 /**
  * Extends WorldObject by giving it a velocity and angularVelocity.
- * Sweet for Lasers.
  */
 class Movable : public WorldObject
 {

@@ -18,6 +18,11 @@ class Playership;
 
 using namespace std;
 
+
+/**
+ * Renders the HUD, including the mouse cursor.
+ *
+ */
 class HUDRenderer : public IRenderer
 					//public EventListener< Player_Spawned >,
 					//public EventListener< Player_Despawned >,

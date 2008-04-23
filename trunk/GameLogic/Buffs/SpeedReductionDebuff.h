@@ -11,6 +11,11 @@
 #include "Buff.h"
 class WorldObject;
 
+
+/**
+ * A special buff that slows its target down by a fixed factor.
+ * Assumes its target is a spaceship.
+ */
 class SpeedReductionDebuff : public Buff
 {
 public:

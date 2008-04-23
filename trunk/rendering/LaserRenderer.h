@@ -6,6 +6,12 @@
 
 #include <vector>
 
+
+/**
+ * Renders lasers.
+ *
+ */
+
 class Graphics;
 class Texture;
 class LaserRenderer : public EventListener< Laser_Spawned >,

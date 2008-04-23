@@ -15,6 +15,14 @@ class Texture;
 
 using namespace std;
 
+
+
+/**
+ * Renders menus
+ * Also used to render planet selection screen,
+ * which secretly is also a menu
+ */
+
 class MenuRenderer : public IRenderer
 {
 public:

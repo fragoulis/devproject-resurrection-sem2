@@ -7,6 +7,11 @@ class Buff;
 class Enemyship;
 class EnemyBuffCouple;
 
+
+/**
+ * Manages EnemyBuff couples.
+ * It will fire onDestroy when the buff expires.
+ */
 class EnemyBuffCoupleManager : 
     public Singleton<EnemyBuffCoupleManager>,
     public EventListener< Player_Respawned >,

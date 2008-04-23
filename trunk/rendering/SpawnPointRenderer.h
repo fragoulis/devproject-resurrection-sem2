@@ -8,6 +8,12 @@
 class Graphics;
 class Texture;
 
+
+/**
+ * Renders spawn point portals
+ *
+ */
+
 class SpawnPointRenderer : public EventListener< Spawnpoint_Spawned >,
 						public EventListener< Spawnpoint_Despawned >,
 						public EventListener< Spawnpoint_SessionStarted >,

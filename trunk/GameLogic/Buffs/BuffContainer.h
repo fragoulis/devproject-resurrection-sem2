@@ -12,6 +12,10 @@
 class Buff;
 class WorldObject;
 
+
+/**
+ * Container for buffs. Can be added to NPCs or players to give them buffs :P
+ */
 class BuffContainer
 {
 public:

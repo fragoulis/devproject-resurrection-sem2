@@ -13,6 +13,12 @@
 
 class Model;
 
+
+/**
+ * Represent the terrain below the player.
+ * Its main use in gameplay is to return the height of the terrain at a location.
+ * This is used  to position the crater objects in space.
+ */
 class Terrain
 {
 public:

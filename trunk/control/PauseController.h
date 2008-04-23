@@ -2,6 +2,13 @@
 #include "IController.h"
 class PauseRenderer;
 
+
+
+
+/**
+ * Shows the pause menu during gameplay
+ * Handles user input for the menu
+ */
 class PauseController : public IController
 {
 public:

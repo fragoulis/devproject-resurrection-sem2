@@ -49,6 +49,7 @@ Application :: ~Application()
 
 //ofstream filestr;
 
+
 bool Application :: init()
 {
     alutInit(0,0);

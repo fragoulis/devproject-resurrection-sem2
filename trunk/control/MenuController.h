@@ -12,6 +12,13 @@
 #include "../utility/Singleton.h"
 class MenuRenderer;
 
+
+
+
+/**
+ * Sets up the main menu and handles user input for it
+ *
+ */
 class MenuController :
 	public IController,
 	public Singleton< MenuController >

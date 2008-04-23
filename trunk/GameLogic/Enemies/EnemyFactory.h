@@ -22,7 +22,7 @@ class ParserSection;
  * Can translate a type to a name and vice versa.
  * Can spawn an enemyship of a specified type.
  *
- * So on Level_Load or app::load you read an enm type (a string)
+ * On Level_Load or app::load you read an enm type (a string)
  * then ask the factory "ok what int is that?"
  * and you use that int to store data in a vector of I dunno
  * models

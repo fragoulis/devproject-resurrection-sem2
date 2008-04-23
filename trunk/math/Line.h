@@ -12,6 +12,9 @@
 #include "Point3.h"
 class CoordinateFrame;
 
+/**
+ * Represents a line
+ */
 class Line
 {
 public:

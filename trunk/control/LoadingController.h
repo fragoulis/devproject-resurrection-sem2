@@ -22,12 +22,10 @@
  * call a method on an object to do the loading.
  *
  * Usage:
- * lc = new LoadingController();
- * lc->setLoader(this, &GameLogic::loadLevel);
- * ControllerManager::instance().activateController(lc);
+ * LoadingController::safeInstance().load(someObject, &SomeClass::LoadStuff);
  *
- * Where this is the GameLogic object.
- * ControllerManager
+ * This will show the loading screen,
+ * and when ready, calls someObject->LoadStuff;
  */
 
 

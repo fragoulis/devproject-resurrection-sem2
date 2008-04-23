@@ -47,6 +47,10 @@ struct DefaultSpring
  *   do collision detection
  *
  * Both are implemented as easy and fast as possible.
+ * Uses circle-circle for ship-ship and e-bomb-crater
+ * Uses circle-line segment for ship-laser.
+ *
+ * Physics use forces: air drag and thrusters.
  *
  *
  */

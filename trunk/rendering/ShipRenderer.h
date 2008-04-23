@@ -14,6 +14,12 @@
 
 #include <vector>
 
+
+/**
+ * Renders enemy ships.
+ */
+
+
 class Graphics;
 struct EntitySettings_t;
 class CoordinateFrame;

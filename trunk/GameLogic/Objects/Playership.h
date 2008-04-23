@@ -15,6 +15,13 @@
 class Point3;
 class Point2;
 
+
+
+/**
+ * Represents the player's spaceship.
+ * Has buffs and stores energy.
+ *
+ */
 class Playership : public Spaceship
 {
 public:

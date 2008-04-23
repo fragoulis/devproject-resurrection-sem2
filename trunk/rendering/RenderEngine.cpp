@@ -13,7 +13,6 @@
 #include "LoadingRenderer.h"
 #include "HUDRenderer.h"
 #include "MenuRenderer.h"
-#include "PlanetRenderer.h"
 #include "PauseRenderer.h"
 #include "LevelCompleteRenderer.h"
 #include "GameOverRenderer.h"
@@ -171,7 +170,6 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 	if (name == "loading") return new LoadingRenderer();
 	if (name == "hud") return new HUDRenderer();
 	if (name == "menu") return new MenuRenderer();
-	if (name == "planet") return new PlanetRenderer();
 	if (name == "pause") return new PauseRenderer();
 	if (name == "LevelComplete") return new LevelCompleteRenderer();
 	if (name == "GameOver") return new GameOverRenderer();

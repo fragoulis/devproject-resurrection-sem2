@@ -34,6 +34,7 @@ class Laser;
  *   setPlayerDirection
  *   fireLaser
  *   dropEbomb
+ *   etc.
  *
  * Also has methods to load/unload a level.
  */
@@ -67,11 +68,11 @@ public:
 	float getTerrainHeight(float x, float z);
 
 
-	// These are functions controller can call to change the game state
 	void loadLevel(const std::string& levelName);
 	void unloadLevel();
 	const std::string& getCurrentLevel() const { return m_levelName; }
 
+	// These are functions a controller can call to change the game state
 	Enemyship* spawnEnemy(int type, EnergyType energyType, float x, float z);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);

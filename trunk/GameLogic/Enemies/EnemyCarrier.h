@@ -14,7 +14,11 @@
 
 
 
-
+/**
+ * Special enemy ship that spawns other enemy ships.
+ * Configuration is very similar to spawn points.
+ *
+ */
 class EnemyCarrier : public Enemyship
 {
 public:
