@@ -41,11 +41,11 @@ void PauseController :: update(float dt)
 
 	Input& input = Input::instance();
 
-	if (input.isKeyGoingDown('W')) {
+	if (input.isKeyGoingDown(KEY_UP)) {
 		m_renderer->selectPreviousItem();
 		SoundEngine::instance().play("MenuClick");
 	}
-	if (input.isKeyGoingDown('S')) {
+	if (input.isKeyGoingDown(KEY_DOWN)) {
 		m_renderer->selectNextItem();
 		SoundEngine::instance().play("MenuClick");
 	}
