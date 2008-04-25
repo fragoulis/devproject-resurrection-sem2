@@ -67,19 +67,19 @@ void MenuController :: update(float dt)
 	m_renderer->update(dt);
 
 	Input& input = Input::instance();
-
+    
 	//items selection
-	if (input.isKeyGoingDown('W') || input.isKeyGoingDown('A')) {
+	if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT)) {
 		if (m_renderer->selectPreviousItem())
 			SoundEngine::instance().play("MenuClick");
 	}
-	else if (input.isKeyGoingDown('S') || input.isKeyGoingDown('D')) {
+	else if (input.isKeyGoingDown(KEY_DOWN) || input.isKeyGoingDown(KEY_RIGHT)) {
 		if (m_renderer->selectNextItem())
 			SoundEngine::instance().play("MenuClick");
 	}
 
 	//ENTER
-	if (input.isKeyGoingDown(13)) 
+	if (input.isKeyGoingDown(KEY_ENTER)) 
     {
 		switch (m_renderer->getState()) 
         {
