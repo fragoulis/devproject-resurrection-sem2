@@ -5,8 +5,11 @@
 #include "../math/Vector3.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/Misc/Logger.h"
+#include "../Gamelogic/GameLogic.h"
 
 using namespace std;
+
+static const float LASER_SCALE = 5.0f;
 
 LaserRenderer :: LaserRenderer()
 {
@@ -73,7 +76,6 @@ void LaserRenderer :: render(Graphics& g) const
 		const Laser * laser = it->laser;
 
 		// New Version
-		static const float LASER_SCALE = 5.0f;
 
 		const float w = laser->getWidth();
 		Vector3 right = Vector3::cross(laser->getDirection(),Vector3(0.0f,1.0f,0.0f));
@@ -118,11 +120,29 @@ void LaserRenderer :: onEvent(Laser_Despawned& evt)
 
 void LaserRenderer :: update(const float dt)
 {
+	Point3 pts[4];
+	RenderEngine::instance().getWsScreenEdges(pts,GameLogic::instance().getGamePlaneHeight());
+
+	int vp[4];
+	RenderEngine::instance().getViewport(vp);
 	for(std::vector<LaserInfo_t>::iterator it = m_lasers.begin();
-		it != m_lasers.end();
-		++it)
+		it != m_lasers.end();)
 	{
 		it->timeElapsed += dt;
-		// FIXME : if laser goes off the screen, remove it
+		
+		// compute low center of laser
+		const Laser * laser = it->laser;
+		const Vector3 up(LASER_SCALE*(laser->getFrontPoint() - laser->getBackPoint()));
+		const Vector3 lc(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) - up*0.5f);
+		
+		// get it's screen position (viewport = screen)
+		Point3 pt = RenderEngine::instance().getScreenPositionFromMapPosition(Point3(lc));
+
+		// check for containment
+		if(((pt.getX() < vp[0]) || (pt.getX() > (vp[0] + vp[2]))) ||
+			((pt.getY() < vp[1]) || (pt.getY() > (vp[1] + vp[3]))))
+			it = m_lasers.erase(it);
+		else
+			++it;
 	}
 }

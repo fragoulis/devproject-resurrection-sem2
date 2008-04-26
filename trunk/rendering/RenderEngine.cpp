@@ -198,6 +198,20 @@ void RenderEngine :: getViewport(int vp[4]) const
 	vp[3] = m_viewport[3];
 }
 
+Point3 RenderEngine :: getScreenPositionFromMapPosition(const Point3& p)
+{
+	// get world renderer
+	WorldRenderer * wr = dynamic_cast<WorldRenderer *>(_findRenderer("world"));
+	// get it's modelview & proj matrices
+	const double * mv = wr->getModelViewMatrixd();
+	const double * proj = wr->getProjectionMatrixd();
+	
+	// UnProject - get the ray
+	double outx,outy,outz;
+	gluProject(p.getX(),p.getY(),p.getZ(),mv,proj,m_viewport,&outx,&outy,&outz);
+	return Point3(float(outx),float(outy),float(outz));
+}
+
 Point3 RenderEngine :: getMapPositionFromScreenPosition(const Point2& p)
 {
 	// get world renderer

@@ -92,6 +92,7 @@ public:
 	void computeWsScreenEdges();
 	Point3 getMapPositionFromScreenPosition(const Point2& p);
 	Point3 getMapPositionFromScreenPosition(const Point2& p,const float h);
+	Point3 getScreenPositionFromMapPosition(const Point3& p);
 
 	// get entity settings
 	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
