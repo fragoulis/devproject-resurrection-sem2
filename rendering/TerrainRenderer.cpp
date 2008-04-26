@@ -575,7 +575,7 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 
 	// LAKE STUFF
 	
-	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeTexture());
+	m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getNoiseTexture());
 	m_lakeNormalTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeNormalTexture());
 
 	// get the reflection tex size

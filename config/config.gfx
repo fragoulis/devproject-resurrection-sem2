@@ -31,7 +31,7 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
 				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">,
-				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> 
+				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -243,7 +243,7 @@ WaveChangeRate = 0.08
 WaveSpeed = 0.02
 WaveRepeats = 3
 CloudRepeats = 5
-LakeTexture = noiseVolume.dds
+NoiseTexture = noiseVolume.dds
 LakeNormalTexture = waternormal.bmp
 ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.sgi

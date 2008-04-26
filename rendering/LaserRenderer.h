@@ -29,7 +29,16 @@ public:
 	void onEvent(Laser_Despawned&);
 	void onEvent(Level_Unload&);
 
+	void update(const float dt);
+
 private:
+
+	struct LaserInfo_t
+	{
+		const Laser * laser;
+		float timeElapsed;
+		LaserInfo_t(const Laser * l):laser(l),timeElapsed(0.0f){}
+	};
 
 	int m_laserTypePos,
 		m_laserTypeNeg;
@@ -38,6 +47,7 @@ private:
 			m_negColor;
 
 	Texture * m_laserTex;
+	Texture * m_noiseTex;
 
-	std::vector<Laser *> m_lasers;
+	std::vector<LaserInfo_t> m_lasers;
 };
