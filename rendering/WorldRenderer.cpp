@@ -99,6 +99,7 @@ void WorldRenderer :: render(Graphics& g) const
 {
 	// now render opaque 3D stuff
 
+	m_clampRenderer.render(g);
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
 	m_spawnPointRenderer.render(g);
@@ -145,6 +146,7 @@ void WorldRenderer :: update( float dt )
 	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
 	m_laserRenderer.update(dt);
+	m_clampRenderer.update(dt);
 	//m_shipRenderer.update(dt);
 
 	// HUDrenderer sits next to WorldRenderer, not below it
