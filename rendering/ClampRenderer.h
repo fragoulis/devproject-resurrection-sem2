@@ -12,17 +12,23 @@
 class Playership;
 class Enemyship;
 class Graphics;
-class ClampRenderer : public EventListener<Enemy_Attached_To_Player>,
+class ClampRenderer : public EventListener<Interceptor_Clamped>,
 					   public EventListener<Enemy_Destroyed>,
-					   public EventListener<Enemy_Despawned>
+					   public EventListener<Enemy_Despawned>,
+					   public EventListener<Player_Spawned>,
+					   public EventListener<Player_Destroyed>,
+					   public EventListener<Player_Despawned>
 {
 public :
 	ClampRenderer();
 	~ClampRenderer();
 
-	void onEvent(Enemy_Attached_To_Player&);
+	void onEvent(Interceptor_Clamped&);
 	void onEvent(Enemy_Destroyed&);
 	void onEvent(Enemy_Despawned&);
+	void onEvent(Player_Spawned&);
+	void onEvent(Player_Destroyed&);
+	void onEvent(Player_Despawned&);
 
 	void render(Graphics& g) const;
 	void update(const float dt);
