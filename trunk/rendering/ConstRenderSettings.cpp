@@ -74,7 +74,7 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_waveChangeRate = FromString<float>(parsec->getVal("WaveChangeRate"));
 	m_waveSpeed = FromString<float>(parsec->getVal("WaveSpeed"));
 	m_waveRepeats = FromString<float>(parsec->getVal("WaveRepeats"));
-	m_lakeTexture = parsec->getVal("LakeTexture");
+	m_noiseTexture = parsec->getVal("NoiseTexture");
 	m_lakeNormalTexture = parsec->getVal("LakeNormalTexture");
 	m_reflectionTextureScreenRatio = FromString<float>(parsec->getVal("ReflectionTextureSizeRatio"));
 

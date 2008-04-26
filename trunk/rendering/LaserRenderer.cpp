@@ -4,6 +4,7 @@
 #include "../gfx/Texture/Texture.h"
 #include "../math/Vector3.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
+#include "../gfxutils/Misc/Logger.h"
 
 using namespace std;
 
@@ -17,10 +18,11 @@ LaserRenderer :: LaserRenderer()
 	m_laserTypeNeg = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
 
 	m_laserTex = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLaserTextureName());
+	m_noiseTex = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getNoiseTexture());
 
 	// FIXME : editable colors?
-	m_posColor = Vector4(1.0f,0.0f,0.0f,1.0f);
-	m_negColor = Vector4(0.0f,1.0f,0.0f,1.0f);
+	m_posColor = Vector4(1.0f,0.5f,0.5f,1.0f);
+	m_negColor = Vector4(0.5f,1.0f,0.5f,1.0f);
 }
 
 LaserRenderer :: ~LaserRenderer()
@@ -42,36 +44,53 @@ void LaserRenderer :: render(Graphics& g) const
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	glEnable(GL_BLEND);
 	glDepthMask(GL_FALSE);
-	ShaderManager::instance()->begin("laserShader");
+	ShaderManager::instance()->begin("laserShader2");
 	m_laserTex->bind();
 	ShaderManager::instance()->setUniform1i("flareTex",0);
+
+	// New version adds the below lines , till statics
+	m_noiseTex->bind(1);
+	ShaderManager::instance()->setUniform1i("Noise",1);
+	
+	ShaderManager::instance()->setUniform1f("glowFallOff",0.024f);
+	ShaderManager::instance()->setUniform1f("speed",1.86f);
+	ShaderManager::instance()->setUniform1f("sampleDist",0.0076f);
+	ShaderManager::instance()->setUniform1f("ambientGlow",0.5f);
+	ShaderManager::instance()->setUniform1f("ambientGlowHeightScale",1.68f);
+	ShaderManager::instance()->setUniform1f("vertNoise",0.78f);
+	ShaderManager::instance()->setUniform1f("glowStrength",144.0f);
+	ShaderManager::instance()->setUniform1f("height",0.44f);
 
 	static const Vector2 lltex(0.0f,0.0f);
 	static const Vector2 texext(1.0f,1.0f);
 
-	for(std::vector<Laser *>::const_iterator it = m_lasers.begin();
+	CKLOG(string("Visible lasers : ") + ToString<unsigned>(unsigned(m_lasers.size())),2);
+
+	for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
 		it != m_lasers.end();
 		++it)
 	{
-		Laser * laser = (*it);
+		const Laser * laser = it->laser;
+
+		// New Version
+		static const float LASER_SCALE = 5.0f;
 
 		const float w = laser->getWidth();
 		Vector3 right = Vector3::cross(laser->getDirection(),Vector3(0.0f,1.0f,0.0f));
-		right *= w;
-		//const Point3 ll((laser->getBackPoint() - right*0.5f) - laser->getDirection()*115.0f); - COOL
-		//const Vector3 up((laser->getFrontPoint() - laser->getBackPoint())*12.0f);
+		right *= w*LASER_SCALE;
 
-		const Point3 ll(laser->getBackPoint() - right*0.5f);
-		const Vector3 up(laser->getFrontPoint() - laser->getBackPoint());
+		const Vector3 up(LASER_SCALE*(laser->getFrontPoint() - laser->getBackPoint()));
+		const Vector3 ll(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) 
+						 - right*0.5f - up*0.5f);
 
-		// We can use the (*it)->getType() here to determine the color that we'll use for the laser
-		if ((*it)->getType() == m_laserTypePos)
+		if (laser->getType() == m_laserTypePos)
 			ShaderManager::instance()->setUniform4fv("color",m_posColor.cfp());
 		else
 			ShaderManager::instance()->setUniform4fv("color",m_negColor.cfp());
 
-		// for now draw a quad
-		RenderEngine::drawTexturedQuad(ll.getVector(),right,up,lltex,texext);
+		ShaderManager::instance()->setUniform1f("timeElapsed",it->timeElapsed);		
+
+		RenderEngine::drawTexturedQuad(ll,right,up,lltex,texext);
 	}
 	glDisable(GL_BLEND);
 	glDepthMask(GL_TRUE);
@@ -79,20 +98,31 @@ void LaserRenderer :: render(Graphics& g) const
 
 void LaserRenderer :: onEvent(Laser_Spawned& evt)
 {
-	m_lasers.push_back(evt.getValue());
+	m_lasers.push_back(LaserInfo_t(evt.getValue()));
 }
 
 void LaserRenderer :: onEvent(Laser_Despawned& evt)
 {
 	const Laser * laser = evt.getValue();
-	for(std::vector<Laser *>::iterator it = m_lasers.begin();
+	for(std::vector<LaserInfo_t>::iterator it = m_lasers.begin();
 		it != m_lasers.end();
 		++it)
 	{
-		if((*it) == laser)
+		if(it->laser == laser)
 		{
 			m_lasers.erase(it);
 			break;
 		}
+	}
+}
+
+void LaserRenderer :: update(const float dt)
+{
+	for(std::vector<LaserInfo_t>::iterator it = m_lasers.begin();
+		it != m_lasers.end();
+		++it)
+	{
+		it->timeElapsed += dt;
+		// FIXME : if laser goes off the screen, remove it
 	}
 }

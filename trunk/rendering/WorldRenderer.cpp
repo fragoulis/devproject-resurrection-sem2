@@ -144,6 +144,7 @@ void WorldRenderer :: update( float dt )
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
+	m_laserRenderer.update(dt);
 	//m_shipRenderer.update(dt);
 
 	// HUDrenderer sits next to WorldRenderer, not below it

@@ -79,6 +79,7 @@ public :
 
 //	void setUniform(const char * nis, const void * mem); - deprecated
 	void setUniform1fv(const char * nis, const GLfloat * mem);
+	void setUniform1f(const char * nis, const GLfloat mem);
 	void setUniform2fv(const char * nis, const GLfloat * mem);
 	void setUniform3fv(const char * nis, const GLfloat * mem);
 	void setUniform4fv(const char * nis, const GLfloat * mem);
@@ -161,6 +162,14 @@ inline void ShaderManager :: setUniform1fv(const char * nis, const GLfloat * mem
 	// get the location
 	const int loc = glGetUniformLocation(_active_program,nis);
 	glUniform1fv(loc,1,mem);
+	
+}
+
+inline void ShaderManager :: setUniform1f(const char * nis, const GLfloat mem)
+{
+	// get the location
+	const int loc = glGetUniformLocation(_active_program,nis);
+	glUniform1f(loc,mem);
 	
 }
 
