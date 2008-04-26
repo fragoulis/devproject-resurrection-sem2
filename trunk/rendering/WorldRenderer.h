@@ -14,6 +14,7 @@
 #include "ParticleSystemsRenderer.h"
 #include "LaserRenderer.h"
 #include "ShipRenderer.h"
+#include "ClampRenderer.h"
 #include "HUDRenderer.h"
 #include "../Math/Vector3.h"
 #include "../GameLogic/Objects/Playership.h"
@@ -79,6 +80,7 @@ private:
 	ShipRenderer	 m_shipRenderer;
 	LaserRenderer    m_laserRenderer;
 	SpawnPointRenderer  m_spawnPointRenderer;
+	ClampRenderer	m_clampRenderer;
 
 	bool			m_playerActive;
 	const CoordinateFrame * m_playerCoordFrame;
