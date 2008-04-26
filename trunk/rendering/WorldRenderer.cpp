@@ -41,6 +41,8 @@ m_boundsComputed(false)
 	m_realCam = new Camera();
 	m_realCam->setPerspective(30, 1.0f, 10.0f, 9000.0f);
 
+	m_miscFXRenderer.setCamera(m_realCam);
+
 	// initialize transparent surface
 	vector<MipmapLevel> ml;
 	ml.push_back(MipmapLevel(0,0));
@@ -105,6 +107,7 @@ void WorldRenderer :: render(Graphics& g) const
 	m_spawnPointRenderer.render(g);
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
+	m_miscFXRenderer.render(g);
 }
 
 void WorldRenderer :: update( float dt )
@@ -147,6 +150,7 @@ void WorldRenderer :: update( float dt )
 	m_terrainRenderer.update(dt);
 	m_laserRenderer.update(dt);
 	m_clampRenderer.update(dt);
+	m_miscFXRenderer.update(dt);
 	//m_shipRenderer.update(dt);
 
 	// HUDrenderer sits next to WorldRenderer, not below it

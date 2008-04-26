@@ -206,7 +206,7 @@ Point3 RenderEngine :: getScreenPositionFromMapPosition(const Point3& p)
 	const double * mv = wr->getModelViewMatrixd();
 	const double * proj = wr->getProjectionMatrixd();
 	
-	// UnProject - get the ray
+	// Project
 	double outx,outy,outz;
 	gluProject(p.getX(),p.getY(),p.getZ(),mv,proj,m_viewport,&outx,&outy,&outz);
 	return Point3(float(outx),float(outy),float(outz));

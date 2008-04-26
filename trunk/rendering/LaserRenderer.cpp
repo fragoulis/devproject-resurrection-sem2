@@ -67,8 +67,6 @@ void LaserRenderer :: render(Graphics& g) const
 	static const Vector2 lltex(0.0f,0.0f);
 	static const Vector2 texext(1.0f,1.0f);
 
-	CKLOG(string("Visible lasers : ") + ToString<unsigned>(unsigned(m_lasers.size())),2);
-
 	for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
 		it != m_lasers.end();
 		++it)

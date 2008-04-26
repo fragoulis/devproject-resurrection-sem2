@@ -9,9 +9,12 @@ ClampRenderer :: ClampRenderer()
 :m_accumTimer(0.0f),
 m_plship(NULL)
 {
-	EventManager::instance().registerEventListener< Enemy_Attached_To_Player >(this);
+	EventManager::instance().registerEventListener< Interceptor_Clamped >(this);
 	EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
+	EventManager::instance().registerEventListener< Player_Spawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Despawned >(this);
 
 	// get appropriate texture here
 }
@@ -21,16 +24,10 @@ ClampRenderer :: ~ClampRenderer()
 	// delete anything applicable
 }
 
-void ClampRenderer :: onEvent(Enemy_Attached_To_Player& evt)
+void ClampRenderer :: onEvent(Interceptor_Clamped& evt)
 {
-	// add the pair
-
-	// sanity check
-	if(m_plship)
-		assert(evt.getValue2() == m_plship);
-	else
-		m_plship = evt.getValue2();
-	m_enships.push_back(evt.getValue1());	
+	// add 
+	m_enships.push_back(evt.getValue());	
 }
 
 void ClampRenderer :: onEvent(Enemy_Destroyed& evt)
@@ -61,6 +58,26 @@ void ClampRenderer :: onEvent(Enemy_Despawned& evt)
 			break;
 		}
 	}
+}
+
+void ClampRenderer :: onEvent(Player_Spawned& evt)
+{
+	//set the ship
+	m_plship = evt.getValue();
+}
+
+void ClampRenderer :: onEvent(Player_Destroyed& evt)
+{
+	// remove all the pairs
+	m_plship = NULL;
+	m_enships.clear();
+}
+
+void ClampRenderer :: onEvent(Player_Despawned& evt)
+{
+	// remove all the pairs
+	m_plship = NULL;
+	m_enships.clear();
 }
 
 void ClampRenderer :: render(Graphics& g) const
