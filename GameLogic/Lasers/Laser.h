@@ -39,6 +39,9 @@ public:
 	void setMaxLength(float l) { m_maxLength = l; }
 	void setWidth(float w) { m_width = w; }
 
+	float getPower() const { return m_power; }
+	void setPower(float p) { m_power = p; }
+
 
 	//! Starts this laser at given position
 	void start(const Point3& pos, const Vector3& direction);
@@ -68,4 +71,7 @@ private:
 	Vector3 m_direction;
 	Point3 m_backPoint;
 	State m_state;
+
+	// gameplay data
+	float m_power;
 };

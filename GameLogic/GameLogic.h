@@ -129,6 +129,9 @@ private:
 	EbombList m_ebombs;
 	LaserList m_lasers;
 
+	// Crater data
+	float m_craterExtraHeight;
+
 	// Player laser firing data
 	float m_playerLaserCooldownTime;
 	float m_playerLaserCooldownLeft;
@@ -136,12 +139,12 @@ private:
 	int m_laserTypePositive;
 	int m_laserTypeNegative;
 	int m_laserSwapDebuffType;
-	int m_laserPowerType[ENERGY_TYPE_COUNT];
+	int m_laserPowerType;//[ENERGY_TYPE_COUNT];
 	float m_laserPowerFactor;
 	bool m_lasersSwapped;
 
 	// helper functions
-	void _addLaserPowerBuffs(EbombType);
+	//void _addLaserPowerBuffs(EbombType);
 	EbombType _seeIfPlayerCanCreateEbombAndReturnTypeOfBomb();
 	bool _checkNormalEbombCreation(EnergyType);
 	bool _checkCombinedEbombCreation(EnergyType, EnergyType);
