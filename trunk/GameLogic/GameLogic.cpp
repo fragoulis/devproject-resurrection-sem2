@@ -283,6 +283,7 @@ void GameLogic :: _checkEbombUncreation()
 void GameLogic :: dropEbomb(const Point3& targetLocation)
 {
 	// check if we have a bomb available
+	m_currentEbomb = EBOMB_TYPE_BLUE;
 	if (m_currentEbomb == EBOMB_TYPE_UNKNOWN) return;
 
 	Ebomb* ebomb = new Ebomb(*m_ebombPrototype);
