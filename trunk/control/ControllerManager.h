@@ -15,8 +15,7 @@ class IController;
 
 
 /**
- * ControllerManager
- *
+ * Application calls ControllerManager::update.
  * Keeps a pointer to the active controller,
  * and sends an update to it every frame.
  */

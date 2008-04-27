@@ -31,6 +31,7 @@ public:
 
 	int getType() const { return m_type; }
 	float getTimeLeft() const { return m_timeLeft; }
+	float getDuration() const { return m_duration; }
 	int getCurrentStacks() const { return m_currentStacks; }
 	int getMaxStacks() const { return m_maxStacks; }
 	bool isDebuff() const { return m_debuff; }
