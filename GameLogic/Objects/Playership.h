@@ -49,11 +49,13 @@ public:
 	bool isInvulnerable() const { return hasBuff(m_bufftypeInvulnerability); }
 	float getInvulnerableTimeLeft() const { return getBuffTimeLeft(m_bufftypeInvulnerability); }
 	void makeInvulnerable() { addBuff(m_bufftypeInvulnerability); }
+	float getInvulnerableMaxTime() const { return getBuffMaxTime(m_bufftypeInvulnerability); }
 
 	void addBuff(int type) { m_buffContainer.addBuff(type); }
 	bool hasBuff(int type) const { return m_buffContainer.hasBuff(type); }
 	int getBuffStacks(int type) const { return m_buffContainer.getBuffStacks(type); }
 	float getBuffTimeLeft(int type) const { return m_buffContainer.getBuffTimeLeft(type); }
+	float getBuffMaxTime(int type) const { return m_buffContainer.getBuffDuration(type); }
     const Buff *getBuff(int type) const { return m_buffContainer.getBuff(type); }
 
 	void loadSettings(const ParserSection&);

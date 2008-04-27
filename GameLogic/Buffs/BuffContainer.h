@@ -32,6 +32,7 @@ public:
 	const Buff* getBuff(int type) const { return _getBuff(type); }
 	int getBuffStacks(int type) const;
 	float getBuffTimeLeft(int type) const;
+	float getBuffDuration(int type) const;
 
 	// updates timers and removes expired buffs
 	void update(float dt, WorldObject* target);

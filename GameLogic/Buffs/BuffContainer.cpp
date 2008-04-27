@@ -50,6 +50,13 @@ float BuffContainer :: getBuffTimeLeft(int type) const
 	return buff->getTimeLeft();
 }
 
+float BuffContainer :: getBuffDuration(int type) const
+{
+	const Buff* buff = getBuff(type);
+	if (buff == 0) return 0.0f;
+	return buff->getDuration();
+}
+
 bool BuffContainer :: hasBuff(int type) const
 {
 	const Buff* buff = getBuff(type);
