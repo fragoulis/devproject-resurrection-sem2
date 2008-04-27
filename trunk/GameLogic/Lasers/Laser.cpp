@@ -17,6 +17,7 @@
 Laser :: Laser(int type) : m_age(0.0f), m_state(STARTING)
 {
 	setType(type);
+	m_power = 1.0f;
 }
 
 Laser :: ~Laser()

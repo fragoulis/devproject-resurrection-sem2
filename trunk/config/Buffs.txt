@@ -28,6 +28,12 @@ Duration = 10.0
 MaxStacks = 1
 Debuff = true
 
+[LaserPower]
+Class = Generic
+Duration = 10000.0
+MaxStacks = 10.0
+Debuff = false
+
 [LaserPowerRed]
 Class = Generic      # Generic buff has no code, just exists. Other classes use it
 Duration = 10000.0

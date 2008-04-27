@@ -51,59 +51,27 @@ GameLogic :: ~GameLogic()
 	onApplicationUnload();
 }
 
-void GameLogic :: onApplicationLoad(const ParserSection& ps)
-{
-	// Register for event listening
-	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
-	EventManager::instance().registerEventListener< Collision_Enemy_Laser >(this);
-	EventManager::instance().registerEventListener< Collision_Ebomb_Crater >(this);
-	EventManager::instance().registerEventListener< Collision_Ebomb_Terrain >(this);
-	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
-	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
-	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
-	EventManager::instance().registerEventListener< Player_Destroyed >(this);
-	EventManager::instance().registerEventListener< Level_Complete >(this);
-
-	// Load data
-	const ParserSection* psGame = ps.getSection("main");
-
-	// Load playership data
-	const ParserSection* psPlayer = ps.getSection("Playership");
-	m_playershipPrototype = new Playership();
-	m_playershipPrototype->loadSettings(*psPlayer);
-
-	// load laser data
-	const ParserSection* psLaser = ps.getSection("Laser");
-
-	m_playerLaserCooldownTime = FromString<float>(psLaser->getVal("Cooldown"));
-	m_laserStartOffset = FromString<float>(psLaser->getVal("StartOffset"));
-	m_laserPowerFactor = FromString<float>(psLaser->getVal("PowerFactor"));
-	m_laserTypePositive = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
-	m_laserTypeNegative = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
-	m_laserSwapDebuffType = BuffFactory::instance().getTypeFromName("LaserSwap");
-
-	for (int type = 0; type < ENERGY_TYPE_COUNT; type++)
-	{
-		std::string name = std::string("LaserPower") + CStringFromEnergyType(EnergyType(type));
-		m_laserPowerType[type] = BuffFactory::instance().getTypeFromName(name);
-	}
 
 
-	// load e-bomb data
-	const ParserSection* psEbomb = ps.getSection("Ebomb");
-	m_ebombPrototype = new Ebomb();
-	m_ebombPrototype->loadSettings(*psEbomb);
-	m_normalBombEnergy = m_playershipPrototype->getEnergyCapacity();
-	m_combinedBombEnergy = int(m_playershipPrototype->getEnergyCapacity() / 2);
-	m_ebombInitialDownwardVelocity = FromString<float>(psEbomb->getVal("InitialDownwardVelocity"));
-}
 
-void GameLogic :: onApplicationUnload()
-{
-	_deleteLevelData();
-	deleteObject(m_playershipPrototype);
-	deleteObject(m_ebombPrototype);
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 /**
@@ -167,16 +135,16 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 {
 	//EventManager::instance().fireEvent(Level_Complete(m_levelName));
     Enemyship* enemy = evt.getObject1();
+	Laser* laser = evt.getObject2();
 
     if( enemy->isClamped() ) return;
 
-	Laser* laser = evt.getObject2();
 	int laserType = laser->getType();
 
 	// reduce enemy hitpoints by 1
 	EnergyType type = enemy->getEnergyType();
-	int power = m_playership->getBuffStacks(m_laserPowerType[type]);
-	enemy->reduceHitPoints(1.0f + power * m_laserPowerFactor);
+	//int power = m_playership->getBuffStacks(m_laserPowerType[type]);
+	enemy->reduceHitPoints(laser->getPower());
 
 	// check if enemy can sustain the damage taken
 	if (enemy->getHitPoints() <= 0) {
@@ -342,7 +310,8 @@ void GameLogic :: onEvent( Collision_Ebomb_Crater& evt )
 	{
 		EventManager::instance().fireEvent(Life_Restored(crater));
 		crater->setToBeDeleted();
-		_addLaserPowerBuffs(ebomb->getEbombType());
+		m_playership->addBuff(m_laserPowerType);
+		//_addLaserPowerBuffs(ebomb->getEbombType());
 
 		// some craters may still be alive (aside from this one),
 		// but are set to be deleted
@@ -371,51 +340,51 @@ void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
 	EventManager::instance().fireEvent(Ebomb_Missed(ebomb));
 }
 
-void GameLogic :: _addLaserPowerBuffs(EbombType ebombType)
-{
-	int type1, type2;
-	switch (ebombType)
-	{
-		case EBOMB_TYPE_RED :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-			type2 = m_laserPowerType[ENERGY_TYPE_RED];
-			break;
-		}
-		case EBOMB_TYPE_YELLOW :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-			break;
-		}
-		case EBOMB_TYPE_BLUE :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_BLUE];
-			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-			break;
-		}
-		case EBOMB_TYPE_ORANGE :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-			break;
-		}
-		case EBOMB_TYPE_GREEN :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-			break;
-		}
-		case EBOMB_TYPE_PURPLE :
-		{
-			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-			break;
-		}
-	}
-	m_playership->addBuff(type1);
-	m_playership->addBuff(type2);
-}
+//void GameLogic :: _addLaserPowerBuffs(EbombType ebombType)
+//{
+//	int type1, type2;
+//	switch (ebombType)
+//	{
+//		case EBOMB_TYPE_RED :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+//			type2 = m_laserPowerType[ENERGY_TYPE_RED];
+//			break;
+//		}
+//		case EBOMB_TYPE_YELLOW :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+//			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+//			break;
+//		}
+//		case EBOMB_TYPE_BLUE :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_BLUE];
+//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+//			break;
+//		}
+//		case EBOMB_TYPE_ORANGE :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+//			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+//			break;
+//		}
+//		case EBOMB_TYPE_GREEN :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
+//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+//			break;
+//		}
+//		case EBOMB_TYPE_PURPLE :
+//		{
+//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
+//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
+//			break;
+//		}
+//	}
+//	m_playership->addBuff(type1);
+//	m_playership->addBuff(type2);
+//}
 
 void GameLogic :: onEvent(Level_Complete&)
 {
@@ -506,6 +475,19 @@ void GameLogic :: update(float dt)
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 /**
  * Helper function for spawn points
  */
@@ -572,11 +554,17 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		}
 		Laser* laser = LaserFactory::instance().createLaser(type);
 		laser->start(startingPosition, direction);
+		laser->setPower(1.0f + m_laserPowerFactor * m_playership->getBuffStacks(m_laserPowerType));
 		m_lasers.push_back(laser);
 		m_playerLaserCooldownLeft = m_playerLaserCooldownTime;
 		EventManager::instance().fireEvent(Laser_Spawned(laser));
 	}
 }
+
+
+
+
+
 
 
 
@@ -646,7 +634,7 @@ void GameLogic :: loadLevel(const std::string& levelName)
 	{
 		Crater* crater = new Crater();
 		crater->loadSettings(**it);
-		crater->setY(m_terrain->getHeight(crater->getX(), crater->getZ()));
+		crater->setY(m_terrain->getHeight(crater->getX(), crater->getZ()) + m_craterExtraHeight);
 		m_craters.push_back(crater);
 		EventManager::instance().fireEvent(Crater_Spawned(crater));
 	}
@@ -669,6 +657,91 @@ void GameLogic :: unloadLevel()
 	EventManager::instance().fireEvent(Level_Unload());
 	_deleteLevelData();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void GameLogic :: onApplicationLoad(const ParserSection& ps)
+{
+	// Register for event listening
+	EventManager::instance().registerEventListener< Collision_Player_Enemy >(this);
+	EventManager::instance().registerEventListener< Collision_Enemy_Laser >(this);
+	EventManager::instance().registerEventListener< Collision_Ebomb_Crater >(this);
+	EventManager::instance().registerEventListener< Collision_Ebomb_Terrain >(this);
+	EventManager::instance().registerEventListener< Player_EnergyGained >(this);
+	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
+	EventManager::instance().registerEventListener< Player_EnergyDispersed >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Level_Complete >(this);
+
+	// Load data
+	const ParserSection* psGame = ps.getSection("main");
+	m_craterExtraHeight = FromString<float>(psGame->getVal("CraterExtraHeight"));
+
+	// Load playership data
+	const ParserSection* psPlayer = ps.getSection("Playership");
+	m_playershipPrototype = new Playership();
+	m_playershipPrototype->loadSettings(*psPlayer);
+
+	// load laser data
+	const ParserSection* psLaser = ps.getSection("Laser");
+
+	m_playerLaserCooldownTime = FromString<float>(psLaser->getVal("Cooldown"));
+	m_laserStartOffset = FromString<float>(psLaser->getVal("StartOffset"));
+	m_laserPowerFactor = FromString<float>(psLaser->getVal("PowerFactor"));
+	m_laserTypePositive = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
+	m_laserTypeNegative = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
+	m_laserSwapDebuffType = BuffFactory::instance().getTypeFromName("LaserSwap");
+
+	//for (int type = 0; type < ENERGY_TYPE_COUNT; type++)
+	//{
+	//	std::string name = std::string("LaserPower") + CStringFromEnergyType(EnergyType(type));
+	//	m_laserPowerType[type] = BuffFactory::instance().getTypeFromName(name);
+	//}
+	m_laserPowerType = BuffFactory::instance().getTypeFromName("LaserPower");
+
+
+	// load e-bomb data
+	const ParserSection* psEbomb = ps.getSection("Ebomb");
+	m_ebombPrototype = new Ebomb();
+	m_ebombPrototype->loadSettings(*psEbomb);
+	m_normalBombEnergy = m_playershipPrototype->getEnergyCapacity();
+	m_combinedBombEnergy = int(m_playershipPrototype->getEnergyCapacity() / 2);
+	m_ebombInitialDownwardVelocity = FromString<float>(psEbomb->getVal("InitialDownwardVelocity"));
+}
+
+void GameLogic :: onApplicationUnload()
+{
+	_deleteLevelData();
+	deleteObject(m_playershipPrototype);
+	deleteObject(m_ebombPrototype);
+}
+
+
+
+
+
+
+
+
+
+
 
 
 void GameLogic :: _deleteLevelData()
