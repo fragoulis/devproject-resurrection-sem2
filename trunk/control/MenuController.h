@@ -10,6 +10,8 @@
 #pragma once
 #include "IController.h"
 #include "../utility/Singleton.h"
+#include "../utility/EventManager.h"
+#include "../GameLogic/GameEvents.h"
 class MenuRenderer;
 
 
@@ -21,7 +23,8 @@ class MenuRenderer;
  */
 class MenuController :
 	public IController,
-	public Singleton< MenuController >
+	public Singleton< MenuController >,
+	public EventListener<Level_Complete>
 {
 public:
 	virtual void activate();
@@ -32,6 +35,8 @@ public:
 	// Helper to load menu
 	void load();
 	void loadPlanetSelection();
+
+	virtual void onEvent(Level_Complete&);
 
 
 private:
