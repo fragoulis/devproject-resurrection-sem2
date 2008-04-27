@@ -70,13 +70,13 @@ PowerFactor = 0.25
 
 
 [Laser : LaserPlayerPositive]
-Lifetime = 20.0
+Lifetime = 5.0
 MaxLength = 30.0
 Width = 18.0
 Speed = 700.0
 
 [Laser : LaserPlayerNegative]
-Lifetime = 20.0
+Lifetime = 5.0
 MaxLength = 30.0
 Width = 18.0
 Speed = 700.0
