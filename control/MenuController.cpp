@@ -21,6 +21,7 @@
 
 MenuController::MenuController()
 {
+	EventManager::instance().registerEventListener<Level_Complete>(this);
 }
 
 MenuController :: ~MenuController()
@@ -161,3 +162,11 @@ void MenuController :: loadPlanetSelection()
 //	GameLogic::instance().unloadLevel();
 //	ControllerManager::instance().activateController(new MenuController());
 //}
+
+void MenuController :: onEvent(Level_Complete& level) {
+
+	string levelName = level.getValue();
+
+	//TODO: get the level names and check when they're completed
+
+}
