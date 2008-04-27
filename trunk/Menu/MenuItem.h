@@ -23,6 +23,7 @@ private:
 	vector<Texture*> m_textureList;
 
 	bool m_selectable;
+	bool m_visible;
 
 public:
 	~MenuItem(); 
@@ -36,5 +37,8 @@ public:
 
 	void setSelectable(bool selectable) { m_selectable = selectable; };
 	const bool isSelectable() const { return m_selectable; };
+
+	void setVisible(bool visible) { m_visible = visible; };
+	const bool isVisible() const { return m_visible; };
 
 };
