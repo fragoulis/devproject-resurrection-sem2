@@ -31,7 +31,7 @@
 #include <iostream>
 using namespace std;
 
-const float EARTH_GRAVITY = 0.81f;
+const float EARTH_GRAVITY = 200.0f;
 const float MIN_DT = 0.005f;
 
 PhysicsEngine :: PhysicsEngine()
@@ -474,7 +474,7 @@ void PhysicsEngine :: _checkEbombTerrainCollisions()
 		float sphereY = sphereCentre.getY();
 		float terrainHeight = m_terrain->getHeight(sphereCentre.getX(), sphereCentre.getZ());
 
-		if ((sphereY - sphereRadius) < terrainHeight)
+		if (sphereY < terrainHeight)
 		{
 			Vector3 normal(0.0f, 1.0f, 0.0f);
 			Point3 colpos = sphereCentre;
