@@ -3,8 +3,25 @@
 void PlanetPage::init(int screenWidth, int screenHeight) {
 
 	MenuItem *backButton = new MenuItem();
-	backButton->init((float) screenWidth/2 - 128, 0, 256, 100, "menuExitPause.bmp", "menuExitPauseSel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	backButton->init(10, 0, 256, 100, "menuExitPause.bmp", "menuExitPauseSel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(backButton);
+
+	MenuItem *difficultyLabelEasy = new MenuItem();
+	difficultyLabelEasy->init((float) screenWidth/2 - 128, 100, 256, 100, "menuEasy.bmp", "menuEasy.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelEasy->setSelectable(false),
+	m_items.push_back(difficultyLabelEasy);
+
+	MenuItem *difficultyLabelMedium = new MenuItem();
+	difficultyLabelMedium->init((float) screenWidth/2 - 128, 100, 256, 100, "menuMedium.bmp", "menuMedium.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelMedium->setSelectable(false);
+	difficultyLabelMedium->setVisible(false);
+	m_items.push_back(difficultyLabelMedium);
+
+	MenuItem *difficultyLabelHard = new MenuItem();
+	difficultyLabelHard->init((float) screenWidth/2 - 128, 100, 256, 100, "menuHard.bmp", "menuHard.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelHard->setSelectable(false);
+	difficultyLabelHard->setVisible(false);
+	m_items.push_back(difficultyLabelHard);
 
 
 	m_backgroundImage = TextureIO::instance()->getTexture("planetMenuBg.bmp");
@@ -57,6 +74,26 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 
 void PlanetPage::update(float dt) {
 
+}
+
+void PlanetPage::setDifficultyToShow(int difficulty) {
+	switch (difficulty) {
+	case DIFFICULTY_EASY:
+		m_items[1]->setVisible(true);
+		m_items[2]->setVisible(false);
+		m_items[3]->setVisible(false);
+		break;
+	case DIFFICULTY_MEDIUM:
+		m_items[1]->setVisible(false);
+		m_items[2]->setVisible(true);
+		m_items[3]->setVisible(false);
+		break;
+	case DIFFICULTY_HARD:
+		m_items[1]->setVisible(false);
+		m_items[2]->setVisible(false);
+		m_items[3]->setVisible(true);
+		break;
+	}
 }
 
 

@@ -25,6 +25,7 @@ public:
 	virtual void render(Graphics &g) const;
 
 	virtual void setItemsNumber(int itemsNumber) {};
+	virtual void setDifficultyToShow(int difficulty) {};
 
 	const int getSelectedItem() const;
 	void setSelectedItem(int itemNumber);

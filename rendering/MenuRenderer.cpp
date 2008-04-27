@@ -66,5 +66,16 @@ void MenuRenderer :: render(Graphics& g) const
 void MenuRenderer :: update(float dt)
 {
 	m_currentMenu = m_menuPool[(int) m_state];
+
+	if (m_state == MENU_STATE_PLANET) {
+		if (m_currentMenu->getSelectedItem() == 4)
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_EASY);
+		else if (m_currentMenu->getSelectedItem() == 5)
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_MEDIUM);
+		else if (m_currentMenu->getSelectedItem() == 6)
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_HARD);
+		else if (m_currentMenu->getSelectedItem() == 7)
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_EASY);
+	}
 }
 
