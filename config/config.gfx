@@ -31,7 +31,7 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
 				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">,
-				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">
+				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -210,6 +210,15 @@ Shader       = "PS_EnemyEnergyViz"
 Texture      = "Flare1_32.sgi"
 TailSize	 = 1
 Speed		 = 1.5
+
+[ParticleSystem : PS_EnemyExplosion2]
+Variations   = 10
+SystemLife   = 1.4
+ParticleLife = 0.7
+ParticleSize = 30
+ParticleNum  = 512
+Shader       = "PS_EnemyExplosion2"
+Texture      = "Flare1_32.sgi"
 
 
 ################# ENTITY-MODEL SETTINGS ####################
