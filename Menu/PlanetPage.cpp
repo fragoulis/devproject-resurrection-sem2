@@ -95,6 +95,11 @@ void PlanetPage::setDifficultyToShow(int difficulty) {
 		m_items[2]->setVisible(false);
 		m_items[3]->setVisible(true);
 		break;
+	default:
+		m_items[1]->setVisible(false);
+		m_items[2]->setVisible(false);
+		m_items[3]->setVisible(false);
+		break;
 	}
 }
 
