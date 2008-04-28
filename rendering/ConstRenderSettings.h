@@ -31,6 +31,7 @@ class ConstRenderSettings
 	float m_waveSpeed;
 	float m_waveRepeats;
 	std::string m_noiseTexture,
+				m_noiseTexture1D,
 				m_lakeNormalTexture;
 	float m_reflectionTextureScreenRatio;
 
@@ -55,6 +56,7 @@ public :
 	const float getWaveChangeRate() const{return m_waveChangeRate;}
 	const float getWaveSpeed() const{return m_waveSpeed;}
 	const std::string& getNoiseTexture() const {return m_noiseTexture;}
+	const std::string& getNoiseTexture1D() const {return m_noiseTexture1D;}
 	const std::string& getLakeNormalTexture() const {return m_lakeNormalTexture;}
 	const std::string& getCraterArrowTexture() const {return m_craterArrowTexture;}
 	const float getWaveRepeats(const float mapExtent) const {return m_waveRepeats*mapExtent / 2048.0f;}

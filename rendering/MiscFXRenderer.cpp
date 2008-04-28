@@ -10,7 +10,7 @@
 #include "../gfx/Texture/TextureIO.h"
 #include <gl/glee.h>
 
-static float RAY_MAX_LENGTH = 500.0f;
+static float RAY_MAX_LENGTH = 900.0f;
 static float RAY_MAX_WIDTH = 80.0f;
 
 MiscFXRenderer :: MiscFXRenderer()
@@ -108,9 +108,7 @@ void MiscFXRenderer :: update(const float dt)
 	m_accumTime += dt;
 	if(m_godModeON)
 	{
-		if(m_plship && m_plship->isInvulnerable())
-			;
-		else
+		if(!(m_plship && m_plship->isInvulnerable()))
 			m_godModeON = false;
 	}
 }

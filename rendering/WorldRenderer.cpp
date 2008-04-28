@@ -101,13 +101,13 @@ void WorldRenderer :: render(Graphics& g) const
 {
 	// now render opaque 3D stuff
 
-	m_clampRenderer.render(g);
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
 	m_spawnPointRenderer.render(g);
 	m_laserRenderer.render(g);
 	m_psRenderer.render(g);
 	m_miscFXRenderer.render(g);
+	m_clampRenderer.render(g);
 }
 
 void WorldRenderer :: update( float dt )
