@@ -15,10 +15,13 @@ Dimensions = "(4096.0, 4096.0)"
 PlayerStart = "(0.0, 0.0)"
 
 [Gameplay]
-file = "TestLevel/Gameplay.txt"
+file = "Tutorial01/Gameplay.txt"
 
 [Graphics]
-file = "TestLevel/Graphics.txt"
+file = "Tutorial01/Graphics.txt"
+
+[Sound]
+SoundsUsed = <EnemyDied1>, <EnemyDied2>
 
 [AI]
-file = "TestLevel/AI.txt"
+file = "Tutorial01/AI.txt"
