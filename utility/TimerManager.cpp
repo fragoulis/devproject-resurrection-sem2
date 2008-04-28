@@ -3,8 +3,9 @@
 
 int TimerManager :: Timer :: m_nextID = 1;
 
-TimerManager :: TimerManager()
+TimerManager :: TimerManager() : m_time(0.0f)
 {
+	
 }
 
 TimerManager :: ~TimerManager()
