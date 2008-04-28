@@ -10,6 +10,7 @@
 #include "PS_Manager.h"
 #include "PS_EnergyLoss.h"
 #include "PS_Explosion.h"
+#include "PS_Explosion2.h"
 #include "PS_MultiTexExplosion.h"
 #include "PS_Fountain.h"
 #include "PS_Clouds.h"
@@ -19,6 +20,7 @@
 #include "../gfx/VBO/VBO.h"
 #include "../gfx/Shaders/ShaderManager.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
+#include "../utility/RandomGenerator.h"
 
 using namespace std;
 
@@ -137,6 +139,11 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const float speed = FromString<float>((*it)->getVal("Speed"));
 				created_ps = new PS_EnemyEnergyViz((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
+			else if(pstype == "PS_EnemyExplosion2")
+			{
+				const string texname = (*it)->getVal("Texture");
+				created_ps = new PS_Explosion2((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname);
+			}
 			
 			m_psList.push_back(created_ps);
 		}
@@ -174,6 +181,6 @@ PS_Base * PS_Manager :: fetchNewPS(const std::string& name)
 	assert(queriedPS != m_psDescList.end());			// assert we asked for an existing particle system name
 
 	// create a new one based one the template.
-	PS_Base * ret = m_psList[queriedPS->posInList]->clone();
+	PS_Base * ret = m_psList[queriedPS->posInList + (queriedPS->variations-1)*RandomGenerator::GET_RANDOM_FLOAT(0.0f,1.0f)]->clone();
 	return ret;
 }

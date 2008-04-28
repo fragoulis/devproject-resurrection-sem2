@@ -244,6 +244,7 @@ WaveSpeed = 0.02
 WaveRepeats = 3
 CloudRepeats = 5
 NoiseTexture = noiseVolume.dds
+NoiseTexture1D = perlin1D.bmp
 LakeNormalTexture = waternormal.bmp
 ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.sgi

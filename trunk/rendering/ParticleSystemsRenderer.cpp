@@ -20,6 +20,7 @@
 #include "../ParticleSystem/PS_Fountain.h"
 #include "../ParticleSystem/PS_RotatingFlare.h"
 #include "../ParticleSystem/PS_EnemyEnergyViz.h"
+#include "../ParticleSystem/PS_Explosion2.h"
 #include "../utility/deleters.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
@@ -153,6 +154,12 @@ void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
 			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
 			m_psList.back()->setTransform(cf);
 			break;
+
+		case 'O':
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion2"));
+			cf.move(Vector3(0,300,0));
+			m_psList.back()->setTransform(cf);
+			break;
 	}
 }
 
@@ -167,24 +174,42 @@ void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
 {
 
 	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
-	EnergyType energyType = enemy.getValue()->getEnergyType();
-	//depending on the enemy energy type generates a different explosion
-	if (energyType == EnergyTypeFromString("red")) {
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+	if(0)
+	{
+		EnergyType energyType = enemy.getValue()->getEnergyType();
+		//depending on the enemy energy type generates a different explosion
+		if (energyType == EnergyTypeFromString("red")) {
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+			m_psList.back()->setTransform(cf);
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
+		}
+		else if (energyType == EnergyTypeFromString("yellow")) {
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+			m_psList.back()->setTransform(cf);
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+		}
+		else if (energyType == EnergyTypeFromString("blue")) {
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+			m_psList.back()->setTransform(cf);
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
+		}
 		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
 	}
-	else if (energyType == EnergyTypeFromString("yellow")) {
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+	else
+	{
+		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion2"));
 		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
-	}
-	else if (energyType == EnergyTypeFromString("blue")) {
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+		reinterpret_cast<PS_Explosion2 *>(m_psList.back())->setSizeModifier(enemy.getValue()->getRadius());
+
+		EnergyType energyType = enemy.getValue()->getEnergyType();
+		if (energyType == EnergyTypeFromString("red")) 
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnergyLoss"));
+		else if (energyType == EnergyTypeFromString("yellow"))
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+		else if (energyType == EnergyTypeFromString("blue"))
+			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
 		m_psList.back()->setTransform(cf);
-		m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnergyLoss"));
 	}
-	m_psList.back()->setTransform(cf);
 
 	_removeEnemyViz(enemy.getValue());
 }

@@ -16,6 +16,7 @@ class ClampRenderer : public EventListener<Interceptor_Clamped>,
 					   public EventListener<Enemy_Destroyed>,
 					   public EventListener<Enemy_Despawned>,
 					   public EventListener<Player_Spawned>,
+					   public EventListener<Player_Respawned>,
 					   public EventListener<Player_Destroyed>,
 					   public EventListener<Player_Despawned>
 {
@@ -27,6 +28,7 @@ public :
 	void onEvent(Enemy_Destroyed&);
 	void onEvent(Enemy_Despawned&);
 	void onEvent(Player_Spawned&);
+	void onEvent(Player_Respawned&);
 	void onEvent(Player_Destroyed&);
 	void onEvent(Player_Despawned&);
 
