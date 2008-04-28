@@ -52,7 +52,7 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 	//}
 
 	MenuItem *planet2Button = new MenuItem();
-	planet2Button->init(100, 500, 28, 28, "planet1_uns.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_SELECTED);
+	planet2Button->init(100, 500, 28, 28, "planet1_uns.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(planet2Button);
 
 	MenuItem *planet3Button = new MenuItem();
@@ -70,6 +70,8 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 	//MenuItem *planet6Button = new MenuItem();
 	//planet6Button->init(startX+2*incrementX, height - startY - incrementY, 128, 128, "planet1_uns.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
 	//m_items.push_back(planet6Button);
+
+	setSelectedItem(4);
 }
 
 void PlanetPage::update(float dt) {
