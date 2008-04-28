@@ -63,8 +63,6 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-	void onEvent(Level_Load&);
-	void onEvent(Player_Destroyed&);
 	void onEvent(Player_EnergyDrained&);
     void onEvent(Player_Spawned&);
     void onEvent(Laser_Spawned&);
