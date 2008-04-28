@@ -114,7 +114,7 @@ void MenuController :: update(float dt)
 				else 
 					_newGame();  //go to new game
 
-				m_renderer->setSelectedItem(1); //select the first planet for the next visit
+				m_renderer->setSelectedItem(4); //select the first planet for the next visit
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
 				break;
