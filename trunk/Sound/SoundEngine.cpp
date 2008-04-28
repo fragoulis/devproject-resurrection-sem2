@@ -22,9 +22,7 @@
 SoundEngine :: SoundEngine():
 m_listener(0)
 {
-	EventManager::instance().registerEventListener< Level_Load >(this);
     EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
     EventManager::instance().registerEventListener< Laser_Spawned >(this);
     EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
@@ -88,30 +86,9 @@ void SoundEngine :: onApplicationUnload()
     delete[] m_soundMemoryPool;
 }
 
-void SoundEngine :: onEvent(Level_Load& ll)
-{
-	const ParserSection* ps = ll.getValue1();
-
-	// TODO: make sure all sounds required for this level are loaded
-	// If not, load them now.
-}
-
 void SoundEngine :: onEvent(Player_Spawned& pd)
 {
 	m_listener = pd.getValue();
-}
-
-void SoundEngine :: onEvent(Player_Destroyed& pd)
-{
-    m_listener = 0;
-
-	Playership* ps = pd.getValue1();
-	EnergyType type = pd.getValue2();
-
-	m_listener = ps;
-
-    //cerr << "Player destroyed!" << endl;
-	// TODO: play sound effect for playership explosion
 }
 
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
@@ -140,6 +117,8 @@ void SoundEngine :: onEvent(Laser_Spawned& pd)
     play("Laser_Fired");
 }
 
+// updates all sound sources by positioning them
+// at the position of the global listener
 void SoundEngine::update()
 {
     _updateListener();
@@ -149,6 +128,8 @@ void SoundEngine::update()
         (*i)->update( m_listener->getPosition() );
 }
 
+// updates the listener by actually putting him at the 
+// position of the player
 void SoundEngine::_updateListener()
 {
     if( !m_listener ) return;
@@ -166,6 +147,7 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
+// initializes OpenAL stuff and sound engine's listeners
 void SoundEngine::clearSoundPositions()
 {
     Point3 position(0.0f, 0.0f, 0.0f);
@@ -185,6 +167,7 @@ void SoundEngine::clearSoundPositions()
         (*i)->update( position );
 }
 
+// plays the sound with the given id
 unsigned SoundEngine::play( const string &id, bool repeat )
 {
     // search though the sound list to find an empty slot
@@ -209,6 +192,8 @@ unsigned SoundEngine::play( const string &id, bool repeat )
     return source;
 }
 
+// clearly stops a sound from playing
+// it searches for the sound with the given id
 bool SoundEngine::stop( unsigned id )
 {
     Sounds::const_iterator i = m_sounds.begin();
