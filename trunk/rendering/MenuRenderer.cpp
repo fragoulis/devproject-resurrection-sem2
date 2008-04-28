@@ -76,6 +76,8 @@ void MenuRenderer :: update(float dt)
 			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_HARD);
 		else if (m_currentMenu->getSelectedItem() == 7)
 			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_EASY);
+		else
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_NONE);
 	}
 }
 
