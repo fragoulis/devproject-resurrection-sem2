@@ -70,11 +70,14 @@ void MenuController :: update(float dt)
 	Input& input = Input::instance();
     
 	//items selection
-	if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT)) {
+	if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT) ||
+		input.isKeyGoingDown('W') || input.isKeyGoingDown('A')) {
 		if (m_renderer->selectPreviousItem())
 			SoundEngine::instance().play("MenuClick");
 	}
-	else if (input.isKeyGoingDown(KEY_DOWN) || input.isKeyGoingDown(KEY_RIGHT)) {
+	if (input.isKeyGoingDown(KEY_DOWN) || input.isKeyGoingDown(KEY_RIGHT) ||
+		input.isKeyGoingDown('S') || input.isKeyGoingDown('D'))
+	{
 		if (m_renderer->selectNextItem())
 			SoundEngine::instance().play("MenuClick");
 	}
@@ -120,6 +123,24 @@ void MenuController :: update(float dt)
 				break;
         } // switch ( )
 	}
+
+	if (input.isKeyGoingDown(KEY_ESC))
+	{
+		switch (m_renderer->getState()) 
+        {
+			case MenuRenderer::MENU_STATE_MAIN:
+				_exit();
+				break;
+			case MenuRenderer::MENU_STATE_TUTORIAL:
+			case MenuRenderer::MENU_STATE_CREDITS:
+			case MenuRenderer::MENU_STATE_PLANET:
+				m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);
+				break;
+		};
+	}
+
+
+
 } // update()
 
 void MenuController :: _newGame()

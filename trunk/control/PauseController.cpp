@@ -41,17 +41,21 @@ void PauseController :: update(float dt)
 
 	Input& input = Input::instance();
 
-	if (input.isKeyGoingDown(KEY_UP)) {
+	if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT) ||
+		input.isKeyGoingDown('W') || input.isKeyGoingDown('A'))
+	{
 		m_renderer->selectPreviousItem();
 		SoundEngine::instance().play("MenuClick");
 	}
-	if (input.isKeyGoingDown(KEY_DOWN)) {
+	if (input.isKeyGoingDown(KEY_DOWN) || input.isKeyGoingDown(KEY_RIGHT) ||
+		input.isKeyGoingDown('S') || input.isKeyGoingDown('D'))
+	{
 		m_renderer->selectNextItem();
 		SoundEngine::instance().play("MenuClick");
 	}
 
 	//ENTER
-	if (input.isKeyGoingDown(13)) 
+	if (input.isKeyGoingDown(KEY_ENTER)) 
     {
 		switch (m_renderer->getState()) 
         {
@@ -72,6 +76,20 @@ void PauseController :: update(float dt)
 
 				break;
         } // switch ( )
+	}
+
+	if (input.isKeyGoingDown(KEY_ESC))
+	{
+		switch (m_renderer->getState()) 
+        {
+			case PauseRenderer::MENU_STATE_PAUSE:
+				GameController::instance().continueGame();
+				break;
+			case PauseRenderer::MENU_STATE_INSTRUCTIONS:
+				m_renderer->setState(PauseRenderer::MENU_STATE_PAUSE);  //go back to the main pause screen
+				SoundEngine::instance().play("EnemyFighter_Destroyed");
+				break;
+		}
 	}
 }
 
