@@ -28,7 +28,6 @@
 #include "../utility/deleters.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
-#include "../utility/TimerManager.h"
 #include "../utility/RandomGenerator.h"
 #include <vector>
 #include <iostream>
@@ -101,7 +100,7 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 		player->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterDirection(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterPower(0.0f);
-		TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 1.0f);
+		m_timerManager.schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 1.0f);
 	}
 }
 
@@ -114,7 +113,7 @@ void GameLogic :: _playerDestroyed1_DespawnEnemies()
 		Enemyship* es = *it;
 		if (es->getType() != carrierType) es->setToBeDeleted();
 	}
-	TimerManager::instance().schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
+	m_timerManager.schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
 }
 
 void GameLogic :: _playerDestroyed2_RespawnPlayer()
@@ -394,7 +393,7 @@ void GameLogic :: onEvent(Level_Complete&)
 	setPlayerDirection(rnd);
 	m_playership->makeInvulnerable();
 
-	TimerManager::instance().schedule(this, &GameLogic::_levelComplete1_DestroyEnemies, 1.0f);
+	m_timerManager.schedule(this, &GameLogic::_levelComplete1_DestroyEnemies, 1.0f);
 }
 
 void GameLogic :: _levelComplete1_DestroyEnemies()
@@ -432,6 +431,8 @@ void GameLogic :: update(float dt)
 {
 	// Laser cooldown
 	m_playerLaserCooldownLeft -= dt;
+
+	m_timerManager.update(dt);
 
 	// Send update to objects that need it
 	m_playership->update(dt);

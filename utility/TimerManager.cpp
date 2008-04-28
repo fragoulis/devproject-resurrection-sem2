@@ -1,4 +1,5 @@
 #include "TimerManager.h"
+#include <algorithm>
 
 int TimerManager :: Timer :: m_nextID = 1;
 
@@ -15,7 +16,7 @@ TimerManager :: ~TimerManager()
 
 int TimerManager :: schedule(Callback* cb, float time, float period)
 {
-	Timer timer(cb, m_time.getCurrentTime() + time, period);
+	Timer timer(cb, m_time + time, period);
 	timer.create();
 	m_timers.push_back(timer);
 	return timer.getID();
@@ -28,23 +29,23 @@ void TimerManager :: remove(int id)
 void TimerManager :: setTime(int id, float time)
 {
 	TimerListIt it = find(m_timers.begin(), m_timers.end(), id);
-	if (it != m_timers.end()) it->setTime(m_time.getCurrentTime() + time);
+	if (it != m_timers.end()) it->setTime(m_time + time);
 }
 
 
-void TimerManager :: update()
+void TimerManager :: update(float dt)
 {
-	float now = m_time.getCurrentTime();
+	m_time += dt;
 
 	for (TimerListIt it = m_timers.begin(); it != m_timers.end(); )
 	{
 		Timer& timer = *it;
-		if (timer.getTime() < now)
+		if (timer.getTime() < m_time)
 		{
 			timer.call();
 			if (timer.isRepeating())
 			{
-				timer.setTime(now + timer.getPeriod());
+				timer.setTime(m_time + timer.getPeriod());
 				++it;
 			}
 			else

@@ -28,7 +28,6 @@
 #include "../../GameLogic/WorldObjectTypeManager.h"
 #include "../../gfx/Texture/TextureMgr.h"
 #include "../../gfx/Shaders/ShaderManager.h"
-#include "../../utility/TimerManager.h"
 #include "Input.h"
 #include <al/alut.h>
 #include <iostream>
@@ -52,15 +51,13 @@ Application :: ~Application()
 
 bool Application :: init()
 {
-    alutInit(0,0);
+    alutInit(0, 0);
     alGetError();
 
 	//streambuf* psbuf;
 	//filestr.open("cout.txt");
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
-
-	TimerManager::safeInstance();
 
 	ConfParser* cp = new ConfParser("./config/config.gfx");
 	TextureMgr::init(cp->getSection("Texture"));
@@ -132,7 +129,6 @@ void Application :: unload()
 	GameLogic::destroy();
 	MemMgrRaw::destroy();
 	Logger::destroy();
-	TimerManager::destroy();
     EnemyBuffCoupleManager::destroy();
 
 	//filestr.close();
@@ -147,7 +143,6 @@ void Application :: update(float dt)
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
 	//if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN; // <--- BAD!! Just a quick bugfix
 
-	TimerManager::instance().update();
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
 }

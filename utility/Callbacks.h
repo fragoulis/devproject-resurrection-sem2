@@ -1,8 +1,5 @@
 #pragma once
 
-#include <algorithm>
-#include <functional>
-
 /**
 
 These classes wrap callback functions.

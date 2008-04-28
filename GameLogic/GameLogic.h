@@ -11,6 +11,7 @@
 #pragma once
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
+#include "../utility/TimerManager.h"
 #include "../physics/PhysicsEvents.h"
 #include "GameEvents.h"
 #include "EbombTypes.h"
@@ -96,9 +97,10 @@ public:
 
 private:
 
+	// some random stuff
 	std::string m_levelName;
-
 	float m_gamePlaneHeight; // Y coord of all gameplay things like laser, player, enemy
+	TimerManager m_timerManager;
 
 	// Player data
 	int m_currentLives;

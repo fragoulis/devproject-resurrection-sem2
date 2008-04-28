@@ -6,15 +6,15 @@
 
 
 /**
- * Allows anyone to schedule a callback function.
+ * Allows scheduling of callback functions.
  *
  * Usage:
- * TimerManager::instance().schedule(someObject, &SomeClass::DoStuffLater);
+ * TimerManager::schedule(someObject, &SomeClass::DoStuffLater, afterXseconds);
  *
  */
 
 
-class TimerManager : public Singleton<TimerManager>
+class TimerManager
 {
 public:
 	TimerManager();
@@ -24,7 +24,7 @@ public:
 	void remove(int id);
 	void setTime(int id, float time);
 
-	void update();
+	void update(float dt);
 
 
 	// Here to make your life a tiny bit easier
@@ -75,9 +75,7 @@ private:
 	};
 
 
-
-
-	Time m_time;
+	float m_time;
 	typedef std::list<Timer> TimerList;
 	typedef TimerList::iterator TimerListIt;
 	TimerList m_timers;
