@@ -7,9 +7,7 @@ class Texture;
 struct VAttribStatus;
 
 /*
-	This Particle system uses positions
-	In _generateData function, only this should be used
-	In the ctor for the copies, the m_usedAttribs should be modified appropriately
+	The cloud particle system	
 */
 
 class PS_Clouds : public PS_Base

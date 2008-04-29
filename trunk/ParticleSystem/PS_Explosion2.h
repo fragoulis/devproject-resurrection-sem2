@@ -7,9 +7,7 @@ class Texture;
 struct VAttribStatus;
 
 /*
-	This Particle system uses positions & velocity.
-	In _generateData function, these 2 should be used.
-	In the ctor for the copies, the m_usedAttribs should be modified appropriately
+	An enemy-explosion particle system
 */
 
 class PS_Explosion2 : public PS_Base

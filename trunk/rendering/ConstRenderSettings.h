@@ -2,6 +2,10 @@
 
 #include <vector>
 
+/*
+	Info struct about entity settings
+*/
+
 struct EntitySettings_t
 {
 	std::string entityName;
@@ -9,6 +13,10 @@ struct EntitySettings_t
 	int type;
 	int shaderIndex;
 };
+
+/*
+	Info class that holds data that won't change throughout the app's lifetime
+*/
 
 class ParserSection;
 class Texture;

@@ -3,6 +3,9 @@
 #include "../MemManager/MemMgr_AnyData.h"
 //#include <Threading/CriticalSection.h>
 
+/*
+	Info structure for the below binary tree class
+*/
 
 struct MemTreeInfo
 {
@@ -24,6 +27,10 @@ enum TreeNode_Status
 	OCCUPIED,	// occupied with mem, no children
 	CH_OCCUPIED	// children occupied, has children
 };
+
+/*
+	Binary tree node struct
+*/
 
 struct TreeNode
 {
@@ -54,6 +61,10 @@ struct TreeNode
 		p = 0;
 	}
 };
+
+/*
+	Fixed binary tree used by the Raw memory allocator
+*/
 
 class ParserSection;
 class FixedMemTree

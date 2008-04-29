@@ -8,9 +8,7 @@ class Enemyship;
 struct VAttribStatus;
 
 /*
-	This Particle system uses positions & velocity.
-	In _generateData function, these 2 should be used.
-	In the ctor for the copies, the m_usedAttribs should be modified appropriately
+	A particle system for the visualization of the enemy energy type
 */
 
 class PS_EnemyEnergyViz : public PS_Base

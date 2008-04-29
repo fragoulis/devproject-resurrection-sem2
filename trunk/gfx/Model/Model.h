@@ -3,6 +3,10 @@
 #include <vector>
 #include "MaterialGroup.h"
 
+/*
+	Model class
+*/
+
 class VBO;
 class Model
 {

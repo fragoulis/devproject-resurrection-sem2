@@ -2,6 +2,11 @@
 
 #include <vector>
 
+/*
+	VBO descriptor class : 
+	describes a renderable portion of a VBO
+*/
+
 class VBO;
 class VertexAttribute;
 class VBODesc

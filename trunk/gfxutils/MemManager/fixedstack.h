@@ -3,7 +3,9 @@
 #include "../Misc/defines.h"
 //#include <Threading/CriticalSection.h>
 
-
+/*
+	Status struct for the fixed-sized stack class
+*/
 
 struct FixedStackStatus
 {
@@ -15,6 +17,10 @@ struct FixedStackStatus
 	FixedStackStatus(const unsigned maxel):
 	used(0),maxelems(maxel),total_push(0),total_pop(0),peak(0){}
 };
+
+/*
+	Fixed stack class
+*/
 
 template <class T>
 class FixedStack

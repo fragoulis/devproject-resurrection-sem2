@@ -7,6 +7,11 @@ class PS_Base;
 class VBO;
 class ParserSection;
 
+/*
+	Particle system manager : 
+	Creates & stores initially the particle systems, & afterwards it fetches tham when queried to do so.
+*/
+
 class PS_Manager : public Singleton<PS_Manager>
 {
 public :

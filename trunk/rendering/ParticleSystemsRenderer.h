@@ -6,6 +6,10 @@
 #include "../GameLogic/GameEvents.h"
 #include <vector>
 
+/*
+	Renderer of the particle systems
+*/
+
 class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
 												  public EventListener<Enemy_Spawned>,
 												  public EventListener<Enemy_Despawned>,
