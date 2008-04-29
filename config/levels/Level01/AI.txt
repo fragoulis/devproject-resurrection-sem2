@@ -4,5 +4,5 @@
 
 [Behaviours]
 Names = <Flank>, <Chase>, <Surround>
-MinEnemyThrusterPower = 250000
-MaxEnemyThrusterPower = 450000
+MinEnemyThrusterPower = 150000
+MaxEnemyThrusterPower = 250000
