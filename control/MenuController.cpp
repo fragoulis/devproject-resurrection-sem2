@@ -92,7 +92,7 @@ void MenuController :: update(float dt)
 
 				break;
 			case MenuRenderer::MENU_STATE_TUTORIAL:
-				_newGame();  //go to new game
+				_startLevel("Tutorial01");  //go to new game
 				m_renderer->setSelectedItem(1); //select the first planet for the next visit
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
 
@@ -105,8 +105,13 @@ void MenuController :: update(float dt)
 			case MenuRenderer::MENU_STATE_PLANET:
 				if (m_renderer->getSelectedItem() == 0)
 					m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu
-				else 
-					_newGame();  //go to new game
+				else
+				{
+					int level = m_renderer->getSelectedItem() - 3;
+					std::string id = "Level0";
+					id += (level + 48);
+					_startLevel(id);
+				}
 
 				m_renderer->setSelectedItem(4); //select the first planet for the next visit
 				SoundEngine::instance().play("EnemyFighter_Destroyed");
@@ -134,9 +139,10 @@ void MenuController :: update(float dt)
 
 } // update()
 
-void MenuController :: _newGame()
+void MenuController :: _startLevel(const std::string& id)
 {
-	LoadingController::instance().load(this, &MenuController::_loadFirstLevel);
+	m_levelToLoad = id;
+	LoadingController::instance().load<>(this, &MenuController::_loadLevel);
 }
 
 void MenuController :: _exit()
@@ -145,13 +151,13 @@ void MenuController :: _exit()
 	os->quit();
 }
 
-void MenuController :: _loadFirstLevel()
+void MenuController :: _loadLevel()
 {
 	RenderEngine::instance().unloadAllRenderers();
 	//RenderEngine::instance().unloadRenderer("menu");
 	//GameController::safeInstance().loadLevel("TestLevel");
     //GameController::safeInstance().loadLevel("Level01");
-    GameController::safeInstance().loadLevel("Level02");
+    GameController::safeInstance().loadLevel(m_levelToLoad);
 }
 
 void MenuController :: load()

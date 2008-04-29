@@ -34,7 +34,8 @@ m_camera(NULL)
 
 MiscFXRenderer :: ~MiscFXRenderer()
 {
-
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
 }
 
 void MiscFXRenderer :: onEvent(Player_Spawned& evt)

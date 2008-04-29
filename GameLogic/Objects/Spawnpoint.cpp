@@ -4,6 +4,7 @@
 #include "../../gfxutils/Misc/utils.h"
 #include "../Enemies/EnemyFactory.h"
 #include "../Enemies/Enemyship.h"
+#include "../Enemies/EnemyCarrier.h"
 #include "../../math/Point3.h"
 #include "../GameEvents.h"
 #include "../../utility/EventManager.h"
@@ -91,7 +92,13 @@ void Spawnpoint :: update(float dt, const Point3& playerPosition)
 void Spawnpoint :: _spawnEnemy()
 {
 	const Point3& pos = getPosition();
-	GameLogic::instance().spawnEnemy(m_spawnType, m_energyType, pos.getX(), pos.getZ());
+	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType, m_energyType, pos.getX(), pos.getZ());
+
+	if (m_carrierEnergyTypeSpawns != ENERGY_TYPE_UNKNOWN)
+	{
+		EnemyCarrier* carrier = dynamic_cast<EnemyCarrier*>(es);
+		carrier->setEneryTypeSpawns(m_carrierEnergyTypeSpawns);
+	}
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_timeTillNextEvent = m_timeBetweenSpawns;
@@ -115,6 +122,18 @@ void Spawnpoint :: loadSettings( const ParserSection& ps )
 	m_timeBetweenSessionEndAndSessionStart = FromString<float>(ps.getVal("TimeBetweenSessionEndAndSessionStart"));
 	m_minimumPlayerDistance = FromString<float>(ps.getVal("MinimumPlayerDistance"));
 	m_maximumPlayerDistance = FromString<float>(ps.getVal("MaximumPlayerDistance"));
+
+
+
+	if (EnemyFactory::instance().getEnemyClass(m_spawnType) == "Carrier")
+	{
+		m_carrierEnergyTypeSpawns = EnergyTypeFromString(ps.getVal("CarrierEnergyTypeSpawns"));
+	}
+	else
+	{
+		m_carrierEnergyTypeSpawns = ENERGY_TYPE_UNKNOWN;
+	}
+
 
 	WorldObject::loadSettings(ps);
 

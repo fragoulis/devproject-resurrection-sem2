@@ -45,6 +45,7 @@ Location = (-314.081, 220.408)
 ProtectorRespawnDelay = 10.0
 ProtectorType = EnemyCarrier
 ProtectorEnergyType = yellow
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [CommentedOutCraters : Crater5]
 Radius = 154.286
@@ -86,6 +87,7 @@ Location = (-800, -500)
 EnemyType = EnemyCarrier // EnemyCarrier works too, but need new AI :)
 EnemyCount = 1
 EnergyType = yellow
+CarrierEnergyTypeSpawns = blue
 TimeBetweenInRangeAndFirstSession = 1.0
 TimeBetweenSessionStartAndFirstSpawn = 1.0
 TimeBetweenSpawns = 1.0

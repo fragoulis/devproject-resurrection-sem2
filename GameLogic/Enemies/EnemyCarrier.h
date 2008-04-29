@@ -18,6 +18,9 @@ public:
 	virtual void update(float dt);
 	virtual Enemyship* clone();
 
+	EnergyType getEnergyTypeSpawns() const { return m_spawnEnergyType; }
+	void setEneryTypeSpawns(EnergyType et) { m_spawnEnergyType = et; }
+
 	virtual void loadSettings(const ParserSection&);
 
 private:
