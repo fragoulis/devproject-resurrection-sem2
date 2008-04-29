@@ -3,10 +3,10 @@ Dimensions = "(1600, 1600)"
 PlayerStart = "(0.0, 0.0)"
 
 [Gameplay]
-file = "Level2_S/Gameplay.txt"
+file = "Level02/Gameplay.txt"
 
 [Graphics]
-file = "Level2_S/Graphics.txt"
+file = "Level02/Graphics.txt"
 
 [AI]
-file = "Level2_S/AI.txt"
+file = "Level02/AI.txt"
