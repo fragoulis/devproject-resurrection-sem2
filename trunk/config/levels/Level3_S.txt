@@ -3,13 +3,10 @@ Dimensions = "(1600, 1600)"
 PlayerStart = "(0.0, 0.0)"
 
 [Gameplay]
-file = "Level3_S.Gameplay.txt"
+file = "Level3_S/Gameplay.txt"
 
 [Graphics]
-file = "Level3_S.Graphics.txt"
-
-[Sound]
-SoundsUsed = <EnemyDied1>, <EnemyDied2>
+file = "Level3_S/Graphics.txt"
 
 [AI]
-file = "Level3_S.AI.txt"
+file = "Level3_S/AI.txt"
