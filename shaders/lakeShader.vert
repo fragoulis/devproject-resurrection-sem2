@@ -6,6 +6,7 @@ uniform float timer;
 uniform float waveSpeed;
 uniform float waveChangeRate;
 uniform float waveRepeats;
+uniform vec2 waveDir;
 
 varying vec3 viewVec;
 varying vec3 lightVec;
@@ -19,7 +20,7 @@ void main()
 	//projected tex coords calculation
 	gl_TexCoord[1].st = gl_MultiTexCoord0.st*terrain_tex_scale - terrain_tex_offset;
 	
-	gl_TexCoord[0].st = gl_MultiTexCoord0.st*waveRepeats*vec2(-1.0,1.0) + vec2(waveSpeed*timer);
+	gl_TexCoord[0].st = gl_MultiTexCoord0.st*waveRepeats*vec2(-1.0,1.0) + waveDir*waveSpeed*timer;
 	gl_TexCoord[0].p = waveChangeRate*timer;	// Noise tex coords
 	
 	gl_TexCoord[1].pq = gl_MultiTexCoord0.st;					// height tex coords

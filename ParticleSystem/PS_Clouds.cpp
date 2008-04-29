@@ -167,13 +167,13 @@ void PS_Clouds :: render() const
 	ShaderManager::instance()->setUniform1i("noiseTex",1);
 
 	float windf[4];
+	const Vector3 lvlwind(RenderEngine::instance().getLevelWind());
 	const Vector3 yaxis(0.0f,1.0f,0.0f);
-	Vector3 wind(1.0f,0.0f,1.0f);
-	wind.normalize();
+	Vector3 wind(lvlwind.getX(),0.0f,lvlwind.getY());
 	windf[0] = wind.getX();
 	windf[1] = wind.getY();
 	windf[2] = wind.getZ();
-	windf[3] = 100.0f;
+	windf[3] = lvlwind.getZ();
 	Vector3 wind_tan(wind);
 	wind_tan.cross(yaxis);
 	wind_tan.normalize();
