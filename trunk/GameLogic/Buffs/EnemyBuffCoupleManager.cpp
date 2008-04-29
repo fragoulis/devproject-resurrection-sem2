@@ -11,6 +11,8 @@ EnemyBuffCoupleManager::EnemyBuffCoupleManager()
 
 EnemyBuffCoupleManager::~EnemyBuffCoupleManager()
 {
+    EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
+    EventManager::instance().unRegisterEventListener< Level_Unload >(this);
     deleteList(m_enemyBuffCouples);
 }
 

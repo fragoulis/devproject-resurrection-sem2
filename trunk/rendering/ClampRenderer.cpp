@@ -29,6 +29,13 @@ m_plship(NULL)
 ClampRenderer :: ~ClampRenderer()
 {
 	// delete anything applicable
+	EventManager::instance().unRegisterEventListener< Interceptor_Clamped >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Destroyed >(this);
+	EventManager::instance().unRegisterEventListener< Enemy_Despawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Destroyed >(this);
+	EventManager::instance().unRegisterEventListener< Player_Despawned >(this);
 }
 
 void ClampRenderer :: onEvent(Interceptor_Clamped& evt)

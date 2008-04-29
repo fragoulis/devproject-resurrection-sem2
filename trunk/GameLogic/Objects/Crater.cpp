@@ -4,6 +4,7 @@
 #include "../WorldObjectTypeManager.h"
 #include "../Enemies/EnemyFactory.h"
 #include "../Enemies/Enemyship.h"
+#include "../Enemies/EnemyCarrier.h"
 #include "../GameLogic.h"
 
 
@@ -30,6 +31,11 @@ void Crater :: update(float dt)
 	{
 		const Point3& pos = getPosition();
 		m_protector = GameLogic::instance().spawnEnemy(m_protectorType, m_protectorEnergyType, pos.getX(), pos.getZ());
+		if (m_protectorCarrierEnergyTypeSpawns != ENERGY_TYPE_UNKNOWN)
+		{
+			EnemyCarrier* carrier = dynamic_cast<EnemyCarrier*>(m_protector);
+			carrier->setEneryTypeSpawns(m_protectorCarrierEnergyTypeSpawns);
+		}
 	}
 }
 
@@ -47,6 +53,15 @@ void Crater :: loadSettings(const ParserSection& ps)
 	m_protectorRespawnDelay = FromString<float>(ps.getVal("ProtectorRespawnDelay"));
 	m_protectorType = EnemyFactory::instance().getTypeFromName(ps.getVal("ProtectorType"));
 	m_protectorEnergyType = EnergyTypeFromString(ps.getVal("ProtectorEnergyType"));
+
+	if (EnemyFactory::instance().getEnemyClass(m_protectorType) == "Carrier")
+	{
+		m_protectorCarrierEnergyTypeSpawns = EnergyTypeFromString(ps.getVal("ProtectorCarrierEnergyTypeSpawns"));
+	}
+	else
+	{
+		m_protectorCarrierEnergyTypeSpawns = ENERGY_TYPE_UNKNOWN;
+	}
 	
 
 

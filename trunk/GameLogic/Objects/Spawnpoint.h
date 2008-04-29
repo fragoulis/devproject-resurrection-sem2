@@ -34,6 +34,9 @@ private:
 	float m_minimumPlayerDistance;
 	float m_maximumPlayerDistance;
 
+	// in case we're spawning a carrier, nice hack!
+	EnergyType m_carrierEnergyTypeSpawns;
+
 
 	enum State
 	{

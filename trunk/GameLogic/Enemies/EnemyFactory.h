@@ -31,6 +31,8 @@ public:
 	int getTypeFromName(const std::string& name) const;
 	const std::string& getNameFromType(int type) const;
 
+	const std::string& getEnemyClass(int type) const { return m_enemyClasses[type]; }
+
 	Enemyship* createEnemyship(int type) const;
 
 
@@ -39,8 +41,10 @@ public:
 
 private:
 	typedef std::vector<Enemyship*> EnemyVector;
+	typedef std::vector<std::string> EnemyClasses;
 
 	EnemyVector m_enemyPrototypes;
+	EnemyClasses m_enemyClasses;
 
 
 	friend Singleton< EnemyFactory >;

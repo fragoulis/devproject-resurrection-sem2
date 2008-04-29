@@ -61,6 +61,7 @@ void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 
 	int typeCount = WorldObjectTypeManager::instance().getTypeCount();
 	m_enemyPrototypes.resize(typeCount);
+	m_enemyClasses.resize(typeCount);
 
 	// loop over all sections
 	// each section is an enemy type
@@ -78,6 +79,7 @@ void EnemyFactory :: onApplicationLoad(const ParserSection& ps)
 		else if (className == DEBUFFER_CLASS) es = new EnemyPlayerDebuffer(type);
 		es->loadSettings(*ps);
 		m_enemyPrototypes[type] = es;
+		m_enemyClasses[type] = className;
 	}
 }
 

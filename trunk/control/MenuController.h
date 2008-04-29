@@ -37,12 +37,13 @@ private:
     // ambient sound id
     unsigned m_ambientSound;
 
-	void _newGame();
+	std::string m_levelToLoad;
+	void _startLevel(const std::string& id);
 	void _exit();
 
 	// Callback for LoadingController
 	// New game simply loads the very first level
-	void _loadFirstLevel();
+	void _loadLevel();
 
 
 	// Singleton stuffz

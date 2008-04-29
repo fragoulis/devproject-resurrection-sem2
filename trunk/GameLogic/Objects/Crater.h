@@ -58,4 +58,5 @@ private:
 	float m_protectorRespawnDelay;
 	int m_protectorType;
 	EnergyType m_protectorEnergyType;
+	EnergyType m_protectorCarrierEnergyTypeSpawns;
 };
