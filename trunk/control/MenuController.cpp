@@ -158,7 +158,8 @@ void MenuController :: _loadFirstLevel()
 {
 	RenderEngine::instance().unloadAllRenderers();
 	//RenderEngine::instance().unloadRenderer("menu");
-	GameController::safeInstance().loadLevel("TestLevel");
+	//GameController::safeInstance().loadLevel("TestLevel");
+    GameController::safeInstance().loadLevel("Level01");
 }
 
 void MenuController :: load()
