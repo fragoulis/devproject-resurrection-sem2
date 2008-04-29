@@ -1,0 +1,15 @@
+[Map]
+Dimensions = "(2048, 2048)"
+PlayerStart = "(0.0, 0.0)"
+
+[Gameplay]
+file = "Level4_S.Gameplay.txt"
+
+[Graphics]
+file = "Level4_S.Graphics.txt"
+
+[Sound]
+SoundsUsed = <EnemyDied1>, <EnemyDied2>
+
+[AI]
+file = "Level4_S.AI.txt"

@@ -1,0 +1,22 @@
+[Main]
+Lives = 3
+GamePlaneHeight = 300
+
+
+[Craters : Crater0]
+
+Location = (-784.388, -265.721 )
+CraterRadius = 97.0904
+AffectedAreaRadius = 630.236
+
+[Craters : Crater1]
+
+Location = (-306.601, 459.902 )
+CraterRadius = 89.4254
+AffectedAreaRadius = 531.442
+
+[Craters : Crater2]
+
+Location = (444.572, 286.161 )
+CraterRadius = 89.4254
+AffectedAreaRadius = 769.91
