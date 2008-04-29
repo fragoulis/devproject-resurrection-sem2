@@ -8,7 +8,7 @@
 
 GameOverRenderer::GameOverRenderer()
 {
-	m_texture = TextureIO::instance()->getTexture("gameOverScreen.bmp");
+	m_texture = TextureIO::instance()->getTexture("gameOverScreen.dds");
 }
 
 GameOverRenderer :: ~GameOverRenderer()

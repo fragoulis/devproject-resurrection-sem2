@@ -21,22 +21,22 @@
 
 HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
 {
-	Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.bmp");
+	Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.dds");
 	m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("hudBar.bmp");
-	tex = TextureIO::instance()->getTexture("hudBg.bmp");
+	//tex = TextureIO::instance()->getTexture("hudBar.dds");
+	tex = TextureIO::instance()->getTexture("hudBg.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudEnergyBg.bmp");
+	tex = TextureIO::instance()->getTexture("hudEnergyBg.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("redBar.bmp");
+	tex = TextureIO::instance()->getTexture("redBar.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("yellowBar.bmp");
+	tex = TextureIO::instance()->getTexture("yellowBar.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("blueBar.bmp");
+	tex = TextureIO::instance()->getTexture("blueBar.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudBar2.bmp");
+	tex = TextureIO::instance()->getTexture("hudBar2.dds");
 	m_textureList.push_back(tex);
-	tex = TextureIO::instance()->getTexture("hudBomb.bmp");
+	tex = TextureIO::instance()->getTexture("hudBomb.dds");
 	m_textureList.push_back(tex);
 
 	//EventManager::instance().registerEventListener<Player_Spawned>(this);
