@@ -39,11 +39,8 @@ using namespace std;
  */
 class SoundEngine :
 	public Singleton< SoundEngine >,
-	public EventListener< Level_Load >,
     public EventListener< Player_Spawned >,
-    public EventListener< Player_Destroyed >,
 	public EventListener< Player_EnergyDrained >,
-	//public EventListener< Enemy_Hit >,
     public EventListener< Enemy_Destroyed >,
     public EventListener< Laser_Spawned >
 {
