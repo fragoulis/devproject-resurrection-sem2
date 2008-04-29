@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               ParticleSystemsRenderer.h
-//**   Author:             $Author: manuele.bonanno $
-//**   Last Change:        $Date: 2008-03-19 11:53:22 +0000 (Wed, 19 Mar 2008) $
-//**   Last Revision:      $Revision: 191 $
-//**
-//*****************************************************************************
-
 #pragma once
 #include "IRenderer.h"
 #include "../ParticleSystem/PS_Base.h"

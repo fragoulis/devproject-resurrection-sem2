@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PS_Explosion.cpp
-//**   Author:             $Author: manuele.bonanno $
-//**   Last Change:        $Date: 2008-03-16 19:42:46 +0000 (Sun, 16 Mar 2008) $
-//**   Last Revision:      $Revision: 176 $
-//**
-//*****************************************************************************
-
 #include "PS_Explosion.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../gfx/Texture/Texture.h"

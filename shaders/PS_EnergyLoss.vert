@@ -1,11 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PS_EnergyLoss.vert
-//**   Author:             $Author: manuele.bonanno $
-//**   Last Change:        $Date: 2008-03-20 12:31:07 +0000 (Thu, 20 Mar 2008) $
-//**   Last Revision:      $Revision: 205 $
-//**
-//*****************************************************************************
 
 uniform float currentTime;
 uniform float particleLife;

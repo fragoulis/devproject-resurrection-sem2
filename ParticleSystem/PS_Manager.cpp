@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PS_Manager.cpp
-//**   Author:             $Author: manuele.bonanno $
-//**   Last Change:        $Date: 2008-03-19 11:53:22 +0000 (Wed, 19 Mar 2008) $
-//**   Last Revision:      $Revision: 191 $
-//**
-//*****************************************************************************
-
 #include "PS_Manager.h"
 #include "PS_EnergyLoss.h"
 #include "PS_Explosion.h"

@@ -1,11 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PS_Explosion.vert
-//**   Author:             $Author: manuele.bonanno $
-//**   Last Change:        $Date: 2008-03-13 22:27:01 +0000 (gio, 13 mar 2008) $
-//**   Last Revision:      $Revision: 159 $
-//**
-//*****************************************************************************
 
 uniform float currentTime;
 uniform float particleLife;

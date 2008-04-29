@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               RenderEngine.h
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-12 01:27:40 +0000 (Wed, 12 Mar 2008) $
-//**   Last Revision:      $Revision: 147 $
-//**
-//*****************************************************************************
-
 #pragma once
 #include "../utility/ObjectReferenceMap.h"
 #include "../utility/Singleton.h"

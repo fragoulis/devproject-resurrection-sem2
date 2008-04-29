@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               WorldRenderer.h
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-12 04:31:49 +0000 (Wed, 12 Mar 2008) $
-//**   Last Revision:      $Revision: 151 $
-//**
-//*****************************************************************************
-
 #pragma once
 #include "IRenderer.h"
 #include "TerrainRenderer.h"

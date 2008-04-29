@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               Enemyship.cpp
-//**   Author:             $Author: Joep.Moritz $
-//**   Last Change:        $Date: 2008-03-13 00:18:54 +0000 (Thu, 13 Mar 2008) $
-//**   Last Revision:      $Revision: 156 $
-//**
-//*****************************************************************************
-
 
 #include "Enemyship.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"

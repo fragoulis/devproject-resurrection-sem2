@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PS_Jet.cpp
-//**   Author:             $Author: Manuele.Bonanno $
-//**   Last Change:        $Date: 2008-03-16 19:42:46 +0000 (dom, 16 mar 2008) $
-//**   Last Revision:      $Revision: 176 $
-//**
-//*****************************************************************************
-
 #include "PS_Jet.h"
 #include "../gfx/Texture/TextureIO.h"
 #include "../gfx/Texture/Texture.h"

@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               Shader.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-11 23:17:14 +0000 (Tue, 11 Mar 2008) $
-//**   Last Revision:      $Revision: 143 $
-//**
-//*****************************************************************************
-
 #include "../Shaders/Shader.h"
 #include "../../gfxutils/Misc/utils.h"
 #include <string>
