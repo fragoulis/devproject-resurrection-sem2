@@ -20,7 +20,7 @@
 #include <iostream>
 
 SoundEngine :: SoundEngine():
-m_listener(0)
+m_listener(0) 
 {
     EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
