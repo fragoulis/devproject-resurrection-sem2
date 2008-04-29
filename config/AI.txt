@@ -18,7 +18,7 @@ States = <Chase>
 [Behaviours : Surround]
 States = <Surround>, <Chase>
 MinTime   = 1.0
-MaxTime   = 10.0
+MaxTime   = 4.0
 
 [Behaviours : Flank]
 States = <Flank>, <Chase>
