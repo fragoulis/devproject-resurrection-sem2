@@ -25,10 +25,10 @@
 
 MenuRenderer::MenuRenderer()
 {
-	/*Texture *tex = TextureIO::instance()->getTexture("menuBg.bmp");
+	/*Texture *tex = TextureIO::instance()->getTexture("menuBg.dds");
 	m_textureList.push_back(tex);
 
-	m_currentMenu.init(0, 0, 100, 100, "flare0.bmp", "particle2.bmp", MenuItem::ITEM_STATE_UNSELECTED);*/
+	m_currentMenu.init(0, 0, 100, 100, "flare0.dds", "particle2.dds", MenuItem::ITEM_STATE_UNSELECTED);*/
 
 	int viewPortDims[4];
 	RenderEngine::instance().getViewport(viewPortDims);

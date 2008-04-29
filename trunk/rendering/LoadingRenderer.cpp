@@ -17,7 +17,7 @@
 
 LoadingRenderer :: LoadingRenderer()
 {
-	m_texture = TextureIO::instance()->getTexture("loadingScreen_alt.bmp");
+	m_texture = TextureIO::instance()->getTexture("loadingScreen_alt.dds");
 }
 
 LoadingRenderer :: ~LoadingRenderer()

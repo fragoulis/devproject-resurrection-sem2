@@ -8,7 +8,7 @@
 
 LevelCompleteRenderer::LevelCompleteRenderer()
 {
-	m_texture = TextureIO::instance()->getTexture("levelCompletedScreen.bmp");
+	m_texture = TextureIO::instance()->getTexture("levelCompletedScreen.dds");
 }
 
 LevelCompleteRenderer :: ~LevelCompleteRenderer()

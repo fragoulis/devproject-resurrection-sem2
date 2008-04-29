@@ -89,7 +89,7 @@ ParticleSize = 100
 ParticleNum  = 50
 Shader       = "PS_EnergyLoss"
 ParticleColor = 0
-Texture      = "flare0.bmp" 
+Texture      = "flare0.dds" 
 
 [ParticleSystem : PS_YellowEnergyLoss]
 Variations   = 1
@@ -99,7 +99,7 @@ ParticleSize = 100
 ParticleNum  = 50
 Shader       = "PS_EnergyLoss"
 ParticleColor = 1
-Texture      = "flare0.bmp" 
+Texture      = "flare0.dds" 
 
 [ParticleSystem : PS_BlueEnergyLoss]
 Variations   = 1
@@ -109,7 +109,7 @@ ParticleSize = 100
 ParticleNum  = 50
 Shader       = "PS_EnergyLoss"
 ParticleColor = 2
-Texture      = "flare0.bmp" 
+Texture      = "flare0.dds" 
 
 [ParticleSystem : PS_Explosion]
 Variations   = 1
@@ -118,7 +118,7 @@ ParticleLife = 2
 ParticleSize = 30
 ParticleNum  = 5000
 Shader       = "PS_Explosion"
-Texture      = "particle2.bmp" 
+Texture      = "particle2.dds" 
 
 [ParticleSystem : PS_ColouredExplosion]
 Variations   = 1
@@ -127,8 +127,8 @@ ParticleLife = 5
 ParticleSize = 5
 ParticleNum  = 5000
 Shader       = "PS_ColouredExplosion"
-Texture      = "flame.bmp" 
-ShapeTexture = "particle2.bmp" 
+Texture      = "flame.dds" 
+ShapeTexture = "particle2.dds" 
 
 
 [ParticleSystem : PS_RedEnemyExplosion]
@@ -138,8 +138,8 @@ ParticleLife = 1.5
 ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
-Texture      = "redExp.bmp" 
-ShapeTexture = "Flare1_32.sgi" 
+Texture      = "redExp.dds" 
+ShapeTexture = "Flare1_32.dds" 
 
 [ParticleSystem : PS_YellowEnemyExplosion]
 Variations   = 1
@@ -148,8 +148,8 @@ ParticleLife = 1.5
 ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
-Texture      = "yellowExp.bmp" 
-ShapeTexture = "Flare1_32.sgi" 
+Texture      = "yellowExp.dds" 
+ShapeTexture = "Flare1_32.dds" 
 
 [ParticleSystem : PS_BlueEnemyExplosion]
 Variations   = 1
@@ -158,8 +158,8 @@ ParticleLife = 1.5
 ParticleSize = 8
 ParticleNum  = 1000
 Shader       = "PS_EnemyExplosion"
-Texture      = "blueExp.bmp"
-ShapeTexture = "Flare1_32.sgi"  
+Texture      = "blueExp.dds"
+ShapeTexture = "Flare1_32.dds"  
 
 [ParticleSystem : PS_Jet]
 Variations   = 1
@@ -168,7 +168,7 @@ ParticleLife = 1
 ParticleSize = 4
 ParticleNum  = 1000
 Shader       = "PS_Jet"
-Texture      = "Flare1_32.sgi" 
+Texture      = "Flare1_32.dds" 
 
 [ParticleSystem : PS_Fountain]
 Variations   = 1
@@ -177,7 +177,7 @@ ParticleLife = 3
 ParticleSize = 15
 ParticleNum  = 10000
 Shader       = "PS_Fountain"
-Texture      = "Flare1_32.sgi" 
+Texture      = "Flare1_32.dds" 
 
 [ParticleSystem : PS_Clouds]
 Variations   = 1
@@ -186,7 +186,7 @@ ParticleLife = 15000
 ParticleSize = 120
 ParticleNum  = 100
 Shader       = "PS_Clouds"
-Texture      = "cloud_new_handblur.sgi" 
+Texture      = "cloud_new_handblur.dds" 
 NoiseTexture = "noiseVolume.dds" 
 
 [ParticleSystem : PS_RotatingFlare]
@@ -196,7 +196,7 @@ ParticleLife = 15000
 ParticleSize = 15
 ParticleNum  = 60
 Shader       = "PS_RotatingFlare"
-Texture      = "Flare1_32.sgi"
+Texture      = "Flare1_32.dds"
 TailSize	 = 0.375
 Speed		 = 0.5
 
@@ -207,7 +207,7 @@ ParticleLife = 15000
 ParticleSize = 5
 ParticleNum  = 30
 Shader       = "PS_EnemyEnergyViz"
-Texture      = "Flare1_32.sgi"
+Texture      = "Flare1_32.dds"
 TailSize	 = 1
 Speed		 = 1.5
 
@@ -218,7 +218,7 @@ ParticleLife = 0.7
 ParticleSize = 30
 ParticleNum  = 512
 Shader       = "PS_EnemyExplosion2"
-Texture      = "Flare1_32.sgi"
+Texture      = "Flare1_32.dds"
 
 
 ################# ENTITY-MODEL SETTINGS ####################
@@ -247,17 +247,17 @@ SpawnPointSize = 200
 SpawnPointTexture = stars.dds
 ShadowTextureSize = 1024
 TerraformingTimePerUnit = 0.01
-LaserTexture = "Flare1_32.sgi"
+LaserTexture = "Flare1_32.dds"
 WaveChangeRate = 0.08
 WaveSpeed = 0.02
 WaveRepeats = 3
 CloudRepeats = 5
 NoiseTexture = noiseVolume.dds
-NoiseTexture1D = perlin1D.bmp
-LakeNormalTexture = waternormal.bmp
+NoiseTexture1D = perlin1D.dds
+LakeNormalTexture = waternormal.dds
 ReflectionTextureSizeRatio = 0.4
-CraterArrowTexture = arrow.sgi
-CrosshairTexture = target.bmp
+CraterArrowTexture = arrow.dds
+CrosshairTexture = target.dds
 
 
 

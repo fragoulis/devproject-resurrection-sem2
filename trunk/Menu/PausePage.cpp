@@ -8,15 +8,15 @@ void PausePage::init(int screenWidth, int screenHeight)
     const int height = 64;
 
 	MenuItem *resumeButton = new MenuItem();
-	resumeButton->init(posX, startPosY, width, height, "menuResume.bmp", "menuResumeSel.bmp", MenuItem::ITEM_STATE_SELECTED);
+	resumeButton->init(posX, startPosY, width, height, "menuResume.dds", "menuResumeSel.dds", MenuItem::ITEM_STATE_SELECTED);
 	m_items.push_back(resumeButton);
 
 	MenuItem *controlsButton = new MenuItem();
-	controlsButton->init(posX, startPosY-deltaY, width, height, "menuControls.bmp", "menuControlsSel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	controlsButton->init(posX, startPosY-deltaY, width, height, "menuControls.dds", "menuControlsSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(controlsButton);
 
 	MenuItem *exitButton = new MenuItem();
-	exitButton->init(posX, startPosY-2*deltaY, width, height, "menuExitPause.bmp", "menuExitPauseSel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
+	exitButton->init(posX, startPosY-2*deltaY, width, height, "menuExitPause.dds", "menuExitPauseSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(exitButton);
 
 	m_hasBackground = false;
