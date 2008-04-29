@@ -5,7 +5,7 @@ LightAmbDiff = (1, 1, 1, 1 )
 MapCellDim = 513
 MapExtents= (2048, 295.957, 2048 )
 WaterColor = (0.5, 0.6, 0.8 , 1.0 )
-WindLevel = (1,1,100);
+WindLevel = (1,1,100)
 
 [DataFiles]
 
