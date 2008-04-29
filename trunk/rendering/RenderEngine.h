@@ -103,6 +103,16 @@ public:
 	const Vector3& getLevelExtents() const {return m_levelExtents;}
 	void setLevelExtents(const Vector3& le) {m_levelExtents = le;}
 
+	const Vector3& getLevelWind() const {return m_levelWind;}
+	void setLevelWind(const Vector3& lw) 
+	{
+		Vector2 dir(lw.getX(),lw.getY());
+		dir.normalize();
+		m_levelWind.set(dir.getX(),dir.getY(),lw.getZ());
+	}
+
+	void toggleWireframe();
+
 	// Convenience functions
 	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
 								 const Vector2& tex_ll, const Vector2& extents);
@@ -135,6 +145,9 @@ private:
 	Vector4 m_cameraBounds;		// camera boundaries for the current level
 
 	Vector3 m_levelExtents;
+	Vector3 m_levelWind;		// x,z coords & magnitude
+
+	bool m_wireframe;
 
 
 	// helper functions

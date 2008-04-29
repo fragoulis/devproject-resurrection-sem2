@@ -38,7 +38,8 @@ using namespace std;
 RenderEngine :: RenderEngine() 
 : m_confParser(0),
 m_cameraBounds(0.0f,0.0f,0.0f,0.0f),
-m_playerBounds(0.0f,0.0f,0.0f,0.0f)
+m_playerBounds(0.0f,0.0f,0.0f,0.0f),
+m_wireframe(false)
 {
 	setViewport(0,0,1024,768);
 	glShadeModel(GL_SMOOTH);
@@ -365,4 +366,19 @@ const Vector4 RenderEngine :: getColorFromEnergyType (const EnergyType& et) cons
 		Vector4(0.0f,0.0f,1.0f,1.0f)
 	};
 	return (EnergyColours[unsigned(et)]);
+}
+
+void RenderEngine :: toggleWireframe()
+{
+	if(m_wireframe)
+	{
+		m_wireframe = false;
+		glPolygonMode(GL_FRONT,GL_FILL);
+	}
+	else
+	{
+		m_wireframe = true;
+		glPolygonMode(GL_FRONT,GL_LINE);
+	}
+
 }

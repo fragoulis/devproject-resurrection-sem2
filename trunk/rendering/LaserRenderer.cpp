@@ -58,10 +58,8 @@ void LaserRenderer :: render(Graphics& g) const
 	ShaderManager::instance()->setUniform1f("glowFallOff",0.024f);
 	ShaderManager::instance()->setUniform1f("speed",1.86f);
 	ShaderManager::instance()->setUniform1f("sampleDist",0.0076f);
-	ShaderManager::instance()->setUniform1f("ambientGlow",0.5f);
 	ShaderManager::instance()->setUniform1f("ambientGlowHeightScale",1.68f);
 	ShaderManager::instance()->setUniform1f("vertNoise",0.78f);
-	ShaderManager::instance()->setUniform1f("glowStrength",144.0f);
 	ShaderManager::instance()->setUniform1f("height",0.44f);
 
 	static const Vector2 lltex(0.0f,0.0f);
@@ -72,6 +70,9 @@ void LaserRenderer :: render(Graphics& g) const
 		++it)
 	{
 		const Laser * laser = it->laser;
+
+		ShaderManager::instance()->setUniform1f("glowStrength",144.0f*0.75f*laser->getPower());
+		ShaderManager::instance()->setUniform1f("ambientGlow",0.5f*0.75f*laser->getPower());
 
 		// New Version
 

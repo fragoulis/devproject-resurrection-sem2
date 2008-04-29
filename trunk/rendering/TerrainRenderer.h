@@ -54,7 +54,8 @@ class TerrainRenderer :
 	public EventListener< Crater_Spawned >,
 	public EventListener< Crater_Despawned >,
 	public EventListener< Life_Restored >,
-	public EventListener< Level_Unload >
+	public EventListener< Level_Unload >,
+	public EventListener< Level_Complete >
 
 {
 public:
@@ -78,6 +79,7 @@ public:
 	void onEvent(Crater_Spawned&);
 	void onEvent(Crater_Despawned&);
 	void onEvent(Life_Restored&);
+	void onEvent(Level_Complete&);
 
 	void onEvent(Key_GoingDown&);
 

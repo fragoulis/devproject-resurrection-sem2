@@ -69,6 +69,7 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Crater_Despawned >(this);
 	EventManager::instance().registerEventListener< Life_Restored >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
+	EventManager::instance().registerEventListener< Level_Complete >(this);
 
 	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
@@ -254,8 +255,17 @@ void TerrainRenderer :: render(Graphics& g) const
 	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats(m_mapExtents.getX());
 
 	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
-	ShaderManager::instance()->setUniform1fv("waveChangeRate",&wcr);
-	ShaderManager::instance()->setUniform1fv("waveSpeed",&ws);
+
+	Vector3 windlvl(RenderEngine::instance().getLevelWind());
+
+	Vector2 winddir(windlvl.getX(),windlvl.getY());
+
+	ShaderManager::instance()->setUniform2fv("waveDir",winddir.cfp());
+	ShaderManager::instance()->setUniform1f("waveChangeRate",wcr);
+	ShaderManager::instance()->setUniform1f("waveSpeed",ws*windlvl.getZ()*0.0141421f);
+	ShaderManager::instance()->setUniform1f("waveRepeats",wr);
+	
+
 	ShaderManager::instance()->setUniform4fv("lightColor",m_lightColor.cfp());
 	ShaderManager::instance()->setUniform4fv("waterColor",m_waterColor.cfp());
 	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
@@ -287,8 +297,6 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
 	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
-
-	ShaderManager::instance()->setUniform1fv("waveRepeats",&wr);
 
 	Vector3 qll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
 	Vector3 qright(m_mapExtents.getX(),0,0);
@@ -493,6 +501,8 @@ void TerrainRenderer :: _loadResources(const std::string& id,
 
 	m_lightColor = FromString<Vector4>(parser.getSection("Misc")->getVal("LightAmbDiff"));
 	RenderEngine::instance().setLevelLightColor(m_lightColor);
+
+	RenderEngine::instance().setLevelWind(FromString<Vector3>(parser.getSection("Misc")->getVal("WindLevel")));
 
 	// Compute the index - data sizes
 	dataSize = dimension * dimension;
@@ -965,15 +975,6 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 			m_tformInfo.push_back(tfi);
 			}
 			break;
-		case 'N':
-			{
-			TerraformInfo_t tfi;
-			tfi.center = Vector3(-150.0f,0.0f,-150.0f);
-			tfi.radius = 500;
-			tfi.currentTimeOffset = 0.0f;
-			m_tformInfo.push_back(tfi);
-			}
-			break;
 	}
 }
 
@@ -1119,6 +1120,16 @@ void TerrainRenderer::onEvent(Life_Restored& evt)
 	TerraformInfo_t tfi;
 	tfi.center = crater->getPosition().getVector();
 	tfi.radius = crater->getAffectedAreaRadius();
+	tfi.currentTimeOffset = 0.0f;
+	m_tformInfo.push_back(tfi);
+}
+
+
+void TerrainRenderer::onEvent(Level_Complete& evt)
+{
+	TerraformInfo_t tfi;
+	tfi.center = Vector3(0.0f,0.0f,0.0f);
+	tfi.radius = m_mapExtents.getX()*sqrtf(2.0f);
 	tfi.currentTimeOffset = 0.0f;
 	m_tformInfo.push_back(tfi);
 }
