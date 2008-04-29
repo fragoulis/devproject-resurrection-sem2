@@ -5,6 +5,10 @@
 #include "../ConfParser/ConfParser.h"
 #include "MemBinTree.h"
 
+/*
+	Raw Memory allocator implementing the buddy allocation scheme
+	Used best for ?large? raw memory chunks
+*/
 
 class PareserSection;
 class MemMgrRaw

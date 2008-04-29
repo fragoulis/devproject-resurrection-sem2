@@ -20,9 +20,18 @@ class Texture;
 
 /**
  * Renders the world!
+	
+	world = superset of : particle systems
+						  misc FX
+						  clamping effect
+						  ships
+						  terrain / water / crater arrows
+						  lasers
+						  spawn points
+
+    uses 2 cameras (1 for rendering)
  *
  */
-
 
 
 class WorldRenderer : public IRenderer,  

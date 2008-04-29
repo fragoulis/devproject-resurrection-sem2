@@ -6,6 +6,9 @@
 
 #define CKLOG(a,b) Logger::log((a),(b),__FILE__,__LINE__)
 
+/*
+	Logger class 
+*/
 
 class ParserSection;
 class Logger

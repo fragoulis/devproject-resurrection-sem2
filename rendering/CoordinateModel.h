@@ -1,5 +1,9 @@
 #pragma once
 
+/*
+	Helper class storing model & coordinate frame pointers
+*/
+
 class Model;
 class CoordinateFrame;
 struct CoordinateModel

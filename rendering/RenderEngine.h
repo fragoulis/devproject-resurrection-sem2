@@ -20,7 +20,11 @@ class Point3;
 
 /**
  * Main RenderEngine
+	Singleton class
+
+	Also holds all level settings that need to be visible to many classes
  */
+
 class RenderEngine : public Singleton< RenderEngine >
 {
 public:

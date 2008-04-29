@@ -30,6 +30,10 @@ struct VAttribStatus
 	bool operator == (const VAttribStatus& vs) {return (_raw[0]&vs._raw[0]) && (_raw[1]&vs._raw[1]);}
 };
 
+/*
+	VBO manager class
+*/
+
 class VBOMgr : public Singleton<VBOMgr>
 {
 	// Internal Declarations

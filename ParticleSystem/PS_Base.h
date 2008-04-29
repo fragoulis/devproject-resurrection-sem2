@@ -7,7 +7,6 @@
 /*
 	The particle system base class.
 	Holds all the necessary PS variables.
-
 */
 
 class Model;

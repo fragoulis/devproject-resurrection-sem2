@@ -25,7 +25,7 @@ class PS_Base;
 
 
 /**
- * Renders the terrain.
+ * Renders the terrain, water and crater arrows
  *
  */
 

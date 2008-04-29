@@ -8,7 +8,7 @@
 /*
 	MemMgrAny<T> :
 
-	FreeStack using S.O.B. 
+	Using FreeStack
 
 	Objects using this, should overload new operator with allocation from this manager,
 	and usage of placement new operator
@@ -18,8 +18,6 @@
 	pass also the config file & the memory section of course
 
 	e.g. MemMgrAny<Mesh>::init("Mesh",parser->getSection("MemManager:AnyData"))
-
-	supports inspectMode, where it logs max allocations of the type & saves it somewhere
 */
 
 

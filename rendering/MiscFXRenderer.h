@@ -6,6 +6,7 @@
 
 /*
 	Misc effects applied in objects / world
+	Currently renders only the invulnerability effect
 */
 
 class Texture;

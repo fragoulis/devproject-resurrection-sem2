@@ -5,6 +5,10 @@
 #include <string>
 #include <vector>
 
+/*
+	Model manager : loads & gets models
+*/
+
 class Model;
 class ParserSection;
 class ModelMgr : public Singleton<ModelMgr>
