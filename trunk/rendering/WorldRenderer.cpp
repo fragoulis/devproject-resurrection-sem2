@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               WorldRenderer.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-19 08:59:44 +0000 (Wed, 19 Mar 2008) $
-//**   Last Revision:      $Revision: 189 $
-//**
-//*****************************************************************************
-
 #include "WorldRenderer.h"
 #include "RenderEngine.h"
 #include "../gfx/Camera.h"

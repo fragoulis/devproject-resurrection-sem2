@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               textureMgr.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-19 00:00:25 +0000 (Wed, 19 Mar 2008) $
-//**   Last Revision:      $Revision: 186 $
-//**
-//*****************************************************************************
-
 #include "textureMgr.h"
 #include "../../gfxutils/MemManager/MemMgr_AnyData.h"
 #include "Texture1D.h"

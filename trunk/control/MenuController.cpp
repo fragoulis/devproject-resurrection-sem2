@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               MenuController.cpp
-//**   Author:             $Author: Joep.Moritz $
-//**   Last Change:        $Date: 2008-03-20 01:41:43 +0000 (Thu, 20 Mar 2008) $
-//**   Last Revision:      $Revision: 203 $
-//**
-//*****************************************************************************
-
 #include "MenuController.h"
 #include "../rendering/RenderEngine.h"
 #include "../rendering/MenuRenderer.h"

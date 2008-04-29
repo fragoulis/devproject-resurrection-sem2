@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               VBO.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-11 21:20:29 +0000 (Tue, 11 Mar 2008) $
-//**   Last Revision:      $Revision: 141 $
-//**
-//*****************************************************************************
-
 #include "../VBO/vbo.h"
 #include "../Shaders/ShaderManager.h"
 #include "VBOMgr.h"

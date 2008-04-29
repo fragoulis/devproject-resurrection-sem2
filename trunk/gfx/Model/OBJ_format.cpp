@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               OBJ_format.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-12 17:19:52 +0000 (Wed, 12 Mar 2008) $
-//**   Last Revision:      $Revision: 154 $
-//**
-//*****************************************************************************
-
 #include "OBJ_format.h"
 #include <iostream>
 #include <fstream>

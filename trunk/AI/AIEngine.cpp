@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               AIEngine.cpp
-//**   Author:             $Author: Joep.Moritz $
-//**   Last Change:        $Date: 2008-03-09 18:24:39 +0000 (Sun, 09 Mar 2008) $
-//**   Last Revision:      $Revision: 133 $
-//**
-//*****************************************************************************
-
 #include "AIEngine.h"
 #include "Behaviours/AIBehaviour.h"
 #include "Behaviours/States/AIChase.h"

@@ -1,13 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               PhysicsEvents.h
-//**   Author:             $Author: Joep.Moritz $
-//**   Last Change:        $Date: 2008-03-13 00:18:54 +0000 (Thu, 13 Mar 2008) $
-//**   Last Revision:      $Revision: 156 $
-//**
-//*****************************************************************************
-
-
 #include "../math/Vector3.h"
 #include "../math/Point3.h"
 class Playership;

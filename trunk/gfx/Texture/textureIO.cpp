@@ -1,12 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               textureIO.cpp
-//**   Author:             $Author: esrever2357 $
-//**   Last Change:        $Date: 2008-03-19 00:00:25 +0000 (Wed, 19 Mar 2008) $
-//**   Last Revision:      $Revision: 186 $
-//**
-//*****************************************************************************
-
 #include <string>
 #include <iostream>
 #include "textureIO.h"

@@ -1,13 +1,3 @@
-//*****************************************************************************
-//**
-//**   File:               SpeedReductionDebuff.cpp
-//**   Author:             $Author: Joep.Moritz $
-//**   Last Change:        $Date: 2008-03-20 16:56:56 +0000 (Thu, 20 Mar 2008) $
-//**   Last Revision:      $Revision: 214 $
-//**
-//*****************************************************************************
-
-
 #include "SpeedReductionDebuff.h"
 #include "../Spaceship.h"
 #include "../../gfxutils/ConfParser/ParserSection.h"
