@@ -8,7 +8,7 @@ void main()
 	
 	gl_FragColor = texColor;
 	gl_FragColor *= constantColor;
-	if (texColor.r <= 0.01 && texColor.g <= 0.01 && texColor.b <= 0.01)
+	if (texColor.r <= 0.1 && texColor.g <= 0.1 && texColor.b <= 0.1)
 		gl_FragColor.a = texColor.r;
 	gl_FragColor.a *= transparency;
 	
