@@ -31,9 +31,17 @@ using namespace std;
 class SoundEngine :
 	public Singleton< SoundEngine >,
     public EventListener< Player_Spawned >,
-	public EventListener< Player_EnergyDrained >,
+    public EventListener< Player_Respawned >,
     public EventListener< Enemy_Destroyed >,
-    public EventListener< Laser_Spawned >
+    public EventListener< Laser_Spawned >,
+    public EventListener< Ebomb_Spawned >,
+    public EventListener< Ebomb_Despawned >,
+    public EventListener< Ebomb_Created >,
+    public EventListener< Life_Restored >,
+    public EventListener< Level_Load >,
+    public EventListener< Level_Unload >,
+    public EventListener< Game_Over >,
+    public EventListener< Level_Complete >
 {
 private:
     typedef std::map< const std::string, SoundBuffer*> SoundBuffers;
@@ -43,6 +51,10 @@ private:
     Sounds m_sounds;
     Playership *m_listener;
 
+    // separate pointers for large size background music
+    SoundBuffer *m_bgBuffer;
+    Sound *m_bgSound;
+
     // Used only internaly at assignment and deletion
     Sound *m_soundMemoryPool;
     SoundBuffer *m_bufferMemoryPool;
@@ -51,10 +63,18 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-	void onEvent(Player_EnergyDrained&);
     void onEvent(Player_Spawned&);
-    void onEvent(Laser_Spawned&);
+    void onEvent(Player_Respawned&);
     void onEvent(Enemy_Destroyed&);
+    void onEvent(Laser_Spawned&);
+    void onEvent(Ebomb_Spawned&);
+    void onEvent(Ebomb_Despawned&);
+    void onEvent(Ebomb_Created&);
+    void onEvent(Life_Restored&);
+    void onEvent(Level_Load&);
+    void onEvent(Level_Unload&);
+    void onEvent(Level_Complete&);
+    void onEvent(Game_Over&);
 
     void update();
     void clearSoundPositions();
@@ -64,6 +84,6 @@ public:
 private:
 	friend Singleton< SoundEngine >;
 	SoundEngine();
-	virtual ~SoundEngine();
+	~SoundEngine();
     void _updateListener();
 };

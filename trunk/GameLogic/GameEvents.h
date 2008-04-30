@@ -127,7 +127,7 @@ EVENT_WITH_2VALUES(Enemy_Hit, Enemyship*, int);
 // Signals an enemy attaching to the player's ship
 // The first parameter is the enemy ship
 // The second the player ship
-EVENT_WITH_2VALUES(Enemy_Attached_To_Player, Enemyship*, Playership*);
+//EVENT_WITH_2VALUES(Enemy_Attached_To_Player, Enemyship*, Playership*);
 
 // Fires when an Enemyship object is created in memory
 // The object is fully initialized and ready to go (in valid game state)

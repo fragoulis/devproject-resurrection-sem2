@@ -11,12 +11,22 @@
 #include <iostream>
 
 SoundEngine :: SoundEngine():
-m_listener(0) 
+m_listener(0),
+m_bgBuffer(0),
+m_bgSound(0)
 {
     EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Player_EnergyDrained >(this);
-    EventManager::instance().registerEventListener< Laser_Spawned >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
     EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
+    EventManager::instance().registerEventListener< Laser_Spawned >(this);
+	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
+    EventManager::instance().registerEventListener< Ebomb_Despawned >(this);
+    EventManager::instance().registerEventListener< Ebomb_Created >(this);
+    EventManager::instance().registerEventListener< Life_Restored >(this);
+    EventManager::instance().registerEventListener< Level_Load >(this);
+	EventManager::instance().registerEventListener< Level_Unload >(this);
+    EventManager::instance().registerEventListener< Game_Over >(this);
+    EventManager::instance().registerEventListener< Level_Complete >(this);
 }
 
 SoundEngine :: ~SoundEngine()
@@ -25,6 +35,8 @@ SoundEngine :: ~SoundEngine()
 	onApplicationUnload();
 }
 
+// ----------------------------------------------------------------------------
+// Load most sounds, interface and game sounds, except the ambient background ones
 void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 {
     const string& root = ps.getSection("Sound")->getVal("Dir");
@@ -69,6 +81,8 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     }
 }
 
+// ----------------------------------------------------------------------------
+// clear all sounds and buffers and ambient buffer
 void SoundEngine :: onApplicationUnload()
 {
     m_buffers.clear();
@@ -77,11 +91,22 @@ void SoundEngine :: onApplicationUnload()
     delete[] m_soundMemoryPool;
 }
 
+// ----------------------------------------------------------------------------
+// save the player ship as the constant listener
+// we need its position to update the OpenAL listener
 void SoundEngine :: onEvent(Player_Spawned& pd)
 {
 	m_listener = pd.getValue();
 }
 
+// ----------------------------------------------------------------------------
+// play a sound to let the player know he has been revived
+void SoundEngine :: onEvent(Player_Respawned& pd)
+{
+}
+
+// ----------------------------------------------------------------------------
+// play an explosion sound, depending on the enemy type, as loaded
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
     //cerr << "Enemy destroyed!" << endl;
@@ -93,21 +118,71 @@ void SoundEngine :: onEvent(Enemy_Destroyed& pd)
     play(sType);
 }
 
-void SoundEngine :: onEvent(Player_EnergyDrained& pd)
-{
-	Playership* ps = pd.getValue1();
-	EnergyType type = pd.getValue2();
-	int amount = pd.getValue3();
-	// TODO: play sound effect for energy draining from playership
-
-    //cerr << "Energy drained!" << endl;
-}
-
+// ----------------------------------------------------------------------------
+// play laser sound
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
     play("Laser_Fired");
 }
 
+// ----------------------------------------------------------------------------
+// play an info sound when we have an ebomb ready
+void SoundEngine :: onEvent(Ebomb_Created& ev)
+{
+    play("Ebomb_Ready");
+}
+
+// ----------------------------------------------------------------------------
+// play a sound when an ebomb is fired
+void SoundEngine :: onEvent(Ebomb_Spawned& ev)
+{
+    play("Ebomb_Deployed01");
+    play("Ebomb_Deployed02");
+}
+
+// ----------------------------------------------------------------------------
+// play a sound when an ebomb hits the ground
+void SoundEngine :: onEvent(Ebomb_Despawned& ev)
+{
+    play("Ebomb_Exp01");
+    play("Ebomb_Exp03");
+}
+
+// ----------------------------------------------------------------------------
+// play a creative sound for the terraforming
+void SoundEngine :: onEvent(Life_Restored& ev)
+{
+    play("Ebomb_Succeded");
+}
+
+// ----------------------------------------------------------------------------
+// load level's ambient background sound
+void SoundEngine :: onEvent(Level_Load& ev)
+{
+}
+
+// ----------------------------------------------------------------------------
+// unload background music from memory
+void SoundEngine :: onEvent(Level_Unload& ev)
+{
+    delete m_bgBuffer; m_bgBuffer = 0;
+    delete m_bgSound; m_bgSound = 0;
+}
+
+// ----------------------------------------------------------------------------
+// play sad sound for when we lose
+void SoundEngine :: onEvent(Game_Over& ev)
+{
+    play("Player_Lost");
+}
+
+// ----------------------------------------------------------------------------
+// play a nice victory sound
+void SoundEngine :: onEvent(Level_Complete& ev)
+{
+}
+
+// ----------------------------------------------------------------------------
 // updates all sound sources by positioning them
 // at the position of the global listener
 void SoundEngine::update()
@@ -119,6 +194,7 @@ void SoundEngine::update()
         (*i)->update( m_listener->getPosition() );
 }
 
+// ----------------------------------------------------------------------------
 // updates the listener by actually putting him at the 
 // position of the player
 void SoundEngine::_updateListener()
@@ -138,6 +214,7 @@ void SoundEngine::_updateListener()
     alListenerfv(AL_ORIENTATION, orientation );
 }
 
+// ----------------------------------------------------------------------------
 // initializes OpenAL stuff and sound engine's listeners
 void SoundEngine::clearSoundPositions()
 {
@@ -158,6 +235,7 @@ void SoundEngine::clearSoundPositions()
         (*i)->update( position );
 }
 
+// ----------------------------------------------------------------------------
 // plays the sound with the given id
 unsigned SoundEngine::play( const string &id, bool repeat )
 {
@@ -183,6 +261,7 @@ unsigned SoundEngine::play( const string &id, bool repeat )
     return source;
 }
 
+// ----------------------------------------------------------------------------
 // clearly stops a sound from playing
 // it searches for the sound with the given id
 bool SoundEngine::stop( unsigned id )
