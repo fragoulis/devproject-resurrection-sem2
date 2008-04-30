@@ -198,13 +198,49 @@ void HUDRenderer :: render(Graphics& g) const
 			}
 		}
 
+
+		Point2 mousep = Input::instance().getMousePosition();
+		mousep.setY(float(screenHeight) - mousep.getY());
+
+		// Draw the crosshair helpers
+		// Render 4 quads , arb big dim, 15 small dim
+	
+		ShaderManager::instance()->setUniform1f("transparency", 0.1f);
+		ShaderManager::instance()->setUniform4fv("constantColor", white);
+		RenderEngine::instance().getConstRenderSettings().getCrosshairHelper()->bind();
+		// Left
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX(),mousep.getY() - 8,0),
+									   Vector3(0,16,0),
+									   Vector3(-mousep.getX(),0,0),
+									   Vector2(0,m_currentTime),
+									   Vector2(1,1));
+		// Right
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX(),mousep.getY() + 8,0),
+									   Vector3(0,-16,0),
+									   Vector3(screenWidth-mousep.getX(),0,0),
+									   Vector2(0,m_currentTime),
+									   Vector2(1,1));
+		//Top
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX() - 8,mousep.getY(),0),
+									   Vector3(16,0,0),
+									   Vector3(0,screenHeight - mousep.getY(),0),
+									   Vector2(0,m_currentTime),
+									   Vector2(1,1));
+		// Bottom
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX()+8,mousep.getY(),0),
+									   Vector3(-16,0,0),
+									   Vector3(0,-mousep.getY(),0),
+									   Vector2(0,m_currentTime),
+									   Vector2(1,1));
+
+		ShaderManager::instance()->setUniform1f("transparency", 1.0f);
+
 		glDisable(GL_BLEND);
 		glEnable(GL_ALPHA_TEST);
 
 		// Draw the crosshair
-		Point2 mousep = Input::instance().getMousePosition();
 		RenderEngine::instance().getConstRenderSettings().getCrosshair()->bind();
-		RenderEngine::drawTexturedQuad(Vector3(mousep.getX()-25.0f,float(screenHeight) - mousep.getY() - 12.5f,0),Vector3(50,0,0),Vector3(0,25,0), Vector2(0,0), Vector2(1,1));
+		RenderEngine::drawTexturedQuad(Vector3(mousep.getX()-25.0f,mousep.getY() - 12.5f,0),Vector3(50,0,0),Vector3(0,25,0), Vector2(0,0), Vector2(1,1));
 		glDisable(GL_ALPHA_TEST);
 
 		ShaderManager::instance()->end();

@@ -202,9 +202,11 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	// Do some magic to render the terrain
 	ShaderManager::instance()->begin("TerrainShader");
-	m_terrainModel->matGroup(0).getTextureList()[0]->bind(14);
+	//m_terrainModel->matGroup(0).getTextureList()[0]->bind(14);
+	m_terrainModel->matGroup(0).getTextureList()[0]->setParam(GL_TEXTURE_MIN_FILTER,GL_NEAREST,14);
 	ShaderManager::instance()->setUniform1i("texmap0",14);
-	m_terrainModel->matGroup(0).getTextureList()[1]->bind(15);
+	//m_terrainModel->matGroup(0).getTextureList()[1]->bind(15);
+	m_terrainModel->matGroup(0).getTextureList()[1]->setParam(GL_TEXTURE_MIN_FILTER,GL_NEAREST,15);
 	ShaderManager::instance()->setUniform1i("texmap1",15);
 	m_tformContribTex->bind(13);
 	ShaderManager::instance()->setUniform1i("contribMap",0);
