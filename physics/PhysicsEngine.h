@@ -49,6 +49,8 @@ class PhysicsEngine :
 	public EventListener< Terrain_Changed >,
 	public EventListener< Player_Spawned >,
 	public EventListener< Player_Despawned >,
+	public EventListener< Player_Destroyed >,
+	public EventListener< Player_Respawned >,
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
 	public EventListener< Ebomb_Spawned >,
@@ -69,6 +71,8 @@ public:
 	void onEvent(Terrain_Changed&);
 	void onEvent(Player_Spawned&);
 	void onEvent(Player_Despawned&);
+	void onEvent(Player_Destroyed&);
+	void onEvent(Player_Respawned&);
 	void onEvent(Enemy_Spawned&);
 	void onEvent(Enemy_Despawned&);
 	void onEvent(Ebomb_Spawned&);
@@ -105,6 +109,8 @@ private:
     
     inline void _addPusher( pusher_obj_t *a, pusher_obj_t *b );
     inline void _addSpring( spring_obj_t *a, spring_obj_t *b );
+	void _removePusher( pusher_obj_t* a);
+	void _removeSpring( spring_obj_t* a);
 
     void _updatePushers();
     void _updateSprings();

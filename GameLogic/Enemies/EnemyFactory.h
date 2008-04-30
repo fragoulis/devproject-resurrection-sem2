@@ -32,6 +32,7 @@ public:
 	const std::string& getNameFromType(int type) const;
 
 	const std::string& getEnemyClass(int type) const { return m_enemyClasses[type]; }
+	bool isEnemyClass(int type, const std::string& c) const { return m_enemyClasses[type] == c; }
 
 	Enemyship* createEnemyship(int type) const;
 

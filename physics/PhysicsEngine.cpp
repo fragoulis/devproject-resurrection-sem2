@@ -5,6 +5,7 @@
 #include "../GameLogic/Spaceship.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
+#include "../GameLogic/Enemies/EnemyFactory.h"
 #include "../GameLogic/Lasers/Laser.h"
 #include "../GameLogic/Objects/Ebomb.h"
 #include "../GameLogic/Objects/Crater.h"
@@ -38,6 +39,8 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
 	EventManager::instance().registerEventListener< Terrain_Changed >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Despawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
@@ -86,20 +89,32 @@ void PhysicsEngine :: onEvent( Player_Despawned& evt )
     m_springs.clear();
 }
 
+void PhysicsEngine :: onEvent( Player_Destroyed& evt )
+{
+	m_playership = 0;
+	m_spaceships.remove(evt.getValue1());
+    m_springs.clear();
+}
+
+void PhysicsEngine :: onEvent( Player_Respawned& evt )
+{
+	m_playership = evt.getValue();
+	m_spaceships.push_back(evt.getValue());
+}
+
 void PhysicsEngine :: onEvent( Enemy_Spawned& evt )
 {
 	Enemyship *enemyship = evt.getValue();
     int type = enemyship->getType();
-	int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
 
-	if (type != carrierType)
+	if (!EnemyFactory::instance().isEnemyClass(type, "Carrier"))
 	{
 		// Add springs between all enemies
         EnemyshipList::const_iterator it = m_enemyships.begin();
 		for(; it != m_enemyships.end(); ++it )
 		{
 			Enemyship* es = *it;
-			if( !es->isType(carrierType) )
+			if (!EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier"))
 			{
 				_addPusher( enemyship, es );
 			}
@@ -115,6 +130,8 @@ void PhysicsEngine :: onEvent( Enemy_Despawned& evt )
     Enemyship *enemyship = evt.getValue();
 	m_enemyships.remove(enemyship);
 	m_spaceships.remove(enemyship);
+	_removePusher(enemyship);
+	_removeSpring(enemyship);
 }
 
 void PhysicsEngine :: onEvent( Ebomb_Spawned& evt )
@@ -186,6 +203,11 @@ void PhysicsEngine :: update( float dt )
 
 void PhysicsEngine :: _updatePhysics( float dt )
 {
+	for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
+	{
+		(*it)->update(dt);
+	}
+
     _updatePushers();
     _updateSprings();
 
@@ -251,18 +273,18 @@ void PhysicsEngine :: _updatePushers()
     for( PusherList::iterator i = m_pushers.begin(); i != m_pushers.end(); )
     {
         Pusher &pusher= *i;
-        const Enemyship *one = static_cast<const Enemyship*>(pusher.getFirstObject());
-        const Enemyship *two = static_cast<const Enemyship*>(pusher.getSecondObject());
-        if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
-        {
-            // Remove the spring
-            i = m_pushers.erase(i);
-        } 
-        else
-        {
+        //const Enemyship *one = static_cast<const Enemyship*>(pusher.getFirstObject());
+        //const Enemyship *two = static_cast<const Enemyship*>(pusher.getSecondObject());
+        //if( one->getHitPoints() <= 0 || two->getHitPoints() <=0 )
+        //{
+        //    // Remove the spring
+        //    i = m_pushers.erase(i);
+        //} 
+        //else
+        //{
             pusher.compute();
             ++i;
-        }
+        //}
     }
 }
 
@@ -271,19 +293,45 @@ void PhysicsEngine :: _updateSprings()
     for( SpringList::iterator i = m_springs.begin(); i != m_springs.end(); )
     {
         Spring &spring= *i;
-        const Enemyship *two = static_cast<const Enemyship*>(spring.getSecondObject());
-        if( two->getHitPoints() <=0 )
-        {
-            // Remove the spring
-            i = m_springs.erase(i);
-        } 
-        else
-        {
+        //const Enemyship *two = static_cast<const Enemyship*>(spring.getSecondObject());
+        //if( two->getHitPoints() <=0 )
+        //{
+        //    // Remove the spring
+        //    i = m_springs.erase(i);
+        //} 
+        //else
+        //{
             spring.compute();
             ++i;
-        }
+        //}
     }
 }
+
+void PhysicsEngine :: _removePusher( spring_obj_t* a)
+{
+    for( PusherList::iterator i = m_pushers.begin(); i != m_pushers.end(); )
+    {
+        Pusher &pusher = *i;
+		if (pusher.getFirstObject() == a || pusher.getSecondObject() == a)
+			i = m_pushers.erase(i);
+		else
+			++i;
+	}
+}
+
+void PhysicsEngine :: _removeSpring( pusher_obj_t* a)
+{
+    for( SpringList::iterator i = m_springs.begin(); i != m_springs.end(); )
+    {
+        Spring &spring= *i;
+		if (spring.getFirstObject() == a || spring.getSecondObject() == a)
+			i = m_springs.erase(i);
+		else
+			++i;
+	}
+}
+
+
 
 template< typename T, typename ForcesAndMomentsFunction >
 void PhysicsEngine :: _integrateForcesAndMoments(T* t, ForcesAndMomentsFunction f, float dt)
@@ -350,6 +398,7 @@ void PhysicsEngine :: _checkPlayerEnemyCollisions()
 	{
 		Enemyship* enemy = *it;
 		if (enemy->isToBeDeleted()) continue;
+		if (m_playership != 0) return;
 		Point3 pos2 = enemy->getPosition();
 		pos2.setY(0.0f);
 		float r2 = enemy->getRadius();

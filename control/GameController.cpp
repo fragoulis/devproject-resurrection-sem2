@@ -56,15 +56,16 @@ void GameController :: update(float dt)
 	Vector3 direction;
 	direction.set(0.0f, 0.0f, 0.0f);
 	Input& input = Input::instance();
-	if (input.isKeyDown('W') || input.isKeyGoingDown('W'))
+	if (input.isKeyDownOrGoingDown('W') || input.isKeyDownOrGoingDown(KEY_UP))
 		direction += Vector3(0.0f, 0.0f, -1.0f);
-	if (input.isKeyDown('A') || input.isKeyGoingDown('A'))
+	if (input.isKeyDownOrGoingDown('A') || input.isKeyDownOrGoingDown(KEY_LEFT))
 		direction += Vector3(-1.0f, 0.0f, 0.0f);
-	if (input.isKeyDown('S') || input.isKeyGoingDown('S'))
+	if (input.isKeyDownOrGoingDown('S') || input.isKeyDownOrGoingDown(KEY_DOWN))
 		direction += Vector3(0.0f, 0.0f, 1.0f);
-	if (input.isKeyDown('D') || input.isKeyGoingDown('D'))
+	if (input.isKeyDownOrGoingDown('D') || input.isKeyDownOrGoingDown(KEY_RIGHT))
 		direction += Vector3(1.0f, 0.0f, 0.0f);
-	if (input.isKeyDown('N'))
+
+	if (input.isKeyDownOrGoingDown('N'))
 		RenderEngine::instance().toggleWireframe();
 
 	if (!Math::float_is_zero(direction.lengthSquared())) {

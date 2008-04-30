@@ -46,6 +46,7 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 	EventManager::instance().unRegisterEventListener<Enemy_Destroyed>(this);
 	EventManager::instance().unRegisterEventListener<Player_EnergyDrained>(this);
 	EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
+	EventManager::instance().unRegisterEventListener<Player_Respawned>(this);
 	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
 	EventManager::instance().unRegisterEventListener<Ebomb_Despawned>(this);
 	EventManager::instance().unRegisterEventListener<Life_Restored>(this);

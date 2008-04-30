@@ -90,18 +90,17 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 		player->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterDirection(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterPower(0.0f);
-		m_timerManager.schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 1.0f);
+		m_timerManager.schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 2.0f);
 	}
 }
 
 void GameLogic :: _playerDestroyed1_DespawnEnemies()
 {
 	//cout << "Despawning enemies" << endl;
-	int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
 	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
 		Enemyship* es = *it;
-		if (es->getType() != carrierType) es->setToBeDeleted();
+		if (!EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier")) es->setToBeDeleted();
 	}
 	m_timerManager.schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
 }
@@ -427,20 +426,20 @@ void GameLogic :: update(float dt)
 	// Send update to objects that need it
 	m_playership->update(dt);
 
-	int width = int(m_terrain->getTerrainWidth());
-	int height = int(m_terrain->getTerrainHeight());
+	float width = m_terrain->getTerrainWidth();
+	float height = m_terrain->getTerrainHeight();
 
-	Point2 minpoint(-width * 13.5f, -height * 12.0f);
-	Point2 maxpoint(width * 13.5f, height * 15.0f);
+	Point2 minpoint(-width * 0.43f, -height * 0.37f);
+	Point2 maxpoint(width * 0.42f, height * 0.48f);
 	m_playership->confine(minpoint, maxpoint);
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());
 	}
-	for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
-	{
-		(*it)->update(dt);
-	}
+	//for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
+	//{
+	//	(*it)->update(dt);
+	//}
 	for (EnemyshipList::iterator i = m_enemyships.begin(); i != m_enemyships.end(); ++i)
 	{
 		(*i)->update(dt);
@@ -645,6 +644,7 @@ void GameLogic :: loadLevel(const std::string& levelName)
 
 void GameLogic :: unloadLevel()
 {
+	m_timerManager.removeAll();
 	EventManager::instance().fireEvent(Level_Unload());
 	_deleteLevelData();
 }

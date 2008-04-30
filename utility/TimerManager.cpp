@@ -27,6 +27,12 @@ void TimerManager :: remove(int id)
 	TimerListIt it = find(m_timers.begin(), m_timers.end(), id);
 	if (it != m_timers.end()) m_timers.erase(it);
 }
+
+void TimerManager :: removeAll()
+{
+	m_timers.clear();
+}
+
 void TimerManager :: setTime(int id, float time)
 {
 	TimerListIt it = find(m_timers.begin(), m_timers.end(), id);

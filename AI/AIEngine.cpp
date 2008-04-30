@@ -7,6 +7,7 @@
 #include "Behaviours/States/AIIdle.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../GameLogic/Enemies/Enemyship.h"
+#include "../GameLogic/Enemies/EnemyFactory.h"
 #include "../GameLogic/EnergyTypes.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/ConfParser/ConfParser.h"
@@ -25,6 +26,9 @@ m_playership(0)
 	EventManager::instance().registerEventListener< Level_Load >(this);
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
+	EventManager::instance().registerEventListener< Player_Despawned >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
+	EventManager::instance().registerEventListener< Player_Respawned >(this);
 	EventManager::instance().registerEventListener< Enemy_Spawned >(this);
     EventManager::instance().registerEventListener< Enemy_Despawned >(this);
     EventManager::instance().registerEventListener< Interceptor_Clamped >(this);
@@ -105,16 +109,27 @@ void AIEngine::onEvent(Level_Unload&)
 }
 
 // ----------------------------------------------------------------------------
-void AIEngine::onEvent( Player_Spawned& es )
+void AIEngine::onEvent( Player_Spawned& evt )
 {
-	m_playership = es.getValue();
+	m_playership = evt.getValue();
 }
 
 // ----------------------------------------------------------------------------
-void AIEngine::onEvent( Player_Destroyed& pd )
+void AIEngine::onEvent( Player_Despawned& evt )
 {
-	Playership* ps = pd.getValue1();
-	EnergyType type = pd.getValue2();
+	m_playership = 0;
+}
+
+// ----------------------------------------------------------------------------
+void AIEngine::onEvent( Player_Destroyed& evt )
+{
+	m_playership = 0;
+}
+
+// ----------------------------------------------------------------------------
+void AIEngine::onEvent( Player_Respawned& evt )
+{
+	m_playership = evt.getValue();
 }
 
 // ----------------------------------------------------------------------------
@@ -122,10 +137,9 @@ void AIEngine::onEvent(Enemy_Spawned& es)
 {
 	Enemyship* enemyship = es.getValue();
     const int type = enemyship->getType();
-    const int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
     
     // Dont give any ai to carriers
-    if( type == carrierType ) return;
+	if (EnemyFactory::instance().isEnemyClass(type, "Carrier")) return;
     
     // Give initial thruster power
     float power = RandomGenerator::GET_RANDOM_FLOAT( m_minThrusterPower, m_maxThrusterPower );
@@ -176,6 +190,8 @@ void AIEngine::onEvent(Interceptor_Clamped& evt)
 // ----------------------------------------------------------------------------
 void AIEngine::update(float dt)
 {
+	if (m_playership == 0) return;
+
     EnemyListIt i = m_enemyList.begin();
     for(; i != m_enemyList.end(); ++i ) 
     {
