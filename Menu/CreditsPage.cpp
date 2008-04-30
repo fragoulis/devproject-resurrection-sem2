@@ -7,7 +7,3 @@ void CreditsPage::init(int screenWidth, int screenHeight) {
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 }
-
-void CreditsPage::update(float dt) {
-
-}

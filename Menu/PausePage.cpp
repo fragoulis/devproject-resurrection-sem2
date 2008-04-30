@@ -24,7 +24,3 @@ void PausePage::init(int screenWidth, int screenHeight)
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 }
-
-void PausePage::update(float dt) {
-
-}

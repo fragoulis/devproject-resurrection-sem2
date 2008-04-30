@@ -21,7 +21,7 @@ public:
 	virtual ~MenuPage(); 
 
 	virtual void init(int screenWidth, int screenHeigth)=0;
-	virtual void update(float dt)=0;
+	virtual void update(float dt);
 	virtual void render(Graphics &g) const;
 
 	virtual void setItemsNumber(int itemsNumber) {};

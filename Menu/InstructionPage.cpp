@@ -7,7 +7,3 @@ void InstructionPage::init(int screenWidth, int screenHeight) {
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 }
-
-void InstructionPage::update(float dt) {
-
-}

@@ -17,7 +17,6 @@ private:
 
 public:
 	void init(int screenWidth, int screenHeight);
-	void update(float dt);
 
 	//creates the planet buttons
 	void setItemsNumber(int itemsNumber);

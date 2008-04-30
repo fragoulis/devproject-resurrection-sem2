@@ -74,9 +74,6 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 	setSelectedItem(4);
 }
 
-void PlanetPage::update(float dt) {
-
-}
 
 void PlanetPage::setDifficultyToShow(int difficulty) {
 	switch (difficulty) {

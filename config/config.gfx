@@ -19,7 +19,7 @@ DefaultDir = "./resources/textures/"
 [Texture : MemDistribution]
 Texture1D = 10
 Texture2D = 100
-Texture3D = 2
+Texture3D = 10
 TextureCube = 3
 
 ########################### SHADERS + VERTEX ATTRIBUTES #######################################
@@ -30,7 +30,7 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
-				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">,
+				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">, <"disturbedShader.sh">,
 				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">
 
 [Shader : VertexAttribute : Vertex]

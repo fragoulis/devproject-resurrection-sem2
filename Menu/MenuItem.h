@@ -25,6 +25,8 @@ private:
 	bool m_selectable;
 	bool m_visible;
 
+	float m_currentTime;
+
 public:
 	~MenuItem(); 
 

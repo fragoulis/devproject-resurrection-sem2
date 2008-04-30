@@ -43,4 +43,6 @@ void PauseRenderer :: render(Graphics& g) const
 void PauseRenderer :: update(float dt)
 {
 	m_currentMenu = m_menuPool[(int) m_state];
+
+	m_currentMenu->update(dt);
 }
