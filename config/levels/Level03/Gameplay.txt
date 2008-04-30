@@ -4,7 +4,24 @@ GamePlaneHeight = 320
 
 
 [Craters : Crater0]
-
 Location = (331.353, 133.073 )
 CraterRadius = 61.8791
 AffectedAreaRadius = 702.628
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
+
+[Spawnpoints : p1]
+Location = (1000, 1000)
+EnemyType = EnemyInterceptor
+EnemyCount = 1
+EnergyType = red
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 1.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 2.0
+MinimumPlayerDistance = 320.0
+MaximumPlayerDistance = 10000.0
