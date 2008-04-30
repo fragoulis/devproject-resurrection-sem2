@@ -81,5 +81,6 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 
 	m_craterArrowTexture = parsec->getVal("CraterArrowTexture");
 	m_crosshairTexture = TextureIO::instance()->getTexture(parsec->getVal("CrosshairTexture"));
+	m_crosshairHelperTexture = TextureIO::instance()->getTexture(parsec->getVal("CrosshairHelperTexture"));
 	
 }

@@ -29,6 +29,7 @@ class ConstRenderSettings
 	float m_spawnpointSize;
 	Texture * m_spawnpointTexture;
 	Texture * m_crosshairTexture;
+	Texture * m_crosshairHelperTexture;
 	// other misc stuff
 	unsigned m_shadowTextureSize;
 	float m_tformTimePerUnit;
@@ -70,6 +71,7 @@ public :
 	const float getWaveRepeats(const float mapExtent) const {return m_waveRepeats*mapExtent / 2048.0f;}
 	const float getReflectionTextureScreenRatio() const {return m_reflectionTextureScreenRatio;}
 	const Texture * getCrosshair() const {return m_crosshairTexture;}
+	const Texture * getCrosshairHelper() const {return m_crosshairHelperTexture;}
 
 	void init(const ParserSection * parsec);
 

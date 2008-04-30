@@ -17,8 +17,8 @@ Terrain::~Terrain()
 float Terrain :: getHeight(float x, float z)
 {
 	assert(m_terrainHeights != 0);
-	const unsigned xgrid = min(m_terrainDim-1,unsigned((x + m_terrainXZScale*0.5f) / m_terrainXZScale));
-	const unsigned zgrid = min(m_terrainDim-1,unsigned((z - m_terrainXZScale*0.5f) / m_terrainXZScale));
+	const unsigned xgrid = min(m_terrainDim-1,unsigned(m_terrainDim*(x + m_terrainXZScale*0.5f) / m_terrainXZScale));
+	const unsigned zgrid = min(m_terrainDim-1,unsigned(m_terrainDim*(-z + m_terrainXZScale*0.5f) / m_terrainXZScale));
 	return m_terrainHeights[xgrid + m_terrainDim*zgrid];
 }
 
