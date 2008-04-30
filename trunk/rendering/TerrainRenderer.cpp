@@ -84,6 +84,8 @@ TerrainRenderer :: ~TerrainRenderer()
 	EventManager::instance().unRegisterEventListener< Crater_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Life_Restored >(this);
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+	EventManager::instance().unRegisterEventListener< Level_Complete >(this);
+
 
 	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 

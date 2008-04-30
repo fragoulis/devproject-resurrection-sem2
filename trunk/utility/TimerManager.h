@@ -23,6 +23,7 @@ public:
 	int schedule(Callback*, float time, float period = -1.0f);
 	void remove(int id);
 	void setTime(int id, float time);
+	void removeAll();
 
 	void update(float dt);
 

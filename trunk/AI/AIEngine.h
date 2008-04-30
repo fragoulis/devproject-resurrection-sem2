@@ -20,9 +20,11 @@ class AIEngine :
 	public EventListener< Level_Load >,
 	public EventListener< Level_Unload >,
 	public EventListener< Player_Spawned >,
+	public EventListener< Player_Despawned >,
+	public EventListener< Player_Destroyed >,
+	public EventListener< Player_Respawned >,
 	public EventListener< Enemy_Spawned >,
     public EventListener< Enemy_Despawned >,
-	public EventListener< Player_Destroyed >,
     public EventListener< Interceptor_Clamped >
 {
 private:
@@ -53,9 +55,11 @@ public:
 	void onEvent(Level_Load&);
 	void onEvent(Level_Unload&);
 	void onEvent(Player_Spawned&);
+	void onEvent(Player_Despawned&);
+	void onEvent(Player_Destroyed&);
+	void onEvent(Player_Respawned&);
 	void onEvent(Enemy_Spawned&);
     void onEvent(Enemy_Despawned&);
-	void onEvent(Player_Destroyed&);
     void onEvent(Interceptor_Clamped&);
 
 	void update(float dt);
