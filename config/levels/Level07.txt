@@ -1,0 +1,12 @@
+[Map]
+Dimensions = "(8192, 8192)"
+PlayerStart = "(0.0, 0.0)"
+
+[Gameplay]
+file = "Level07/Gameplay.txt"
+
+[Graphics]
+file = "Level07/Graphics.txt"
+
+[AI]
+file = "Level07/AI.txt"

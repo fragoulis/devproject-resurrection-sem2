@@ -1,0 +1,8 @@
+# Here we define the behaviours we are going to use at this level.
+# We dynamically create each behaviour by writing down which states 
+# it will be using, in which order and the conditions.
+
+[Behaviours]
+Names = <Chase>, <Flank>
+MinEnemyThrusterPower = 250000
+MaxEnemyThrusterPower = 350000
