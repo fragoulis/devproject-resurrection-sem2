@@ -35,7 +35,3 @@ void MainPage::init(int screenWidth, int screenHeight)
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 }
-
-void MainPage::update(float dt) {
-
-}

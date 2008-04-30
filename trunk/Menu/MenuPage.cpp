@@ -109,3 +109,9 @@ bool  MenuPage::selectPreviousItem() {
 
 	return true;
 }
+
+void MenuPage::update(float dt) {
+	for (int i = 0; i < (int) m_items.size(); i++) {
+		m_items[i]->update(dt);
+	}
+}
