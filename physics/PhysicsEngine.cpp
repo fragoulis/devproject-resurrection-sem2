@@ -91,7 +91,7 @@ void PhysicsEngine :: onEvent( Player_Despawned& evt )
 
 void PhysicsEngine :: onEvent( Player_Destroyed& evt )
 {
-	m_playership = 0;
+	//m_playership = 0;
 	m_spaceships.remove(evt.getValue1());
     m_springs.clear();
 }
@@ -382,7 +382,7 @@ void PhysicsEngine :: _getSpaceshipForcesAndMoments( Spaceship* s, Vector3& forc
 
 void PhysicsEngine :: _checkCollisions()
 {
-	_checkPlayerEnemyCollisions();
+	if (!m_playership->isDying()) _checkPlayerEnemyCollisions();
 	_checkEnemyLaserCollisions();
 	_checkEbombCraterCollisions();
 	_checkEbombTerrainCollisions();
@@ -398,7 +398,7 @@ void PhysicsEngine :: _checkPlayerEnemyCollisions()
 	{
 		Enemyship* enemy = *it;
 		if (enemy->isToBeDeleted()) continue;
-		if (m_playership != 0) return;
+		if (m_playership->isDying()) return;
 		Point3 pos2 = enemy->getPosition();
 		pos2.setY(0.0f);
 		float r2 = enemy->getRadius();

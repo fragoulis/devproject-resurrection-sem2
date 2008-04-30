@@ -19,6 +19,7 @@
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
 #include "../utility/RandomGenerator.h"
+#include "../rendering/RenderEngine.h"
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -100,7 +101,11 @@ void GameLogic :: _playerDestroyed1_DespawnEnemies()
 	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
 		Enemyship* es = *it;
-		if (!EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier")) es->setToBeDeleted();
+		if (!EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier"))
+		{
+			es->setToBeDeleted();
+			EventManager::instance().fireEvent(Enemy_Destroyed(es));
+		}
 	}
 	m_timerManager.schedule(this, &GameLogic::_playerDestroyed2_RespawnPlayer, 2.0f);
 }
@@ -429,9 +434,16 @@ void GameLogic :: update(float dt)
 	float width = m_terrain->getTerrainWidth();
 	float height = m_terrain->getTerrainHeight();
 
-	Point2 minpoint(-width * 0.43f, -height * 0.37f);
-	Point2 maxpoint(width * 0.42f, height * 0.48f);
-	m_playership->confine(minpoint, maxpoint);
+	//Point2 minpoint(-width * 0.43f, -height * 0.37f);
+	//Point2 maxpoint(width * 0.42f, height * 0.48f);
+	//m_playership->confine(minpoint, maxpoint);
+
+	// HAKC !boundPlayerPosition
+	Vector3 pos = m_playership->getPosition().getVector();
+	RenderEngine::instance().boundPlayerPosition(pos);
+	m_playership->setPosition(Point3(pos));
+
+
 	for (SpawnpointList::iterator i = m_spawnpoints.begin(); i != m_spawnpoints.end(); ++i)
 	{
 		(*i)->update(dt, m_playership->getPosition());
