@@ -10,3 +10,6 @@ file = "Level03/Graphics.txt"
 
 [AI]
 file = "Level03/AI.txt"
+
+[Sound]
+ambient = "resources/sounds/dot.wav"

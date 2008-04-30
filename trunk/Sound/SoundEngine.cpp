@@ -159,14 +159,27 @@ void SoundEngine :: onEvent(Life_Restored& ev)
 // load level's ambient background sound
 void SoundEngine :: onEvent(Level_Load& ev)
 {
+    //const std::string sAmbient = ev.getValue1()->getSection("Sound")->getVal("ambient");
+
+    //// create sound buffer
+    //if( m_bgBuffer ) delete m_bgBuffer;
+    //m_bgBuffer = new SoundBuffer;
+    //m_bgBuffer->load(sAmbient);
+
+    //// create sound player
+    //if( m_bgSound ) delete m_bgSound;
+    //m_bgSound = new Sound(m_bgBuffer);
+    //m_bgSound->setLoop(true);
+    //m_bgSound->play();
 }
 
 // ----------------------------------------------------------------------------
 // unload background music from memory
 void SoundEngine :: onEvent(Level_Unload& ev)
 {
-    delete m_bgBuffer; m_bgBuffer = 0;
-    delete m_bgSound; m_bgSound = 0;
+    //m_bgSound->stop();
+    //delete m_bgBuffer; m_bgBuffer = 0;
+    //delete m_bgSound; m_bgSound = 0;
 }
 
 // ----------------------------------------------------------------------------
@@ -180,6 +193,7 @@ void SoundEngine :: onEvent(Game_Over& ev)
 // play a nice victory sound
 void SoundEngine :: onEvent(Level_Complete& ev)
 {
+    play("Level_Complete");
 }
 
 // ----------------------------------------------------------------------------
