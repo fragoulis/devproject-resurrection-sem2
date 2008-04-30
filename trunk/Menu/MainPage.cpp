@@ -23,6 +23,11 @@ void MainPage::init(int screenWidth, int screenHeight)
 	exitButton->init(posX - 65, startPosY-3.0f*deltaY, width, height, "menuExit.dds", "menuExitSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(exitButton);
 
+	MenuItem *shipIcon = new MenuItem();
+	shipIcon->init(screenWidth-750, -100, 800, 600, "enforcer.dds", "enforcer.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	shipIcon->setSelectable(false);
+	m_items.push_back(shipIcon);
+
 
 	m_backgroundImage = TextureIO::instance()->getTexture("menuBg.dds");
 	m_hasBackground = true;
