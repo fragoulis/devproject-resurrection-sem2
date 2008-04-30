@@ -91,6 +91,7 @@ Stream = stderr
 [Sound]
 Dir     = "resources/sounds/"
 AllocationSize = 100
+MaxExplosions  = 2
 
 # Important: "_Destroyed" extension is hardcoded to the code so dont change it unless you change it 
 #            at the code as well. file: soundengine.cpp, line: 124

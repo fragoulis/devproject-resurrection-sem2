@@ -59,6 +59,10 @@ private:
     Sound *m_soundMemoryPool;
     SoundBuffer *m_bufferMemoryPool;
 
+    // maximum enemy explosions at any time
+    int m_maxExplosions;
+    int m_activeEplosions;
+
 public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
