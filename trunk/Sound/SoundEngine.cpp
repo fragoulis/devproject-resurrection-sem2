@@ -13,7 +13,9 @@
 SoundEngine :: SoundEngine():
 m_listener(0),
 m_bgBuffer(0),
-m_bgSound(0)
+m_bgSound(0),
+m_maxExplosions(0),
+m_activeEplosions(0)
 {
     EventManager::instance().registerEventListener< Player_Spawned >(this);
 	EventManager::instance().registerEventListener< Player_Respawned >(this);
@@ -39,7 +41,10 @@ SoundEngine :: ~SoundEngine()
 // Load most sounds, interface and game sounds, except the ambient background ones
 void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 {
-    const string& root = ps.getSection("Sound")->getVal("Dir");
+    const ParserSection *soundSection = ps.getSection("Sound");
+
+    m_maxExplosions = FromString<int>(soundSection->getVal("MaxExplosions"));
+    const string& root = soundSection->getVal("Dir");
 
     // Read the number of sounds
     const ParserSection *general = ps.getSection("Sound:Files");
@@ -72,7 +77,7 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     //assert(m_buffers.size());
     
     // allocate some sounds
-    const int sounds_count = FromString<int>(ps.getSection("Sound")->getVal("AllocationSize"));
+    const int sounds_count = FromString<int>(soundSection->getVal("AllocationSize"));
     m_sounds.resize(sounds_count);
     
     m_soundMemoryPool = new Sound[sounds_count];
@@ -109,7 +114,9 @@ void SoundEngine :: onEvent(Player_Respawned& pd)
 // play an explosion sound, depending on the enemy type, as loaded
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
-    //cerr << "Enemy destroyed!" << endl;
+    if( m_activeEplosions == m_maxExplosions ) return;
+    m_activeEplosions++;
+
     const Enemyship *enemy = pd.getValue();
     const int iType = enemy->getType();
     std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
@@ -206,6 +213,8 @@ void SoundEngine::update()
     Sounds::iterator i = m_sounds.begin();
     for(; i != m_sounds.end(); ++i )
         (*i)->update( m_listener->getPosition() );
+
+    m_activeEplosions = 0;
 }
 
 // ----------------------------------------------------------------------------
