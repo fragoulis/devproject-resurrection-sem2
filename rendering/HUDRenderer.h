@@ -14,10 +14,12 @@ using namespace std;
  * Renders the HUD, including the mouse cursor.
  *
  */
-class HUDRenderer : public IRenderer
+class HUDRenderer : public IRenderer, 
 					//public EventListener< Player_Spawned >,
 					//public EventListener< Player_Despawned >,
 					//public EventListener< Level_Unload >
+					public EventListener< Ebomb_Created >,
+					public EventListener< Ebomb_Uncreated >
 {
 private:
 	enum {
@@ -36,6 +38,8 @@ public:
 	//void onEvent(Player_Spawned&);
 	//void onEvent(Player_Despawned&);
 	//void onEvent(Level_Unload&);
+	void onEvent(Ebomb_Created&);
+	void onEvent(Ebomb_Uncreated&);
 
 private:
 	//const Playership* m_playership;
@@ -43,5 +47,11 @@ private:
 	//EbombType m_ebombType; 
 
 	vector<Texture *> m_textureList;
+
+	bool m_displayEbombMsg;
+	float m_startEbombMessageTime;
+	float m_messageDisplayTime;
+
+	float m_currentTime;
 
 };
