@@ -9,7 +9,7 @@ AffectedAreaRadius = 593.507
 EbombType = purple
 ProtectorRespawnDelay = 10.0
 ProtectorType = EnemyCarrier
-ProtectorEnergyType = blue
+ProtectorEnergyType = red
 ProtectorCarrierEnergyTypeSpawns = blue
 
 [Craters : Crater1]
