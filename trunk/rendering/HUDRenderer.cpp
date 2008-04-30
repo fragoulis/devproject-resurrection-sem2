@@ -30,10 +30,20 @@ HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(E
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("hudBomb.dds");
 	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("ebombCreated.dds");
+	m_textureList.push_back(tex);
 
 	//EventManager::instance().registerEventListener<Player_Spawned>(this);
 	//EventManager::instance().registerEventListener<Player_Despawned>(this);
 	//EventManager::instance().registerEventListener<Level_Unload>(this);
+	EventManager::instance().registerEventListener<Ebomb_Created>(this);
+	EventManager::instance().registerEventListener<Ebomb_Uncreated>(this);
+
+	m_displayEbombMsg = false;
+	m_startEbombMessageTime = 0.0f;
+	m_messageDisplayTime = 1.0f;
+
+	m_currentTime = 0.0f;
 }
 
 HUDRenderer::~HUDRenderer()
@@ -162,8 +172,15 @@ void HUDRenderer :: render(Graphics& g) const
 					break;
 			}
 
+			//DRAW EBOMB CREATION MESSAGE IF NEEDED
+			if (m_displayEbombMsg) {
+				m_textureList[8]->bind(0);
+				RenderEngine::drawTexturedQuad(Vector3(screenWidth/2-128.0f, screenHeight/2-32, 0), Vector3(256.0f, 0, 0), Vector3(0, 64.0f, 0), Vector2(0,0), Vector2(1,1));
+			}
 
 			//DRAW ENERGY BARS
+			ShaderManager::instance()->setUniform4fv("constantColor", white);
+			CHECK_GL_ERROR();
 			//RED BAR
 			m_textureList[3]->bind(0);
 			for (int i = 0; i < redEnergyAmount; i++) {
@@ -206,6 +223,13 @@ void HUDRenderer :: update(float dt)
 	//m_playership = GameLogic::instance().getPlayership();
 	//m_currentLives = GameLogic::instance().getCurrentLives();
 	//m_ebombType = GameLogic::instance().getCurrentEbombType();
+
+	m_currentTime += dt;
+
+	if ((m_currentTime - m_startEbombMessageTime < m_messageDisplayTime) && m_currentTime > 1.0f)
+		m_displayEbombMsg = true;
+	else
+		m_displayEbombMsg = false;
 }
 
 
@@ -223,3 +247,14 @@ void HUDRenderer :: update(float dt)
 //{
 //	m_playership = 0;
 //}
+
+void HUDRenderer :: onEvent(Ebomb_Created &ebomb)
+{
+	m_startEbombMessageTime = m_currentTime;
+}
+
+void HUDRenderer :: onEvent(Ebomb_Uncreated &ebomb)
+{
+	//if the ebomb is uncreated while the creation message is displayed do this hack to not display the message anymore
+	m_startEbombMessageTime = m_startEbombMessageTime+m_messageDisplayTime;
+}
