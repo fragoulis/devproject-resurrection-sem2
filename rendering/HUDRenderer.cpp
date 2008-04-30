@@ -51,6 +51,9 @@ HUDRenderer::~HUDRenderer()
 	//EventManager::instance().unRegisterEventListener<Player_Spawned>(this);
 	//EventManager::instance().unRegisterEventListener<Player_Despawned>(this);
 	//EventManager::instance().unRegisterEventListener<Level_Unload>(this);
+
+    EventManager::instance().unRegisterEventListener<Ebomb_Created>(this);
+	EventManager::instance().unRegisterEventListener<Ebomb_Uncreated>(this);
 }
 
 
@@ -173,10 +176,25 @@ void HUDRenderer :: render(Graphics& g) const
 			}
 
 			//DRAW EBOMB CREATION MESSAGE IF NEEDED
-			if (m_displayEbombMsg) {
+			if (m_displayEbombMsg) 
+            {
+                const float time_ratio = m_ebombMgsTimer / m_messageDisplayTime;
+                const float time_ratio2 = time_ratio * time_ratio;
+                const float time_ratio3 = time_ratio2 * time_ratio;
+
 				m_textureList[8]->bind(0);
-				RenderEngine::drawTexturedQuad(Vector3(screenWidth/2-128.0f, screenHeight/2-32, 0), Vector3(256.0f, 0, 0), Vector3(0, 64.0f, 0), Vector2(0,0), Vector2(1,1));
+
+                ShaderManager::instance()->setUniform1f("transparency", 0.25f*(1.0f - time_ratio));
+                displayEbombMessage( screenWidth, screenHeight, 2.5f, time_ratio);
+
+                ShaderManager::instance()->setUniform1f("transparency", 0.5f*(1.0f - time_ratio2));
+                displayEbombMessage( screenWidth, screenHeight, 2.5f, time_ratio2 );
+
+                ShaderManager::instance()->setUniform1f("transparency", 1.0f - time_ratio3);
+                displayEbombMessage( screenWidth, screenHeight, 1.5f, time_ratio3 );
 			}
+            // reset transparency
+            ShaderManager::instance()->setUniform1f("transparency", transparency2);
 
 			//DRAW ENERGY BARS
 			ShaderManager::instance()->setUniform4fv("constantColor", white);
@@ -254,6 +272,26 @@ void HUDRenderer :: render(Graphics& g) const
 	//glEnable(GL_LIGHTING);
 }
 
+void HUDRenderer :: displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const
+{
+    const float real_width = 256.0f * in_factor;
+    const float real_height = 64.0f * in_factor;
+
+    const float width = 0.2f * real_width + 0.8f * real_width * in_time;
+    const float height = 0.2f * real_height + 0.8f * real_height * in_time;
+
+    const float xpos = 0.5f * ( screenWidth - width );
+    const float ypos = 0.5f * ( screenHeight - height );
+
+	RenderEngine::drawTexturedQuad(
+        Vector3(xpos, ypos, 0), 
+        Vector3(width, 0, 0), 
+        Vector3(0, height, 0), 
+        Vector2(0,0), 
+        Vector2(1,1)
+        );
+}
+
 void HUDRenderer :: update(float dt)
 {
 	//m_playership = GameLogic::instance().getPlayership();
@@ -262,10 +300,14 @@ void HUDRenderer :: update(float dt)
 
 	m_currentTime += dt;
 
-	if ((m_currentTime - m_startEbombMessageTime < m_messageDisplayTime) && m_currentTime > 1.0f)
+    if ((m_currentTime - m_startEbombMessageTime < m_messageDisplayTime) && m_currentTime > 1.0f) {
 		m_displayEbombMsg = true;
-	else
+        m_ebombMgsTimer += dt;
+    }
+    else {
 		m_displayEbombMsg = false;
+        m_ebombMgsTimer = 0.0f;
+    }
 }
 
 

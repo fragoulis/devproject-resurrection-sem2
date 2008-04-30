@@ -33,7 +33,6 @@ public:
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
 
-
 	// Events
 	//void onEvent(Player_Spawned&);
 	//void onEvent(Player_Despawned&);
@@ -51,7 +50,10 @@ private:
 	bool m_displayEbombMsg;
 	float m_startEbombMessageTime;
 	float m_messageDisplayTime;
+    float m_ebombMgsTimer;
 
 	float m_currentTime;
+
+    void displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const;
 
 };
