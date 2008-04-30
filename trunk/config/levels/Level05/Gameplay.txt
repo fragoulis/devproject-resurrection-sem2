@@ -3,35 +3,54 @@ Lives = 3
 GamePlaneHeight = 600
 
 [Craters : Crater0]
-
 Location = (-1420.59, -1539.82 )
 CraterRadius = 117.53
 AffectedAreaRadius = 565.509
-
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [Craters : Crater1]
-
 Location = (-1328.6, 88.5737 )
 CraterRadius = 102.2
 AffectedAreaRadius = 708.589
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [Craters : Crater2]
-
 Location = (-485.452, 831.23 )
 CraterRadius = 168.631
 AffectedAreaRadius = 844.857
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [Craters : Crater3]
-
 Location = (884.033, 749.47 )
 CraterRadius = 178.851
 AffectedAreaRadius = 844.857
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [Craters : Crater4]
-
 Location = (679.633, -1253.66 )
 CraterRadius = 189.071
 AffectedAreaRadius = 1199.15
+EbombType = purple
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = blue
 
 [Spawnpoints : p1]
 Location = (1000, 1000)
