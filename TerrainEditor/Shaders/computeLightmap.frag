@@ -15,9 +15,10 @@ void main()
 	float shadow_contrib = 0.0;
 	do
 	{
-		float terr_height = xyzscale.y*textureRect(heightmap,coords).r;
+		float final_terrain_height = xyzscale.y*textureRect(heightmap,coords).r;				
+		
 		height += y_increment;
-		if(terr_height > height)
+		if(final_terrain_height > height)
 		{
 			shadow_contrib = shadoweffect;
 			break;

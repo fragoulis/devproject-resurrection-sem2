@@ -97,7 +97,7 @@ MaxExplosions  = 2
 #            at the code as well. file: soundengine.cpp, line: 124
 
 [Sound : Files]
-Laser_Fired                     = "laser02.wav"
+Laser_Fired                     = "laser01.wav"
 EnemyFighter_Destroyed          = "exp01.wav"
 EnemyInterceptor_Destroyed      = "exp02.wav"
 EnemyDisrupter_Destroyed        = "exp03.wav"

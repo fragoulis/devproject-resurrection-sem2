@@ -1,0 +1,106 @@
+[Main]
+Lives = 3
+GamePlaneHeight = 530
+
+[Craters : Crater0]
+
+Location = (-3106.89, -2398.3 )
+CraterRadius = 163.521
+AffectedAreaRadius = 1716.97
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater1]
+
+Location = (-2790.07, -272.535 )
+CraterRadius = 286.161
+AffectedAreaRadius = 1730.59
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater2]
+
+Location = (-2575.45, 2766.22 )
+CraterRadius = 408.802
+AffectedAreaRadius = 1839.61
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater3]
+
+Location = (-684.743, 2193.9 )
+CraterRadius = 286.161
+AffectedAreaRadius = 1240.03
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater4]
+
+Location = (-367.921, -381.548 )
+CraterRadius = 153.3
+AffectedAreaRadius = 1103.76
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater5]
+
+Location = (-275.941, -2916.12 )
+CraterRadius = 255.501
+AffectedAreaRadius = 1280.91
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater6]
+
+Location = (2084.89, -2643.58 )
+CraterRadius = 235.061
+AffectedAreaRadius = 1280.91
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater7]
+
+Location = (1696.53, -136.267 )
+CraterRadius = 255.501
+AffectedAreaRadius = 1594.33
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Craters : Crater8]
+
+Location = (2585.67, 1825.98 )
+CraterRadius = 214.62
+AffectedAreaRadius = 1267.28
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
+[Spawnpoints : p2]
+Location = (-1000, -1000)
+EnemyType = EnemyFighter
+EnemyCount = 10
+EnergyType = yellow
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 0.1
+TimeBetweenSpawns = 0.3
+TimeBetweenLastSpawnAndSessionEnd = 0.1
+TimeBetweenSessionEndAndSessionStart = 2.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0

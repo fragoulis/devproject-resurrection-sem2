@@ -1,0 +1,15 @@
+[Map]
+Dimensions = "(8192, 8192)"
+PlayerStart = "(0.0, 0.0)"
+
+[Gameplay]
+file = "Level08/Gameplay.txt"
+
+[Graphics]
+file = "Level08/Graphics.txt"
+
+[AI]
+file = "Level08/AI.txt"
+
+[Sound]
+ambient = "resources/sounds/dot.wav"
