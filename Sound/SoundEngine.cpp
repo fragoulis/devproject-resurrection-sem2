@@ -258,6 +258,8 @@ void SoundEngine::clearSoundPositions()
     Sounds::iterator i = m_sounds.begin();
     for(; i != m_sounds.end(); ++i )
         (*i)->update( position );
+
+    m_bgSound->update(position);
 }
 
 // ----------------------------------------------------------------------------
