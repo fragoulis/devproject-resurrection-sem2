@@ -1,6 +1,8 @@
 #pragma once
 #include "../WorldObject.h"
 #include "../EnergyTypes.h"
+#include "../../utility/EventManager.h"
+#include "../GameEvents.h"
 class ParserSection;
 class Point3;
 
@@ -12,15 +14,22 @@ class Point3;
  * When the session ends, the portal closes.
  * A minimum and maximum distance to the player can be used to tweak gameplay
  */
-class Spawnpoint : public WorldObject
+class Spawnpoint :
+	public WorldObject,
+	public EventListener<Player_Destroyed>,
+	public EventListener<Player_Respawned>
 {
 public:
 	Spawnpoint();
 	virtual ~Spawnpoint();
 
+	void restart();
 	void update(float dt, const Point3& playerPosition);
 
 	void loadSettings(const ParserSection&);
+
+	virtual void onEvent(Player_Destroyed&);
+	virtual void onEvent(Player_Respawned&);
 
 private:
 	int m_spawnType;
@@ -33,6 +42,7 @@ private:
 	float m_timeBetweenSessionEndAndSessionStart;
 	float m_minimumPlayerDistance;
 	float m_maximumPlayerDistance;
+	bool m_paused;
 
 	// in case we're spawning a carrier, nice hack!
 	EnergyType m_carrierEnergyTypeSpawns;

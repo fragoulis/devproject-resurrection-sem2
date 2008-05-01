@@ -24,15 +24,25 @@ EnemyCarrier :: EnemyCarrier(int type) :
 	m_enemiesLeftToSpawnThisSession(0),
 	m_spawnState(WAITING_FOR_PLAYER)
 {
+	EventManager::instance().registerEventListener<Player_Destroyed>(this);
+	EventManager::instance().registerEventListener<Player_Respawned>(this);
 }
 
 EnemyCarrier :: ~EnemyCarrier()
 {
+	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
+	EventManager::instance().unRegisterEventListener<Player_Respawned>(this);
 }
 
 Enemyship* EnemyCarrier :: clone()
 {
 	return new EnemyCarrier(*this);
+}
+
+void EnemyCarrier :: restart( )
+{
+	m_spawnState = WAITING_FOR_PLAYER;
+	m_paused = false;
 }
 
 
@@ -112,6 +122,16 @@ void EnemyCarrier :: _spawnEnemy()
 	}
 }
 
+
+void EnemyCarrier :: onEvent(Player_Destroyed& evt)
+{
+	m_paused = true;
+}
+
+void EnemyCarrier :: onEvent(Player_Respawned& evt)
+{
+	restart();
+}
 
 
 void EnemyCarrier :: loadSettings( const ParserSection& ps )

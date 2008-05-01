@@ -16,7 +16,13 @@ void InterceptorBuffCouple::onCreate()
 void InterceptorBuffCouple::onDestroy()
 {
     assert(m_enemyship);
-    // Fire destroyed event
-    m_enemyship->setToBeDeleted();
-	EventManager::instance().fireEvent(Enemy_Destroyed(m_enemyship));
+
+	// enemy ship might be invalid already
+	// this is one way to fix this bug. Other fix is int coupleman
+    if (!m_enemyship->isToBeDeleted())
+	{
+		// Fire destroyed event
+		m_enemyship->setToBeDeleted();
+		EventManager::instance().fireEvent(Enemy_Destroyed(m_enemyship));
+	}
 }

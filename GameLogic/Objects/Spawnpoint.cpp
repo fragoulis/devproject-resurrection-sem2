@@ -21,17 +21,30 @@ Spawnpoint :: Spawnpoint() :
 	m_maximumPlayerDistance(0.0f),
 	m_timeTillNextEvent(0.0f),
 	m_enemiesLeftToSpawnThisSession(0),
-	m_state(WAITING_FOR_PLAYER)
+	m_state(WAITING_FOR_PLAYER),
+	m_paused(false)
 {
+	EventManager::instance().registerEventListener<Player_Destroyed>(this);
+	EventManager::instance().registerEventListener<Player_Respawned>(this);
 }
 
 Spawnpoint :: ~Spawnpoint()
 {
+	EventManager::instance().unRegisterEventListener<Player_Destroyed>(this);
+	EventManager::instance().unRegisterEventListener<Player_Respawned>(this);
 }
 
 
+void Spawnpoint :: restart()
+{
+	m_paused = false;
+	m_state = WAITING_FOR_PLAYER;
+}
+
 void Spawnpoint :: update(float dt, const Point3& playerPosition)
 {
+	if (m_paused) return;
+
 	m_timeTillNextEvent -= dt;
 
 	float distance = playerPosition.distance(getPosition());
@@ -106,6 +119,16 @@ void Spawnpoint :: _spawnEnemy()
 		m_state = SESSION_ENDING;
 		m_timeTillNextEvent = m_timeBetweenLastSpawnAndSessionEnd;
 	}
+}
+
+void Spawnpoint :: onEvent(Player_Destroyed& evt)
+{
+	m_paused = true;
+}
+
+void Spawnpoint :: onEvent(Player_Respawned& evt)
+{
+	restart();
 }
 
 
