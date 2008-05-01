@@ -274,8 +274,8 @@ void HUDRenderer :: render(Graphics& g) const
 
 void HUDRenderer :: displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const
 {
-    const float width = 256.0f + 256.0f * (in_factor * in_time);
-    const float height = 64.0f + 64.0f * (in_factor * in_time);
+    const float width = 256.0f + 192.0f * (in_factor * in_time);
+    const float height = 64.0f + 48.0f * (in_factor * in_time);
 
     const float xpos = 0.5f * ( screenWidth - width );
     const float ypos = 0.5f * ( screenHeight - height );
