@@ -178,13 +178,14 @@ void SoundEngine :: onEvent(Level_Load& ev)
     m_bgSound = new Sound(m_bgBuffer);
     m_bgSound->setLoop(true);
     m_bgSound->play();
+
+    play("Welcome");
 }
 
 // ----------------------------------------------------------------------------
 // unload background music from memory
 void SoundEngine :: onEvent(Level_Unload& ev)
 {
-    m_bgSound->stop();
     delete m_bgBuffer; m_bgBuffer = 0;
     delete m_bgSound; m_bgSound = 0;
 }
@@ -193,6 +194,7 @@ void SoundEngine :: onEvent(Level_Unload& ev)
 // play sad sound for when we lose
 void SoundEngine :: onEvent(Game_Over& ev)
 {
+    m_bgSound->stop();
     play("Player_Lost");
 }
 

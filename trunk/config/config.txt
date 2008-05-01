@@ -113,6 +113,7 @@ Ebomb_Exp03                     = "fireball.wav"
 
 Player_Lost                     = "player_lost.wav"
 Level_Complete                  = "level_complete.wav"
+Welcome                         = "welcome.wav"
 
 InterfaceAmbient                = "ambient01.wav"
 MenuClick                       = "click01.wav"
