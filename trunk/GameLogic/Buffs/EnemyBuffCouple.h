@@ -20,6 +20,8 @@ public:
 
     bool isBuffActive() const { return m_buff->isActive(); }
 
+	const Enemyship* getEnemyship() const { return m_enemyship; }
+
     // Override these
     virtual void onCreate() = 0;
     virtual void onDestroy() = 0;

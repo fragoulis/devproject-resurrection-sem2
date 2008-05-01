@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemyship.h"
 #include "../EnergyTypes.h"
+#include "../../utility/EventManager.h"
+#include "../GameEvents.h"
 
 
 
@@ -9,11 +11,16 @@
  * Configuration is very similar to spawn points.
  *
  */
-class EnemyCarrier : public Enemyship
+class EnemyCarrier :
+	public Enemyship,
+	public EventListener<Player_Destroyed>,
+	public EventListener<Player_Respawned>
 {
 public:
 	EnemyCarrier(int type);
 	virtual ~EnemyCarrier();
+
+	void restart();
 
 	virtual void update(float dt);
 	virtual Enemyship* clone();
@@ -22,6 +29,9 @@ public:
 	void setEneryTypeSpawns(EnergyType et) { m_spawnEnergyType = et; }
 
 	virtual void loadSettings(const ParserSection&);
+
+	virtual void onEvent(Player_Destroyed&);
+	virtual void onEvent(Player_Respawned&);
 
 private:
 	int m_spawnType;
@@ -34,6 +44,7 @@ private:
 	float m_timeBetweenSessionEndAndSessionStart;
 	float m_minimumPlayerDistance;
 	float m_maximumPlayerDistance;
+	bool m_paused;
 
 
 	enum SpawnState

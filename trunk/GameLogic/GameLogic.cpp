@@ -549,8 +549,8 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		startingPosition.setY(m_gamePlaneHeight);
 
 		// same thing :-/
-		if (m_lasersSwapped) {
-		//if (m_playership->hasBuff(m_laserSwapDebuffType)) {
+		//if (m_lasersSwapped) {
+		if (m_playership->hasBuff(m_laserSwapDebuffType)) {
 			if (type == m_laserTypePositive) type = m_laserTypeNegative;
 			else type = m_laserTypePositive;
 		}
