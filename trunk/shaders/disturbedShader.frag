@@ -29,15 +29,15 @@ void main(void)
    
    // ... and finally distort
    vec2 texCoord = gl_TexCoord[0].xy;
-   //texCoord.x +=  /*distortionScale */ noisy * dst;
+   texCoord.x +=  /*distortionScale */ noisy * dst;
    vec4 image = texture2D(Image, texCoord.xy);
    
    //if (image.r <= 0.1 && image.g <= 0.1 && image.b <= 0.1)
      // discard;
      
    float discardthis = step(image.r,0.1)*step(image.b,0.1)*step(image.g,0.1);
-   //if (discardthis > 0.5)
-      //discard;
+   if (discardthis > 0.5)
+      discard;
    
    
    // Combine frame, distorted image and interference
