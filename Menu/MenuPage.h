@@ -17,7 +17,12 @@ protected:
 	int m_screenWidth, m_screenHeight;
 	bool m_hasBackground; //flag to check if the menu page has a background to render
 
+	float m_currentTime;
+
+	vector<Texture*> m_textureList;
+
 public:
+	MenuPage();
 	virtual ~MenuPage(); 
 
 	virtual void init(int screenWidth, int screenHeigth)=0;
