@@ -3,7 +3,7 @@
 void PlanetPage::init(int screenWidth, int screenHeight) {
 
 	MenuItem *backButton = new MenuItem();
-	backButton->init(10, 0, 256, 100, "menuExitPause.dds", "menuExitPauseSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	backButton->init(10, 20, 256, 100, "menuExitPause.dds", "menuExitPauseSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(backButton);
 
 	MenuItem *difficultyLabelEasy = new MenuItem();

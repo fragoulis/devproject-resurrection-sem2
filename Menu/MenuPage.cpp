@@ -6,10 +6,10 @@
 #include <gl/glee.h>
 
 MenuPage::MenuPage() {
-	/*Texture *tex = TextureIO::instance()->getTexture("NoiseVolume.dds");
+	Texture *tex = TextureIO::instance()->getTexture("NoiseVolume.dds");
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("Random3D.dds");
-	m_textureList.push_back(tex);*/
+	m_textureList.push_back(tex);
 
 	m_currentTime = 0.0f;
 }
@@ -39,13 +39,13 @@ void MenuPage::render(Graphics &g) const {
 		glLoadIdentity();
 
 	//draw background
-	if (m_hasBackground) {
+	/*if (m_hasBackground) {
 		ShaderManager::instance()->begin("blitShader");
 		m_backgroundImage->bind(0);
 		RenderEngine::drawTexturedQuad(Vector3(0.0f, 0.0f, 0.0f), Vector3((float) m_screenWidth, 0.0f, 0.0f), Vector3(0.0f, (float) m_screenHeight, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
 		ShaderManager::instance()->end();
-	}
-	/*if (m_hasBackground) {
+	}*/
+	if (m_hasBackground) {
 		ShaderManager::instance()->begin("disturbedShader");
 		m_backgroundImage->bind(0);
 		CHECK_GL_ERROR();
@@ -71,11 +71,17 @@ void MenuPage::render(Graphics &g) const {
 		const GLfloat interference = 0.49f;
 		ShaderManager::instance()->setUniform1fv("interference", &interference);
 		CHECK_GL_ERROR();
+		const GLfloat granularity = 8.5f;
+		ShaderManager::instance()->setUniform1fv("granularity", &granularity);
+		CHECK_GL_ERROR();
+		const GLfloat distorsion = 0.0f;
+		ShaderManager::instance()->setUniform1fv("distorsion", &distorsion);
+		CHECK_GL_ERROR();
 		ShaderManager::instance()->setUniform1fv("time_0_X", &m_currentTime);
 		CHECK_GL_ERROR();
 		RenderEngine::drawTexturedQuad(Vector3(0.0f, 0.0f, 0.0f), Vector3((float) m_screenWidth, 0.0f, 0.0f), Vector3(0.0f, (float) m_screenHeight, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
 		ShaderManager::instance()->end();
-	}*/
+	}
 
 	//draw items
 	for (int i = 0; i < (int) m_items.size(); i++) 

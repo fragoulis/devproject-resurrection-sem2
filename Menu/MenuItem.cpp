@@ -83,6 +83,12 @@ void MenuItem::render(Graphics &g) const {
 			const GLfloat interference = 0.49f;
 			ShaderManager::instance()->setUniform1fv("interference", &interference);
 			CHECK_GL_ERROR();
+			const GLfloat granularity = 1.5f;
+			ShaderManager::instance()->setUniform1fv("granularity", &granularity);
+			CHECK_GL_ERROR();
+			const GLfloat distorsion = 1.0f;
+			ShaderManager::instance()->setUniform1fv("distorsion", &distorsion);
+			CHECK_GL_ERROR();
 			ShaderManager::instance()->setUniform1fv("time_0_X", &m_currentTime);
 			CHECK_GL_ERROR();
 			//draw the scaled button

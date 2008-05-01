@@ -19,7 +19,7 @@ protected:
 
 	float m_currentTime;
 
-	//vector<Texture*> m_textureList;
+	vector<Texture*> m_textureList;
 
 public:
 	MenuPage();
