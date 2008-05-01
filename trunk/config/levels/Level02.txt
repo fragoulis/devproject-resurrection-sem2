@@ -12,4 +12,4 @@ file = "Level02/Graphics.txt"
 file = "Level02/AI.txt"
 
 [Sound]
-ambient = "resources/sounds/dot.wav"
+ambient = "resources/sounds/strack2.wav"
