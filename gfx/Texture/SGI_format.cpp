@@ -162,5 +162,60 @@ bool TextureIO ::_saveSGI(const Texture * tex,
 						  const std::string& fname)
 {
 	// Log event : Not Implemented Yet!
-	return false;
+	TEX_header header = tex->getTEXheader();
+	
+	FILE * fp = fopen(fname.c_str(),"wb");
+	if( fp == NULL )
+	{
+       return 0;
+	}
+
+	sgi_format_header outheader;
+	
+	// ASSUME format is ok.
+
+	const unsigned img_size = tex->dataSize();
+	const unsigned bpp = img_size / (header.width * header.height);
+
+	outheader.MAGIC = short(0xda01);
+	outheader.XSIZE = header.width;
+	outheader.YSIZE = header.height;
+	outheader.ZSIZE = bpp;
+	outheader.STORAGE = 0;
+	outheader.BPC = 1;
+	outheader.DIMENSION = 3;
+	outheader.PIXMIN = 0;
+	outheader.PIXMAX = 255;
+	outheader.COLORMAP = 0;
+	outheader.checkswap();
+
+	fwrite(&outheader,sizeof(outheader),1,fp);
+
+	unsigned char * data, * _raw;
+	data = MemMgrRaw::instance()->allocate<unsigned char>(img_size);
+	_raw = MemMgrRaw::instance()->allocate<unsigned char>(img_size);
+
+	tex->dlData(data);
+
+	for(unsigned i=0;i<header.height;++i)
+	{
+		for(unsigned j=0;j< header.width;++j)
+		{
+			// Copy the four elements
+			const unsigned di = (i*header.width + j)*bpp;
+			for(unsigned k=0;k<bpp;++k)
+			{
+				const unsigned offset = header.width*header.height*k + header.width*i + j;
+				_raw[offset] = data[di + k];
+			}
+		}
+	}
+
+	fwrite(_raw,1,img_size,fp);
+	fclose(fp);
+
+	MemMgrRaw::instance()->free(data);
+	MemMgrRaw::instance()->free(_raw);
+
+	return true;
 }
