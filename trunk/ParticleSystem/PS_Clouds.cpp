@@ -7,6 +7,7 @@
 #include "../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../utility/RandomGenerator.h"
 #include "../Rendering/RenderEngine.h"
+#include "../GameLogic/GameLogic.h"
 
 
 #include <iostream>
@@ -180,9 +181,9 @@ void PS_Clouds :: render() const
 
 	ShaderManager::instance()->setUniform4fv("wind",windf);
 	ShaderManager::instance()->setUniform3fv("wind_tan",wind_tan.cfp());
-	const float map_size = 2048.0f;
+	const float map_size = RenderEngine::instance().getLevelExtents().getX()*0.5f;
 	ShaderManager::instance()->setUniform1fv("map_width",&map_size);
-	const float plane_height = 420.0f;
+	const float plane_height = GameLogic::instance().getGamePlaneHeight();
 	ShaderManager::instance()->setUniform1fv("plane_height",&plane_height);
 
 	const float height_scale = 60.0f;

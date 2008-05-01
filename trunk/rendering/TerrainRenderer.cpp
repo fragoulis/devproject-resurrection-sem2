@@ -150,8 +150,9 @@ void TerrainRenderer :: _clearResources()
 
 void TerrainRenderer :: render(Graphics& g) const
 {
-	_renderShadows();
-	_updateTerraformContribution();
+	//renderShadows();
+	//updateTerraformContribution();
+	//drawLakeReflection(g);
 
 	/*
 		fetch terrain texcoords & scaling
@@ -224,7 +225,7 @@ void TerrainRenderer :: render(Graphics& g) const
 
 	
 	// create the reflection Surface
-	_drawLakeReflection(g);
+//	drawLakeReflection(g);
 
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
@@ -665,7 +666,7 @@ void TerrainRenderer :: _updateTerraform(const float dt)
 
 }
 
-void TerrainRenderer :: _updateTerraformContribution() const
+void TerrainRenderer :: updateTerraformContribution() const
 {
 	// save settings
 	// bind the FBO
@@ -813,7 +814,7 @@ void TerrainRenderer :: onEvent(Ebomb_Despawned& evt)
 }
 
 
-void TerrainRenderer :: _renderShadows() const
+void TerrainRenderer :: renderShadows() const
 {
 	int drawbuf;
 	glGetIntegerv(GL_DRAW_BUFFER,&drawbuf);
@@ -973,7 +974,7 @@ void TerrainRenderer::onEvent(Key_GoingDown &key)
 	}
 }
 
-void TerrainRenderer::_drawLakeReflection(Graphics& g) const
+void TerrainRenderer::drawLakeReflection(Graphics& g) const
 {
 	// get the reflection tex size
 	int vp[4];
@@ -1099,6 +1100,7 @@ void TerrainRenderer::onEvent(Crater_Despawned& evt)
 
 void TerrainRenderer::onEvent(Life_Restored& evt)
 {
+	cerr<<"Listened!"<<endl;
 	Crater* crater = evt.getValue();
 
 	for(std::vector<CraterInfo_t>::iterator it = m_craterList.begin();

@@ -14,9 +14,11 @@
 #include "../gfx/FBO/Renderbuffer.h"
 
 
+
 class Camera;
 class CoordinateFrame;
 class Texture;
+class IPostProcessFX;
 
 /**
  * Renders the world!
@@ -88,9 +90,16 @@ private:
 	const CoordinateFrame * m_playerCoordFrame;
 	bool			m_boundsComputed;
 
+	float m_currentTime;
+
 	// Transparent object FBO
-	FramebufferObject m_transpFBO;
-	Texture * m_transpSurface;		// surface for reflections
+	FramebufferObject m_FBO;
+	Texture * m_surface,
+			* m_depthSurface,
+			* m_outSurface;
+
+	IPostProcessFX * m_grainEffect,
+				   * m_edgeEffect;
 
 	// Matrices 
 	double m_projd[16];

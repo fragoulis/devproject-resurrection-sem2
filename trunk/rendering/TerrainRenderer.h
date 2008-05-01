@@ -81,6 +81,10 @@ public:
 
 	const Vector3& getMapExtents() const {return m_mapExtents;}
 
+	void updateTerraformContribution() const;
+	void drawLakeReflection(Graphics& g) const;
+	void renderShadows() const;
+
 private:
 
 	// STRUCT DECLARATIONS
@@ -108,13 +112,10 @@ private:
 		                const std::string& gfxlevelfile);
 
 	void _updateTerraform(const float dt); // updates the terraform contribution map
-	void _updateTerraformContribution() const;
 
 	void _addShadowCaster(const CoordinateModel& model);
 	void _removeShadowCaster(const CoordinateFrame * cf);
-	void _renderShadows() const;
 	void _initShadows(const Vector4& lightdir);
-	void _drawLakeReflection(Graphics& g) const;
 
 
 	// VARIABLES

@@ -8,9 +8,7 @@ class Crater;
 struct VAttribStatus;
 
 /*
-	This Particle system uses positions & velocity.
-	In _generateData function, these 2 should be used.
-	In the ctor for the copies, the m_usedAttribs should be modified appropriately
+	This is the particle system for the rotating flares around the craters
 */
 
 class PS_RotatingFlare : public PS_Base

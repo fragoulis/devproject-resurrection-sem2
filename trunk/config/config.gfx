@@ -31,7 +31,8 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
 				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">, <"disturbedShader.sh">,
-				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">
+				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">,
+				<"edgeAddShader.sh">, <"edgeDetectShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3
@@ -258,7 +259,7 @@ LakeNormalTexture = waternormal.dds
 ReflectionTextureSizeRatio = 0.4
 CraterArrowTexture = arrow.dds
 CrosshairTexture = target.dds
-CrosshairHelperTexture = crosshair_extra.bmp
+CrosshairHelperTexture = crosshair_extra.dds
 
 
 

@@ -12,13 +12,19 @@
 
 #include "../Math/Matrix44.h"
 
+#include "IPostProcessFX.h"
+#include "GrainPostProc.h"
+#include "EdgePostProc.h"
+
 using namespace std;
 
 WorldRenderer :: WorldRenderer()
 :m_camera(0),
 m_playerActive(false),
-m_transpSurface(0),
-m_boundsComputed(false)
+m_surface(0),
+m_depthSurface(0),
+m_boundsComputed(false),
+m_currentTime(0.0f)
 {
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
@@ -40,14 +46,26 @@ m_boundsComputed(false)
 	
 	int vp[4];
 	RenderEngine::instance().getViewport(vp);
-	m_transpSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"transp fbo",false,false);
-	m_transpFBO.Bind();
-	m_transpFBO.AttachTexture(GL_TEXTURE_2D,m_transpSurface->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	m_transpFBO.IsValid();
+	m_surface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"color surface",false,false);
+	m_outSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"output surface",false,false);
+	m_depthSurface = new Texture2D(vp[2],vp[3],GL_DEPTH_COMPONENT32,GL_DEPTH_COMPONENT,GL_FLOAT,ml,GL_TEXTURE_2D,"depth surface",false,false);
+	m_FBO.Bind();
+	m_FBO.AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	m_FBO.AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
+	m_FBO.IsValid();
+
+
+	glEnable(GL_DEPTH_TEST); 
+	glDepthMask(GL_TRUE);
+	glDepthFunc(GL_LEQUAL); 
+
 	FramebufferObject::Disable();
 
 	m_terrainRenderer.setShipRendererRef(&m_shipRenderer);
 	m_terrainRenderer.setLaserRendererRef(&m_laserRenderer);
+
+	m_grainEffect = new GrainPostProc();
+	m_edgeEffect = new EdgePostProc(m_depthSurface);
 }
 
 WorldRenderer :: ~WorldRenderer()
@@ -58,11 +76,19 @@ WorldRenderer :: ~WorldRenderer()
 		m_camera = 0;
 	}
 	delete m_realCam;
-	if(m_transpSurface)
+	if(m_surface)
 	{
-		delete m_transpSurface;
-		m_transpSurface = 0;
+		delete m_surface;
+		m_surface = 0;
 	}
+	if(m_depthSurface)
+	{
+		delete m_depthSurface;
+		m_depthSurface = 0;
+	}
+
+	delete m_grainEffect;
+	delete m_edgeEffect;
 
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
@@ -92,6 +118,23 @@ void WorldRenderer :: render(Graphics& g) const
 {
 	// now render opaque 3D stuff
 
+	m_terrainRenderer.renderShadows();
+	m_terrainRenderer.updateTerraformContribution();
+	m_terrainRenderer.drawLakeReflection(g);
+
+	m_FBO.Bind();
+	FramebufferObject * FBO_hacked = const_cast<FramebufferObject *>(&m_FBO);
+	FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
+
+	int curdrawbuf;
+	glGetIntegerv(GL_DRAW_BUFFER,&curdrawbuf);
+	
+	glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_DEPTH_TEST); 
+
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
 	m_spawnPointRenderer.render(g);
@@ -99,10 +142,50 @@ void WorldRenderer :: render(Graphics& g) const
 	m_psRenderer.render(g);
 	m_miscFXRenderer.render(g);
 	m_clampRenderer.render(g);
+
+	glDisable(GL_DEPTH_TEST); 
+
+
+	glMatrixMode(GL_PROJECTION);
+	glPushMatrix();
+	glLoadIdentity();
+	glOrtho(0,1,0,1,-1,1);
+	glMatrixMode(GL_MODELVIEW);
+	glPushMatrix();
+	glLoadIdentity();
+
+	
+	FBO_hacked->UnattachAll();
+	FBO_hacked->Unattach(GL_DEPTH_ATTACHMENT_EXT);
+
+	Texture * output = m_surface;
+
+	// Start post processing
+	//output = m_grainEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+	//output = m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+
+	// End post processing. output should be the final texture
+
+	glDrawBuffer(curdrawbuf);
+	FramebufferObject::Disable();
+
+	ShaderManager::instance()->begin("blitShader");
+	output->bind();
+	RenderEngine::drawTexturedQuad(Vector3(0,0,0),
+								   Vector3(1,0,0),
+								   Vector3(0,1,0),
+								   Vector2(0,0),
+								   Vector2(1,1));
+
+	glPopMatrix();
+	glMatrixMode(GL_PROJECTION);
+	glPopMatrix();
+	glMatrixMode(GL_MODELVIEW);
 }
 
 void WorldRenderer :: update( float dt )
 {	
+	m_currentTime += dt;
 	// Yes, this is a hack
 	if(!m_boundsComputed)
 	{
