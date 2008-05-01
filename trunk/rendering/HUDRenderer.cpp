@@ -185,13 +185,13 @@ void HUDRenderer :: render(Graphics& g) const
 				m_textureList[8]->bind(0);
 
                 ShaderManager::instance()->setUniform1f("transparency", 0.25f*(1.0f - time_ratio));
-                displayEbombMessage( screenWidth, screenHeight, 2.5f, time_ratio);
+                displayEbombMessage( screenWidth, screenHeight, 2.0f, time_ratio );
 
                 ShaderManager::instance()->setUniform1f("transparency", 0.5f*(1.0f - time_ratio2));
-                displayEbombMessage( screenWidth, screenHeight, 2.5f, time_ratio2 );
+                displayEbombMessage( screenWidth, screenHeight, 1.5f, time_ratio2 );
 
                 ShaderManager::instance()->setUniform1f("transparency", 1.0f - time_ratio3);
-                displayEbombMessage( screenWidth, screenHeight, 1.5f, time_ratio3 );
+                displayEbombMessage( screenWidth, screenHeight, 1.0f, 0.0);
 			}
             // reset transparency
             ShaderManager::instance()->setUniform1f("transparency", transparency2);
@@ -274,11 +274,8 @@ void HUDRenderer :: render(Graphics& g) const
 
 void HUDRenderer :: displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const
 {
-    const float real_width = 256.0f * in_factor;
-    const float real_height = 64.0f * in_factor;
-
-    const float width = 0.2f * real_width + 0.8f * real_width * in_time;
-    const float height = 0.2f * real_height + 0.8f * real_height * in_time;
+    const float width = 256.0f + 256.0f * (in_factor * in_time);
+    const float height = 64.0f + 64.0f * (in_factor * in_time);
 
     const float xpos = 0.5f * ( screenWidth - width );
     const float ypos = 0.5f * ( screenHeight - height );
