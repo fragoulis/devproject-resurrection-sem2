@@ -68,7 +68,7 @@ void MenuPage::render(Graphics &g) const {
 		const GLfloat distortionRoll = 0.4f;
 		ShaderManager::instance()->setUniform1fv("distortionRoll", &distortionRoll);
 		CHECK_GL_ERROR();
-		const GLfloat interference = 0.49f;
+		const GLfloat interference = 0.2f;
 		ShaderManager::instance()->setUniform1fv("interference", &interference);
 		CHECK_GL_ERROR();
 		const GLfloat granularity = 8.5f;
