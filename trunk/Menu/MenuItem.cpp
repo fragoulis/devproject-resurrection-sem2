@@ -42,7 +42,7 @@ void MenuItem::render(Graphics &g) const {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 
-		if (m_state == ITEM_STATE_UNSELECTED) {
+		//if (m_state == ITEM_STATE_UNSELECTED) {
 			ShaderManager::instance()->begin("hudShader");
 			m_textureList[(int) m_state]->bind(0);
 			CHECK_GL_ERROR();
@@ -54,7 +54,7 @@ void MenuItem::render(Graphics &g) const {
 			const GLfloat white[4] = {1.0f,1.0f,1.0f,1.0f};
 			ShaderManager::instance()->setUniform4fv("constantColor", white);
 			CHECK_GL_ERROR();
-		} else if (m_state == ITEM_STATE_SELECTED) {
+		/*} else if (m_state == ITEM_STATE_SELECTED) {
 			ShaderManager::instance()->begin("disturbedShader");
 			m_textureList[(int) m_state]->bind(0);
 			CHECK_GL_ERROR();
@@ -82,7 +82,7 @@ void MenuItem::render(Graphics &g) const {
 			CHECK_GL_ERROR();
 			ShaderManager::instance()->setUniform1fv("time_0_X", &m_currentTime);
 			CHECK_GL_ERROR();
-		}
+		}*/
 
 
 		RenderEngine::drawTexturedQuad(Vector3(m_posX, m_posY, 0), Vector3((float) m_width, 0, 0), Vector3(0, (float) m_height, 0), Vector2(0,0), Vector2(1,1));
