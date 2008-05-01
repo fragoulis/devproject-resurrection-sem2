@@ -13,11 +13,19 @@ uniform sampler3D Rand;
 
 varying vec2 vPos;
 
+float random(in vec2 co){
+
+	return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+
+}
+
 void main(void)
 {
    
    // Interference ... just a texture filled with rand()
-   float rand = float(texture3D(Rand, vec3(granularity * vPos, time_0_X))) - 0.2;
+   //float rand = float(texture3D(Rand, vec3(granularity * vPos, time_0_X))) - 0.2;
+   float rand = random(gl_TexCoord[0].xy*cos(10+0.1*time_0_X));
+   
    
    // Some signed noise for the distortion effect
    float noisy = float(texture3D(Noise, vec3(0.0, 0.5 * vPos.y, 0.1 * time_0_X))) - 0.5;
