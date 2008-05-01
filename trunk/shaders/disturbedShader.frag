@@ -36,8 +36,8 @@ void main(void)
      // discard;
      
    float discardthis = step(image.r,0.1)*step(image.b,0.1)*step(image.g,0.1);
-   if (discardthis > 0.5)
-      discard;
+   //if (discardthis > 0.5)
+      //discard;
    
    
    // Combine frame, distorted image and interference

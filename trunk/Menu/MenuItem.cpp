@@ -23,6 +23,8 @@ void MenuItem::init(float posX, float posY, int width, int height, const string 
 	m_textureList.push_back(tex);
 	tex = TextureIO::instance()->getTexture("Random3D.dds");
 	m_textureList.push_back(tex);
+	tex = TextureIO::instance()->getTexture("menuSelectionFrame.bmp");
+	m_textureList.push_back(tex);
 
 	m_state = state;
 
@@ -84,7 +86,22 @@ void MenuItem::render(Graphics &g) const {
 			ShaderManager::instance()->setUniform1fv("time_0_X", &m_currentTime);
 			CHECK_GL_ERROR();
 			//draw the scaled button
-			RenderEngine::drawTexturedQuad(Vector3(m_posX-10, m_posY-20, 0), Vector3((float) m_width+40, 0, 0), Vector3(0, (float) m_height+40, 0), Vector2(0,0), Vector2(1,1));
+			RenderEngine::drawTexturedQuad(Vector3(m_posX-10, m_posY-10, 0), Vector3((float) m_width+40, 0, 0), Vector3(0, (float) m_height+20, 0), Vector2(0,0), Vector2(1,1));
+			ShaderManager::instance()->end();
+
+			//draw the selected button frame
+			ShaderManager::instance()->begin("hudShader");
+			m_textureList[4]->bind(0);
+			CHECK_GL_ERROR();
+			ShaderManager::instance()->setUniform1i("tex",0);
+			CHECK_GL_ERROR();
+			const GLfloat transparency = 1.0f;
+			ShaderManager::instance()->setUniform1fv("transparency", &transparency);
+			CHECK_GL_ERROR();
+			const GLfloat white[4] = {1.0f,1.0f,1.0f,1.0f};
+			ShaderManager::instance()->setUniform4fv("constantColor", white);
+			CHECK_GL_ERROR();
+			RenderEngine::drawTexturedQuad(Vector3(m_posX-10, m_posY-10, 0), Vector3((float) m_width+40, 0, 0), Vector3(0, (float) m_height+20, 0), Vector2(0,0), Vector2(1,1));
 		}
 
 
