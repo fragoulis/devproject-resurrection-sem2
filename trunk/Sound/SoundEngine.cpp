@@ -216,6 +216,7 @@ void SoundEngine::update()
     for(; i != m_sounds.end(); ++i )
         (*i)->update( m_listener->getPosition() );
 
+    m_bgSound->update(m_listener->getPosition());
     m_activeEplosions = 0;
 }
 
@@ -258,8 +259,6 @@ void SoundEngine::clearSoundPositions()
     Sounds::iterator i = m_sounds.begin();
     for(; i != m_sounds.end(); ++i )
         (*i)->update( position );
-
-    m_bgSound->update(position);
 }
 
 // ----------------------------------------------------------------------------
