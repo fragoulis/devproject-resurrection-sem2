@@ -1,4 +1,5 @@
 #include "SoundSource.h"
+#include <iostream>
 
 SoundSource::SoundSource():
 m_source(0),
@@ -60,7 +61,8 @@ bool SoundSource::setBuffer( const ALuint * const buffer,
 
 bool SoundSource::isPlaying() const
 {
-    ALenum state;
+    if (!m_source) return false;
+	ALint state = AL_STOPPED;
     alGetSourcei(m_source, AL_SOURCE_STATE, &state);
     return (state == AL_PLAYING);
 }
