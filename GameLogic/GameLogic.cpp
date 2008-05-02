@@ -556,6 +556,7 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 		}
 		Laser* laser = LaserFactory::instance().createLaser(type);
 		laser->start(startingPosition, direction);
+		m_laserPowerFactor = 10.0f;
 		laser->setPower(1.0f + m_laserPowerFactor * m_playership->getBuffStacks(m_laserPowerType));
 		m_lasers.push_back(laser);
 		m_playerLaserCooldownLeft = m_playerLaserCooldownTime;
