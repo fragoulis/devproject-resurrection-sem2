@@ -64,6 +64,9 @@ void PhysicsEngine :: onApplicationLoad( const ParserSection& ps )
     m_spring.Ks = FromString<float>(psSpring->getVal("Ks"));
     m_spring.Kd = FromString<float>(psSpring->getVal("Kd"));
     m_spring.minDistanceForClampedShips = FromString<float>(psSpring->getVal("MinDistanceForClampedShips"));
+
+	const ParserSection* psPhysics = ps.getSection("Physics");
+	m_craterExtraHeight = FromString<float>(psPhysics->getVal("CraterExtraHeight"));
 }
 
 void PhysicsEngine :: onApplicationUnload()
@@ -459,38 +462,28 @@ void PhysicsEngine :: _checkEbombCraterCollisions()
 	{
 		Ebomb* ebomb = *i;
 		if (ebomb->isToBeDeleted()) continue;
-		const Point3& sphereCentre = ebomb->getPosition();
-		float sphereRadius = ebomb->getRadius();
-		float sphereY = sphereCentre.getY();
+		const Point3& ebombPos = ebomb->getPosition();
+		float ebombRadius = ebomb->getRadius();
+		float ebombY = ebombPos.getY();
 
 		for (CraterList::iterator j = m_craters.begin(); j != m_craters.end(); ++j)
 		{
 			Crater* crater = *j;
 			if (crater->isToBeDeleted()) continue;
+
 			const Point3 craterPos = crater->getPosition();
-			float craterY = craterPos.getY();
 			float craterRadius = crater->getRadius();
+			float terrainHeight = m_terrain->getHeight(ebombPos.getX(), ebombPos.getZ());
 
-			// first check if sphere touches the XZ plane at crater height at all
-			if (sphereY - sphereRadius > craterY) continue;
+			// first check if ebomb is below terrain at its current position
+			if (ebombY < terrainHeight + m_craterExtraHeight) continue;
 
-			// (sphereY - craterY) / sphereRadius ranges from -1 to 1
-			// we want it in range 0 to PI
-			float y = (sphereY - craterY) / sphereRadius * float(Math::PI_2) + float(Math::PI_2);
-
-			// now we got the radius of the circle on the plane
-			// we can now do circle-circle collision
-			float ebombCircleRadius = sin(y);
-			Point2 craterCircleCentre(craterPos.getX(), craterPos.getZ());
-			Point2 ebombCircleCentre(sphereCentre.getX(), sphereCentre.getZ());
-
-			float distance = craterCircleCentre.distance(ebombCircleCentre);
-
-			if (distance < (ebombCircleRadius + craterRadius))
+			// now check if ebomb is in range of crater
+			Vector2 vec(craterPos.getX() - ebombPos.getX(), craterPos.getY() - ebombPos.getY());
+			if (vec.length() < craterRadius)
 			{
-				Vector3 normal = sphereCentre - craterPos;
-				normal.normalize();
-				Point3 colpos = craterPos + ((craterRadius + distance / 2) * normal);
+				Vector3 normal(0.0f, 1.0f, 0.0f);
+				const Point3& colpos = ebombPos;
 				CKLOG(std::string("Collision between ebomb ") + ToString<Ebomb*>(ebomb) + " and crater " + ToString<Crater*>(crater), 3);
 				EventManager::instance().fireEvent(Collision_Ebomb_Crater(ebomb, crater, colpos, normal));
 			}

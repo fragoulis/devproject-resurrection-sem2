@@ -121,9 +121,6 @@ private:
 	EbombList m_ebombs;
 	LaserList m_lasers;
 
-	// Crater data
-	float m_craterExtraHeight;
-
 	// Player laser firing data
 	float m_playerLaserCooldownTime;
 	float m_playerLaserCooldownLeft;

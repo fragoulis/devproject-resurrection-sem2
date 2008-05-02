@@ -137,6 +137,7 @@ private:
 	LaserList m_lasers;
 	EbombList m_ebombs;
 	CraterList m_craters;
+	float m_craterExtraHeight;
 
 	void _checkCollisions();
 	void _checkPlayerEnemyCollisions();
