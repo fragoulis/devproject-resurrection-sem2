@@ -23,6 +23,8 @@ m_startTime(0.0f)
 
 ShockwavePostProc :: ~ShockwavePostProc()
 {
+	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
+	EventManager::instance().unRegisterEventListener< Player_Respawned >(this);
 }
 
 Texture * ShockwavePostProc :: process(Texture * input, Texture * output,FramebufferObject& fbo,const float additive_time) const
