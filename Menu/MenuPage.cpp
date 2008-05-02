@@ -12,6 +12,7 @@ MenuPage::MenuPage() {
 	m_textureList.push_back(tex);
 
 	m_currentTime = 0.0f;
+	m_interference = 0.2f;
 }
 
 MenuPage::~MenuPage() {
@@ -68,7 +69,7 @@ void MenuPage::render(Graphics &g) const {
 		const GLfloat distortionRoll = 0.4f;
 		ShaderManager::instance()->setUniform1fv("distortionRoll", &distortionRoll);
 		CHECK_GL_ERROR();
-		const GLfloat interference = 0.2f;
+		const GLfloat interference = m_interference;//0.2f;
 		ShaderManager::instance()->setUniform1fv("interference", &interference);
 		CHECK_GL_ERROR();
 		const GLfloat granularity = 8.5f;

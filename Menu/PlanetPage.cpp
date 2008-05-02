@@ -24,11 +24,12 @@ void PlanetPage::init(int screenWidth, int screenHeight) {
 	m_items.push_back(difficultyLabelHard);
 
 
-	m_backgroundImage = TextureIO::instance()->getTexture("planetMenuBg.dds");
+	m_backgroundImage = TextureIO::instance()->getTexture("planetMenuBg.bmp");
 	m_hasBackground = true;
  
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
+	m_interference = 0.1f;
 }
 
 void PlanetPage::setItemsNumber(int itemsNumber) {
@@ -52,19 +53,19 @@ void PlanetPage::setItemsNumber(int itemsNumber) {
 	//}
 
 	MenuItem *planet2Button = new MenuItem();
-	planet2Button->init(100, 500, 28, 28, "planet1_uns.dds", "planet1_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	planet2Button->init(80, 480, 64, 64, "black.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(planet2Button);
 
 	MenuItem *planet3Button = new MenuItem();
-	planet3Button->init(700, 100, 128, 128, "planet2_uns.dds", "planet2_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	planet3Button->init(700, 100, 128, 128, "black.bmp", "planet2_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(planet3Button);
 
 	MenuItem *planet4Button = new MenuItem();
-	planet4Button->init(235, 255, 165, 165, "planet3_uns.dds", "planet3_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	planet4Button->init(235, 255, 165, 165, "black.bmp", "planet3_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(planet4Button);
 
 	MenuItem *planet5Button = new MenuItem();
-	planet5Button->init(655, 357, 50, 50, "planet4_uns.dds", "planet4_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	planet5Button->init(645, 355, 50, 50, "black.bmp", "planet4_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(planet5Button);
 
 	//MenuItem *planet6Button = new MenuItem();

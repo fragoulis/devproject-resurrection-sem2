@@ -18,6 +18,7 @@ protected:
 	bool m_hasBackground; //flag to check if the menu page has a background to render
 
 	float m_currentTime;
+	float m_interference;
 
 	vector<Texture*> m_textureList;
 
