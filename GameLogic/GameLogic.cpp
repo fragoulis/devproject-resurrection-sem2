@@ -636,7 +636,7 @@ void GameLogic :: loadLevel(const std::string& levelName)
 	{
 		Crater* crater = new Crater();
 		crater->loadSettings(**it);
-		crater->setY(m_terrain->getHeight(crater->getX(), crater->getZ()) + m_craterExtraHeight);
+		crater->setY(m_terrain->getHeight(crater->getX(), crater->getZ()));
 		m_craters.push_back(crater);
 		EventManager::instance().fireEvent(Crater_Spawned(crater));
 	}
@@ -695,7 +695,6 @@ void GameLogic :: onApplicationLoad(const ParserSection& ps)
 
 	// Load data
 	const ParserSection* psGame = ps.getSection("main");
-	m_craterExtraHeight = FromString<float>(psGame->getVal("CraterExtraHeight"));
 
 	// Load playership data
 	const ParserSection* psPlayer = ps.getSection("Playership");

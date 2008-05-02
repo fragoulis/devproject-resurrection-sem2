@@ -18,6 +18,8 @@
 
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
+
+[Physics]
 CraterExtraHeight = 30.0
 
 [Physics : Pusher]
