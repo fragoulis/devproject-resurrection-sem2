@@ -32,7 +32,8 @@ ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"Pe
 				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
 				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">, <"disturbedShader.sh">,
 				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">,
-				<"edgeAddShader.sh">, <"edgeDetectShader.sh">
+				<"edgeAddShader.sh">, <"edgeDetectShader.sh">, <"additiveShader.sh">, <"bandPassShader.sh">,
+				<"shockwaveShader.sh">
 
 [Shader : VertexAttribute : Vertex]
 Components = 3

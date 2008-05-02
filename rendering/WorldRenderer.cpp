@@ -15,6 +15,11 @@
 #include "IPostProcessFX.h"
 #include "GrainPostProc.h"
 #include "EdgePostProc.h"
+#include "MotionBlurPostProc.h"
+#include "BandPostProc.h"
+#include "ShockwavePostProc.h"
+
+#include "../gfxutils/MemManager/MemMgr_RawData.h"
 
 using namespace std;
 
@@ -32,11 +37,11 @@ m_currentTime(0.0f)
 	EventManager::instance().registerEventListener< Level_Complete >(this);
 
 	m_camera = new Camera();
-	m_camera->setPerspective(30, 1.0f, 10.0f, 9000.0f);
+	m_camera->setPerspective(30, 1 , 1900.0f, 4000.0f);
 	m_terrainRenderer.setCamera(m_camera);
 
 	m_realCam = new Camera();
-	m_realCam->setPerspective(30, 1.0f, 10.0f, 9000.0f);
+	m_realCam->setPerspective(30, 1, 1900.0f, 4000.0f);
 
 	m_miscFXRenderer.setCamera(m_realCam);
 
@@ -48,16 +53,20 @@ m_currentTime(0.0f)
 	RenderEngine::instance().getViewport(vp);
 	m_surface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"color surface",false,false);
 	m_outSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"output surface",false,false);
-	m_depthSurface = new Texture2D(vp[2],vp[3],GL_DEPTH_COMPONENT32,GL_DEPTH_COMPONENT,GL_FLOAT,ml,GL_TEXTURE_2D,"depth surface",false,false);
+	m_depthSurface = new Texture2D(vp[2],vp[3],GL_DEPTH_COMPONENT32,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"depth surface",false,false);
+	m_depthSurface->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	m_depthSurface->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
+	m_depthSurface->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
 	m_FBO.Bind();
-	m_FBO.AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	m_FBO.AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
-	m_FBO.IsValid();
-
 
 	glEnable(GL_DEPTH_TEST); 
 	glDepthMask(GL_TRUE);
-	glDepthFunc(GL_LEQUAL); 
+	glDepthFunc(GL_LEQUAL);
+	glClearDepth(1.0);
+
+	m_FBO.AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	m_FBO.AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
+	m_FBO.IsValid();
 
 	FramebufferObject::Disable();
 
@@ -66,6 +75,9 @@ m_currentTime(0.0f)
 
 	m_grainEffect = new GrainPostProc();
 	m_edgeEffect = new EdgePostProc(m_depthSurface);
+	m_mbEffect = new MotionBlurPostProc();
+	m_bandingEffect = new BandPostProc();
+	m_shockwaveEffect = new ShockwavePostProc();
 }
 
 WorldRenderer :: ~WorldRenderer()
@@ -89,6 +101,9 @@ WorldRenderer :: ~WorldRenderer()
 
 	delete m_grainEffect;
 	delete m_edgeEffect;
+	delete m_mbEffect;
+	delete m_bandingEffect;
+	delete m_shockwaveEffect;
 
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
@@ -121,11 +136,13 @@ void WorldRenderer :: render(Graphics& g) const
 	m_terrainRenderer.renderShadows();
 	m_terrainRenderer.updateTerraformContribution();
 	m_terrainRenderer.drawLakeReflection(g);
+	
 
 	m_FBO.Bind();
 	FramebufferObject * FBO_hacked = const_cast<FramebufferObject *>(&m_FBO);
 	FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
 	FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
+	FBO_hacked->IsValid();
 
 	int curdrawbuf;
 	glGetIntegerv(GL_DRAW_BUFFER,&curdrawbuf);
@@ -134,7 +151,7 @@ void WorldRenderer :: render(Graphics& g) const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST); 
-
+	
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
 	m_spawnPointRenderer.render(g);
@@ -153,7 +170,6 @@ void WorldRenderer :: render(Graphics& g) const
 	glMatrixMode(GL_MODELVIEW);
 	glPushMatrix();
 	glLoadIdentity();
-
 	
 	FBO_hacked->UnattachAll();
 	FBO_hacked->Unattach(GL_DEPTH_ATTACHMENT_EXT);
@@ -161,16 +177,26 @@ void WorldRenderer :: render(Graphics& g) const
 	Texture * output = m_surface;
 
 	// Start post processing
-	//output = m_grainEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
-	//output = m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+	m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+	//output = m_mbEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+	m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+	m_shockwaveEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+	output = m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+
+
 
 	// End post processing. output should be the final texture
 
 	glDrawBuffer(curdrawbuf);
+
 	FramebufferObject::Disable();
 
 	ShaderManager::instance()->begin("blitShader");
 	output->bind();
+	output->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	output->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
+	output->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
+	ShaderManager::instance()->setUniform1i("tex",0);
 	RenderEngine::drawTexturedQuad(Vector3(0,0,0),
 								   Vector3(1,0,0),
 								   Vector3(0,1,0),

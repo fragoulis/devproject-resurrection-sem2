@@ -74,6 +74,8 @@ bool TextureIO :: saveImage(const Texture * tex,
 		res = _saveTEX(tex,fullname);
 	else if(ext == "dds")
 		res = _saveDDS(tex,fullname);
+	else if(ext == "bmp")
+		res = _saveBMP(tex,fullname);
 	if(!res)
 	{
 		cout<<"..ERROR!!"<<endl;

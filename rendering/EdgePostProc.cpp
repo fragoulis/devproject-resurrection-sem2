@@ -14,7 +14,7 @@ EdgePostProc :: EdgePostProc(Texture * depth_buffer)
 {
 	vector<MipmapLevel> ml;
 	ml.push_back(MipmapLevel(0,0));
-	m_edges = new Texture2D(depth_buffer->getWidth()/2,depth_buffer->getHeight()/2,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"edge surface",false,false);
+	m_edges = new Texture2D(depth_buffer->getWidth(),depth_buffer->getHeight(),GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"edge surface",false,false);
 }
 
 EdgePostProc :: ~EdgePostProc()
@@ -30,6 +30,8 @@ Texture * EdgePostProc :: process(Texture * input, Texture * output,FramebufferO
 	CHECK_GL_ERROR();
 	glClear(GL_COLOR_BUFFER_BIT);
 
+	glViewport(0,0,m_edges->getWidth(),m_edges->getHeight());
+
 	ShaderManager::instance()->begin("edgeDetectShader");
 	m_depth->bind(0);
 	ShaderManager::instance()->setUniform1i("sourceTex",0);
@@ -44,6 +46,8 @@ Texture * EdgePostProc :: process(Texture * input, Texture * output,FramebufferO
 								   Vector2(1,1));
 
 	fbo.AttachTexture(GL_TEXTURE_2D,output->getId(),GL_COLOR_ATTACHMENT0_EXT);
+	glViewport(0,0,output->getWidth(),output->getHeight());
+
 	ShaderManager::instance()->begin("edgeAddShader");
 	input->bind(0);
 	ShaderManager::instance()->setUniform1i("sourceTex",0);
