@@ -102,6 +102,12 @@ void SoundEngine :: onApplicationUnload()
 void SoundEngine :: onEvent(Player_Spawned& pd)
 {
 	m_listener = pd.getValue();
+
+	// HKAC! This event just happens to be fired exactly after level loading is done
+	// Tell Joep to fix and add Level_Start event
+    m_bgSound->play();
+
+    play("Welcome");
 }
 
 // ----------------------------------------------------------------------------
@@ -177,9 +183,9 @@ void SoundEngine :: onEvent(Level_Load& ev)
     if( m_bgSound ) delete m_bgSound;
     m_bgSound = new Sound(m_bgBuffer);
     m_bgSound->setLoop(true);
-    m_bgSound->play();
+    //m_bgSound->play();
 
-    play("Welcome");
+    //play("Welcome");
 }
 
 // ----------------------------------------------------------------------------
