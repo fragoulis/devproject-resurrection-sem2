@@ -91,7 +91,7 @@ void MenuController :: update(float dt)
 
 				break;
 			case MenuRenderer::MENU_STATE_TUTORIAL:
-				_startLevel("Tutorial01");  //go to new game
+				_startLevel("Level08");  //go to new game
 				m_renderer->setSelectedItem(1); //select the first planet for the next visit
 
 				break;
