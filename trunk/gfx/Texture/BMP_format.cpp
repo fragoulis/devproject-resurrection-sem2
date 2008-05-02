@@ -57,6 +57,23 @@ struct bmp_format_header
 
 	char data[64];
 
+	void set_bfType(const unsigned val) {*(unsigned __int16 *)(&data[0]) = val;}
+	void set_bfSize(const unsigned val) {*(unsigned *)(&data[2]) = val;}
+	void set_bfReserved1(const unsigned val) {*(unsigned __int16 *)(&data[6]) = val;}
+	void set_bfReserved2(const unsigned val) {*(unsigned __int16 *)(&data[8]) = val;}
+	void set_bfOffBits(const unsigned val) {*(unsigned *)(&data[10]) = val;}
+	void set_biSize(const unsigned val) {*(unsigned *)(&data[14]) = val;}
+	void set_biWidth(const unsigned val) {*(unsigned *)(&data[18]) = val;}
+	void set_biHeight(const unsigned val) {*(unsigned *)(&data[22]) = val;}
+	void set_biPlanes(const unsigned val) {*(unsigned __int16*)(&data[26]) = val;}
+	void set_biBitCount(const unsigned val) {*(unsigned __int16*)(&data[28]) = val;}
+	void set_biCompression(const unsigned val) {*(unsigned *)(&data[30]) = val;}
+	void set_biSizeImage(const unsigned val) {*(unsigned *)(&data[34]) = val;}
+	void set_biXPelsPerMeter(const unsigned val) {*(unsigned *)(&data[38]) = val;}
+	void set_biYPelsPerMeter(const unsigned val) {*(unsigned *)(&data[42]) = val;}
+	void set_biClrUsed(const unsigned val) {*(unsigned *)(&data[46]) = val;}
+	void set_biClrImportant(const unsigned val) {*(unsigned *)(&data[50]) = val;}
+
 	// returns false if wrong header
 	bool checkswap()
 	{
@@ -187,5 +204,47 @@ bool TextureIO ::_saveBMP(const Texture * tex,
 						  const std::string& fname)
 {
 	// Log event : Not Implemented Yet!
-	return false;
+	TEX_header header = tex->getTEXheader();
+	
+	FILE * fp = fopen(fname.c_str(),"wb");
+	if( fp == NULL )
+	{
+       return 0;
+	}
+
+	const unsigned img_size = tex->dataSize();
+	const unsigned bpp = img_size / (header.width * header.height);
+
+	bmp_format_header outheader;
+	outheader.set_biCompression(0);
+	outheader.set_biWidth(header.width);
+	outheader.set_biHeight(header.height);
+	outheader.set_biBitCount(bpp*8);
+	outheader.set_bfType(unsigned short(0x4D42));
+	outheader.set_bfSize(img_size);
+	outheader.set_bfReserved1(0);
+	outheader.set_bfReserved2(0);
+	outheader.set_bfOffBits(54*8);
+	outheader.set_biClrUsed(0);
+	outheader.set_biClrImportant(0);
+	outheader.set_biPlanes(1);
+	outheader.set_biSize(40);
+	outheader.set_biXPelsPerMeter(0);
+	outheader.set_biYPelsPerMeter(0);
+	
+	// ASSUME format is ok.
+	
+	fwrite(outheader.data,1,54,fp);
+
+	unsigned char * data;
+	data = MemMgrRaw::instance()->allocate<unsigned char>(img_size);
+
+	tex->dlData(data);
+
+	fwrite(data,1,img_size,fp);
+	fclose(fp);
+
+	MemMgrRaw::instance()->free(data);
+
+	return true;
 }

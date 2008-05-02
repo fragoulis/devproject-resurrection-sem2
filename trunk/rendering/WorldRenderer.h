@@ -99,7 +99,10 @@ private:
 			* m_outSurface;
 
 	IPostProcessFX * m_grainEffect,
-				   * m_edgeEffect;
+				   * m_edgeEffect,
+				   * m_mbEffect,
+				   * m_bandingEffect,
+				   * m_shockwaveEffect;
 
 	// Matrices 
 	double m_projd[16];
