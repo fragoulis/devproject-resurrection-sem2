@@ -19,6 +19,7 @@ GrainPostProc :: GrainPostProc()
 
 GrainPostProc :: ~GrainPostProc()
 {
+	EventManager::instance().unRegisterEventListener< Player_EnergyDrained >(this);
 }
 
 Texture * GrainPostProc :: process(Texture * input, Texture * output,FramebufferObject& fbo,const float additive_time) const
