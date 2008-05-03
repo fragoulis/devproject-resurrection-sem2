@@ -10,7 +10,7 @@
 	Renderer of the particle systems
 */
 
-class ParticleSystemsRenderer : public IRenderer, public EventListener<Key_GoingDown>, 
+class ParticleSystemsRenderer : public IRenderer, //public EventListener<Key_GoingDown>, 
 												  public EventListener<Enemy_Spawned>,
 												  public EventListener<Enemy_Despawned>,
 												  public EventListener<Enemy_Destroyed>,
@@ -34,7 +34,7 @@ public:
 	virtual void render(Graphics& g) const;
 	virtual void update(float dt);
 
-	virtual void onEvent(Key_GoingDown&);
+	//virtual void onEvent(Key_GoingDown&);
 	virtual void onEvent(Enemy_Spawned&);
 	virtual void onEvent(Enemy_Despawned&);
 	virtual void onEvent(Enemy_Destroyed&);

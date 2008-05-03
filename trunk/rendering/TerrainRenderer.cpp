@@ -62,7 +62,7 @@ TerrainRenderer :: TerrainRenderer() :
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Level_Complete >(this);
 
-	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+	//EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	m_craterArrowTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getCraterArrowTexture());
 }
@@ -87,7 +87,7 @@ TerrainRenderer :: ~TerrainRenderer()
 	EventManager::instance().unRegisterEventListener< Level_Complete >(this);
 
 
-	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+	//EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	_clearResources();
 }
@@ -957,22 +957,22 @@ void TerrainRenderer :: update(const float dt)
 	m_cloudPS->update(dt);
 }
 
-void TerrainRenderer::onEvent(Key_GoingDown &key) 
-{
-	int keyPressed = key.getValue();
-
-	switch (keyPressed) {
-		case 'M':
-			{
-			TerraformInfo_t tfi;
-			tfi.center = Vector3(0.0f,0.0f,0.0f);
-			tfi.radius = 2048;
-			tfi.currentTimeOffset = 0.0f;
-			m_tformInfo.push_back(tfi);
-			}
-			break;
-	}
-}
+//void TerrainRenderer::onEvent(Key_GoingDown &key) 
+//{
+//	int keyPressed = key.getValue();
+//
+//	switch (keyPressed) {
+//		case 'M':
+//			{
+//			TerraformInfo_t tfi;
+//			tfi.center = Vector3(0.0f,0.0f,0.0f);
+//			tfi.radius = 2048;
+//			tfi.currentTimeOffset = 0.0f;
+//			m_tformInfo.push_back(tfi);
+//			}
+//			break;
+//	}
+//}
 
 void TerrainRenderer::drawLakeReflection(Graphics& g) const
 {

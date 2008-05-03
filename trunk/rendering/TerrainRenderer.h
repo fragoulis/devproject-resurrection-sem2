@@ -39,7 +39,7 @@ class TerrainRenderer :
 	public EventListener< Enemy_Spawned >,
 	public EventListener< Enemy_Despawned >,
 	public EventListener< Enemy_Destroyed >,
-	public EventListener<Key_GoingDown>,
+	//public EventListener<Key_GoingDown>,
 	public EventListener< Ebomb_Spawned >,
 	public EventListener< Ebomb_Despawned >,
 	public EventListener< Crater_Spawned >,
@@ -72,7 +72,7 @@ public:
 	void onEvent(Life_Restored&);
 	void onEvent(Level_Complete&);
 
-	void onEvent(Key_GoingDown&);
+	//void onEvent(Key_GoingDown&);
 
 	void setCamera(const Camera * cam) {m_cameraRef = cam;}
 	void setShipRendererRef( const ShipRenderer * sr) {m_shipRendererRef = sr;}

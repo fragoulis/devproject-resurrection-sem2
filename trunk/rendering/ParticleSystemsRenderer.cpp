@@ -16,7 +16,7 @@
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
 {
-	EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+	//EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	EventManager::instance().registerEventListener<Enemy_Spawned>(this);
 	EventManager::instance().registerEventListener<Enemy_Despawned>(this);
@@ -39,7 +39,7 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
 	deleteVector(m_psList);
 
-	EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
+	//EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	EventManager::instance().unRegisterEventListener<Enemy_Spawned>(this);
 	EventManager::instance().unRegisterEventListener<Enemy_Despawned>(this);
@@ -100,60 +100,60 @@ void ParticleSystemsRenderer :: update( float dt )
 }
 
 //LISTENING THE KEYBOARD FOR DEBUGGING PURPOSES ONLY
-void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
-	//FIXME : Adding the hacky way the dummy ps
-	int keyPressed = key.getValue();
-
-	CoordinateFrame cf;
-	PS_Fountain *ps_Fountain = NULL;
-
-	switch (keyPressed) {
-		case 'Q':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			break;
-		case 'E':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			break;
-		case 'R':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			break;
-		case 'G':
-			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_Fountain");
-			ps_Fountain->setRadiusScale(20.0f);
-			m_psList.push_back(ps_Fountain);
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			break;
-		case 'Y':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
-			//m_psList.back()->setTransform(cf);
-			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
-			//m_psList.back()->setTransform(cf);
-			break;
-		case 'U':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-			cf.move(Vector3(64,286,-64));
-			m_psList.back()->setTransform(cf);
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
-			m_psList.back()->setTransform(cf);
-			break;
-
-		case 'O':
-			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion2"));
-			cf.move(Vector3(0,300,0));
-			m_psList.back()->setTransform(cf);
-			break;
-	}
-}
+//void ParticleSystemsRenderer::onEvent(Key_GoingDown &key) {
+//	//FIXME : Adding the hacky way the dummy ps
+//	int keyPressed = key.getValue();
+//
+//	CoordinateFrame cf;
+//	PS_Fountain *ps_Fountain = NULL;
+//
+//	switch (keyPressed) {
+//		case 'Q':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//		case 'E':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnergyLoss"));
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//		case 'R':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//		case 'G':
+//			ps_Fountain = (PS_Fountain*) PS_Manager::instance().fetchNewPS("PS_Fountain");
+//			ps_Fountain->setRadiusScale(20.0f);
+//			m_psList.push_back(ps_Fountain);
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//		case 'Y':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RedEnemyExplosion"));
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_YellowEnemyExplosion"));
+//			//m_psList.back()->setTransform(cf);
+//			//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_BlueEnemyExplosion"));
+//			//m_psList.back()->setTransform(cf);
+//			break;
+//		case 'U':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+//			cf.move(Vector3(64,286,-64));
+//			m_psList.back()->setTransform(cf);
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_ColouredExplosion"));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//
+//		case 'O':
+//			m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyExplosion2"));
+//			cf.move(Vector3(0,300,0));
+//			m_psList.back()->setTransform(cf);
+//			break;
+//	}
+//}
 
 void ParticleSystemsRenderer::onEvent(Terrain_Changed &evt) 
 {

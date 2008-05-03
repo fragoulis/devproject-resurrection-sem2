@@ -2,7 +2,7 @@
 #include "../../utility/singleton.h"
 #include "../../math/Point2.h"
 
-#define INPUT_FIRES_EVENTS 1
+//#define INPUT_FIRES_EVENTS 1
 
 #ifdef INPUT_FIRES_EVENTS
 	#include "../../utility/EventManager.h"
