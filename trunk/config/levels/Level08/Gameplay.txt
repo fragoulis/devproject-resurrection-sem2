@@ -83,7 +83,6 @@ ProtectorEnergyType = yellow
 EbombType = yellow
 
 [Craters : Crater8]
-
 Location = (2585.67, 1825.98 )
 Radius = 214.62
 AffectedAreaRadius = 1267.28
@@ -97,7 +96,7 @@ Location = (-1000, -1000)
 EnemyType = EnemyFighter
 EnemyCount = 10
 EnergyType = yellow
-TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenInRangeAndFirstSession = 10.0
 TimeBetweenSessionStartAndFirstSpawn = 0.1
 TimeBetweenSpawns = 0.3
 TimeBetweenLastSpawnAndSessionEnd = 0.1
