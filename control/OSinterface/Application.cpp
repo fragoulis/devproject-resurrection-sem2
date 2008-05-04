@@ -86,6 +86,7 @@ void Application :: load()
 
 	Logger::init(ps.getSection("Logger"));
 
+	MenuController::safeInstance().onApplicationLoad(ps);
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	BuffFactory::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);

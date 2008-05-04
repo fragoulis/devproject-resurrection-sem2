@@ -8,6 +8,8 @@
 #include "OSinterface/IOSInterface.h"
 #include "../GameLogic/GameLogic.h"
 #include "../Sound/SoundEngine.h"
+#include "../gfxutils/ConfParser/ConfParser.h"
+#include "../gfxutils/Misc/utils.h"
 
 
 MenuController::MenuController()
@@ -91,7 +93,7 @@ void MenuController :: update(float dt)
 
 				break;
 			case MenuRenderer::MENU_STATE_TUTORIAL:
-				_startLevel("Level08");  //go to new game
+				_startLevel(m_levelNames[0]);  //go to new game
 				m_renderer->setSelectedItem(1); //select the first planet for the next visit
 
 				break;
@@ -105,9 +107,7 @@ void MenuController :: update(float dt)
 				else
 				{
 					int level = m_renderer->getSelectedItem() - 3;
-					std::string id = "Level0";
-					id += (level + 48);
-					_startLevel(id);
+					_startLevel(m_levelNames[level]);
 				}
 
 				m_renderer->setSelectedItem(4); //select the first planet for the next visit
@@ -187,4 +187,15 @@ void MenuController :: onEvent(Level_Complete& level) {
 
 	//TODO: get the level names and check when they're completed
 
+}
+
+
+void MenuController :: onApplicationLoad(const ParserSection& ps)
+{
+	const ParserSection* psMain = ps.getSection("main");
+	m_levelNames = psMain->getValVector("Levels");
+}
+
+void MenuController :: onApplicationUnload()
+{
 }

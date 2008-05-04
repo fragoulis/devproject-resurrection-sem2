@@ -3,7 +3,9 @@
 #include "../utility/Singleton.h"
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
+#include <vector>
 class MenuRenderer;
+class ParserSection;
 
 
 
@@ -29,6 +31,9 @@ public:
 
 	virtual void onEvent(Level_Complete&);
 
+	void onApplicationLoad(const ParserSection&);
+	void onApplicationUnload();
+
 
 private:
 	MenuRenderer* m_renderer;
@@ -36,6 +41,9 @@ private:
     
     // ambient sound id
     unsigned m_ambientSound;
+
+	typedef std::vector<std::string> StringVector;
+	StringVector m_levelNames;
 
 	std::string m_levelToLoad;
 	void _startLevel(const std::string& id);
