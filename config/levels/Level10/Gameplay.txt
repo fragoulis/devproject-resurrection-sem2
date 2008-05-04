@@ -1,0 +1,53 @@
+[Main]
+Lives = 3
+GamePlaneHeight = 420
+
+[Craters : Crater0]
+
+Location = (-1369.49, -913.427 )
+Radius = 132.861
+AffectedAreaRadius = 972.024
+
+[Craters : Crater1]
+
+Location = (-137.971, -1444.25 )
+Radius = 163.521
+AffectedAreaRadius = 675.591
+
+[Craters : Crater2]
+
+Location = (-812.493, 789.339 )
+Radius = 148.191
+AffectedAreaRadius = 916.874
+
+[Craters : Crater3]
+
+Location = (61.3202, 141.323 )
+Radius = 153.301
+AffectedAreaRadius = 1027.17
+
+[Craters : Crater4]
+
+Location = (1170.19, 1168.5 )
+Radius = 76.6503
+AffectedAreaRadius = 517.034
+
+[Craters : Crater5]
+
+Location = (904.473, -1175.39 )
+Radius = 158.411
+AffectedAreaRadius = 737.635
+
+
+[Spawnpoints : p2]
+Location = (-1000, -1000)
+EnemyType = EnemyFighter
+EnemyCount = 10
+EnergyType = yellow
+TimeBetweenInRangeAndFirstSession = 10.0
+TimeBetweenSessionStartAndFirstSpawn = 0.1
+TimeBetweenSpawns = 0.3
+TimeBetweenLastSpawnAndSessionEnd = 0.1
+TimeBetweenSessionEndAndSessionStart = 2.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0
