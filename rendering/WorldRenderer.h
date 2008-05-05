@@ -71,6 +71,9 @@ public:
 	void onEvent(Level_Unload&);
 	void onEvent(Level_Complete&);
 
+	void togglePostProc() {m_postProcOn = !m_postProcOn;}
+	void toggleWireframe() {m_wireframeOn = !m_wireframeOn;}
+
 private:
 
 	void _updateMatrices();					// updates modelview & projection, based on cam, also updates win depth
@@ -103,6 +106,9 @@ private:
 				   * m_mbEffect,
 				   * m_bandingEffect,
 				   * m_shockwaveEffect;
+
+	bool			m_postProcOn;
+	bool			m_wireframeOn;
 
 	// Matrices 
 	double m_projd[16];

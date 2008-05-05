@@ -7,36 +7,66 @@ GamePlaneHeight = 420
 Location = (-1369.49, -913.427 )
 Radius = 132.861
 AffectedAreaRadius = 972.024
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 [Craters : Crater1]
 
 Location = (-137.971, -1444.25 )
 Radius = 163.521
 AffectedAreaRadius = 675.591
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 [Craters : Crater2]
 
 Location = (-812.493, 789.339 )
 Radius = 148.191
 AffectedAreaRadius = 916.874
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 [Craters : Crater3]
 
 Location = (61.3202, 141.323 )
 Radius = 153.301
 AffectedAreaRadius = 1027.17
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 [Craters : Crater4]
 
 Location = (1170.19, 1168.5 )
 Radius = 76.6503
 AffectedAreaRadius = 517.034
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 [Craters : Crater5]
 
 Location = (904.473, -1175.39 )
 Radius = 158.411
 AffectedAreaRadius = 737.635
+ProtectorRespawnDelay = 1.0
+ProtectorType = EnemyFighter
+ProtectorEnergyType = yellow
+EbombType = yellow
+
 
 
 [Spawnpoints : p2]
