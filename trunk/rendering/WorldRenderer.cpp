@@ -29,7 +29,9 @@ m_playerActive(false),
 m_surface(0),
 m_depthSurface(0),
 m_boundsComputed(false),
-m_currentTime(0.0f)
+m_currentTime(0.0f),
+m_postProcOn(true),
+m_wireframeOn(false)
 {
 	EventManager::instance().registerEventListener< Level_Unload >(this);
 	EventManager::instance().registerEventListener< Player_Spawned >(this);
@@ -151,6 +153,9 @@ void WorldRenderer :: render(Graphics& g) const
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST); 
+
+	if(m_wireframeOn)
+		glPolygonMode(GL_FRONT,GL_LINE);
 	
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
@@ -159,6 +164,9 @@ void WorldRenderer :: render(Graphics& g) const
 	m_psRenderer.render(g);
 	m_miscFXRenderer.render(g);
 	m_clampRenderer.render(g);
+
+	if(m_wireframeOn)
+		glPolygonMode(GL_FRONT,GL_FILL);
 
 	glDisable(GL_DEPTH_TEST); 
 
@@ -176,12 +184,15 @@ void WorldRenderer :: render(Graphics& g) const
 
 	Texture * output = m_surface;
 
-	// Start post processing
-	m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
-	//output = m_mbEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
-	m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
-	m_shockwaveEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
-	output = m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+	if(m_postProcOn)
+	{
+		// Start post processing
+		m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+		//output = m_mbEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+		m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+		m_shockwaveEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
+		output = m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
+	}
 
 
 

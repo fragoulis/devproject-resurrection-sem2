@@ -874,7 +874,7 @@ void TerrainRenderer :: renderShadows() const
 	glPushMatrix();
 	glLoadIdentity();
 	gluLookAt(center.getX(),
-			  center.getY() + RenderEngine::instance().getCameraHeightAbovePlane(),
+			  center.getY() + RenderEngine::instance().getCameraHeightAbovePlane() + GameLogic::instance().getGamePlaneHeight(),
 			  center.getZ(),
 			  center.getX(),
 			  center.getY(),
@@ -1100,7 +1100,6 @@ void TerrainRenderer::onEvent(Crater_Despawned& evt)
 
 void TerrainRenderer::onEvent(Life_Restored& evt)
 {
-	cerr<<"Listened!"<<endl;
 	Crater* crater = evt.getValue();
 
 	for(std::vector<CraterInfo_t>::iterator it = m_craterList.begin();

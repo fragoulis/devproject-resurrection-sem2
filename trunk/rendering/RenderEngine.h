@@ -107,6 +107,7 @@ public:
 	}
 
 	void toggleWireframe();
+	void togglePostProc();
 
 	// Convenience functions
 	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,

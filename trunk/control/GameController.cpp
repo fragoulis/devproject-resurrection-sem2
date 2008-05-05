@@ -65,8 +65,11 @@ void GameController :: update(float dt)
 	if (input.isKeyDownOrGoingDown('D') || input.isKeyDownOrGoingDown(KEY_RIGHT))
 		direction += Vector3(1.0f, 0.0f, 0.0f);
 
-	if (input.isKeyDownOrGoingDown('N'))
+	if (input.isKeyGoingDown('N'))
 		RenderEngine::instance().toggleWireframe();
+
+	if (input.isKeyGoingDown('M'))
+		RenderEngine::instance().togglePostProc();
 
 	if (!Math::float_is_zero(direction.lengthSquared())) {
 		direction.normalize();

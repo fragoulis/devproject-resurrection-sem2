@@ -359,17 +359,16 @@ const Vector4 RenderEngine :: getColorFromEnergyType (const EnergyType& et) cons
 	return (EnergyColours[unsigned(et)]);
 }
 
+void RenderEngine :: togglePostProc()
+{
+	WorldRenderer * wr = reinterpret_cast<WorldRenderer *>(_findRenderer("world"));
+	if(wr)
+		wr->togglePostProc();
+}
+
 void RenderEngine :: toggleWireframe()
 {
-	if(m_wireframe)
-	{
-		m_wireframe = false;
-		glPolygonMode(GL_FRONT,GL_FILL);
-	}
-	else
-	{
-		m_wireframe = true;
-		glPolygonMode(GL_FRONT,GL_LINE);
-	}
-
+	WorldRenderer * wr = reinterpret_cast<WorldRenderer *>(_findRenderer("world"));
+	if(wr)
+		wr->toggleWireframe();
 }
