@@ -19,7 +19,7 @@
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
 // Specifies levels. First is tutorial, next 4 is planets
-Levels = <Level10>, <Level01>, <Level02>, <Level03>, <Level04>
+Levels = <Level11>, <Level12>, <Level05>, <Level10>, <Level08>
 
 [Physics]
 CraterExtraHeight = 30.0

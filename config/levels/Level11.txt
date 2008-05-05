@@ -1,0 +1,15 @@
+[Map]
+Dimensions = "(2048, 2048)"
+PlayerStart = "(0.0, 0.0)"
+
+[Gameplay]
+file = "Level11/Gameplay.txt"
+
+[Graphics]
+file = "Level11/Graphics.txt"
+
+[AI]
+file = "Level11/AI.txt"
+
+[Sound]
+ambient = "resources/sounds/dot.wav"
