@@ -27,7 +27,7 @@ Crater :: ~Crater()
 void Crater :: update(float dt)
 {
 	m_timeTillNextEvent -= dt;
-	if (m_timeTillNextEvent < 0.0f && !isProtected())
+	if (m_timeTillNextEvent < 0.0f && !isProtected() && m_protectorType != 0)
 	{
 		const Point3& pos = getPosition();
 		m_protector = GameLogic::instance().spawnEnemy(m_protectorType, m_protectorEnergyType, pos.getX(), pos.getZ());
@@ -50,17 +50,25 @@ void Crater :: loadSettings(const ParserSection& ps)
 	m_affectedAreaRadius = FromString<float>(ps.getVal("AffectedAreaRadius"));
 	m_ebombType = EbombTypeFromString(ps.getVal("EbombType"));
 
-	m_protectorRespawnDelay = FromString<float>(ps.getVal("ProtectorRespawnDelay"));
-	m_protectorType = EnemyFactory::instance().getTypeFromName(ps.getVal("ProtectorType"));
-	m_protectorEnergyType = EnergyTypeFromString(ps.getVal("ProtectorEnergyType"));
-
-	if (EnemyFactory::instance().getEnemyClass(m_protectorType) == "Carrier")
+	if (ps.valExists("ProtectorType"))
 	{
-		m_protectorCarrierEnergyTypeSpawns = EnergyTypeFromString(ps.getVal("ProtectorCarrierEnergyTypeSpawns"));
+		m_protectorRespawnDelay = FromString<float>(ps.getVal("ProtectorRespawnDelay"));
+		m_protectorType = EnemyFactory::instance().getTypeFromName(ps.getVal("ProtectorType"));
+		m_protectorEnergyType = EnergyTypeFromString(ps.getVal("ProtectorEnergyType"));
+
+		if (EnemyFactory::instance().getEnemyClass(m_protectorType) == "Carrier")
+		{
+			m_protectorCarrierEnergyTypeSpawns = EnergyTypeFromString(ps.getVal("ProtectorCarrierEnergyTypeSpawns"));
+		}
+		else
+		{
+			m_protectorCarrierEnergyTypeSpawns = ENERGY_TYPE_UNKNOWN;
+		}
 	}
 	else
 	{
-		m_protectorCarrierEnergyTypeSpawns = ENERGY_TYPE_UNKNOWN;
+		m_protectorType = 0;
+		m_protectorRespawnDelay = 0.0f;
 	}
 	
 
