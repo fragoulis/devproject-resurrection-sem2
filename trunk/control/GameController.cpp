@@ -108,8 +108,8 @@ void GameController :: update(float dt)
 	AIEngine::instance().update(dt);
     EnemyBuffCoupleManager::instance().update();
 	PhysicsEngine::instance().update(dt);
-	gl.update(dt);
 	RenderEngine::instance().update(dt);
+	gl.update(dt);
 }
 
 
