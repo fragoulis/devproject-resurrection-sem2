@@ -55,7 +55,7 @@ MaximumPlayerDistance = 10000.0
 
 [Spawnpoints : p2]
 Location = (0, 1000)
-EnemyType = EnemyFighter
+EnemyType = EnemyDisrupter
 EnemyCount = 1
 EnergyType = yellow
 TimeBetweenInRangeAndFirstSession = 1.0
@@ -68,7 +68,7 @@ MaximumPlayerDistance = 10000.0
 
 [Spawnpoints : p3]
 Location = (1000, 0)
-EnemyType = EnemyFighter
+EnemyType = EnemyInterceptor
 EnemyCount = 1
 EnergyType = red
 TimeBetweenInRangeAndFirstSession = 1.0

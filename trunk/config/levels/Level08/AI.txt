@@ -3,6 +3,6 @@
 # it will be using, in which order and the conditions.
 
 [Behaviours]
-Names = <Chase>, <Flank>
-MinEnemyThrusterPower = 250000
-MaxEnemyThrusterPower = 350000
+Names = <Chase>, <Flank>, <Surround>
+MinEnemyThrusterPower = 275000
+MaxEnemyThrusterPower = 280000
