@@ -66,9 +66,9 @@ void MenuRenderer :: update(float dt)
 		else if (m_currentMenu->getSelectedItem() == 5)
 			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_MEDIUM);
 		else if (m_currentMenu->getSelectedItem() == 6)
-			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_HARD);
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_MEDIUM);
 		else if (m_currentMenu->getSelectedItem() == 7)
-			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_EASY);
+			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_HARD);
 		else
 			m_currentMenu->setDifficultyToShow(PlanetPage::DIFFICULTY_NONE);
 	}
