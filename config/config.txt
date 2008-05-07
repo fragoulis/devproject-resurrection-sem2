@@ -121,3 +121,8 @@ Welcome                         = "welcome.wav"
 
 InterfaceAmbient                = "ambient01.wav"
 MenuClick                       = "click01.wav"
+
+[Screen]
+HorzRes = 1280
+VerticalRes = 1024
+Fullscreen = 1

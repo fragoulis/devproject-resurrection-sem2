@@ -74,6 +74,8 @@ public:
 	void togglePostProc() {m_postProcOn = !m_postProcOn;}
 	void toggleWireframe() {m_wireframeOn = !m_wireframeOn;}
 
+	void adjustCameras();
+
 private:
 
 	void _updateMatrices();					// updates modelview & projection, based on cam, also updates win depth

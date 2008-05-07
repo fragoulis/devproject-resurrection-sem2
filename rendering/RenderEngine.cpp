@@ -32,7 +32,21 @@ m_cameraBounds(0.0f,0.0f,0.0f,0.0f),
 m_playerBounds(0.0f,0.0f,0.0f,0.0f),
 m_wireframe(false)
 {
-	setViewport(0,0,1024,768);
+	int scrw = 1280,scrh = 1024;
+
+	ConfParser* cp = new ConfParser("./config/config.txt");
+	if(cp->getSection("Screen"))
+	{
+		string hres = cp->getSection("Screen")->getVal("HorzRes"),
+				vres = cp->getSection("Screen")->getVal("VerticalRes");
+		if(hres != "")
+			scrw = atoi(hres.c_str());
+		if(vres != "")
+			scrh = atoi(vres.c_str());
+	}
+	delete cp;
+
+	setViewport(0,0,scrw,scrh);
 	glShadeModel(GL_SMOOTH);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
@@ -371,4 +385,14 @@ void RenderEngine :: toggleWireframe()
 	WorldRenderer * wr = reinterpret_cast<WorldRenderer *>(_findRenderer("world"));
 	if(wr)
 		wr->toggleWireframe();
+}
+
+void RenderEngine :: adjustCamera(const float amount)
+{
+	cerr<<"Offset now is "<<m_camHeightAbovePlane - 2000.0f<<endl;
+	m_camHeightAbovePlane += amount;
+	WorldRenderer * wr = reinterpret_cast<WorldRenderer *>(_findRenderer("world"));
+	if(wr)
+		wr->adjustCameras();
+
 }

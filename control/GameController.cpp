@@ -65,6 +65,11 @@ void GameController :: update(float dt)
 	if (input.isKeyDownOrGoingDown('D') || input.isKeyDownOrGoingDown(KEY_RIGHT))
 		direction += Vector3(1.0f, 0.0f, 0.0f);
 
+	if (input.isKeyDownOrGoingDown('P'))
+		RenderEngine::instance().adjustCamera(5.0f);
+	if (input.isKeyDownOrGoingDown('O'))
+		RenderEngine::instance().adjustCamera(-5.0f);
+
 	if (input.isKeyGoingDown('N'))
 		RenderEngine::instance().toggleWireframe();
 

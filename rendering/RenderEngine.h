@@ -109,6 +109,8 @@ public:
 	void toggleWireframe();
 	void togglePostProc();
 
+	void adjustCamera(const float amount);
+
 	// Convenience functions
 	static void drawTexturedQuad(const Vector3& ll,const Vector3& right,const Vector3& up,
 								 const Vector2& tex_ll, const Vector2& extents);
