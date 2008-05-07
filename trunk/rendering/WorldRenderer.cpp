@@ -38,12 +38,16 @@ m_wireframeOn(false)
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Level_Complete >(this);
 
+	const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
+	int vp[4];
+	RenderEngine::instance().getViewport(vp);
+
 	m_camera = new Camera();
-	m_camera->setPerspective(30, 1 , 1900.0f, 4000.0f);
+	m_camera->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])) , cam_addh - 100.0f, cam_addh + 2000.0f);
 	m_terrainRenderer.setCamera(m_camera);
 
 	m_realCam = new Camera();
-	m_realCam->setPerspective(30, 1, 1900.0f, 4000.0f);
+	m_realCam->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])), cam_addh - 100.0f, cam_addh + 2000.0f);
 
 	m_miscFXRenderer.setCamera(m_realCam);
 
@@ -51,8 +55,6 @@ m_wireframeOn(false)
 	vector<MipmapLevel> ml;
 	ml.push_back(MipmapLevel(0,0));
 	
-	int vp[4];
-	RenderEngine::instance().getViewport(vp);
 	m_surface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"color surface",false,false);
 	m_outSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"output surface",false,false);
 	m_depthSurface = new Texture2D(vp[2],vp[3],GL_DEPTH_COMPONENT32,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"depth surface",false,false);
@@ -80,6 +82,24 @@ m_wireframeOn(false)
 	m_mbEffect = new MotionBlurPostProc();
 	m_bandingEffect = new BandPostProc();
 	m_shockwaveEffect = new ShockwavePostProc();
+}
+
+void WorldRenderer :: adjustCameras()
+{
+	m_boundsComputed = false;
+	delete m_camera;
+	delete m_realCam;
+
+	const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
+	int vp[4];
+	RenderEngine::instance().getViewport(vp);
+
+	m_camera = new Camera();
+	m_camera->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])) , cam_addh - 100.0f, cam_addh + 2000.0f);
+	m_terrainRenderer.setCamera(m_camera);
+
+	m_realCam = new Camera();
+	m_realCam->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])), cam_addh - 100.0f, cam_addh + 2000.0f);
 }
 
 WorldRenderer :: ~WorldRenderer()

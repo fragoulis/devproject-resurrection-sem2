@@ -19,6 +19,8 @@
 #include "../OSinterface/Application.h"
 #include "../../rendering/Graphics.h"
 #include "../../utility/Time.h"
+#include "../../gfxutils/confparser/confparser.h"
+#include <string>
 #pragma warning( disable : 4996 )
 
 #pragma warning( push )
@@ -27,6 +29,8 @@
 #pragma warning( pop )
 
 #include <stdio.h>
+
+using namespace std;
 
 #ifndef ZeroMemory
 	//for compilers that dont have ZeroMemory define it as memset
@@ -52,11 +56,29 @@ int WINAPI WinMain(	HINSTANCE hInstance,HINSTANCE hPrevInstance,LPSTR lpCmdLine,
 
 	IOSInterface::setInstance(&Win32Interface);
 
+	int scrw = 1280,scrh = 1024;
+	bool fullscreen = false;
+
+	ConfParser* cp = new ConfParser("./config/config.txt");
+	if(cp->getSection("Screen"))
+	{
+		string hres = cp->getSection("Screen")->getVal("HorzRes"),
+				vres = cp->getSection("Screen")->getVal("VerticalRes"),
+				isfs = cp->getSection("Screen")->getVal("Fullscreen");
+		if(hres != "")
+			scrw = atoi(hres.c_str());
+		if(vres != "")
+			scrh = atoi(vres.c_str());
+		if(isfs == "1")
+			fullscreen = true;
+	}
+	delete cp;
+
 
 	bool inLoop = true;
 
 	//create the window
-	if (!GLWindow.createWindow("Resurrection", 1024,768, false))
+	if (!GLWindow.createWindow("Resurrection", scrw,scrh, fullscreen))
 	{
 		//if it fails, tell the user and exit
 		MessageBox (NULL, "Error making window", "OpenGL", MB_OK);
