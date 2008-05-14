@@ -1,0 +1,15 @@
+[Map]
+Dimensions = "(4096, 4096)"
+PlayerStart = "(100.0, 100.0)"
+
+[Gameplay]
+file = "Level10/Gameplay.txt"
+
+[Graphics]
+file = "Level10/Graphics.txt"
+
+[AI]
+file = "Level10/AI.txt"
+
+[Sound]
+ambient = "resources/sounds/strack2.wav"

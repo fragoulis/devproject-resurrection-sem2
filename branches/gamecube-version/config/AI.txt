@@ -1,0 +1,26 @@
+# Here we write down the states and behaviours of the game.
+# Each level will use a selection of these, using its individual AI level config.
+
+# Here are the states used in the game
+# <Idle>, <Chase>, <Surround>, <Flank>, <Flee>
+
+# Enumerate the behaviours of the game
+[Behaviours]
+Enum = <Idle>, <Chase>, <Surround>, <Flank>
+
+# Define the behaviours
+[Behaviours : Idle]
+States = <Idle>
+
+[Behaviours : Chase]
+States = <Chase>
+
+[Behaviours : Surround]
+States = <Surround>, <Chase>
+MinTime   = 1.0
+MaxTime   = 4.0
+
+[Behaviours : Flank]
+States = <Flank>, <Chase>
+MinTime   = 1.0
+MaxTime   = 10.0

@@ -1,0 +1,279 @@
+[VBOSettings]
+StaticVData = 300000
+StaticIndices = 600000
+DynamicVData = 100000
+DynamicIndices = 200000
+StreamVData = 100000
+StreamIndices = 200000
+
+########################## MODELS #############################################################
+
+[ModelSettings]
+ModelDir = "./resources/models/"
+
+########################### TEXTURES ##########################################################
+
+[Texture]
+DefaultDir = "./resources/textures/"
+
+[Texture : MemDistribution]
+Texture1D = 10
+Texture2D = 100
+Texture3D = 10
+TextureCube = 3
+
+########################### SHADERS + VERTEX ATTRIBUTES #######################################
+
+[Shader]
+ShaderDir = "./shaders/"
+ShaderFiles = <"UIShader.sh"> , <"PS_EnergyLoss.sh"> , <"PS_Explosion.sh">, <"PerPixelTex.sh">, <"PerPixelNoTex.sh">,
+				<"TerrainShader.sh">, <"SpawnPointShader.sh"> , <"PS_ColouredExplosion.sh"> , <"PS_Fountain.sh"> , 
+				<"PS_EnemyExplosion.sh"> , <"PS_Jet.sh"> , <"lakeShader.sh"> , <"laserShader.sh"> ,
+				<"terraformShader.sh"> , <"blitShader.sh"> , <"shadowWrite2.sh">, 
+				<"craterArrowShader.sh">, <"PS_Clouds.sh"> , <"hudShader.sh">, <"disturbedShader.sh">,
+				<"PS_RotatingFlare.sh">, <"PS_EnemyEnergyViz.sh"> , <"laserShader2.sh">, <"PS_EnemyExplosion2.sh">,
+				<"edgeAddShader.sh">, <"edgeDetectShader.sh">, <"additiveShader.sh">, <"bandPassShader.sh">,
+				<"shockwaveShader.sh">
+
+[Shader : VertexAttribute : Vertex]
+Components = 3
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : Normal]
+Components = 3
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : Texcoord]
+Components = 2
+Size = 8
+Datatype = float
+
+[Shader : VertexAttribute : GenAttrib1]
+Components = 4
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : GenAttrib2]
+Components = 4
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : GenAttrib3]
+Components = 4
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : GenAttrib4]
+Components = 4
+Size = 16
+Datatype = float
+
+[Shader : VertexAttribute : GenAttrib5]
+Components = 4
+Size = 16
+Datatype = float
+
+################### PARTICLE SYSTEMS ##############################
+# First the max total particles for the vbo
+[ParticleSystem]
+MaxTotalParticles = 100000
+
+# For each PS, specify also variation, so we know how many diff variations to construct
+# and select from, afterwards
+
+[ParticleSystem : PS_RedEnergyLoss]
+Variations   = 1
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
+Shader       = "PS_EnergyLoss"
+ParticleColor = 0
+Texture      = "flare0.dds" 
+
+[ParticleSystem : PS_YellowEnergyLoss]
+Variations   = 1
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
+Shader       = "PS_EnergyLoss"
+ParticleColor = 1
+Texture      = "flare0.dds" 
+
+[ParticleSystem : PS_BlueEnergyLoss]
+Variations   = 1
+SystemLife   = 0.5
+ParticleLife = 0.5
+ParticleSize = 100
+ParticleNum  = 50
+Shader       = "PS_EnergyLoss"
+ParticleColor = 2
+Texture      = "flare0.dds" 
+
+[ParticleSystem : PS_Explosion]
+Variations   = 1
+SystemLife   = 4
+ParticleLife = 2
+ParticleSize = 30
+ParticleNum  = 5000
+Shader       = "PS_Explosion"
+Texture      = "particle2.dds" 
+
+[ParticleSystem : PS_ColouredExplosion]
+Variations   = 1
+SystemLife   = 5
+ParticleLife = 5
+ParticleSize = 5
+ParticleNum  = 5000
+Shader       = "PS_ColouredExplosion"
+Texture      = "flame.dds" 
+ShapeTexture = "particle2.dds" 
+
+
+[ParticleSystem : PS_RedEnemyExplosion]
+Variations   = 1
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
+Shader       = "PS_EnemyExplosion"
+Texture      = "redExp.dds" 
+ShapeTexture = "Flare1_32.dds" 
+
+[ParticleSystem : PS_YellowEnemyExplosion]
+Variations   = 1
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
+Shader       = "PS_EnemyExplosion"
+Texture      = "yellowExp.dds" 
+ShapeTexture = "Flare1_32.dds" 
+
+[ParticleSystem : PS_BlueEnemyExplosion]
+Variations   = 1
+SystemLife   = 1.5
+ParticleLife = 1.5
+ParticleSize = 8
+ParticleNum  = 1000
+Shader       = "PS_EnemyExplosion"
+Texture      = "blueExp.dds"
+ShapeTexture = "Flare1_32.dds"  
+
+[ParticleSystem : PS_Jet]
+Variations   = 1
+SystemLife   = 10000
+ParticleLife = 1
+ParticleSize = 4
+ParticleNum  = 1000
+Shader       = "PS_Jet"
+Texture      = "Flare1_32.dds" 
+
+[ParticleSystem : PS_Fountain]
+Variations   = 1
+SystemLife   = 15
+ParticleLife = 3
+ParticleSize = 15
+ParticleNum  = 10000
+Shader       = "PS_Fountain"
+Texture      = "Flare1_32.dds" 
+
+[ParticleSystem : PS_Clouds]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 120
+ParticleNum  = 100
+Shader       = "PS_Clouds"
+Texture      = "cloud_new_handblur.dds" 
+NoiseTexture = "noiseVolume.dds" 
+
+[ParticleSystem : PS_RotatingFlare]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 15
+ParticleNum  = 60
+Shader       = "PS_RotatingFlare"
+Texture      = "Flare1_32.dds"
+TailSize	 = 0.375
+Speed		 = 0.5
+
+[ParticleSystem : PS_EnemyEnergyViz]
+Variations   = 1
+SystemLife   = 15000
+ParticleLife = 15000
+ParticleSize = 5
+ParticleNum  = 30
+Shader       = "PS_EnemyEnergyViz"
+Texture      = "Flare1_32.dds"
+TailSize	 = 1
+Speed		 = 1.5
+
+[ParticleSystem : PS_EnemyExplosion2]
+Variations   = 10
+SystemLife   = 1.4
+ParticleLife = 0.7
+ParticleSize = 30
+ParticleNum  = 512
+Shader       = "PS_EnemyExplosion2"
+Texture      = "Flare1_32.dds"
+
+
+################# ENTITY-MODEL SETTINGS ####################
+
+[EntitySettings : PlayerShip]
+ModelHook = enforcer_proc.obj
+
+[EntitySettings : EnemyFighter]
+ModelHook = fighter.obj
+
+[EntitySettings : EnemyInterceptor]
+ModelHook = interceptor.obj
+
+[EntitySettings : EnemyDisrupter]
+ModelHook = disrupter.obj
+
+[EntitySettings : EnemyCarrier]
+ModelHook = carrier.obj
+
+[EntitySettings : Ebomb]
+ModelHook = bomb.obj
+
+[EntitySettings : Misc]
+SpawnPointInterval = 1.0
+SpawnPointSize = 200
+SpawnPointTexture = stars.dds
+ShadowTextureSize = 1024
+TerraformingTimePerUnit = 0.01
+LaserTexture = "Flare1_32.dds"
+WaveChangeRate = 0.08
+WaveSpeed = 0.02
+WaveRepeats = 3
+CloudRepeats = 5
+NoiseTexture = noiseVolume.dds
+NoiseTexture1D = perlin1D.dds
+LakeNormalTexture = waternormal.dds
+ReflectionTextureSizeRatio = 0.4
+CraterArrowTexture = arrow.dds
+CrosshairTexture = target.dds
+CrosshairHelperTexture = crosshair_extra.dds
+
+
+
+
+
+
+
+
+################# MEM MANAGER SETTINGS ####################
+
+[MemManager : RawData]
+MinMemoryPOT = 4
+MaxMemoryPOT = 27
+
+[MemManager : RawData : MemDistribution]
+FixedMemTree = 10000

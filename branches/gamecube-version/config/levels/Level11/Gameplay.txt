@@ -1,0 +1,23 @@
+[Main]
+Lives = 2
+GamePlaneHeight = 250
+
+[Craters : Crater0]
+EbombType = red
+Location = (-329.596, -13.6267 )
+Radius = 76.6503
+AffectedAreaRadius = 872.11
+
+
+[Spawnpoints : p1]
+Location = (600, 600)
+EnemyType = EnemyFighter
+EnemyCount = 3
+EnergyType = red
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 0.25
+TimeBetweenSpawns = 1.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 1.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0

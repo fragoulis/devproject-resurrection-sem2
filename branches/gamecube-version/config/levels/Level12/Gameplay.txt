@@ -1,0 +1,56 @@
+[Main]
+Lives = 3
+GamePlaneHeight = 290
+
+[Craters : Crater0]
+EbombType = red
+Location = (-523.777, 221.434 )
+Radius = 97.0903
+AffectedAreaRadius = 551.882
+
+
+[Craters : Crater1]
+EbombType = blue
+Location = (91.9804, -81.7604 )
+Radius = 61.3202
+AffectedAreaRadius = 606.389
+
+
+[Spawnpoints : p1]
+Location = (800, 800)
+EnemyType = EnemyFighter
+EnemyCount = 1
+EnergyType = yellow
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 1.5
+TimeBetweenSpawns = 2.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 3.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0
+
+[Spawnpoints : p2]
+Location = (-800, -800)
+EnemyType = EnemyFighter
+EnemyCount = 2
+EnergyType = blue
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 2.0
+TimeBetweenSpawns = 1.5
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 2.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0
+
+[Spawnpoints : p3]
+Location = (300, 900)
+EnemyType = EnemyInterceptor
+EnemyCount = 1
+EnergyType = red
+TimeBetweenInRangeAndFirstSession = 1.0
+TimeBetweenSessionStartAndFirstSpawn = 3.0
+TimeBetweenSpawns = 6.0
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 6.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0

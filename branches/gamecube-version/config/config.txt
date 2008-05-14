@@ -1,0 +1,128 @@
+//*****************************************************************************
+//**
+//**   File:               config.txt
+//**   Author:             Initial setup: Joep. Rest: everyone
+//**   Last Change:        $Date: 2008-03-20 16:56:56 +0000 (Thu, 20 Mar 2008) $
+//**   Last Revision:      $Revision: 214 $
+//**
+//*****************************************************************************
+
+#
+# This is the new application level configuration file
+# In here we can make references to other files
+# Or add global settings
+#
+# This file is loaded at application startup by the Application class
+# It is passed to each engine with a call to XXXEngine::onApplicationLoad(ParserSection&);
+#
+
+[main]
+WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
+// Specifies levels. First is tutorial, next 4 is planets
+Levels = <Level11>, <Level12>, <Level05>, <Level10>, <Level08>
+
+[Physics]
+CraterExtraHeight = 30.0
+
+[Physics : Pusher]
+Ks = 2000.0
+Kd = 1000.0
+MinDistanceBetweenShips = 150.0
+
+[Physics : Spring]
+Ks = 1000.0
+Kd = 1000.0
+MinDistanceForClampedShips = 100.0
+
+[EnemyFactory]
+file = "Enemies.txt"
+
+[BuffFactory]
+file = "Buffs.txt"
+
+[AI]
+file = "AI.txt"
+
+
+// Defines a prototype for playership
+// This is used to create a new playership object when a new level is loaded
+[Playership]
+ThrusterMaxPower = 10000.0      # float
+Radius = 60.0                # float, collision detection and inertia calculation
+Mass = 0.5                  # float
+AirdragCoefficient = 0.05     # float
+LiftPower = 1.0              # float
+LiftVariance = 1.0           # float, not used ATM
+RespawnInvulnerableTime = 2.0           # seconds player is invulnerable after dying
+EnergyCapacity = 50
+
+
+
+// Defines a prototype for ebombs
+// This is used to create a new e-bomb object
+[Ebomb]
+Radius = 10.0                # float, collision detection
+Mass = 0.5
+AirdragCoefficient = 0.0
+LiftPower = 0.0              # doesn't lift, so gravity will pull it down quickly
+LiftVariance = 1.0
+InitialDownwardVelocity = 100
+
+[Laser]
+Cooldown = 0.08
+StartOffset = 128.0
+PowerFactor = 0.25
+
+
+[Laser : LaserPlayerPositive]
+Lifetime = 5.0
+MaxLength = 30.0
+Width = 18.0
+Speed = 700.0
+
+[Laser : LaserPlayerNegative]
+Lifetime = 5.0
+MaxLength = 30.0
+Width = 18.0
+Speed = 700.0
+
+
+[Logger]
+Level = 2
+DisplayFileLine = 0
+Stream = stderr
+
+[Sound]
+Dir     = "resources/sounds/"
+AllocationSize = 100
+MaxExplosions  = 2
+
+# Important: "_Destroyed" extension is hardcoded to the code so dont change it unless you change it 
+#            at the code as well. file: soundengine.cpp, line: 124
+
+[Sound : Files]
+Laser_Fired                     = "laser01.wav"
+EnemyFighter_Destroyed          = "exp01.wav"
+EnemyInterceptor_Destroyed      = "exp02.wav"
+EnemyDisrupter_Destroyed        = "exp03.wav"
+EnemyCarrier_Destroyed          = "exp04.wav"
+
+Ebomb_Ready                     = "ebomb_ready.wav"
+Ebomb_Succeded                  = "ebomb_succeded.wav"
+Ebomb_Deployed01                = "ebomb_hollow.wav"
+Ebomb_Deployed02                = "ebomb_beep.wav"
+Ebomb_Exp01                     = "ebomb_exp01.wav"
+#Ebomb_Exp02                     = "ebomb_exp02.wav"
+Ebomb_Exp03                     = "fireball.wav"
+
+Player_Lost                     = "player_lost.wav"
+Level_Complete                  = "level_complete.wav"
+Welcome                         = "welcome.wav"
+
+InterfaceAmbient                = "ambient01.wav"
+MenuClick                       = "click01.wav"
+
+[Screen]
+HorzRes = 1280
+VerticalRes = 1024
+Fullscreen = 1

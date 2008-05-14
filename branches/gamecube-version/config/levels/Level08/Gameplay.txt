@@ -1,0 +1,127 @@
+[Main]
+Lives = 5
+GamePlaneHeight = 530
+
+[Craters : Crater0]
+Location = (-3106.89, -2398.3 )
+Radius = 163.521
+AffectedAreaRadius = 1716.97
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = yellow
+ProtectorCarrierEnergyTypeSpawns = yellow
+EbombType = yellow
+
+[Craters : Crater1]
+
+Location = (-2790.07, -272.535 )
+Radius = 286.161
+AffectedAreaRadius = 1730.59
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = blue
+ProtectorCarrierEnergyTypeSpawns = blue
+EbombType = blue
+
+[Craters : Crater2]
+
+Location = (-2575.45, 2766.22 )
+Radius = 408.802
+AffectedAreaRadius = 1839.61
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = red
+ProtectorCarrierEnergyTypeSpawns = red
+EbombType = red
+
+[Craters : Crater3]
+
+Location = (-684.743, 2193.9 )
+Radius = 286.161
+AffectedAreaRadius = 1240.03
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = yellow
+ProtectorCarrierEnergyTypeSpawns = red
+EbombType = orange
+
+[Craters : Crater4]
+
+Location = (-367.921, -381.548 )
+Radius = 153.3
+AffectedAreaRadius = 1103.76
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = blue
+ProtectorCarrierEnergyTypeSpawns = yellow
+EbombType = purple
+
+[Craters : Crater5]
+
+Location = (-275.941, -2916.12 )
+Radius = 255.501
+AffectedAreaRadius = 1280.91
+EbombType = green
+
+[Craters : Crater6]
+
+Location = (2084.89, -2643.58 )
+Radius = 235.061
+AffectedAreaRadius = 1280.91
+EbombType = yellow
+
+[Craters : Crater7]
+
+Location = (1696.53, -136.267 )
+Radius = 255.501
+AffectedAreaRadius = 1594.33
+EbombType = yellow
+
+[Craters : Crater8]
+Location = (2585.67, 1825.98 )
+Radius = 214.62
+AffectedAreaRadius = 1267.28
+ProtectorRespawnDelay = 10.0
+ProtectorType = EnemyCarrier
+ProtectorEnergyType = yellow
+ProtectorCarrierEnergyTypeSpawns = blue
+EbombType = red
+
+[Spawnpoints : p1]
+Location = (-1000, -1000)
+EnemyType = EnemyInterceptor
+EnemyCount = 2
+EnergyType = yellow
+TimeBetweenInRangeAndFirstSession = 10.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 10
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 6.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0
+
+[Spawnpoints : p2]
+Location = (1000, -1000)
+EnemyType = EnemyInterceptor
+EnemyCount = 2
+EnergyType = red
+TimeBetweenInRangeAndFirstSession = 10.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 25
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 6.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0
+
+[Spawnpoints : p3]
+Location = (-1000, 1000)
+EnemyType = EnemyDisrupter
+EnemyCount = 2
+EnergyType = blue
+TimeBetweenInRangeAndFirstSession = 10.0
+TimeBetweenSessionStartAndFirstSpawn = 1.0
+TimeBetweenSpawns = 15
+TimeBetweenLastSpawnAndSessionEnd = 1.0
+TimeBetweenSessionEndAndSessionStart = 6.0
+MinimumPlayerDistance = 32.0
+MaximumPlayerDistance = 10000.0

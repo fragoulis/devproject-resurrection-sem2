@@ -1,0 +1,13 @@
+[Misc]
+LightDir = (0.780398, 0.59927, 0.178477, 0 )
+LightAmbDiff = (0.6, 0.8, 0.7, 1 )
+MapCellDim = 513
+MapExtents= (4096, 364.976, 4096 )
+WaterColor = (0.5, 0.6, 0.8 , 1.0 )
+WindLevel = (-1,0.5,100)
+
+[DataFiles]
+
+TerraformTexture = Level4_M_TForm.dds
+BarrenTexture = Level4_M_Barren.dds
+TerrainData = Level4_M_Data.dat
