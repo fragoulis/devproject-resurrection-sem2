@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TextureLoader", "TextureLoader\TextureLoader.vcproj", "{B9E9812F-F76D-4540-9364-75464FF5F956}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		NGC Debug|Win32 = NGC Debug|Win32
+		NGC Release|Win32 = NGC Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B9E9812F-F76D-4540-9364-75464FF5F956}.NGC Debug|Win32.ActiveCfg = NGC Debug|Win32
+		{B9E9812F-F76D-4540-9364-75464FF5F956}.NGC Debug|Win32.Build.0 = NGC Debug|Win32
+		{B9E9812F-F76D-4540-9364-75464FF5F956}.NGC Release|Win32.ActiveCfg = NGC Release|Win32
+		{B9E9812F-F76D-4540-9364-75464FF5F956}.NGC Release|Win32.Build.0 = NGC Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
