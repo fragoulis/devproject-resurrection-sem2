@@ -1,0 +1,5 @@
+Hello
+This is a sample test.
+To try out text reading in stupid gamecube.
+It behaves strangely sometimes...
+	...but anyway!

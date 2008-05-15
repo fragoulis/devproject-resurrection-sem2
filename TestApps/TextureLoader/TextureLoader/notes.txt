@@ -1,0 +1,4 @@
+-> check freeing the palette & texture objects
+-> wrapper / tries for TEV
+
+-> Flush after creating / modifying data that will be used by the GPU & vice versa!
