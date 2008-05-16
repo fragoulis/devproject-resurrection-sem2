@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "GameCube Elf3", "GameCube Elf3\GameCube Elf3.vcproj", "{4C48F028-1247-462F-8A7D-D1C41E844FE5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		NGC Debug|Win32 = NGC Debug|Win32
+		NGC Release|Win32 = NGC Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4C48F028-1247-462F-8A7D-D1C41E844FE5}.NGC Debug|Win32.ActiveCfg = NGC Debug|Win32
+		{4C48F028-1247-462F-8A7D-D1C41E844FE5}.NGC Debug|Win32.Build.0 = NGC Debug|Win32
+		{4C48F028-1247-462F-8A7D-D1C41E844FE5}.NGC Release|Win32.ActiveCfg = NGC Release|Win32
+		{4C48F028-1247-462F-8A7D-D1C41E844FE5}.NGC Release|Win32.Build.0 = NGC Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
