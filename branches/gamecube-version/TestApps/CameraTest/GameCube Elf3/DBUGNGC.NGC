@@ -10,7 +10,7 @@ Gamecube
 [sourcepath]
 ;
 [lastelf]
-g:\Visual Studio 2005\Projects\GameCube Elf3\GameCube Elf3\NGC_Debug\GameCube Elf3.elf
+h:\Team Project\vsp\GCsource\TestApps\CameraTest\GameCube Elf3\NGC_Debug\GameCube Elf3.elf
 [config]
 loadflags=0047
 defradix=16
@@ -88,8 +88,8 @@ type=2
 unit=0
 flags=0
 logfont=12,8,0,FF,01,Terminal
-cursor=47,7
-addr=-2147465464
+cursor=60,7
+addr=-2147466168
 [pane]
 paneid=3
 referencepane=2
@@ -100,9 +100,9 @@ type=13
 unit=0
 flags=0
 logfont=12,8,0,FF,01,Terminal
-cursor=0,0
+cursor=41,3
 ttymode=0
 autowrap=1
 [lastactivepane]
-paneid=1
+paneid=2
 
