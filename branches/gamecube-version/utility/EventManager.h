@@ -22,6 +22,7 @@ public:
 	virtual void onEvent(EventData& eventdata) = 0;
 };
 
+// for firing events on GC
 #define FIRE_EVENT(name) { name evt; EventManager::instance().fireEvent(evt); }
 #define FIRE_EVENT_VAL(name, val) { name evt(val); EventManager::instance().fireEvent(evt); }
 #define FIRE_EVENT_2VALS(name, val1, val2) { name evt(val1, val2); EventManager::instance().fireEvent(evt); }
@@ -64,58 +65,6 @@ public:
 
 
 
-//#define EVENT_WITH_POINTER(name, type) \
-//	class name { \
-//	public: \
-//		name(type* t) : m_t(t) { } \
-//		type* getPointer() { return m_t; } \
-//	private: \
-//		type* m_t; \
-//	};
-//
-//#define EVENT_WITH_2POINTERS(name, type1, type2) \
-//	class name { \
-//	public: \
-//		name(type1* t1, type2* t2) : m_t1(t1), m_t2(t2) { } \
-//		type1* getPointer1() { return m_t1; } \
-//		type2* getPointer2() { return m_t2; } \
-//	private: \
-//		type1* m_t1; \
-//		type2* m_t2; \
-//	};
-
-//#define EVENT_WITH_CONST_REFERENCE(name, type) \
-//	class name { \
-//	public: \
-//		name(const type& t) : m_t(t) { } \
-//		const type& getReference() { return m_t; } \
-//	private: \
-//		const type& m_t; \
-//	};
-//
-//#define EVENT_WITH_POINTER_AND_VALUE(name, ptype, vtype) \
-//	class name { \
-//	public: \
-//		name(ptype* pt, const vtype& vt) : m_pt(pt), m_vt(vt) { } \
-//		ptype* getPointer() { return m_pt; } \
-//		const vtype& getValue() { return m_vt; }  \
-//	private: \
-//		ptype* m_pt; \
-//		vtype m_vt; \
-//	};
-//
-//#define EVENT_WITH_POINTER_AND_2VALUES(name, ptype, vtype1, vtype2) \
-//	class name { \
-//	public: \
-//		name(ptype* pt, const vtype1& vt1, const vtype2& vt2) : m_pt(pt), m_vt1(vt1), m_vt2(vt2) { } \
-//		ptype* getPointer() { return m_pt; } \
-//		const vtype1& getValue1() { return m_vt1; }  \
-//		const vtype2& getValue2() { return m_vt2; }  \
-//	private: \
-//		ptype* m_pt; \
-//		vtype1 m_vt1; \
-//		vtype2 m_vt2; \
-//	};
 
 
 
