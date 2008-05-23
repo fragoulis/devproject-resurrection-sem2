@@ -1,10 +1,10 @@
 #include "Application.h"
 #include "Input.h"
-//#include "../ControllerManager.h"
+#include "../ControllerManager.h"
+#include "../LoadingController.h"
 //#include "../MenuController.h"
-//#include "../LoadingController.h"
 //#include "../GameController.h"
-//#include "../../gfxutils/ConfParser/ConfParser.h"
+#include "../../gfxutils/ConfParser/ConfParser.h"
 //#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 //#include "../../GameLogic/GameLogic.h"
 //#include "../../rendering/RenderEngine.h"
@@ -41,9 +41,7 @@ Application :: ~Application()
 
 bool Application :: init()
 {
-	// Move to load once we get LoadingController working
 	Input::create();
-
 
 	// this gets to stay here in init
     //alutInit(0, 0);
@@ -59,7 +57,7 @@ bool Application :: init()
 	//ShaderManager::init(cp->getSection("Shader"));
 	//MemMgrRaw::init(cp->getSection("MemManager:RawData"));
 
-	//LoadingController::safeInstance().load(this, &Application::load);
+	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
 }
@@ -85,6 +83,8 @@ void Application :: destroy()
 
 void Application :: load()
 {
+	cout << "Loading app" << endl;
+
 	//ConfParser cp("./config/config.txt");
 	//const ParserSection& ps = cp.rootSection();
 
@@ -139,6 +139,8 @@ void Application :: update(float dt)
 	if (dt > DELTA_TIME_MAX) dt = DELTA_TIME_MAX;
 	//if (dt < DELTA_TIME_MIN) dt = DELTA_TIME_MIN; // <--- BAD!! Just a quick bugfix
 
+	//cout << "Application :: update(" << dt << ")" << endl;
+
 	Input::instance().update();
-	//ControllerManager::instance().update(dt);
+	ControllerManager::instance().update(dt);
 }
