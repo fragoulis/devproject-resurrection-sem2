@@ -3,20 +3,20 @@
 #include "../ControllerManager.h"
 #include "../LoadingController.h"
 //#include "../MenuController.h"
-//#include "../GameController.h"
+#include "../GameController.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
 //#include "../../gfxutils/MemManager/MemMgr_RawData.h"
-//#include "../../GameLogic/GameLogic.h"
+#include "../../GameLogic/GameLogic.h"
 //#include "../../rendering/RenderEngine.h"
 //#include "../../sound/SoundEngine.h"
-//#include "../../AI/AIEngine.h"
-//#include "../../Physics/PhysicsEngine.h"
-//#include "../../GameLogic/Enemies/EnemyFactory.h"
-//#include "../../GameLogic/Lasers/LaserFactory.h"
-//#include "../../GameLogic/Buffs/BuffFactory.h"
-//#include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
-//#include "../../gfxutils/Misc/Logger.h"
-//#include "../../GameLogic/WorldObjectTypeManager.h"
+#include "../../AI/AIEngine.h"
+#include "../../Physics/PhysicsEngine.h"
+#include "../../GameLogic/Enemies/EnemyFactory.h"
+#include "../../GameLogic/Lasers/LaserFactory.h"
+#include "../../GameLogic/Buffs/BuffFactory.h"
+#include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
+#include "../../gfxutils/Misc/Logger.h"
+#include "../../GameLogic/WorldObjectTypeManager.h"
 //#include "../../gfx/Texture/TextureMgr.h"
 //#include "../../gfx/Shaders/ShaderManager.h"
 //#include <al/alut.h>
@@ -85,30 +85,26 @@ void Application :: load()
 {
 	//cout << "Application :: load()" << endl;
 
-	//ConfParser cp("./config/config.txt");
-	//const ParserSection& ps = cp.rootSection();
+	ConfParser cp("config/config.txt");
+	const ParserSection& ps = cp.rootSection();
 
-	//const ParserSection* psPhysics = cp.getSection("Physics");
-	//cout << "Var: " << psPhysics->getVal("CraterExtraHeight") << endl;
-
-	//[Physics]
-	//CraterExtraHeight = 30.0
-
-	//Logger::init(ps.getSection("Logger"));
+	Logger::init(ps.getSection("Logger"));
 
 	//MenuController::safeInstance().onApplicationLoad(ps);
-	//WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
-	//BuffFactory::safeInstance().onApplicationLoad(ps);
-	//LaserFactory::safeInstance().onApplicationLoad(ps);
-	//EnemyFactory::safeInstance().onApplicationLoad(ps);
-	//GameLogic::safeInstance().onApplicationLoad(ps);
+	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
+	BuffFactory::safeInstance().onApplicationLoad(ps);
+	LaserFactory::safeInstance().onApplicationLoad(ps);
+	EnemyFactory::safeInstance().onApplicationLoad(ps);
+	GameLogic::safeInstance().onApplicationLoad(ps);
 	//SoundEngine::safeInstance().onApplicationLoad(ps);
 	//RenderEngine::safeInstance().onApplicationLoad(ps);
-	//AIEngine::safeInstance().onApplicationLoad(ps);
-	//PhysicsEngine::safeInstance().onApplicationLoad(ps);
+	AIEngine::safeInstance().onApplicationLoad(ps);
+	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
 	//MenuController::safeInstance().load();
- //   EnemyBuffCoupleManager::safeInstance();
+    EnemyBuffCoupleManager::safeInstance();
+
+	GameController::safeInstance().loadLevel("Level05");
 }
 
 
@@ -116,22 +112,22 @@ void Application :: unload()
 {
 	//RenderEngine::safeInstance().unloadAllRenderers();
 
-	//WorldObjectTypeManager::destroy();
-	//LaserFactory::destroy();
-	//EnemyFactory::destroy();
-	//BuffFactory::destroy();
-	//PhysicsEngine::destroy();
-	//AIEngine::destroy();
-	//ControllerManager::destroy();
-	//GameController::destroy();
+	WorldObjectTypeManager::destroy();
+	LaserFactory::destroy();
+	EnemyFactory::destroy();
+	BuffFactory::destroy();
+	PhysicsEngine::destroy();
+	AIEngine::destroy();
+	ControllerManager::destroy();
+	GameController::destroy();
 	//MenuController::destroy();
-	//LoadingController::destroy();
+	LoadingController::destroy();
 	//SoundEngine::destroy();
 	//RenderEngine::destroy();
-	//GameLogic::destroy();
+	GameLogic::destroy();
 	//MemMgrRaw::destroy();
-	//Logger::destroy();
-	//EnemyBuffCoupleManager::destroy();
+	Logger::destroy();
+	EnemyBuffCoupleManager::destroy();
 
 	//filestr.close();
 }

@@ -9,6 +9,8 @@
 #include "../../utility/EventManager.h"
 #include "../WorldObjectTypeManager.h"
 #include "../Objects/Playership.h"
+#include <iostream>
+using namespace std;
 
 EnemyCarrier :: EnemyCarrier(int type) :
 	Enemyship(type),
@@ -116,7 +118,8 @@ void EnemyCarrier :: update(float dt)
 void EnemyCarrier :: _spawnEnemy()
 {
 	const Point3& pos = getPosition();
-	GameLogic::instance().spawnEnemy(m_spawnType, m_spawnEnergyType, pos.getX(), pos.getZ() + getRadius(), true);
+	Enemyship* es = GameLogic::instance().spawnEnemy(m_spawnType, m_spawnEnergyType, pos.getX(), pos.getZ() + getRadius(), false);
+	if (es == 0) return;
 
 	m_enemiesLeftToSpawnThisSession--;
 	m_spawnTimeTillNextEvent = m_timeBetweenSpawns;

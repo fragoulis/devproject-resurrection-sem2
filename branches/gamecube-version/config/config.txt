@@ -20,9 +20,10 @@
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
 // Specifies levels. First is tutorial, next 4 is planets
 Levels = <Level11>, <Level12>, <Level05>, <Level10>, <Level08>
+MaxEnemies = 20
 
 [Physics]
-CraterExtraHeight = 30.0
+CraterExtraHeight = 35.0
 
 [Physics : Pusher]
 Ks = 2000.0
@@ -88,9 +89,9 @@ Speed = 700.0
 
 
 [Logger]
-Level = 2
+Level = 3
 DisplayFileLine = 0
-Stream = stderr
+Stream = stdout
 
 [Sound]
 Dir     = "resources/sounds/"

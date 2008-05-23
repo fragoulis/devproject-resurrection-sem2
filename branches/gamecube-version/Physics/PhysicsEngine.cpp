@@ -410,7 +410,8 @@ void PhysicsEngine :: _checkPlayerEnemyCollisions()
 			Vector3 normal = pos1 - pos2;
 			normal.normalize();
 			Point3 colpos = pos1 + ((r1 + distance / 2) * normal);
-			CKLOG(std::string("Collision between player and enemy ") + ToString<Enemyship*>(enemy), 3);
+			//cout << "Collision between player and enemy" << endl;
+			//CKLOG(std::string("Collision between player and enemy ") + ToString<Enemyship*>(enemy), 3);
 			FIRE_EVENT_4VALS(Collision_Player_Enemy, m_playership, enemy, colpos, normal);
 		}
 	}
