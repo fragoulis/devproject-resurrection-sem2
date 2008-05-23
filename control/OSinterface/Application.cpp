@@ -83,10 +83,16 @@ void Application :: destroy()
 
 void Application :: load()
 {
-	cout << "Loading app" << endl;
+	//cout << "Application :: load()" << endl;
 
-	//ConfParser cp("./config/config.txt");
-	//const ParserSection& ps = cp.rootSection();
+	ConfParser cp("./config/config.txt");
+	const ParserSection& ps = cp.rootSection();
+
+	//const ParserSection* psPhysics = cp.getSection("Physics");
+	//cout << "Var: " << psPhysics->getVal("CraterExtraHeight") << endl;
+
+	//[Physics]
+	//CraterExtraHeight = 30.0
 
 	//Logger::init(ps.getSection("Logger"));
 

@@ -21,7 +21,7 @@ LoadingController :: ~LoadingController()
 
 void LoadingController :: activate()
 {
-	cout << "Activating LoadingController" << endl;
+	//cout << "Activating LoadingController" << endl;
 	// deactivate all user input, activate loading renderer
 	//RenderEngine& re = RenderEngine::safeInstance();
 	//re.deactivateAllRenderers();
@@ -31,7 +31,7 @@ void LoadingController :: activate()
 
 void LoadingController :: deactivate()
 {
-	cout << "Deactivating LoadingController" << endl;
+	//cout << "Deactivating LoadingController" << endl;
 	//RenderEngine& re = RenderEngine::instance();
 	//re.deactivateAllRenderers();
 	_deleteLoader();

@@ -2,15 +2,18 @@
 #include "../../rendering/Graphics.h"
 #include "../../utility/Time.h"
 #include <demo.h>
-#include <vector>
-#include <string>
-#include <iostream>
 using namespace std;
 
 
 
 // Testing only
 #include "../OSinterface/Input.h"
+#include "../../utility/File.h"
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <vector>
+#include <string>
 
 
 /*---------------------------------------------------------------------------*
@@ -125,6 +128,36 @@ int main ( void )
 		return 0;
 	}
 
+	//FILE* fp = fopen("./config/config.txt", "rb");
+	//if (fp == 0) cout << "Couldn't open file" << endl;
+	//char buffer[32];
+	//int bytesRead = fread(buffer, sizeof(char) * 32, 1, fp);
+	//cout << "Read " << bytesRead << " bytes" << endl;
+
+	//std::string fname("./config/config.txt");
+	//ifstream ifs(fname.c_str());
+	//if (!ifs.good()) cout << "Couldn't load file " << fname << endl;
+
+	//DVDFileInfo fileInfo;
+	//const char* fileName = "./config/config.txt";
+	//DVDInit();
+	//if (FALSE == DVDOpen(fileName, &fileInfo))
+	//{
+	//	cout << "Couldn't open file " << fileName << endl;
+	//	return 0;
+	//}
+	//int fileSize = DVDGetLength(&fileInfo);
+	//char* buffer = new char[fileSize];
+	//if (DVDRead(&fileInfo, buffer, OSRoundUp32B(fileSize), 0) == 0)
+	//{
+	//	cout << "Couldn't read file " << fileName << endl;
+	//	return 0;
+	//}
+
+	//File config("./config/config.txt");
+
+	//cout << "Read file " << config.getBuffer() << endl;
+
 
 	cout << "Application Initialized" << endl;
 	//cout << "Control X: " << Input::safeInstance().getControlX(0) << endl;
@@ -133,18 +166,18 @@ int main ( void )
     //PrintIntro(); // Print demo directions
     while(true) //!(pad[0].button & PAD_BUTTON_MENU))
     {
-        DEMOBeforeRender();
+		AnimTick();
+		const float dt = timer.getDeltatime();
+		app.update(dt);
+
+		DEMOBeforeRender();
         DrawTick(v);        // Draw the model.
 		g.reset();
 		app.render(g);
         DEMODoneRender();
-		AnimTick();
-        
-		const float dt = timer.getDeltatime();
-		app.update(dt);
 
 		//cout << "Time: " << u32(OSGetTime() >> 18) << endl;
-		cout << "Time: " << timer.getCurrentTime() << endl;
+		//cout << "Time: " << timer.getCurrentTime() << endl;
 
 		//PADRead(pad);
     }
