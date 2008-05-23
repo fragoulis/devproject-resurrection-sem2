@@ -64,6 +64,8 @@ void Laser :: update( float dt )
 			//}
 			break;
 		}
+		default :
+			break;
 	}
 }
 

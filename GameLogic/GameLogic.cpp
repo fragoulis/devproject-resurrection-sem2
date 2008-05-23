@@ -30,6 +30,7 @@ GameLogic :: GameLogic() :
 	m_playership(0),
 	m_playershipPrototype(0),
 	m_currentEbomb(EBOMB_TYPE_UNKNOWN),
+	m_maxEnemies(50),
 	m_terrain(0),
 	m_lasersSwapped(false)
 {
@@ -80,14 +81,16 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 
 void GameLogic :: onEvent(Player_Destroyed& evt)
 {
+	CKLOG("Player Destroyed", 3);
+
 	Playership* player = evt.getValue1();
 	player->setDying();
 	m_currentLives--;
 	if (m_currentLives == 0) {
+		CKLOG("Game Over", 3);
 		FIRE_EVENT(Game_Over);
 	}
 	else {
-		//cout << "Player Destroyed" << endl;
 		player->setVelocity(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterDirection(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterPower(0.0f);
@@ -97,7 +100,7 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 
 void GameLogic :: _playerDestroyed1_DespawnEnemies()
 {
-	//cout << "Despawning enemies" << endl;
+	CKLOG("Despawning enemies", 3);
 	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
 		Enemyship* es = *it;
@@ -112,7 +115,7 @@ void GameLogic :: _playerDestroyed1_DespawnEnemies()
 
 void GameLogic :: _playerDestroyed2_RespawnPlayer()
 {
-	//cout << "Respawning player" << endl;
+	CKLOG("Respawning player", 3);
 	m_playership->respawn();
 	FIRE_EVENT_VAL(Player_Respawned, m_playership);
 }
@@ -333,52 +336,6 @@ void GameLogic :: onEvent( Collision_Ebomb_Terrain& evt )
 	FIRE_EVENT_VAL(Ebomb_Missed, ebomb);
 }
 
-//void GameLogic :: _addLaserPowerBuffs(EbombType ebombType)
-//{
-//	int type1, type2;
-//	switch (ebombType)
-//	{
-//		case EBOMB_TYPE_RED :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-//			type2 = m_laserPowerType[ENERGY_TYPE_RED];
-//			break;
-//		}
-//		case EBOMB_TYPE_YELLOW :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-//			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-//			break;
-//		}
-//		case EBOMB_TYPE_BLUE :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_BLUE];
-//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-//			break;
-//		}
-//		case EBOMB_TYPE_ORANGE :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-//			type2 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-//			break;
-//		}
-//		case EBOMB_TYPE_GREEN :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_YELLOW];
-//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-//			break;
-//		}
-//		case EBOMB_TYPE_PURPLE :
-//		{
-//			type1 = m_laserPowerType[ENERGY_TYPE_RED];
-//			type2 = m_laserPowerType[ENERGY_TYPE_BLUE];
-//			break;
-//		}
-//	}
-//	m_playership->addBuff(type1);
-//	m_playership->addBuff(type2);
-//}
-
 void GameLogic :: onEvent(Level_Complete&)
 {
 	Vector3 rnd;
@@ -448,24 +405,24 @@ void GameLogic :: update(float dt)
 	{
 		(*i)->update(dt, m_playership->getPosition());
 	}
-	//for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
-	//{
-	//	(*it)->update(dt);
-	//}
-	for (EnemyshipList::iterator i = m_enemyships.begin(); i != m_enemyships.end(); ++i)
+	for (LaserList::iterator it = m_lasers.begin(); it != m_lasers.end(); ++it)
 	{
-		(*i)->update(dt);
+		(*it)->update(dt);
 	}
+	//for (int i = 0; i < int(m_enemyships.size()); i++)
+	//{
+	//	m_enemyships[i]->update(dt);
+	//}
 	for (CraterList::iterator i = m_craters.begin(); i != m_craters.end(); ++i)
 	{
 		(*i)->update(dt);
 	}
 
 	// delete objects that died this round
-	_cleanUpVector<Enemyship, Enemy_Despawned>(m_enemyships);
-	_cleanUpVector<Ebomb, Ebomb_Despawned>(m_ebombs);
-	_cleanUpVector<Laser, Laser_Despawned>(m_lasers);
-	_cleanUpVector<Crater, Crater_Despawned>(m_craters);
+	//_cleanUpVector<Enemyship, Enemy_Despawned>(m_enemyships);
+	//_cleanUpVector<Ebomb, Ebomb_Despawned>(m_ebombs);
+	//_cleanUpVector<Laser, Laser_Despawned>(m_lasers);
+	//_cleanUpVector<Crater, Crater_Despawned>(m_craters);
 
 	// Output debug info
 	//cout << m_playership->getPosition() << endl;
@@ -500,6 +457,7 @@ Enemyship* GameLogic :: spawnEnemy( int type, EnergyType energyType, float x, fl
 	m_enemyships.push_back(es);
 	es->setPosition(Point3(x, m_gamePlaneHeight, z));
 	es->setEnergyType(energyType);
+	CKLOG("Enemy spawned", 3); // at (" << int(x * 1000.0f) << ", " << int(z * 1000.0f) << ")" << endl;
 	FIRE_EVENT_VAL(Enemy_Spawned, es);
 	return es;
 }
@@ -600,7 +558,7 @@ void GameLogic :: loadLevel(const std::string& levelName)
 
 
 	// load level file
-	ConfParser cpLevel(std::string("config/levels/") + levelName + ".txt");
+	ConfParser cpLevel(std::string("config/levels/C") + levelName + ".txt");
 	const ParserSection* psMap = cpLevel.getSection("Map");
 	const ParserSection* psGameplay = cpLevel.getSection("Gameplay");
 
