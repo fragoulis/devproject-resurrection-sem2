@@ -54,3 +54,19 @@ inline int Input :: getTriggerL(int pad) const
 {
 	return m_currentPadz[pad].triggerRight;
 }
+
+
+inline int Input :: getPadCount() const
+{
+	return m_padCount;
+}
+
+inline bool Input :: hasError(int pad) const
+{
+	return m_currentPadz[pad].err != PAD_ERR_NONE;
+}
+
+inline bool Input :: isValid(int pad) const
+{
+	return m_currentPadz[pad].err != PAD_ERR_NO_CONTROLLER;
+}
