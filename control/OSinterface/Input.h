@@ -31,8 +31,13 @@ public:
 	inline int getControlY(int pad) const;
 	inline int getCameraX(int pad) const;
 	inline int getCameraY(int pad) const;
-	inline int getTriggerR(int pad) const;
 	inline int getTriggerL(int pad) const;
+	inline int getTriggerR(int pad) const;
+
+	inline bool isTriggerLGoingDown(int pad) const;
+	inline bool isTriggerLDown(int pad) const;
+	inline bool isTriggerRGoingDown(int pad) const;
+	inline bool isTriggerRDown(int pad) const;
 
 	inline int getPadCount() const;
 

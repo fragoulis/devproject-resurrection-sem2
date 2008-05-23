@@ -12,6 +12,8 @@
 #include "../math/Vector3.h"
 #include "../math/maths.h"
 #include "../math/Rotation.h"
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
 #include <iostream>
 using namespace std;
 
@@ -52,29 +54,52 @@ void GameController :: deactivate()
 void GameController :: update(float dt)
 {
 	GameLogic& gl = GameLogic::instance();
+	static int laserPositiveType = gl.getPositiveLaserType();
+	static int laserNegativeType = gl.getNegativeLaserType();
+	static int laserFire = laserPositiveType;
 
 	// Hardcoded the keys for now: WASD
-	Vector3 direction;
-	direction.set(0.0f, 0.0f, 0.0f);
 	Input& input = Input::instance();
 
-	if (!input.hasError(0)) {
+	if (!input.hasError(0))
+	{
+		// swap laser with L trigger
+		if (input.isTriggerLGoingDown(0))
+		{
+			laserFire = (laserFire == laserPositiveType ? laserNegativeType : laserPositiveType);
+			CKLOG(std::string("Laser fire swapped to ") + ToString<int>(laserFire), 3);
+		}
+
+		// get control stick input --> player movement
 		int controlX = input.getControlX(0);
 		int controlY = input.getControlY(0);
 		if (controlX != 0 || controlY != 0)
 		{
-			direction.setX(float(controlX) / 56.0f);
-			direction.setZ(float(controlY) / 56.0f);
-			//direction.normalize();
-			//cout << "dir: " << direction << endl;
+			Vector3 direction(float(controlX) / 56.0f, 0.0f, float(controlY) / 56.0f);
 			gl.setPlayerDirection(direction);
 		}
 		else
 		{
 			gl.setPlayerThrusterPower(0.0f);
 		}
+
+		// get C-stick input --> laser fire
+		int camX = input.getCameraX(0);
+		int camY = input.getCameraY(0);
+		if (camX != 0 || camY != 0)
+		{
+			Vector3 direction(float(camX) / 44.0f, 0.0f, float(camY) / 44.0f);
+			direction.normalize();
+			gl.fireLaser(direction, laserFire);
+		}
+
+		// Drop E-bomb
+		if (input.isTriggerRGoingDown(0))
+		{
+			gl.dropEbomb();
+		}
 	}
-	else
+	else // if (!input.hasError(0))
 	{
 		gl.setPlayerThrusterPower(0.0f);
 	}
@@ -91,23 +116,6 @@ void GameController :: update(float dt)
 	//if (input.isKeyGoingDown('M'))
 	//	RenderEngine::instance().togglePostProc();
 
-
-
-
-	//// Left mouse --> fire positive laser
-	//if (input.isMouseButtonDown(1) || input.isMouseButtonGoingDown(1)) {
-	//	gl.firePositiveLaser(getMouseMapPosition());
-	//}
-	//// Right mouse --> fire negative laser
-	//if (input.isMouseButtonDown(2) || input.isMouseButtonGoingDown(2)) {
-	//	gl.fireNegativeLaser(getMouseMapPosition());
-	//}
-
-	//// SPACE --> drop e-bomb
-	//if (input.isKeyGoingDown(32)) {
-	//	Point3 pos = getMouseMapPosition();
-	//	gl.dropEbomb(getMouseMapPosition(gl.getTerrainHeight(pos.getX(), pos.getY())));
-	//}
 
 	//// ESC --> pause game
 	//if (input.isKeyGoingDown(27))
