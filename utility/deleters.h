@@ -13,7 +13,7 @@ void deleteObject(T*& t)
 	}
 }
 
-#ifdef _VECTOR_
+#ifdef _STLP_VECTOR
 	template< typename T >
 	void deleteVector(std::vector<T*>& vec)
 	{
@@ -27,7 +27,7 @@ void deleteObject(T*& t)
 	}
 #endif
 
-#ifdef _LIST_
+#ifdef _STLP_LIST
 	template< typename T >
 	void deleteList(std::list<T*>& list)
 	{

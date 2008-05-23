@@ -85,8 +85,8 @@ void Application :: load()
 {
 	//cout << "Application :: load()" << endl;
 
-	ConfParser cp("./config/config.txt");
-	const ParserSection& ps = cp.rootSection();
+	//ConfParser cp("./config/config.txt");
+	//const ParserSection& ps = cp.rootSection();
 
 	//const ParserSection* psPhysics = cp.getSection("Physics");
 	//cout << "Var: " << psPhysics->getVal("CraterExtraHeight") << endl;
