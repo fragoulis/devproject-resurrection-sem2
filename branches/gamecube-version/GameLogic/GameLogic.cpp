@@ -462,10 +462,10 @@ void GameLogic :: update(float dt)
 	}
 
 	// delete objects that died this round
-	_cleanUpList<Enemyship, Enemy_Despawned>(m_enemyships);
-	_cleanUpList<Ebomb, Ebomb_Despawned>(m_ebombs);
-	_cleanUpList<Laser, Laser_Despawned>(m_lasers);
-	_cleanUpList<Crater, Crater_Despawned>(m_craters);
+	_cleanUpVector<Enemyship, Enemy_Despawned>(m_enemyships);
+	_cleanUpVector<Ebomb, Ebomb_Despawned>(m_ebombs);
+	_cleanUpVector<Laser, Laser_Despawned>(m_lasers);
+	_cleanUpVector<Crater, Crater_Despawned>(m_craters);
 
 	// Output debug info
 	//cout << m_playership->getPosition() << endl;
@@ -752,11 +752,11 @@ void GameLogic :: _deleteLevelData()
 {
 	deleteObject(m_terrain);
 	deleteObject(m_playership);
-	deleteList(m_enemyships);
-	deleteList(m_spawnpoints);
-	deleteList(m_craters);
-	deleteList(m_ebombs);
-	deleteList(m_lasers);
+	deleteVector(m_enemyships);
+	deleteVector(m_spawnpoints);
+	deleteVector(m_craters);
+	deleteVector(m_ebombs);
+	deleteVector(m_lasers);
 }
 
 
@@ -785,6 +785,29 @@ void GameLogic :: _cleanUpList( std::list<T*>& list )
 	}
 }
 
+// This can be rewritten to work with vectors:
+// use integer index as loop iterator
+// swap back() with current iteration and redo current iteration
+template< typename T, typename EventType >
+void GameLogic :: _cleanUpVector( std::vector<T*>& vec )
+{
+	typedef std::vector<T*> Vector;
+	for (int index = 0; index < int(vec.size()); )
+	{
+		T* t = vec[index];
+		if (t->isToBeDeleted())
+		{
+			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 3);
+			vec[index] = vec.back();
+			vec.pop_back();
+			FIRE_EVENT_VAL(EventType, t);
+			delete t;
+		}
+		else {
+			index++;
+		}
+	}
+}
 
 float GameLogic :: getTerrainHeight(float x, float z)
 {

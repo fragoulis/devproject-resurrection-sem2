@@ -144,6 +144,8 @@ private:
 	void _fireLaser(const Point3& targetPosition, int type);
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
+	template< typename T, typename EventType >
+	void _cleanUpVector( std::vector<T*>& vec ); // deletes objects with isToBeDeleted() == true
 	void _deleteLevelData();
 
 	// Player destroyed
