@@ -275,6 +275,12 @@ void GameLogic :: _checkEbombUncreation()
  * E-bomb will drop straight down due to gravity
  * Physics will check collision with craters and fire event
  */
+
+void GameLogic :: dropEbomb()
+{
+	dropEbomb(m_playership->getPosition());
+}
+
 void GameLogic :: dropEbomb(const Point3& targetLocation)
 {
 	// check if we have a bomb available
@@ -490,19 +496,25 @@ void GameLogic :: setPlayerThrusterPower(const float f)
 }
 
 void GameLogic :: firePositiveLaser(const Point3& targetPosition) {
-	_fireLaser(targetPosition, m_laserTypePositive);
+	fireLaser(targetPosition, m_laserTypePositive);
 }
 
 void GameLogic :: fireNegativeLaser(const Point3& targetPosition) {
-	_fireLaser(targetPosition, m_laserTypeNegative);
+	fireLaser(targetPosition, m_laserTypeNegative);
 }
 
-void GameLogic :: _fireLaser(const Point3& target, int type)
+void GameLogic :: firePositiveLaser(const Vector3& targetDirection) {
+	fireLaser(targetDirection, m_laserTypePositive);
+}
+void GameLogic :: fireNegativeLaser(const Vector3& targetDirection) {
+	fireLaser(targetDirection, m_laserTypeNegative);
+}
+
+
+void GameLogic :: fireLaser(const Vector3& direction, int type)
 {
 	if (m_playerLaserCooldownLeft <= 0.0f && !m_playership->isDying()) {
 		const Point3& playerPosition = m_playership->getPosition();
-		Vector3 direction = target - playerPosition;
-		direction.normalize();
 		Point3 startingPosition = playerPosition + direction * m_laserStartOffset;
 		startingPosition.setY(m_gamePlaneHeight);
 
@@ -521,6 +533,13 @@ void GameLogic :: _fireLaser(const Point3& target, int type)
 	}
 }
 
+void GameLogic :: fireLaser(const Point3& target, int type)
+{
+	const Point3& playerPosition = m_playership->getPosition();
+	Vector3 direction = target - playerPosition;
+	direction.normalize();
+	fireLaser(direction, type);
+}
 
 
 
@@ -731,7 +750,7 @@ void GameLogic :: _cleanUpList( std::list<T*>& list )
 	{
 		T* t = *it;
 		if (t->isToBeDeleted()) {
-			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 3);
+			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 4);
 			it = list.erase(it);
 			FIRE_EVENT_VAL(EventType, t);
 			delete t;
@@ -754,7 +773,7 @@ void GameLogic :: _cleanUpVector( std::vector<T*>& vec )
 		T* t = vec[index];
 		if (t->isToBeDeleted())
 		{
-			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 3);
+			CKLOG(std::string("Firing despawn event for ") + ToString<T*>(t), 4);
 			vec[index] = vec.back();
 			vec.pop_back();
 			FIRE_EVENT_VAL(EventType, t);

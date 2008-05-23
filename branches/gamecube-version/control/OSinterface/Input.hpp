@@ -1,4 +1,4 @@
-
+static const int TRIGGER_TRESHOLD = 10;
 
 inline bool Input :: isButtonGoingDown(int pad, int button) const
 {
@@ -24,6 +24,29 @@ inline bool Input :: isButtonUp(int pad, int button) const
 	return !isButtonDown(pad, button);
 }
 
+inline bool Input :: isTriggerLGoingDown(int pad) const
+{
+	return m_currentPadz[pad].triggerLeft > TRIGGER_TRESHOLD &&
+		m_previousPadz[pad].triggerLeft < TRIGGER_TRESHOLD;
+}
+
+inline bool Input :: isTriggerLDown(int pad) const
+{
+	return m_currentPadz[pad].triggerLeft > TRIGGER_TRESHOLD;
+}
+
+inline bool Input :: isTriggerRGoingDown(int pad) const
+{
+	return m_currentPadz[pad].triggerRight > TRIGGER_TRESHOLD &&
+		m_previousPadz[pad].triggerRight < TRIGGER_TRESHOLD;
+}
+
+inline bool Input :: isTriggerRDown(int pad) const
+{
+	return m_currentPadz[pad].triggerRight > TRIGGER_TRESHOLD;
+}
+
+
 
 inline int Input :: getControlX(int pad)
 {
@@ -45,12 +68,12 @@ inline int Input :: getCameraY(int pad) const
 	return m_currentPadz[pad].substickY;
 }
 
-inline int Input :: getTriggerR(int pad) const
+inline int Input :: getTriggerL(int pad) const
 {
 	return m_currentPadz[pad].triggerLeft;
 }
 
-inline int Input :: getTriggerL(int pad) const
+inline int Input :: getTriggerR(int pad) const
 {
 	return m_currentPadz[pad].triggerRight;
 }

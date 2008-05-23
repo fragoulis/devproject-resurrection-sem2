@@ -2,6 +2,8 @@
 #include "../../gfxutils/ConfParser/ParserSection.h"
 #include "../../gfxutils/Misc/utils.h"
 #include "../../math/maths.h"
+#include <iostream>
+using namespace std;
 
 
 Laser :: Laser(int type) : m_age(0.0f), m_state(STARTING)
@@ -33,7 +35,11 @@ void Laser :: update( float dt )
 {
 	m_age += dt;
 
-	if (m_age > m_lifetime) m_state = TO_BE_DELETED;
+	if (m_age > m_lifetime)
+	{
+		m_state = TO_BE_DELETED;
+		//cout << "Deleting laser at " << getPosition() << endl;
+	}
 
 	switch (m_state) {
 

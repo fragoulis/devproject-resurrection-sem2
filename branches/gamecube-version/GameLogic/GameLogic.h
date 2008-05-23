@@ -58,6 +58,9 @@ public:
 	int getCurrentLives() const { return m_currentLives; }
 	const Playership* getPlayership() const { return m_playership; }
 	float getTerrainHeight(float x, float z);
+	int getPositiveLaserType() const { return m_laserTypePositive; }
+	int getNegativeLaserType() const { return m_laserTypeNegative; }
+	//const Point3& getPlayerPosition() const { return m_playership->getPosition(); }
 
 
 	void loadLevel(const std::string& levelName);
@@ -68,8 +71,13 @@ public:
 	Enemyship* spawnEnemy(int type, EnergyType energyType, float x, float z, bool force);
 	void setPlayerDirection(const Vector3& v);
 	void setPlayerThrusterPower(float f);
+	void fireLaser(const Point3& targetPosition, int type);
+	void fireLaser(const Vector3& targetDirection, int type);
 	void firePositiveLaser(const Point3& targetPosition);
 	void fireNegativeLaser(const Point3& targetPosition);
+	void firePositiveLaser(const Vector3& targetDirection);
+	void fireNegativeLaser(const Vector3& targetDirection);
+	void dropEbomb(); // drops at current player loc
 	void dropEbomb(const Point3& targetLocation); // attempts, won't drop if no bomb is available
 	void swapLasers();
 	void unSwapLasers();
@@ -141,7 +149,6 @@ private:
 	bool _checkNormalEbombCreation(EnergyType);
 	bool _checkCombinedEbombCreation(EnergyType, EnergyType);
 	void _checkEbombUncreation();
-	void _fireLaser(const Point3& targetPosition, int type);
 	template< typename T, typename EventType >
 	void _cleanUpList( std::list<T*>& list ); // deletes objects with isToBeDeleted() == true
 	template< typename T, typename EventType >
