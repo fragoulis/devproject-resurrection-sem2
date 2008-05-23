@@ -12,6 +12,8 @@
 #include "../math/Vector3.h"
 #include "../math/maths.h"
 #include "../math/Rotation.h"
+#include <iostream>
+using namespace std;
 
 GameController :: GameController()
 {
@@ -54,15 +56,29 @@ void GameController :: update(float dt)
 	// Hardcoded the keys for now: WASD
 	Vector3 direction;
 	direction.set(0.0f, 0.0f, 0.0f);
-	//Input& input = Input::instance();
-	//if (input.isKeyDownOrGoingDown('W') || input.isKeyDownOrGoingDown(KEY_UP))
-	//	direction += Vector3(0.0f, 0.0f, -1.0f);
-	//if (input.isKeyDownOrGoingDown('A') || input.isKeyDownOrGoingDown(KEY_LEFT))
-	//	direction += Vector3(-1.0f, 0.0f, 0.0f);
-	//if (input.isKeyDownOrGoingDown('S') || input.isKeyDownOrGoingDown(KEY_DOWN))
-	//	direction += Vector3(0.0f, 0.0f, 1.0f);
-	//if (input.isKeyDownOrGoingDown('D') || input.isKeyDownOrGoingDown(KEY_RIGHT))
-	//	direction += Vector3(1.0f, 0.0f, 0.0f);
+	Input& input = Input::instance();
+
+	if (!input.hasError(0)) {
+		int controlX = input.getControlX(0);
+		int controlY = input.getControlY(0);
+		if (controlX != 0 || controlY != 0)
+		{
+			direction.setX(float(controlX) / 56.0f);
+			direction.setZ(float(controlY) / 56.0f);
+			//direction.normalize();
+			//cout << "dir: " << direction << endl;
+			gl.setPlayerDirection(direction);
+		}
+		else
+		{
+			gl.setPlayerThrusterPower(0.0f);
+		}
+	}
+	else
+	{
+		gl.setPlayerThrusterPower(0.0f);
+	}
+
 
 	//if (input.isKeyDownOrGoingDown('P'))
 	//	RenderEngine::instance().adjustCamera(5.0f);
@@ -75,14 +91,6 @@ void GameController :: update(float dt)
 	//if (input.isKeyGoingDown('M'))
 	//	RenderEngine::instance().togglePostProc();
 
-	if (!Math::float_is_zero(direction.lengthSquared())) {
-		direction.normalize();
-		gl.setPlayerDirection(direction);
-	}
-	else {
-		// if no direction is pressed on keyboard, turn off thruster, but leave direction the same
-		gl.setPlayerThrusterPower(0.0f);
-	}
 
 
 

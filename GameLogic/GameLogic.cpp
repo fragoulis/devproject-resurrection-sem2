@@ -81,9 +81,8 @@ void GameLogic :: onEvent(Collision_Player_Enemy& coldata)
 
 void GameLogic :: onEvent(Player_Destroyed& evt)
 {
-	CKLOG("Player Destroyed", 3);
-
 	Playership* player = evt.getValue1();
+	CKLOG(std::string("Player Destroyed at loc ") + ToString<Point3>(player->getPosition()), 3);
 	player->setDying();
 	m_currentLives--;
 	if (m_currentLives == 0) {
@@ -409,20 +408,20 @@ void GameLogic :: update(float dt)
 	{
 		(*it)->update(dt);
 	}
-	//for (int i = 0; i < int(m_enemyships.size()); i++)
-	//{
-	//	m_enemyships[i]->update(dt);
-	//}
+	for (int i = 0; i < int(m_enemyships.size()); i++)
+	{
+		m_enemyships[i]->update(dt);
+	}
 	for (CraterList::iterator i = m_craters.begin(); i != m_craters.end(); ++i)
 	{
 		(*i)->update(dt);
 	}
 
 	// delete objects that died this round
-	//_cleanUpVector<Enemyship, Enemy_Despawned>(m_enemyships);
-	//_cleanUpVector<Ebomb, Ebomb_Despawned>(m_ebombs);
-	//_cleanUpVector<Laser, Laser_Despawned>(m_lasers);
-	//_cleanUpVector<Crater, Crater_Despawned>(m_craters);
+	_cleanUpVector<Enemyship, Enemy_Despawned>(m_enemyships);
+	_cleanUpVector<Ebomb, Ebomb_Despawned>(m_ebombs);
+	_cleanUpVector<Laser, Laser_Despawned>(m_lasers);
+	_cleanUpVector<Crater, Crater_Despawned>(m_craters);
 
 	// Output debug info
 	//cout << m_playership->getPosition() << endl;

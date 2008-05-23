@@ -125,6 +125,6 @@ istream& Vector3::read(istream& is)
 }
 ostream& Vector3::write(ostream& os) const
 {
-	os << '(' << m_components[0] << ", " << m_components[1] << ", " << m_components[2] << ')';
+	os << " (" << int(m_components[0] * 10.0f) << ", " << int(m_components[1] * 10.0f) << ", " << int(m_components[2] * 10.0f) << ") / 10";
 	return os;
 }

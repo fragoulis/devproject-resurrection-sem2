@@ -34,12 +34,19 @@ public:
 	inline int getTriggerR(int pad) const;
 	inline int getTriggerL(int pad) const;
 
+	inline int getPadCount() const;
+
+	inline bool hasError(int pad) const;
+	inline bool isValid(int pad) const;
+
 	void update();
 
 
 private:
 	PADStatus m_currentPadz[PAD_MAX_CONTROLLERS];
 	PADStatus m_previousPadz[PAD_MAX_CONTROLLERS];
+
+	int m_padCount;
 
 
 	friend Singleton< Input >;
