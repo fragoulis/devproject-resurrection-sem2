@@ -2,13 +2,13 @@
 #define _RES_QUATERNION_H_
 #include "Vector3.h"
 
-class Quaternion
+class tQuaternion
 {
 public:
-	explicit Quaternion() { }
-	Quaternion(float s, const Vector3& v);
-	Quaternion(float s, float v1, float v2, float v3);
-	~Quaternion() { }
+	explicit tQuaternion() { }
+	tQuaternion(float s, const Vector3& v);
+	tQuaternion(float s, float v1, float v2, float v3);
+	~tQuaternion() { }
 
 	float getScalar() const { return m_scalar; }
 	Vector3 getVector() const { return m_vector; }
@@ -22,22 +22,22 @@ public:
 	void set(float s, const Vector3& v) { setScalar(s); setVector(v); }
 	void set(float s, float v1, float v2, float v3) { setScalar(s); setVector(v1, v2, v3); }
 
-	void add(const Quaternion& q);
-	void subtract(const Quaternion& q);
-	void multiply(const Quaternion& q); // Grassmann
+	void add(const tQuaternion& q);
+	void subtract(const tQuaternion& q);
+	void multiply(const tQuaternion& q); // Grassmann
 	void multiply(float m);
 	void conjugate();
 	void normalize();
-	void slerp(const Quaternion& target, float time);
+	void slerp(const tQuaternion& target, float time);
 
 	float squareLength() const;
 	float length() const;
 
 
-	Quaternion& operator += (const Quaternion& rhs) { add(rhs); return *this; }
-	Quaternion& operator -= (const Quaternion& rhs) { subtract(rhs); return *this; }
-	Quaternion& operator *= (const Quaternion& rhs) { multiply(rhs); return *this; }
-	Quaternion& operator *= (float m) { multiply(m); return *this; }
+	tQuaternion& operator += (const tQuaternion& rhs) { add(rhs); return *this; }
+	tQuaternion& operator -= (const tQuaternion& rhs) { subtract(rhs); return *this; }
+	tQuaternion& operator *= (const tQuaternion& rhs) { multiply(rhs); return *this; }
+	tQuaternion& operator *= (float m) { multiply(m); return *this; }
 
 private:
 	float m_scalar;
@@ -52,43 +52,43 @@ private:
 
 
 
-inline const Quaternion operator + (const Quaternion& lhs, const Quaternion& rhs)
+inline const tQuaternion operator + (const tQuaternion& lhs, const tQuaternion& rhs)
 {
-	Quaternion ret(lhs);
+	tQuaternion ret(lhs);
 	ret += rhs;
 	return ret;
 }
 
-inline const Quaternion operator - (const Quaternion& lhs, const Quaternion& rhs)
+inline const tQuaternion operator - (const tQuaternion& lhs, const tQuaternion& rhs)
 {
-	Quaternion ret(lhs);
+	tQuaternion ret(lhs);
 	ret -= rhs;
 	return ret;
 }
 
-inline const Quaternion operator * (const Quaternion& lhs, const Quaternion& rhs)
+inline const tQuaternion operator * (const tQuaternion& lhs, const tQuaternion& rhs)
 {
-	Quaternion ret(lhs);
+	tQuaternion ret(lhs);
 	ret *= rhs;
 	return ret;
 }
 
-inline const Quaternion operator * (const Quaternion& lhs, const float rhs)
+inline const tQuaternion operator * (const tQuaternion& lhs, const float rhs)
 {
-	Quaternion ret(lhs);
+	tQuaternion ret(lhs);
 	ret *= rhs;
 	return ret;
 }
 
-inline const Quaternion operator * (const float lhs, const Quaternion& rhs)
+inline const tQuaternion operator * (const float lhs, const tQuaternion& rhs)
 {
-	Quaternion ret(rhs);
+	tQuaternion ret(rhs);
 	ret *= lhs;
 	return ret;
 }
 
-inline const Quaternion operator ~ (const Quaternion& rhs) {
-	Quaternion ret(rhs);
+inline const tQuaternion operator ~ (const tQuaternion& rhs) {
+	tQuaternion ret(rhs);
 	ret.conjugate();
 	return ret;
 }

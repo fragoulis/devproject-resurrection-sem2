@@ -2,72 +2,72 @@
 #include <cmath>
 #include <cassert>
 
-Quaternion::Quaternion(float s, const Vector3& v)
+tQuaternion::tQuaternion(float s, const Vector3& v)
 {
 	setScalar(s);
 	setVector(v);
 }
 
-Quaternion::Quaternion(float s, float v1, float v2, float v3)
+tQuaternion::tQuaternion(float s, float v1, float v2, float v3)
 {
 	setScalar(s);
 	setVector(v1, v2, v3);
 }
 
 
-void Quaternion::setVector(float v1, float v2, float v3)
+void tQuaternion::setVector(float v1, float v2, float v3)
 {
 	m_vector.set(v1, v2, v3);
 }
 
-void Quaternion::add(const Quaternion& q)
+void tQuaternion::add(const tQuaternion& q)
 {
 	m_scalar += q.m_scalar;
 	m_vector += q.m_vector;
 }
 
-void Quaternion::subtract(const Quaternion& q)
+void tQuaternion::subtract(const tQuaternion& q)
 {
 	m_scalar -= q.m_scalar;
 	m_vector -= q.m_vector;
 }
 
-void Quaternion::multiply(const Quaternion& q)
+void tQuaternion::multiply(const tQuaternion& q)
 {
 	float new_scalar = m_scalar * q.m_scalar - m_vector.dot(q.m_vector);
 	m_vector = m_scalar * q.m_vector + q.m_scalar * m_vector + Vector3::cross(m_vector, q.m_vector);
 	m_scalar = new_scalar;
 }
 
-void Quaternion::multiply(float m)
+void tQuaternion::multiply(float m)
 {
 	m_scalar *= m;
 	m_vector *= m;
 }
 
-void Quaternion::conjugate()
+void tQuaternion::conjugate()
 {
 	m_vector.negate();
 }
 
-void Quaternion::normalize()
+void tQuaternion::normalize()
 {
 	assert(squareLength() > 0.0f);
 	multiply(1.0f / length());
 }
 
 
-float Quaternion :: squareLength() const
+float tQuaternion :: squareLength() const
 {
 	return m_scalar * m_scalar + m_vector.dot(m_vector);
 }
 
-float Quaternion :: length() const
+float tQuaternion :: length() const
 {
 	return sqrt(squareLength());
 }
 
-void Quaternion :: slerp( const Quaternion& target, float time )
+void tQuaternion :: slerp( const tQuaternion& target, float time )
 {
     float to1[4];
 
@@ -100,7 +100,7 @@ void Quaternion :: slerp( const Quaternion& target, float time )
         scale0  = sin( ( 1.0f - time ) * omega ) * sinom;
         scale1  = sin( time * omega ) * sinom;
     } else {        
-    // "from" and "to" quaternions are very close
+    // "from" and "to" tQuaternions are very close
     //  ... so we can do a linear interpolation
             scale0 = 1.0f - time;
             scale1 = time;
