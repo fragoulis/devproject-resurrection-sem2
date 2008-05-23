@@ -105,12 +105,12 @@ void Rotation :: set(float pitch, float yaw, float roll)
 	
 void Rotation::rotate(const Vector3& axis, const float angle)
 {
-	m_q *= Quaternion(cos(0.5f * angle), sin(0.5f * angle) * axis);
+	m_q *= tQuaternion(cos(0.5f * angle), sin(0.5f * angle) * axis);
 }
 
 void Rotation::rotate(const Vector3& angle)
 {
-	m_q += 0.5f * Quaternion(0.0f, angle) * m_q;
+	m_q += 0.5f * tQuaternion(0.0f, angle) * m_q;
 }
 
 void Rotation :: rotate( const Rotation& r )
@@ -120,25 +120,25 @@ void Rotation :: rotate( const Rotation& r )
 
 void Rotation :: rotateTowards(const Rotation& r, float time)
 {
-	m_q.slerp(r.getQuaternion(), time);
+	m_q.slerp(r.gettQuaternion(), time);
 }
 
 void Rotation::applyTo(Vector3& v) const
 {
-	v = (m_q * Quaternion(0.0f, v) * ~m_q).getVector();
+	v = (m_q * tQuaternion(0.0f, v) * ~m_q).getVector();
 }
 
 void Rotation::applyTo(Point3& p) const
 {
-	p.set((m_q * Quaternion(0.0f, p.getVector()) * ~m_q).getVector());
+	p.set((m_q * tQuaternion(0.0f, p.getVector()) * ~m_q).getVector());
 }
 
 void Rotation::applyReverseTo(Vector3& v) const
 {
-	v = (~m_q * Quaternion(0.0f, v) * m_q).getVector();
+	v = (~m_q * tQuaternion(0.0f, v) * m_q).getVector();
 }
 
 void Rotation::applyReverseTo(Point3& p) const
 {
-	p.set((~m_q * Quaternion(0.0f, p.getVector()) * m_q).getVector());
+	p.set((~m_q * tQuaternion(0.0f, p.getVector()) * m_q).getVector());
 }

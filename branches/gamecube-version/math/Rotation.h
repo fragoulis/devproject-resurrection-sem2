@@ -5,7 +5,7 @@ class Vector3;
 class Point3;
 class Matrix44;
 
-// Abstracts out the Quaternion from rotations
+// Abstracts out the tQuaternion from rotations
 // Can use Matrix or 3 vectors for implementation instead if so desired
 
 class Rotation
@@ -19,7 +19,7 @@ public:
 	float getAngle() const;
 	Matrix44 getMatrix() const;
 	Matrix44 getReverseMatrix() const;
-	const Quaternion& getQuaternion() const { return m_q; }
+	const tQuaternion& gettQuaternion() const { return m_q; }
 
 	void clear();
 	void set(const Vector3& axis, float angle);
@@ -37,7 +37,7 @@ public:
 	void applyReverseTo(Point3& p) const;
 
 private:
-	Quaternion m_q;
+	tQuaternion m_q;
 };
 
 
