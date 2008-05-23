@@ -76,30 +76,73 @@ void ConfParser :: _removeTrailBlanks(std::string& line) const
 //-------------------------------------------------------------
 // Added by Joep: strip comments
 #include <sstream>
-void stripComments(istream& is, iostream& out)
+#include "../../utility/File.h"
+void stripComments(const char* fileBuffer, int fileLength, iostream& out)
 {
+	//stringstream is(fileBuffer);
+	int bufPos = 0;
 	char buffer[256];
+	//int lineCount = 0;
 
-	while (is.good())
+	while (fileBuffer[bufPos] != 0 && bufPos < fileLength)
 	{
-		is.getline(buffer, 256); // doesn't include newline
+		//is.getline(buffer, 256); // doesn't include newline
+		int i = 0;
+		while (fileBuffer[bufPos] != '\n' && fileBuffer[bufPos] != '\r' && fileBuffer[bufPos] != 0)
+		{
+			buffer[i++] = fileBuffer[bufPos++];
+		}
+		bufPos += 2; // skip the newline
+		buffer[i] = 0;
+
+
 		for (int i=0; i < 255; i++)
 			if (buffer[i] == '#' || (buffer[i] == '/' && buffer[i+1] == '/'))
 				buffer[i] = 0;
-		out << buffer << "\n"; // put back the newline
+		if (buffer[0] != 0) {
+			out << buffer << "\n"; // put back the newline
+			//cout << buffer << "\n";
+			//lineCount++;
+		}
 	}
+	//cout << "Read " << lineCount << " lines" << endl;
 }
 
 ConfParser :: ConfParser(const std::string& fname)
 {
 	_validConfFile = true;
 	// Open file & start reading loop
-	ifstream ifs(fname.c_str());
+
+	//stringstream is;
+	//const char* buffer = file.getBuffer();
+	//char lineBuffer[256];
+	//int bufPos = 0;
+	//while (bufPos < file.getLength())
+	//{
+	//	for (int j = 0; j < 256; j++)
+	//	{
+	//		if (buffer[bufPos] == '#')// || (buffer[bufPos] == '/' && buffer[bufPos+1] == '/'))
+	//		{
+	//			lineBuffer[j] = 0;
+	//			while (buffer[bufPos] != '\n'
+
+	//		}
+	//		lineBuffer[j] = buffer[bufPos++];
+	//	}
+	//}
+
+
+	File file(fname);
+
+	//ifstream ifs(fname.c_str());
 	// added stringstream
 	stringstream is;
-	stripComments(ifs, is);
+	stripComments(file.getBuffer(), file.getLength(), is);
+
+	//cout << "Read: " << is << endl;
+
 	_parseFile(is);
-	ifs.close();
+	//ifs.close();
 	assert(_validConfFile);
 }
 //---------------------------------------------------------------------
