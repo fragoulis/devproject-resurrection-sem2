@@ -143,6 +143,9 @@ int main ( void )
 		const float dt = timer.getDeltatime();
 		app.update(dt);
 
+		//cout << "Time: " << u32(OSGetTime() >> 18) << endl;
+		cout << "Time: " << timer.getCurrentTime() << endl;
+
 		//PADRead(pad);
     }
 

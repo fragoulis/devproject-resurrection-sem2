@@ -10,15 +10,15 @@ public:
 	Time();
 	~Time();
 
-	float getLasttime() { return m_lasttime; }
-	float getCurrentTime();
-	float getDeltatime();
+	double getLasttime() { return m_lasttime; }
+	double getCurrentTime();
+	double getDeltatime();
 
 	void reset();
 
 private:
-	float m_starttime;
-	float m_lasttime;
+	double m_starttime;
+	double m_lasttime;
 };
 
 
