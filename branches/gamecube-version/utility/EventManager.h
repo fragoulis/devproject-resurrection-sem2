@@ -1,6 +1,7 @@
 #ifndef _RES_EVENTMANAGER_H_
 #define _RES_EVENTMANAGER_H_
 #include <vector>
+#include <algorithm>
 
 /**
  * EventManager.
@@ -26,6 +27,8 @@ public:
 #define FIRE_EVENT(name) { name evt; EventManager::instance().fireEvent(evt); }
 #define FIRE_EVENT_VAL(name, val) { name evt(val); EventManager::instance().fireEvent(evt); }
 #define FIRE_EVENT_2VALS(name, val1, val2) { name evt(val1, val2); EventManager::instance().fireEvent(evt); }
+#define FIRE_EVENT_3VALS(name, val1, val2, val3) { name evt(val1, val2, val3); EventManager::instance().fireEvent(evt); }
+#define FIRE_EVENT_4VALS(name, val1, val2, val3, val4) { name evt(val1, val2, val3, val4); EventManager::instance().fireEvent(evt); }
 
 // Macros for quickly creating events
 
@@ -102,7 +105,8 @@ private:
 			m_listeners.push_back(el);
 		}
 		void unRegisterEventListener(EventListener<EventData>* el) {
-			m_listeners.remove(el);
+			std::remove(m_listeners.begin(), m_listeners.end(), el);
+			//m_listeners.remove(el);
 		}
 		void fireEvent(EventData& eventdata) {
 			for (EventListenerListIt i = m_listeners.begin(); i != m_listeners.end(); i++) {
