@@ -13,15 +13,10 @@
 #include <iostream>
 
 #include "../gfxutils/ConfParser/ConfParser.h"
-//#include "../gfx/Texture/TextureMgr.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Model/ModelMgr.h"
-//#include "../gfx/VBO/VBOMgr.h"
-//#include "../gfxutils/MemManager/MemMgr_RawData.h"
-//#include "../ParticleSystem/PS_Manager.h"
 #include "../GameLogic/GameLogic.h"
-
-//#include <gl/glu.h>
+#include "../gfxutils/Model/ModelMgr.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/VA/VATTable.h"
 
 using namespace std;
 
@@ -73,7 +68,11 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	//ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
 	//PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 
-	//m_settings.init(m_confParser->getSection("EntitySettings"));
+	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
+	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
+	VATTable::buildVAT();
+
+	m_settings.init(m_confParser->getSection("EntitySettings"));
 }
 
 void RenderEngine :: onApplicationUnload()
@@ -84,6 +83,9 @@ void RenderEngine :: onApplicationUnload()
 	//VBOMgr::destroy();
 	//ShaderManager::destroy();
 	//TextureMgr::destroy();
+
+	ModelMgr::destroy();
+	TextureMgr::destroy();
 
 	if (m_confParser != 0) delete m_confParser;
 }

@@ -1,5 +1,6 @@
 #include "ConstRenderSettings.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
+#include "../gfxutils/Model/ModelMgr.h"
 //#include "../gfx/Model/Model.h"
 //#include "../gfx/Shaders/ShaderManager.h"
 //#include "../gfx/Model/ModelMgr.h"
@@ -22,23 +23,12 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 		es.entityName = entities[i]->getName();
 		es.modelName = entities[i]->getVal("ModelHook");
 		es.type = WorldObjectTypeManager::instance().getTypeFromName(es.entityName);
-		// Load the model here & figure out which shader to use
-		//Model * model = ModelMgr::instance().getModel(es.modelName);
-		//assert(model);
-		//if(model->matGroup(0).getTextureList().empty())
-		//	es.shaderIndex = ShaderManager::instance()->getShaderIndex("PerPixelNoTex");
-		//else if(model->matGroup(0).getTextureList().size() == 1)
-		//	es.shaderIndex = ShaderManager::instance()->getShaderIndex("PerPixelTex");
-		//else
-		//	;// ..more?? another shader then!
-		//model->matGroup(0).setShaderIndex(es.shaderIndex);
+		OSReport("DBG val : %d\n",es.type);
+		
+		ModelMgr::instance().getModel(es.modelName);
 
 		// push back the settings
 		m_entities.push_back(es);
-
-		// Assign the shader to all the material groups, just for reference
-		//for(unsigned i=0;i<model->getMatGroup().size();++i)
-		//	model->matGroup(i).setShaderIndex(es.shaderIndex);
 	}
 }
 

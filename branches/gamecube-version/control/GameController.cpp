@@ -123,7 +123,7 @@ void GameController :: update(float dt)
 
 
 	//SoundEngine::instance().update();
-	AIEngine::instance().update(dt);
+	AIEngine::instance().update(dt);		
     EnemyBuffCoupleManager::instance().update();
 	PhysicsEngine::instance().update(dt);
 	//RenderEngine::instance().update(dt);

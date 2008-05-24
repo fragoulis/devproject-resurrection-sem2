@@ -2,7 +2,7 @@
 #define _RES_RENDERENGINE_H_
 #include "../utility/ObjectReferenceMap.h"
 #include "../utility/Singleton.h"
-//#include "ConstRenderSettings.h"
+#include "ConstRenderSettings.h"
 #include <vector>
 #include <algorithm>
 #include "../math/Vector3.h"
@@ -91,7 +91,7 @@ public:
 	//Point3 getScreenPositionFromMapPosition(const Point3& p);
 
 	// get entity settings
-	//const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
+	const ConstRenderSettings& getConstRenderSettings() const {return m_settings;}
 
 	const Vector4 getColorFromEbombType (const EbombType& et) const ;
 	const Vector4 getColorFromEnergyType (const EnergyType& et) const ;
@@ -138,7 +138,7 @@ private:
 
 	//Point3 m_wsScreenEdges[4];		// ll, -> ccw
 
-	//ConstRenderSettings m_settings;
+	ConstRenderSettings m_settings;
 
 	Vector4 m_playerBounds;		// player boundaries for the current level
 	Vector4 m_cameraBounds;		// camera boundaries for the current level

@@ -38,41 +38,18 @@ m_wireframeOn(false)
 	EventManager::instance().registerEventListener< Player_Despawned >(this);
 	EventManager::instance().registerEventListener< Level_Complete >(this);
 
-	//const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
+	const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
 	//int vp[4];
 	//RenderEngine::instance().getViewport(vp);
 
-	//m_camera = new Camera();
-	//m_camera->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])) , cam_addh - 100.0f, cam_addh + 2000.0f);
+	m_camera = new Camera();
+	m_camera->setPerspective(30, 1.0f , cam_addh - 100.0f, cam_addh + 2000.0f);
 	//m_terrainRenderer.setCamera(m_camera);
 
-	//m_realCam = new Camera();
-	//m_realCam->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])), cam_addh - 100.0f, cam_addh + 2000.0f);
+	m_realCam = new Camera();
+	m_realCam->setPerspective(30, 1.0f, cam_addh - 100.0f, cam_addh + 2000.0f);
 
 	//m_miscFXRenderer.setCamera(m_realCam);
-
-	// initialize transparent surface
-	//vector<MipmapLevel> ml;
-	//ml.push_back(MipmapLevel(0,0));
-	
-	//m_surface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"color surface",false,false);
-	//m_outSurface = new Texture2D(vp[2],vp[3],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"output surface",false,false);
-	//m_depthSurface = new Texture2D(vp[2],vp[3],GL_DEPTH_COMPONENT32,GL_DEPTH_COMPONENT,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"depth surface",false,false);
-	//m_depthSurface->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	//m_depthSurface->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
-	//m_depthSurface->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
-	//m_FBO.Bind();
-
-	//glEnable(GL_DEPTH_TEST); 
-	//glDepthMask(GL_TRUE);
-	//glDepthFunc(GL_LEQUAL);
-	//glClearDepth(1.0);
-
-	//m_FBO.AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	//m_FBO.AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
-	//m_FBO.IsValid();
-
-	//FramebufferObject::Disable();
 
 	//m_terrainRenderer.setShipRendererRef(&m_shipRenderer);
 	//m_terrainRenderer.setLaserRendererRef(&m_laserRenderer);
@@ -252,9 +229,9 @@ void WorldRenderer :: update( float dt )
 
 	if (m_playerActive)
 	{
-		//const Vector3 playerpos(m_playerCoordFrame->getOrigin().cfp());
-		//Vector3 camera_eye(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f));
-		//Vector3 camera_look(playerpos);
+		const Vector3 playerpos(m_playerCoordFrame->getOrigin().cfp());
+		Vector3 camera_eye(playerpos + Vector3(0.0f,RenderEngine::instance().getCameraHeightAbovePlane(),0.0f));
+		Vector3 camera_look(playerpos);
 
 		//RenderEngine::instance().boundCameraPosition(camera_eye);
 		//RenderEngine::instance().boundCameraPosition(camera_look);
@@ -264,18 +241,18 @@ void WorldRenderer :: update( float dt )
 		//					  Vector3(0.0f,0.0f,-1.0f));
 		//glLoadIdentity();
 		//
-		//m_realCam->setPosition(camera_eye,
-		//					  camera_look,
-		//					  Vector3(0.0f,0.0f,-1.0f));
-		//m_realCam->slide(0.0f,-tanf(30.0f*math_const<float>::DEG2RAD)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
-		//m_realCam->pitch(30.0f);
+		m_realCam->setPosition(camera_eye,
+							  camera_look,
+							  Vector3(0.0f,0.0f,-1.0f));
+		m_realCam->slide(0.0f,-tanf(30.0f*PI / 180.0)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
+		m_realCam->pitch(30.0f);
 		//
 		//_updateMatrices();
 		////RenderEngine::instance().computeWsScreenEdges();
 		
 	}
 
-	//m_camera->update(dt);
+	m_camera->update(dt);
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
