@@ -9,7 +9,7 @@
 //#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../../GameLogic/GameLogic.h"
 #include "../../rendering/RenderEngine.h"
-//#include "../../sound/SoundEngine.h"
+#include "../../sound/SoundEngine.h"
 #include "../../AI/AIEngine.h"
 #include "../../Physics/PhysicsEngine.h"
 #include "../../GameLogic/Enemies/EnemyFactory.h"
@@ -101,7 +101,7 @@ void Application :: load()
 	LaserFactory::safeInstance().onApplicationLoad(ps);
 	EnemyFactory::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
-	//SoundEngine::safeInstance().onApplicationLoad(ps);
+	SoundEngine::safeInstance().onApplicationLoad(ps);
 	RenderEngine::safeInstance().onApplicationLoad(ps);
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
@@ -127,7 +127,7 @@ void Application :: unload()
 	GameController::destroy();
 	//MenuController::destroy();
 	LoadingController::destroy();
-	//SoundEngine::destroy();
+	SoundEngine::destroy();
 	RenderEngine::destroy();
 	GameLogic::destroy();
 	//MemMgrRaw::destroy();
