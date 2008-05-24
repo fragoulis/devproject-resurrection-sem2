@@ -1,5 +1,5 @@
 #include "Application.h"
-#include "control/gamecube/gc_new_delete.h"
+//#include "../GameCube/gc_new_delete.h"
 #include "Input.h"
 #include "../ControllerManager.h"
 #include "../LoadingController.h"
@@ -8,7 +8,7 @@
 #include "../../gfxutils/ConfParser/ConfParser.h"
 //#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../../GameLogic/GameLogic.h"
-//#include "../../rendering/RenderEngine.h"
+#include "../../rendering/RenderEngine.h"
 //#include "../../sound/SoundEngine.h"
 #include "../../AI/AIEngine.h"
 #include "../../Physics/PhysicsEngine.h"
@@ -18,7 +18,6 @@
 #include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
-#include "Rendering/RenderEngine.h"
 //#include <al/alut.h>
 
 // TEMP FILES

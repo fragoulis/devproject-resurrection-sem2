@@ -3,7 +3,8 @@
 
 #include "../control/Gamecube/gc_new_delete.h"
 
-#include <dolphin.h>
+#include <dolphin/os.h>
+#include <dolphin/dvd.h>
 
 using namespace std;
 

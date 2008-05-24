@@ -15,7 +15,7 @@
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../GameLogic/GameLogic.h"
 #include "../gfxutils/Model/ModelMgr.h"
-#include "../gfxutils/Texture/TextureMgr.h"
+//#include "../gfxutils/Texture/TextureMgr.h"
 #include "../gfxutils/VA/VATTable.h"
 
 using namespace std;
@@ -69,7 +69,7 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	//PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
-	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
+	//TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
 	VATTable::buildVAT();
 
 	m_settings.init(m_confParser->getSection("EntitySettings"));
@@ -85,7 +85,7 @@ void RenderEngine :: onApplicationUnload()
 	//TextureMgr::destroy();
 
 	ModelMgr::destroy();
-	TextureMgr::destroy();
+	//TextureMgr::destroy();
 
 	if (m_confParser != 0) delete m_confParser;
 }
