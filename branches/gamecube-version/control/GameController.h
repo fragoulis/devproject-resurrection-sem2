@@ -8,6 +8,7 @@
 #include "PauseController.h"
 #include "GameOverController.h"
 #include <string>
+//#include "OSinterface/Input.h"
 
 
 /**
@@ -27,6 +28,7 @@ class GameController :
 	public Singleton<GameController>,
 	public EventListener<Level_Complete>,
 	public EventListener<Game_Over>
+	//public EventListener<Button_GoingDown>
 {
 public:
 
@@ -36,6 +38,7 @@ public:
 
 	virtual void onEvent(Level_Complete&);
 	virtual void onEvent(Game_Over&);
+	//virtual void onEvent(Button_GoingDown&);
 
 	void loadLevel(const std::string& levelName);
 	void continueGame();
