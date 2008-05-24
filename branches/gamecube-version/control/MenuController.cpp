@@ -7,7 +7,7 @@
 #include "GameController.h"
 //#include "OSinterface/IOSInterface.h"
 #include "../GameLogic/GameLogic.h"
-//#include "../Sound/SoundEngine.h"
+#include "../Sound/SoundEngine.h"
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../gfxutils/Misc/utils.h"
 
@@ -29,8 +29,7 @@ void MenuController :: activate()
 	//re.activateRenderer("menu");
 	//m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
     
-    //SoundEngine::instance().clearSoundPositions();
-    //m_ambientSound = SoundEngine::instance().play("InterfaceAmbient", true);
+	//SoundEngine::instance().play("IFaceBkg", true);
 }
 
 void MenuController :: deactivate()
@@ -38,7 +37,7 @@ void MenuController :: deactivate()
 	//RenderEngine& re = RenderEngine::safeInstance();
 	//re.deactivateAllRenderers();
 
- //   SoundEngine::instance().stop( m_ambientSound );
+    //SoundEngine::instance().stop("IFaceBkg");
 }
 
 void MenuController :: update(float dt)
@@ -66,13 +65,13 @@ void MenuController :: update(float dt)
 	//if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT) ||
 	//	input.isKeyGoingDown('W') || input.isKeyGoingDown('A')) {
 	//	if (m_renderer->selectPreviousItem())
-	//		SoundEngine::instance().play("MenuClick");
+	//		SoundEngine::instance().play("IFaceClick");
 	//}
 	//if (input.isKeyGoingDown(KEY_DOWN) || input.isKeyGoingDown(KEY_RIGHT) ||
 	//	input.isKeyGoingDown('S') || input.isKeyGoingDown('D'))
 	//{
 	//	if (m_renderer->selectNextItem())
-	//		SoundEngine::instance().play("MenuClick");
+	//		SoundEngine::instance().play("IFaceClick");
 	//}
 
 	//ENTER
@@ -114,7 +113,7 @@ void MenuController :: update(float dt)
 
 	//			break;
  //       } // switch ( )
- //       SoundEngine::instance().play("MenuClick");
+ //       SoundEngine::instance().play("IFaceClick");
  //   }
 
 	//if (input.isKeyGoingDown(KEY_ESC))
@@ -130,7 +129,7 @@ void MenuController :: update(float dt)
 	//			m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);
 	//			break;
 	//	};
- //       SoundEngine::instance().play("MenuClick");
+ //       SoundEngine::instance().play("IFaceClick");
 	//}
 
 
