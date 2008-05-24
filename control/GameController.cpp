@@ -2,7 +2,7 @@
 #include "ControllerManager.h"
 #include "PauseController.h"
 #include "LoadingController.h"
-//#include "../rendering/RenderEngine.h"
+#include "../rendering/RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
 #include "../Gamelogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../AI/AIEngine.h"
@@ -21,6 +21,7 @@ GameController :: GameController()
 {
 	EventManager::instance().registerEventListener<Level_Complete>(this);
 	EventManager::instance().registerEventListener<Game_Over>(this);
+	//EventManager::instance().registerEventListener<Button_GoingDown>(this);
 }
 
 GameController :: ~GameController()
@@ -30,9 +31,9 @@ GameController :: ~GameController()
 
 void GameController :: activate()
 {
-	//RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers();
-	//re.activateRenderer("world");
+	RenderEngine& re = RenderEngine::safeInstance();
+	re.deactivateAllRenderers();
+	re.activateRenderer("world");
 	//re.activateRenderer("hud");
 }
 
@@ -41,14 +42,11 @@ void GameController :: deactivate()
 	// deactivate controls, but leaves renderers alone
 }
 
-
-//inline Point3 getMouseMapPosition(float height) {
-	//return RenderEngine::instance().getMapPositionFromScreenPosition(Input::instance().getMousePosition(), height);
+//void GameController :: onEvent(Button_GoingDown& evt)
+//{
+//	cout << "Button down: " << evt.getValue() << endl;
 //}
 
-//inline Point3 getMouseMapPosition() {
-//	return getMouseMapPosition(GameLogic::instance().getGamePlaneHeight());
-//}
 
 
 void GameController :: update(float dt)
@@ -145,7 +143,7 @@ void GameController :: onEvent(Game_Over&)
 
 void GameController :: loadLevel(const std::string& levelName)
 {
-	//RenderEngine::instance().loadRenderer("world");
+	RenderEngine::safeInstance().loadRenderer("world");
 	//RenderEngine::instance().loadRenderer("hud");
 	GameLogic::safeInstance().loadLevel(levelName);
 	ControllerManager::instance().activateController(this);
