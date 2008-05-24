@@ -179,9 +179,9 @@ void WorldRenderer :: render(Graphics& g) const
 	
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
-	//m_spawnPointRenderer.render(g);
-	//m_laserRenderer.render(g);
-	//m_psRenderer.render(g);
+	m_spawnPointRenderer.render(g);
+	m_laserRenderer.render(g);
+	m_psRenderer.render(g);
 	//m_miscFXRenderer.render(g);
 	//m_clampRenderer.render(g);
 
@@ -276,10 +276,10 @@ void WorldRenderer :: update( float dt )
 	}
 
 	//m_camera->update(dt);
-	//m_psRenderer.update(dt);
-	//m_spawnPointRenderer.update(dt);
+	m_psRenderer.update(dt);
+	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
-	//m_laserRenderer.update(dt);
+	m_laserRenderer.update(dt);
 	//m_clampRenderer.update(dt);
 	//m_miscFXRenderer.update(dt);
 	//m_shipRenderer.update(dt);
