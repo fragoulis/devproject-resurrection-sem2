@@ -2,13 +2,12 @@
 #define _RES_WORLDRENDERER_H_
 #include "IRenderer.h"
 #include "TerrainRenderer.h"
-//#include "SpawnPointRenderer.h"
-//#include "ParticleSystemsRenderer.h"
-//#include "LaserRenderer.h"
+#include "SpawnPointRenderer.h"
+#include "ParticleSystemsRenderer.h"
+#include "LaserRenderer.h"
 #include "ShipRenderer.h"
 //#include "ClampRenderer.h"
 //#include "MiscFXRenderer.h"
-//#include "HUDRenderer.h"
 #include "../Math/Vector3.h"
 #include "../GameLogic/Objects/Playership.h"
 //#include "../gfx/FBO/FramebufferObject.h"
@@ -85,10 +84,10 @@ private:
 	Camera		  * m_camera;				// The world renderer has our main camera
 	Camera		  * m_realCam;
 	TerrainRenderer  m_terrainRenderer;
-	//ParticleSystemsRenderer  m_psRenderer;
+	ParticleSystemsRenderer  m_psRenderer;
 	ShipRenderer	 m_shipRenderer;
-	//LaserRenderer    m_laserRenderer;
-	//SpawnPointRenderer  m_spawnPointRenderer;
+	LaserRenderer    m_laserRenderer;
+	SpawnPointRenderer  m_spawnPointRenderer;
 	//ClampRenderer	m_clampRenderer;
 	//MiscFXRenderer	m_miscFXRenderer;
 
