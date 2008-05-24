@@ -34,7 +34,7 @@ void GameController :: activate()
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.deactivateAllRenderers();
 	re.activateRenderer("world");
-	//re.activateRenderer("hud");
+	re.activateRenderer("hud");
 }
 
 void GameController :: deactivate()
@@ -144,7 +144,7 @@ void GameController :: onEvent(Game_Over&)
 void GameController :: loadLevel(const std::string& levelName)
 {
 	RenderEngine::safeInstance().loadRenderer("world");
-	//RenderEngine::instance().loadRenderer("hud");
+	RenderEngine::instance().loadRenderer("hud");
 	GameLogic::safeInstance().loadLevel(levelName);
 	ControllerManager::instance().activateController(this);
 }

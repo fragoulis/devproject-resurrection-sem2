@@ -2,7 +2,7 @@
 #include "IRenderer.h"
 #include "WorldRenderer.h"
 //#include "LoadingRenderer.h"
-//#include "HUDRenderer.h"
+#include "HUDRenderer.h"
 //#include "MenuRenderer.h"
 //#include "PauseRenderer.h"
 //#include "LevelCompleteRenderer.h"
@@ -170,7 +170,7 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 {
 	if (name == "world") return new WorldRenderer();
 	//if (name == "loading") return new LoadingRenderer();
-	//if (name == "hud") return new HUDRenderer();
+	if (name == "hud") return new HUDRenderer();
 	//if (name == "menu") return new MenuRenderer();
 	//if (name == "pause") return new PauseRenderer();
 	//if (name == "LevelComplete") return new LevelCompleteRenderer();
