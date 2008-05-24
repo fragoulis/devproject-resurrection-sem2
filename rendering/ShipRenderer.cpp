@@ -19,6 +19,8 @@
 
 #include <iostream>
 
+#include "../gfx/MatrixTransform.h"
+
 using namespace std;
 
 //static char texstr[8] = "texmap0";
@@ -71,7 +73,10 @@ void ShipRenderer :: render(Graphics& g) const
 		//glPushMatrix();
 		//glMultMatrixf(it->coordframe->getMatrix().cfp());
 		const float * m = it->coordframe->getMatrix().cfp();
-	
+
+		//GAMECUBE VERSION
+		//MatrixTransform::PushMatrix(weNeedAViewMatrix, false);
+		//MatrixTransform::MulMatrix(it->coordframe->getMatrix());
 		
 
 		if(it->model->isTextured())
@@ -85,6 +90,9 @@ void ShipRenderer :: render(Graphics& g) const
 		it->model->render();
 	
 		//glPopMatrix();
+
+		//GAMECUBE VERSION
+		//MatrixTransform::PopMatrix();
 	}
 }
 
