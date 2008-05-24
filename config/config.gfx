@@ -14,7 +14,7 @@ ModelDir = "./resources/models/"
 ########################### TEXTURES ##########################################################
 
 [Texture]
-DefaultDir = "./resources/textures/"
+TextureDir = "./resources/textures/"
 
 [Texture : MemDistribution]
 Texture1D = 10

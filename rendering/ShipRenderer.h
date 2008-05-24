@@ -2,7 +2,7 @@
 #define _RES_SHIPRENDERER_H_
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
-//#include "CoordinateModel.h"
+#include "CoordinateModel.h"
 
 #include <vector>
 
@@ -49,7 +49,7 @@ private:
 	void _insertShip(const EntitySettings_t& settings, const CoordinateFrame * cframe);
 	void _deleteShip(const CoordinateFrame * cframe);
 
-	//std::vector<CoordinateModel> m_ships;
+	std::vector<CoordinateModel> m_ships;
 };
 
 #endif

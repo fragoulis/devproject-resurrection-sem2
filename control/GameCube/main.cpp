@@ -4,8 +4,6 @@
 #include <demo.h>
 using namespace std;
 
-
-
 // Testing only
 #include "../OSinterface/Input.h"
 #include "../../utility/File.h"
@@ -14,6 +12,14 @@ using namespace std;
 #include <sstream>
 #include <vector>
 #include <string>
+
+
+#include "gfxutils/Model/model.h"
+#include "gfxutils/Model/modelmgr.h"
+#include "gfxutils/Texture/Texturemgr.h"
+#include "gfxutils/Texture/Texture.h"
+static const Model * model;
+static const Texture * tex;
 
 
 /*---------------------------------------------------------------------------*
@@ -128,6 +134,14 @@ int main ( void )
 		return 0;
 	}
 
+	/*
+	model = ModelMgr::instance().getModel("enforcer_proc.obj");
+	TextureMgr::instance().loadPalette("enforcer.tpl","enforcerTPL.txt");
+	tex = TextureMgr::instance().getTexture("enforcer");
+	GXInvalidateTexAll();
+	*/
+	
+
 	//FILE* fp = fopen("./config/config.txt", "rb");
 	//if (fp == 0) cout << "Couldn't open file" << endl;
 	//char buffer[32];
@@ -206,21 +220,15 @@ int main ( void )
  *---------------------------------------------------------------------------*/
 static void CameraInit ( Mtx v )
 {
-    Mtx44   p;      // projection matrix
-    Vec     up      = {0.0F, 1.0F, 0.0F};
-    Vec     camLoc  = {0.0F, 5.0F, 1.0F};
-    Vec     objPt   = {0.0F, 0.0F, 0.0F};
-    f32     top     = 0.0375F;
-    f32     left    = -0.050F;
-    f32     znear   = 0.1F;
-    f32     zfar    = 10.0F;
-    
-    MTXFrustum(p, top, -top, left, -left, znear, zfar);
-    GXSetProjection(p, GX_PERSPECTIVE);
+	Mtx44 p;
+    Vec   camPt = {0.0F, 300.0F, 0.0F};
+    Vec   at    = {0.0F, 0.0F, 0.0F};
+    Vec   up    = {0.0F, 0.0F, -1.0F};
 
-	//camera.setPerspective(60, 640/480, 0.1f, 100.0f);
-	MTXLookAt(v, &camLoc, &up, &objPt);   
-	//camera.setPosition(Vector3(0.0F, 0.0F, 10.0F), Vector3(0.0F, 0.0F, 0.0F), Vector3(0.0F, 1.0F, 0.0F) );
+    MTXFrustum(p, 12.0F,-12.0F,-12.0F, 12.0F, 10, 1000);
+    GXSetProjection(p, GX_PERSPECTIVE);
+    MTXLookAt(v, &camPt, &up, &at);
+	GXLoadPosMtxImm(v, GX_PNMTX0);
 
 	
 }
@@ -237,12 +245,13 @@ static void CameraInit ( Mtx v )
  *---------------------------------------------------------------------------*/
 static void DrawInit( void )
 { 
-    GXColor black = {0, 0, 0, 0};
+    GXColor black = {0, 0, 1, 0};
 
     GXSetCopyClear(black, 0x00ffffff);
 
     // Set current vertex descriptor to enable position and color0.
     // Both use 8b index to access their data arrays.
+	/*
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_INDEX8);
     GXSetVtxDesc(GX_VA_CLR0, GX_INDEX8);
@@ -258,11 +267,13 @@ static void DrawInit( void )
     // stride = 4 elements (r,g,b,a) each of type u8
     GXSetArray(GX_VA_CLR0, Colors_rgba8, 4*sizeof(u8));
 
+	*/
+
     // Initialize lighting, texgen, and tev parameters
-    GXSetNumChans(1); // default, color = vertex color
-    GXSetNumTexGens(0); // no texture in this demo
-    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
-    GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+    //GXSetNumChans(1); // default, color = vertex color
+    //GXSetNumTexGens(0); // no texture in this demo
+    //GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR0A0);
+    GXSetTevOp(GX_TEVSTAGE0, GX_DECAL);
 }
 
 /*---------------------------------------------------------------------------*
@@ -297,10 +308,6 @@ static void DrawTick( Mtx v )
     Mtx    mv;    // Modelview matrix.
     u8    iTri;    // index of triangle
     u8    iVert;    // index of vertex
-    
-    GXSetNumTexGens( 0 );
-    GXSetNumTevStages( 1 );
-    GXSetTevOp( GX_TEVSTAGE0, GX_PASSCLR );
 
 
 	/*GXSetViewport( 
@@ -312,8 +319,8 @@ static void DrawTick( Mtx v )
     1000 ); */
 	bool upDown = Input::instance().isButtonDown(0, PAD_BUTTON_A);
 	int tickNumber = upDown ? 8 : 0;
-	f32 posX = - Input::instance().getControlX(0) * 0.1f;
-	f32 posY = Input::instance().getControlY(0) * 0.1f;
+	f32 posX = - Input::instance().getControlX(0) ;
+	f32 posY = Input::instance().getControlY(0) ;
 
 	//int tickNumber = (pad[0].button & PAD_BUTTON_UP) ? 8 : 0;
 	//f32 posX = -pad[0].stickX*0.1f;
@@ -334,6 +341,7 @@ static void DrawTick( Mtx v )
 
 	GXSetCurrentMtx(GX_PNMTX0);
 
+	/*
     GXBegin(GX_TRIANGLES, GX_VTXFMT0, 24);
     
     // for all triangles of octahedron, ...
@@ -345,8 +353,13 @@ static void DrawTick( Mtx v )
             Vertex(iTri, iVert);
         }
     }
-
     GXEnd();
+	*/
+
+	/*
+	tex->bind();
+	model->render();
+	*/
 }
 
 /*---------------------------------------------------------------------------*

@@ -1,4 +1,5 @@
 #include "Application.h"
+#include "control/gamecube/gc_new_delete.h"
 #include "Input.h"
 #include "../ControllerManager.h"
 #include "../LoadingController.h"
@@ -17,9 +18,13 @@
 #include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
-//#include "../../gfx/Texture/TextureMgr.h"
-//#include "../../gfx/Shaders/ShaderManager.h"
+#include "Rendering/RenderEngine.h"
 //#include <al/alut.h>
+
+// TEMP FILES
+
+// ~TEMP FILES
+
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -52,8 +57,9 @@ bool Application :: init()
 	//psbuf = filestr.rdbuf();
 	//cout.rdbuf(psbuf);
 
-	//ConfParser* cp = new ConfParser("./config/config.gfx");
-	//TextureMgr::init(cp->getSection("Texture"));
+	// FIXME!!!!! BuildVAT somewhere!"!!!
+	ConfParser cp("./config/config.gfx");
+	
 	//ShaderManager::init(cp->getSection("Shader"));
 	//MemMgrRaw::init(cp->getSection("MemManager:RawData"));
 
@@ -97,7 +103,7 @@ void Application :: load()
 	EnemyFactory::safeInstance().onApplicationLoad(ps);
 	GameLogic::safeInstance().onApplicationLoad(ps);
 	//SoundEngine::safeInstance().onApplicationLoad(ps);
-	//RenderEngine::safeInstance().onApplicationLoad(ps);
+	RenderEngine::safeInstance().onApplicationLoad(ps);
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
 
@@ -123,7 +129,7 @@ void Application :: unload()
 	//MenuController::destroy();
 	LoadingController::destroy();
 	//SoundEngine::destroy();
-	//RenderEngine::destroy();
+	RenderEngine::destroy();
 	GameLogic::destroy();
 	//MemMgrRaw::destroy();
 	Logger::destroy();

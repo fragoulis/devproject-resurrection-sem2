@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="GameCube"
 	ProjectGUID="{81BA0887-9E4B-4903-9F1D-07F9F008EB83}"
+	RootNamespace="GameCube"
 	>
 	<Platforms>
 		<Platform
@@ -37,12 +38,13 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-g -O0 -Wall -fno-exceptions"
+				AdditionalOptions="-g -Wall -fno-exceptions"
 				AdditionalIncludeDirectories="&quot;$(DOLPHIN_ROOT)\include&quot;;.\gcstl\inc;&quot;C:\Program Files\SN Systems\ngc\include&quot;;&quot;C:\Program Files\SN Systems\ngc&quot;"
 				PreprocessorDefinitions="SN_TARGET_NGC;HW2;__SN__;SNSYS;__HWSIM=0;EPPC;MARLIN=DI;ORCA;GEKKO;GX_REV=2;BUG_CLR_LOAD_DLY;BUG_XF_STALL"
 				ProgramDataBaseFileName="$(IntDir)\"
 				DebugInformationFormat="0"
 				CompileAs="0"
+				ForcedUsingFiles=""
 			/>
 			<Tool
 				Name="VCManagedResourceCompilerTool"
@@ -55,12 +57,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				LinkLibraryDependencies="true"
 				AdditionalOptions=""
 				AdditionalDependencies="base.a os.a exi.a si.a db.a mtx.a dvd.a vi.a demo.a pad.a ai.a ar.a ax.a axfx.a mix.a sp.a am.a axart.a syn.a seq.a dsp.a dtk.a card.a hio.a mcc.a gx.a G2D.a texPalette.a fileCache.a support.a perf.a amcstubs.a odemustubs.a .\gcstl\lib\libstl.a"
 				OutputFile="$(OutDir)/$(ProjectName).elf"
 				LinkIncremental="0"
 				AdditionalLibraryDirectories="&quot;$(DOLPHIN_ROOT)\HW2\lib&quot;"
 				GenerateManifest="false"
+				IgnoreAllDefaultLibraries="false"
 			/>
 			<Tool
 				Name="VCALinkTool"
@@ -166,6 +170,70 @@
 	</References>
 	<Files>
 		<File
+			RelativePath=".\AI\Behaviours\AIBehaviour.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\AIBehaviour.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIChase.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIChase.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\AIEnemy.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\AIEnemy.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\AIEngine.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\AIEngine.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIFlank.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIFlank.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIFlee.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIFlee.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIIdle.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AIIdle.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AISurround.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\AISurround.h"
+			>
+		</File>
+		<File
 			RelativePath=".\control\OSinterface\Application.cpp"
 			>
 		</File>
@@ -178,7 +246,39 @@
 			>
 		</File>
 		<File
+			RelativePath=".\GameLogic\Buffs\Buff.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\Buff.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\BuffContainer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\BuffContainer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\BuffFactory.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\BuffFactory.h"
+			>
+		</File>
+		<File
 			RelativePath=".\utility\Callbacks.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfx\Camera.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfx\Camera.h"
 			>
 		</File>
 		<File
@@ -187,6 +287,14 @@
 		</File>
 		<File
 			RelativePath=".\gfxutils\ConfParser\ConfParser.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\ConstRenderSettings.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\ConstRenderSettings.h"
 			>
 		</File>
 		<File
@@ -206,6 +314,26 @@
 			>
 		</File>
 		<File
+			RelativePath=".\rendering\CoordinateModel.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Crater.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Crater.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\CreditsPage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\CreditsPage.h"
+			>
+		</File>
+		<File
 			RelativePath=".\gfxutils\Misc\defines.h"
 			>
 		</File>
@@ -218,11 +346,123 @@
 			>
 		</File>
 		<File
+			RelativePath=".\gfxutils\VA\DispList.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Ebomb.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Ebomb.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\EbombTypes.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\EnemyBuffCouple.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\EnemyBuffCouple.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\EnemyBuffCoupleManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\EnemyBuffCoupleManager.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyCarrier.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyCarrier.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyFactory.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyFactory.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyPlayerDebuffer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\EnemyPlayerDebuffer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\Enemyship.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Enemies\Enemyship.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\EnergyTypes.h"
+			>
+		</File>
+		<File
 			RelativePath=".\utility\EventManager.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\utility\EventManager.h"
+			>
+		</File>
+		<File
+			RelativePath=".\utility\File.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\utility\File.h"
+			>
+		</File>
+		<File
+			RelativePath=".\control\GameController.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\control\GameController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\GameEvents.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\GameLogic.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\GameLogic.h"
+			>
+		</File>
+		<File
+			RelativePath=".\control\GameOverController.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\control\GameOverController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\GameOverRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\GameOverRenderer.h"
 			>
 		</File>
 		<File
@@ -242,6 +482,18 @@
 			>
 		</File>
 		<File
+			RelativePath=".\rendering\HUDRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\HUDRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\AI\Behaviours\States\IAIState.h"
+			>
+		</File>
+		<File
 			RelativePath=".\control\IController.h"
 			>
 		</File>
@@ -258,11 +510,91 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Menu\InstructionPage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\InstructionPage.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\InterceptorBuffCouple.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\InterceptorBuffCouple.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\IRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\IRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Lasers\Laser.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Lasers\Laser.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Lasers\LaserFactory.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Lasers\LaserFactory.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LaserRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LaserRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\LaserSwapDebuff.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\LaserSwapDebuff.h"
+			>
+		</File>
+		<File
+			RelativePath=".\control\LevelCompleteController.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\control\LevelCompleteController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LevelCompleteRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LevelCompleteRenderer.h"
+			>
+		</File>
+		<File
 			RelativePath=".\control\LoadingController.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\control\LoadingController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LoadingRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\LoadingRenderer.h"
 			>
 		</File>
 		<File
@@ -275,6 +607,14 @@
 		</File>
 		<File
 			RelativePath=".\control\GameCube\main.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MainPage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MainPage.h"
 			>
 		</File>
 		<File
@@ -298,7 +638,71 @@
 			>
 		</File>
 		<File
+			RelativePath=".\control\MenuController.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\control\MenuController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MenuItem.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MenuItem.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MenuPage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\MenuPage.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\MenuRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\MenuRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\Model.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\Model.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\ModelMgr.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\ModelMgr.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Movable.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Movable.h"
+			>
+		</File>
+		<File
 			RelativePath=".\ngc.ld"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\OBJ_format.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Model\OBJ_format.h"
 			>
 		</File>
 		<File
@@ -318,6 +722,66 @@
 			>
 		</File>
 		<File
+			RelativePath=".\rendering\ParticleSystemsRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\ParticleSystemsRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\control\PauseController.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\control\PauseController.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\PausePage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\PausePage.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\PauseRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\PauseRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\PhysicsEngine.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\PhysicsEngine.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\PhysicsEvents.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\PlanetPage.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Menu\PlanetPage.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Playership.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Playership.h"
+			>
+		</File>
+		<File
 			RelativePath=".\math\Point2.cpp"
 			>
 		</File>
@@ -334,6 +798,14 @@
 			>
 		</File>
 		<File
+			RelativePath=".\Physics\Pusher.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\Pusher.h"
+			>
+		</File>
+		<File
 			RelativePath=".\math\Quaternion.cpp"
 			>
 		</File>
@@ -346,11 +818,43 @@
 			>
 		</File>
 		<File
+			RelativePath=".\utility\RawFile.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\utility\RawFile.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\RenderEngine.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\RenderEngine.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Rigidbody.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Rigidbody.h"
+			>
+		</File>
+		<File
 			RelativePath=".\math\Rotation.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\math\Rotation.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\ShipRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\ShipRenderer.h"
 			>
 		</File>
 		<File
@@ -362,11 +866,127 @@
 			>
 		</File>
 		<File
+			RelativePath=".\sound\SoundEngine.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\sound\SoundEngine.h"
+			>
+		</File>
+		<File
+			RelativePath=".\sound\sounds.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Spaceship.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Spaceship.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Spawnpoint.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Spawnpoint.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\SpawnPointRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\SpawnPointRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\SpeedReductionDebuff.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Buffs\SpeedReductionDebuff.h"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\Spring.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\Physics\Spring.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Terrain.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\Objects\Terrain.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\Terrain\TerrainLoader.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\Terrain\TerrainLoader.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\TerrainRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\TerrainRenderer.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\Terrain\TerrainStruct.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\Terrain\TerrainStruct.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\Texture.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\Texture.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\TextureMgr.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\TextureMgr.h"
+			>
+		</File>
+		<File
 			RelativePath=".\utility\Time.cpp"
 			>
 		</File>
 		<File
 			RelativePath=".\utility\Time.h"
+			>
+		</File>
+		<File
+			RelativePath=".\utility\TimerManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\utility\TimerManager.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\TplPalette.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\Texture\TplPalette.h"
 			>
 		</File>
 		<File
@@ -379,6 +999,14 @@
 		</File>
 		<File
 			RelativePath=".\gfxutils\Misc\utils.hpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\VA\VATTable.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\VA\VATTable.h"
 			>
 		</File>
 		<File
@@ -406,7 +1034,63 @@
 			>
 		</File>
 		<File
+			RelativePath=".\gfxutils\VA\VertexArray.h"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\VA\VertexArray.hpp"
+			>
+		</File>
+		<File
+			RelativePath=".\gfxutils\VA\VertexFormat.h"
+			>
+		</File>
+		<File
 			RelativePath=".\vsi.nul"
+			>
+			<FileConfiguration
+				Name="NGC Debug|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description=""
+					CommandLine="echo &gt;nul&#x0D;&#x0A;"
+					Outputs="$(IntDir)\vsi.out"
+				/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="NGC Release|Win32"
+				>
+				<Tool
+					Name="VCCustomBuildTool"
+					Description=""
+					CommandLine="echo &gt;nul&#x0D;&#x0A;"
+					Outputs="$(IntDir)\vsi.out"
+				/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\GameLogic\WorldObject.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\WorldObject.h"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\WorldObjectTypeManager.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\GameLogic\WorldObjectTypeManager.h"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\WorldRenderer.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\rendering\WorldRenderer.h"
 			>
 		</File>
 	</Files>
