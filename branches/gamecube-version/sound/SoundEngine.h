@@ -54,8 +54,6 @@ typedef struct
  */
 class SoundEngine :
 	public Singleton< SoundEngine >,
-    public EventListener< Player_Spawned >,
-    public EventListener< Player_Respawned >,
     public EventListener< Enemy_Destroyed >,
     public EventListener< Laser_Spawned >,
     public EventListener< Ebomb_Spawned >,
@@ -66,7 +64,7 @@ class SoundEngine :
     public EventListener< Level_Unload >,
     public EventListener< Game_Over >,
     public EventListener< Level_Complete >,
-	public EventListener< Button_GoingDown >
+	public EventListener< Player_Destroyed >
 {
 private:
     Playership *m_listener;
@@ -88,8 +86,6 @@ public:
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
-    void onEvent(Player_Spawned&);
-    void onEvent(Player_Respawned&);
     void onEvent(Enemy_Destroyed&);
     void onEvent(Laser_Spawned&);
     void onEvent(Ebomb_Spawned&);
@@ -100,12 +96,10 @@ public:
     void onEvent(Level_Unload&);
     void onEvent(Level_Complete&);
     void onEvent(Game_Over&);
-	void onEvent(Button_GoingDown&);
+	void onEvent(Player_Destroyed&);
 
-    void update();
-    void clearSoundPositions();
     void play( const string &id, bool repeat = false );
-    void stop( unsigned id );
+    void stop( const string &id );
 
 private:
 	friend Singleton< SoundEngine >;
@@ -116,6 +110,7 @@ private:
 	VOICE *get_voice();
 	void play_sfx(u32 sfx);
 	void play_looped_sfx(u32 sfx);
+	void stop_sfx( unsigned id );
 	static void ax_demo_callback(void);
 	static void ax_drop_voice_callback(void *p);
 

@@ -15,8 +15,6 @@ m_listener(0),
 m_maxExplosions(0),
 m_activeEplosions(0)
 {
-    EventManager::instance().registerEventListener< Player_Spawned >(this);
-	EventManager::instance().registerEventListener< Player_Respawned >(this);
     EventManager::instance().registerEventListener< Enemy_Destroyed >(this);
     EventManager::instance().registerEventListener< Laser_Spawned >(this);
 	EventManager::instance().registerEventListener< Ebomb_Spawned >(this);
@@ -27,7 +25,7 @@ m_activeEplosions(0)
 	EventManager::instance().registerEventListener< Level_Unload >(this);
     EventManager::instance().registerEventListener< Game_Over >(this);
     EventManager::instance().registerEventListener< Level_Complete >(this);
-	EventManager::instance().registerEventListener< Button_GoingDown >(this);
+	EventManager::instance().registerEventListener< Player_Destroyed >(this);
 }
 
 SoundEngine :: ~SoundEngine()
@@ -74,7 +72,9 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
     // -----------------------------------------------------------
 
     // Retrieve sound table 
-    m_sp_table = (SPSoundTable *)AMLoadFile(SPT_FILE, NULL);
+	u32 len = 0;
+    m_sp_table = (SPSoundTable *)AMLoadFile(SPT_FILE, &len);
+	//cout << "AMLoadFile returned length: " << len << endl;
 
     // Load sound effects into ARAM
     m_aramUserBase = AMPushBuffered(SPD_FILE, (void *)m_xfer_buffer, XFER_BUFFER_SIZE_BYTES);
@@ -115,190 +115,110 @@ void SoundEngine::_matchSoundIdToString()
 	PUSH_PAIR("Laser",			SFX_LASER);	
 	PUSH_PAIR("IFaceBgk",		SFX_IFACE_BKG);
 	PUSH_PAIR("IFaceClick",		SFX_IFACE_CLICK);
-	PUSH_PAIR("EbombBeep",		SFX_EBOMB_BEEP);
-	PUSH_PAIR("EbombExp",		SFX_EBOMB_EXP);
-	PUSH_PAIR("EbombHollow",	SFX_EBOMB_HOLLOW);
+	PUSH_PAIR("EbombDeployed01",SFX_EBOMB_HOLLOW);
+	PUSH_PAIR("EbombDeployed02",SFX_EBOMB_BEEP);
 	PUSH_PAIR("EbombReady",		SFX_EBOMB_READY);
 	PUSH_PAIR("EbombSucceded",	SFX_EBOMB_SUCCEDED);
-	PUSH_PAIR("Fireball",		SFX_FIREBALL);
-	PUSH_PAIR("Exp01",			SFX_EXP01);
-	PUSH_PAIR("Exp02",			SFX_EXP02);
+	PUSH_PAIR("EbombExp01",		SFX_EBOMB_EXP);
+	PUSH_PAIR("EbombExp02",		SFX_FIREBALL);
 	PUSH_PAIR("PlayerLost",		SFX_PLAYER_LOST);
 	PUSH_PAIR("LevelComplete",	SFX_LEVEL_COMPLETE);
 	PUSH_PAIR("Welcome",		SFX_WELCOME);
 	PUSH_PAIR("Dot",			SFX_DOT);
+	PUSH_PAIR("Player_Destroyed",		    SFX_EXP01);
+	PUSH_PAIR("EnemyFighter_Destroyed",		SFX_EXP01);
+	PUSH_PAIR("EnemyInterceptor_Destroyed", SFX_EXP02);
+	PUSH_PAIR("EnemyDisrupter_Destroyed",	SFX_EXP01);
+	PUSH_PAIR("EnemyCarrier_Destroyed",		SFX_EXP02);
 
 #undef PUSH_PAIR
 }
 
 // ----------------------------------------------------------------------------
-void SoundEngine :: onEvent(Button_GoingDown& ev)
+void SoundEngine :: onEvent(Player_Destroyed& pd)
 {
-	play("Welcome");
-}
-
-// ----------------------------------------------------------------------------
-// save the player ship as the constant listener
-// we need its position to update the OpenAL listener
-void SoundEngine :: onEvent(Player_Spawned& pd)
-{
-	//m_listener = pd.getValue();
-    //play("Welcome");
-}
-
-// ----------------------------------------------------------------------------
-// play a sound to let the player know he has been revived
-void SoundEngine :: onEvent(Player_Respawned& pd)
-{
+	play("Player_Destroyed");
 }
 
 // ----------------------------------------------------------------------------
 // play an explosion sound, depending on the enemy type, as loaded
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
-    //if( m_activeEplosions == m_maxExplosions ) return;
-    //m_activeEplosions++;
+    if( m_activeEplosions == m_maxExplosions ) return;
+    m_activeEplosions++;
 
-    //const Enemyship *enemy = pd.getValue();
-    //const int iType = enemy->getType();
-    //std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
-    //sType += "_Destroyed";
+    const Enemyship *enemy = pd.getValue();
+    const int iType = enemy->getType();
+    std::string sType = WorldObjectTypeManager::instance().getNameFromType(iType);
+    sType += "_Destroyed";
 
-    //play(sType);
+    play(sType);
 }
 
 // ----------------------------------------------------------------------------
 // play laser sound
 void SoundEngine :: onEvent(Laser_Spawned& pd)
 {
-    //play("Laser_Fired");
+    play("Laser");
 }
 
 // ----------------------------------------------------------------------------
 // play an info sound when we have an ebomb ready
 void SoundEngine :: onEvent(Ebomb_Created& ev)
 {
-    //play("Ebomb_Ready");
+    play("EbombReady");
 }
 
 // ----------------------------------------------------------------------------
 // play a sound when an ebomb is fired
 void SoundEngine :: onEvent(Ebomb_Spawned& ev)
 {
-    //play("Ebomb_Deployed01");
-    //play("Ebomb_Deployed02");
+    play("EbombDeployed01");
+    play("EbombDeployed02");
 }
 
 // ----------------------------------------------------------------------------
 // play a sound when an ebomb hits the ground
 void SoundEngine :: onEvent(Ebomb_Despawned& ev)
 {
-    //play("Ebomb_Exp01");
-    //play("Ebomb_Exp03");
+    play("EbombExp01");
+    play("EbombExp02");
 }
 
 // ----------------------------------------------------------------------------
 // play a creative sound for the terraforming
 void SoundEngine :: onEvent(Life_Restored& ev)
 {
-    //play("Ebomb_Succeded");
+    play("EbombSucceded");
 }
 
 // ----------------------------------------------------------------------------
 // load level's ambient background sound
 void SoundEngine :: onEvent(Level_Load& ev)
 {
-    //const std::string sAmbient = ev.getValue1()->getSection("Sound")->getVal("ambient");
-
-    //// create sound buffer
-    //if( m_bgBuffer ) delete m_bgBuffer;
-    //m_bgBuffer = new SoundBuffer;
-    //m_bgBuffer->load(sAmbient);
-
-    //// create sound player
-    //if( m_bgSound ) delete m_bgSound;
-    //m_bgSound = new Sound(m_bgBuffer);
-    //m_bgSound->setLoop(true);
-    //m_bgSound->play();
-
-    //play("Welcome");
+	//play("Dot", true);
+    play("Welcome");
 }
 
 // ----------------------------------------------------------------------------
 // unload background music from memory
 void SoundEngine :: onEvent(Level_Unload& ev)
 {
+	//stop("Dot");
 }
 
 // ----------------------------------------------------------------------------
 // play sad sound for when we lose
 void SoundEngine :: onEvent(Game_Over& ev)
 {
-    //m_bgSound->stop();
-    //play("Player_Lost");
+    play("PlayerLost");
 }
 
 // ----------------------------------------------------------------------------
 // play a nice victory sound
 void SoundEngine :: onEvent(Level_Complete& ev)
 {
-    //play("Level_Complete");
-}
-
-// ----------------------------------------------------------------------------
-// updates all sound sources by positioning them
-// at the position of the global listener
-void SoundEngine::update()
-{
-    //_updateListener();
-
-    //Sounds::iterator i = m_sounds.begin();
-    //for(; i != m_sounds.end(); ++i )
-    //    (*i)->update( m_listener->getPosition() );
-
-    //m_bgSound->update(m_listener->getPosition());
-    //m_activeEplosions = 0;
-}
-
-// ----------------------------------------------------------------------------
-// updates the listener by actually putting him at the 
-// position of the player
-void SoundEngine::_updateListener()
-{
-    //if( !m_listener ) return;
-
-    //float orientation[] = 
-    //{
-    //    m_listener->getThrusterDirection().getX(),
-    //    m_listener->getThrusterDirection().getY(), 
-    //    m_listener->getThrusterDirection().getZ(),
-    //    0.0f, 1.0f, 0.0f
-    //};
-
-    //alListenerfv(AL_POSITION,    m_listener->getPosition().cfp() );
-    //alListenerfv(AL_VELOCITY,    m_listener->getVelocity().cfp() );
-    //alListenerfv(AL_ORIENTATION, orientation );
-}
-
-// ----------------------------------------------------------------------------
-// initializes OpenAL stuff and sound engine's listeners
-void SoundEngine::clearSoundPositions()
-{
-    //Point3 position(0.0f, 0.0f, 0.0f);
-
-    //float orientation[] = 
-    //{
-    //    position.getX(), position.getY(), position.getZ(),
-    //    0.0f, 1.0f, 0.0f
-    //};
-
-    //alListenerfv(AL_POSITION,    position.cfp() );
-    //alListenerfv(AL_VELOCITY,    position.cfp() );
-    //alListenerfv(AL_ORIENTATION, orientation );
-
-    //Sounds::iterator i = m_sounds.begin();
-    //for(; i != m_sounds.end(); ++i )
-    //    (*i)->update( position );
+    play("LevelComplete");
 }
 
 // ----------------------------------------------------------------------------
@@ -315,7 +235,12 @@ void SoundEngine::play( const string &id, bool repeat )
 // ----------------------------------------------------------------------------
 // clearly stops a sound from playing
 // it searches for the sound with the given id
-void SoundEngine::stop( unsigned id )
+void SoundEngine::stop( const string &id )
+{
+	stop_sfx(m_sounds[id]);
+}
+
+void SoundEngine::stop_sfx( unsigned id )
 {
     bool old = OSDisableInterrupts();
 
