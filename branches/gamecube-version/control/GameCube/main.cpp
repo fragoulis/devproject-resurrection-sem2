@@ -14,12 +14,12 @@ using namespace std;
 #include <string>
 
 
-#include "gfxutils/Model/model.h"
-#include "gfxutils/Model/modelmgr.h"
-#include "gfxutils/Texture/Texturemgr.h"
-#include "gfxutils/Texture/Texture.h"
-static const Model * model;
-static const Texture * tex;
+//#include "../../gfxutils/Model/model.h"
+//#include "../../gfxutils/Model/modelmgr.h"
+//#include "../../gfxutils/Texture/Texturemgr.h"
+//#include "../../gfxutils/Texture/Texture.h"
+//static const Model * model;
+//static const Texture * tex;
 
 
 /*---------------------------------------------------------------------------*
