@@ -8,6 +8,7 @@
 #include "sounds.h"
 #include "../utility/Singleton.h"
 #include "../GameLogic/GameEvents.h"
+#include "../control/OSinterface/Input.h"
 #include <map>
 #include <string>
 class ParserSection;
@@ -23,7 +24,7 @@ using namespace std;
 
 //ARAM initialization
 #define MAX_ARAM_BLOCKS  3 // Use AR allocator to divide ARAM into 3 blocks
-#define AUDIO_BLOCK_SIZE_BYTES (8*1024*1024) // Give a whopping 8MB of ARAM to audio!
+#define AUDIO_BLOCK_SIZE_BYTES (12*1024*1024) // Give a whopping 12MB of ARAM to audio!
 #define XFER_BUFFER_SIZE_BYTES (16*1024) // transfer buffer for ARAM audio manager (AM)
 
 //Application-layer voice abstraction
@@ -64,7 +65,8 @@ class SoundEngine :
     public EventListener< Level_Load >,
     public EventListener< Level_Unload >,
     public EventListener< Game_Over >,
-    public EventListener< Level_Complete >
+    public EventListener< Level_Complete >,
+	public EventListener< Button_GoingDown >
 {
 private:
     Playership *m_listener;
@@ -73,14 +75,14 @@ private:
     int m_maxExplosions;
     int m_activeEplosions;
 
-	typedef map<string,int> Sounds;
+	typedef map<string,u32> Sounds;
 	Sounds m_sounds;
 
-	static VOICE _voices[MAX_VOICES];
-	SPSoundTable *sp_table;
+	static VOICE m_voices[MAX_VOICES];
+	SPSoundTable *m_sp_table;
 	AXPROFILE ax_profile[NUM_AX_PROFILE_FRAMES]; 
-	u32 aramZeroBase, aramUserBase, aramMemArray[MAX_ARAM_BLOCKS];
-	u8 xfer_buffer[XFER_BUFFER_SIZE_BYTES] ATTRIBUTE_ALIGN(32);
+	u32 m_aramZeroBase, m_aramUserBase, m_aramMemArray[MAX_ARAM_BLOCKS];
+	u8 m_xfer_buffer[XFER_BUFFER_SIZE_BYTES] ATTRIBUTE_ALIGN(32);
 
 public:
 	void onApplicationLoad(const ParserSection&);
@@ -98,6 +100,7 @@ public:
     void onEvent(Level_Unload&);
     void onEvent(Level_Complete&);
     void onEvent(Game_Over&);
+	void onEvent(Button_GoingDown&);
 
     void update();
     void clearSoundPositions();
@@ -115,6 +118,8 @@ private:
 	void play_looped_sfx(u32 sfx);
 	static void ax_demo_callback(void);
 	static void ax_drop_voice_callback(void *p);
+
+	void _matchSoundIdToString();
 };
 
 #endif // _RES_SOUNDENGINE_H_

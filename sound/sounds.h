@@ -16,5 +16,3 @@
 #define SFX_LEVEL_COMPLETE	12
 #define SFX_WELCOME			13
 #define SFX_DOT				14
-#define SFX_STRACK1			15
-#define SFX_STRACK2			16
