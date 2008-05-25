@@ -14,7 +14,7 @@
  */
 
 class Graphics;
-class Texture;
+class TplPalette;
 class LaserRenderer : public EventListener< Laser_Spawned >,
 						public EventListener< Laser_Despawned >,
 						public EventListener< Level_Unload >
@@ -47,7 +47,7 @@ private:
 	Vector4 m_posColor,
 			m_negColor;
 
-	Texture * m_flare;
+	TplPalette * m_flarePal;
 
 	std::vector<LaserInfo_t> m_lasers;
 };

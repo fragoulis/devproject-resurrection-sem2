@@ -8,6 +8,7 @@
 #include "../Gamelogic/GameLogic.h"
 #include "../gfxutils/texture/texture.h"
 #include "../gfxutils/texture/textureMgr.h"
+#include "../gfxutils/VA/VATTable.h"
 
 using namespace std;
 
@@ -22,15 +23,11 @@ LaserRenderer :: LaserRenderer()
 	m_laserTypePos = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerPositive");
 	m_laserTypeNeg = WorldObjectTypeManager::instance().getTypeFromName("LaserPlayerNegative");
 
-	//m_laserTex = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLaserTextureName());
-	//m_noiseTex = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getNoiseTexture());
-
 	// FIXME : editable colors?
 	m_posColor = Vector4(1.0f,0.5f,0.5f,1.0f);
 	m_negColor = Vector4(0.5f,1.0f,0.5f,1.0f);
 
-	//TplPalette * pal = TextureMgr::instance().loadPalette("flare.tpl","flareTPL.txt");
-	//m_flare = new Texture(pal,0,"flare");
+	m_flarePal = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
 }
 
 LaserRenderer :: ~LaserRenderer()
@@ -38,7 +35,7 @@ LaserRenderer :: ~LaserRenderer()
 	EventManager::instance().unRegisterEventListener< Laser_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Laser_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
-	//delete m_flare;
+	TextureMgr::instance().unloadPalette(m_flarePal);
 }
 
 
@@ -49,7 +46,16 @@ void LaserRenderer :: onEvent(Level_Unload&)
 
 void LaserRenderer :: render(Graphics& g) const
 {
-	return;
+	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);	
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCCLR, GX_BL_ONE, GX_LO_CLEAR);
+	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
+
+	Texture tex_pos(m_flarePal,0,"flare_pos"),
+			tex_neg(m_flarePal,1,"flare_neg");
+
+	GXSetVtxDescv(VATTable::getVDL(7));
+	bool changed = false;
+	tex_pos.bind();
 	for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
 		it != m_lasers.end();
 		++it)
@@ -66,20 +72,26 @@ void LaserRenderer :: render(Graphics& g) const
 		const Vector3 ll(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) 
 						 - right*0.5f - up*0.5f);
 
-		/*
-		if (laser->getType() == m_laserTypePos)
-			ShaderManager::instance()->setUniform4fv("color",m_posColor.cfp());
-		else
-			ShaderManager::instance()->setUniform4fv("color",m_negColor.cfp());
-			*/
+		if(!changed)
+			if(laser->getType() == 4)
+			{
+				changed = true;
+				tex_neg.bind();
+			}
 
-		//RenderEngine::drawTexturedQuad(ll,right,up,lltex,texext);
+		RenderEngine::drawQuad(ll,right,up);
 	}
+
+	GXSetBlendMode(GX_BM_NONE , GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	GXSetZMode(TRUE, GX_LEQUAL, TRUE);
 }
 
 void LaserRenderer :: onEvent(Laser_Spawned& evt)
 {
-	m_lasers.push_back(LaserInfo_t(evt.getValue()));
+	if(evt.getValue()->getType() == 5)
+		m_lasers.push_back(LaserInfo_t(evt.getValue()));
+	else
+		m_lasers.insert(m_lasers.begin(),LaserInfo_t(evt.getValue()));
 }
 
 void LaserRenderer :: onEvent(Laser_Despawned& evt)
