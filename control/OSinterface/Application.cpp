@@ -94,7 +94,7 @@ void Application :: load()
 	//MenuController::safeInstance().load();
     EnemyBuffCoupleManager::safeInstance();
 
-	GameController::safeInstance().loadLevel("Level05");
+	GameController::safeInstance().loadLevel("Level08");
 }
 
 

@@ -8,6 +8,5 @@ WindLevel = (-1,0.5,100)
 
 [DataFiles]
 
-TerraformTexture = Level4_M_TForm.dds
-BarrenTexture = Level4_M_Barren.dds
+Texture = Level4_M.tpl
 TerrainData = Level4_M_Data.dat
