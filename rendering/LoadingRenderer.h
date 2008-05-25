@@ -3,6 +3,7 @@
 #include "IRenderer.h"
 class Texture;
 
+
 /**
  * Renders loading text.
  *
@@ -18,7 +19,7 @@ public:
 	virtual void update(float dt);
 
 private:
-	//Texture* m_texture;
+	Texture* m_texture;
 };
 
 

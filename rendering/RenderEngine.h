@@ -32,7 +32,9 @@ class RenderEngine : public Singleton< RenderEngine >
 {
 public:
 
-	//! Called by Application class on startup.
+	//! init is called early, before loading screen
+	void init();
+	//! onApplicationLoad is called right after showing the loading screen
 	void onApplicationLoad(const ParserSection&);
 	void onApplicationUnload();
 
@@ -57,7 +59,7 @@ public:
 	void update(float dt);
 
 	// get a section
-	const ParserSection * getParserSection(const std::string& secname) const;
+	//const ParserSection * getParserSection(const std::string& secname) const;
 
 	// viewport getset
 	void setViewport(int x,int y,int width, int height);
@@ -124,6 +126,9 @@ public:
 								 const Vector2& tex_ll, const Vector2& extents);
 
 	static void drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up,const u8 repeats = 1);
+	
+	// Uses VAT 1
+	static void drawTexturedRectangle(s16 left, s16 bottom, s16 width, s16 height, u8 repeats = 1);
 
 	static unsigned POLY_COUNT;
 

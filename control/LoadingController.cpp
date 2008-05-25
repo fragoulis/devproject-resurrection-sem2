@@ -1,5 +1,5 @@
 #include "LoadingController.h"
-//#include "../rendering/RenderEngine.h"
+#include "../rendering/RenderEngine.h"
 
 #include <iostream>
 using namespace std;
@@ -23,17 +23,17 @@ void LoadingController :: activate()
 {
 	//cout << "Activating LoadingController" << endl;
 	// deactivate all user input, activate loading renderer
-	//RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers();
-	//re.activateRenderer("loading");
+	RenderEngine& re = RenderEngine::safeInstance();
+	re.deactivateAllRenderers();
+	re.activateRenderer("loading");
 	m_timeTillWeCanLoad = TIME_TILL_LOAD;
 }
 
 void LoadingController :: deactivate()
 {
 	//cout << "Deactivating LoadingController" << endl;
-	//RenderEngine& re = RenderEngine::instance();
-	//re.deactivateAllRenderers();
+	RenderEngine& re = RenderEngine::instance();
+	re.deactivateAllRenderers();
 	_deleteLoader();
 }
 
@@ -43,7 +43,7 @@ void LoadingController :: update(float dt)
 	if (m_timeTillWeCanLoad < 0.0f && m_loader != 0)
 	{
 		m_loader->call();
-		m_timeTillWeCanLoad = 10000.0f;
+		_deleteLoader();
 	}
 }
 

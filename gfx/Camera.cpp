@@ -1,10 +1,12 @@
 #include "Camera.h"
 
 Mtx Camera::viewMatrix;
+static Mtx44 orthoMat;
+static Mtx44 persMat;
+
 
 Camera::Camera()
 {
-
 }
 
 void Camera::setPerspective(float vAng, float asp, float nearD, float farD)
@@ -19,10 +21,14 @@ void Camera::setPerspective(float vAng, float asp, float nearD, float farD)
 	fFar = farD;
 
 	//glFrustum( -fW, fW, -fH, fH, nearD, farD );
-	Mtx44 projMat;
-	MTXFrustum(projMat, fH, -fH, fW, -fW, nearD, farD);
-    GXSetProjection(projMat, GX_PERSPECTIVE);
+	//Mtx44 projMat;
+	MTXFrustum(persMat, fH, -fH, fW, -fW, nearD, farD);
+}
 
+void Camera :: activatePerspective()
+{
+	GXSetProjection(persMat, GX_PERSPECTIVE);
+	GXSetCurrentMtx(GX_PNMTX0);
 }
 
 void Camera::setModelViewMatrix()
@@ -109,4 +115,22 @@ void Camera :: getProjSettings(float & w,float & h, float & n, float &f) const
 	h = fH;
 	n = fNear;
 	f = fFar;
+}
+
+void Camera :: load2D()
+{
+	// Set orthoMat to 2D ortho projection mtx
+	MTXOrtho(orthoMat, 240, -240, -320, 320, -1, 1);
+
+	// load identity into modelview matrix 1
+	Mtx mv;
+	MTXTrans(mv, -320, -240, 0);
+	//MTXIdentity(mv);
+	GXLoadPosMtxImm(mv, GX_PNMTX1);
+}
+
+void Camera :: activate2D()
+{
+    GXSetProjection(orthoMat, GX_ORTHOGRAPHIC);
+	GXSetCurrentMtx(GX_PNMTX1);
 }

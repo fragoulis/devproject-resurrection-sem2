@@ -62,7 +62,7 @@ int main ( void )
 	GXInvalidateTexAll();
 	*/
 
-	app.load();
+	//app.load();
 
 	cout << "Application Initialized" << endl;
 

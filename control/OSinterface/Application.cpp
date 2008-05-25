@@ -46,28 +46,11 @@ Application :: ~Application()
 bool Application :: init()
 {
 	Input::create();
+	RenderEngine::safeInstance().init();
 
 	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
-}
-
-void Application :: destroy()
-{
-	unload();
-
-    //alutExit();
-
-	// This doesn't work!
-	// LoadingController waits for 0.1ms till the loading screen is rendered,
-	// before calling the callback. in that 0.1ms, no update is ever sent anymore
-	// LoadingController::update never gets called anymore
-
-	//LoadingController* lc = new LoadingController();
-	//lc->setLoader(this, &Application::unload);
-
-	//ControllerManager& cm = ControllerManager::safeInstance();
-	//cm.activateController(lc);
 }
 
 
@@ -97,6 +80,24 @@ void Application :: load()
 	GameController::safeInstance().loadLevel("Level08");
 }
 
+
+void Application :: destroy()
+{
+	unload();
+
+    //alutExit();
+
+	// This doesn't work!
+	// LoadingController waits for 0.1ms till the loading screen is rendered,
+	// before calling the callback. in that 0.1ms, no update is ever sent anymore
+	// LoadingController::update never gets called anymore
+
+	//LoadingController* lc = new LoadingController();
+	//lc->setLoader(this, &Application::unload);
+
+	//ControllerManager& cm = ControllerManager::safeInstance();
+	//cm.activateController(lc);
+}
 
 void Application :: unload()
 {
