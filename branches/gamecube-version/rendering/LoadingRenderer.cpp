@@ -12,8 +12,8 @@ using namespace std;
 LoadingRenderer :: LoadingRenderer()
 {
 	//m_texture = TextureIO::instance()->getTexture("loadingScreen_alt.dds");
-	TextureMgr::safeInstance().loadPalette("enforcer.tpl", "enforcerTPL.txt");
-	m_texture = TextureMgr::instance().getTexture("enforcer");
+	TextureMgr::safeInstance().loadPalette("loadingScreen.tpl", "loadingScreenTPL.txt");
+	m_texture = TextureMgr::instance().getTexture("loading");
 
 	Camera::load2D();
 
@@ -30,6 +30,10 @@ LoadingRenderer :: LoadingRenderer()
     //  Default stage0 uses texcoord0, texmap0, color0a0
     //  Only need to change the tevop
     GXSetTevOp(GX_TEVSTAGE0, GX_DECAL);
+
+
+    GXColor black = {0, 0, 0, 0};
+    GXSetCopyClear(black, 0x00ffffff);
 }
 
 LoadingRenderer :: ~LoadingRenderer()
@@ -61,7 +65,7 @@ void LoadingRenderer :: render(Graphics& g) const
 	//}
 	//GXEnd();
 
-	RenderEngine::drawTexturedRectangle(0, 0, 640, 480);
+	RenderEngine::drawTexturedRectangle(60, 0, 512, 512);
 
 
 
