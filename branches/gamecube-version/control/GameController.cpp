@@ -69,8 +69,8 @@ void GameController :: update(float dt)
 		}
 
 		// get control stick input --> player movement
-		int controlX = input.getControlX(0);
-		int controlY = input.getControlY(0);
+		int controlX = -input.getControlX(0);
+		int controlY = -input.getControlY(0);
 		if (controlX != 0 || controlY != 0)
 		{
 			Vector3 direction(float(controlX) / 56.0f, 0.0f, float(controlY) / 56.0f);
@@ -82,8 +82,8 @@ void GameController :: update(float dt)
 		}
 
 		// get C-stick input --> laser fire
-		int camX = input.getCameraX(0);
-		int camY = input.getCameraY(0);
+		int camX = -input.getCameraX(0);
+		int camY = -input.getCameraY(0);
 		if (camX != 0 || camY != 0)
 		{
 			Vector3 direction(float(camX) / 44.0f, 0.0f, float(camY) / 44.0f);
