@@ -2,16 +2,13 @@
 #define _RES_TERRAINRENDERER_H_
 #include "../utility/EventManager.h"
 #include "../GameLogic/GameEvents.h"
-//#include "../gfx/FBO/FramebufferObject.h"
-//#include "../gfx/FBO/Renderbuffer.h"
-//#include "../gfx/Material.h"
 //#include "CoordinateModel.h"
 #include "../math/Vector3.h"
 #include "../math/Vector4.h"
 
-//#include "../control/OSinterface/Input.h"
 
 #include <vector>
+#include <string>
 
 class Terrain;
 class Graphics;
@@ -23,6 +20,10 @@ class ShipRenderer;
 class LaserRenderer;
 class Crater;
 class PS_Base;
+class TerrainStruct;
+class TerrainLoader;
+class Texture;
+class Lake;
 
 
 /**
@@ -127,11 +128,11 @@ private:
 	float	* m_heights;
 	unsigned m_terrainDimension;
 	Vector3  m_mapExtents;
-	//Model     * m_terrainModel;			// The terrain 'model'
-	//VBO       * m_vbo;					// The terrain will always have it's own VBO
+
+	TerrainStruct * m_terrainStruct;
+	Texture		  * m_terrainTextures[2];
 
 	// For terraform contribution computation
-	//FramebufferObject m_tformFBO;
 	//Texture * m_tformContribTex;
 	//std::vector<TerraformInfo_t> m_tformInfo;
 
@@ -140,21 +141,19 @@ private:
 	//Texture * m_lakeTexture;
 	//Texture * m_heightTexture;
 	//Texture * m_lakeReflection;			// reflection to applied to the lake
-	//Vector4	  m_waterColor;
+	Vector4	  m_waterColor;
 
 	//const ShipRenderer * m_shipRendererRef;		// handle to call when redrawing the ships
 	//const LaserRenderer * m_laserRendererRef;
 
-	//FramebufferObject m_reflectionFBO;
-	//Renderbuffer m_reflectionDepthBuffer;
 	//float m_lakeTimer;
 
 	// For the shadows
 	//std::vector<CoordinateModel> m_shadowCasters;
 	//PS_Base * m_cloudPS;
 	//Texture * m_shadowTexture;
-	//FramebufferObject m_shadowFBO;
 	Vector3 m_lightDir;
+	Lake  * m_lake;
 
 
 	// For the craters

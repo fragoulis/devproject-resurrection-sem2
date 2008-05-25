@@ -55,13 +55,18 @@ ShipRenderer :: ~ShipRenderer()
 
 void ShipRenderer :: onEvent(Level_Unload& e)
 {
-	//m_ships.clear();
+	m_ships.clear();
 }
 
 void ShipRenderer :: render(Graphics& g) const
 {
-	//Vector4 ldir = RenderEngine::instance().getLevelLight();
-	//Vector4 lcol = RenderEngine::instance().getLevelLightColor();
+	Vector4 ldir = RenderEngine::instance().getLevelLight();
+	Vector4 lcol = RenderEngine::instance().getLevelLightColor();
+
+	RenderEngine::instance().setLight();
+
+	GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+
 
 	// SET TEXTURE UNIT 0!!
 	
@@ -70,13 +75,10 @@ void ShipRenderer :: render(Graphics& g) const
 		it != m_ships.end();
 		++it)
 	{
-		//glPushMatrix();
-		//glMultMatrixf(it->coordframe->getMatrix().cfp());
-		const float * m = it->coordframe->getMatrix().cfp();
-
 		//GAMECUBE VERSION
-		//MatrixTransform::PushMatrix(weNeedAViewMatrix, false);
-		//MatrixTransform::MulMatrix(it->coordframe->getMatrix());
+		MatrixTransform::PushMatrix();
+		MatrixTransform::MulMatrix(it->coordframe->getMatrix());
+		MatrixTransform::ApplyNormalMatrix();
 		
 
 		if(it->model->isTextured())
@@ -85,15 +87,18 @@ void ShipRenderer :: render(Graphics& g) const
 			{
 				changed_to_tex = true;
 				// enable tex unit 0 here
+				GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
 			}
 		}
 		it->model->render();
-	
-		//glPopMatrix();
+
+		RenderEngine::POLY_COUNT += it->model->getPolynum();
 
 		//GAMECUBE VERSION
-		//MatrixTransform::PopMatrix();
+		MatrixTransform::PopMatrix();
 	}
+
+	RenderEngine::instance().disableLight();
 }
 
 void ShipRenderer :: onEvent(Player_Spawned& evt)

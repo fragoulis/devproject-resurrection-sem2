@@ -1,5 +1,5 @@
 #include "Application.h"
-//#include "../GameCube/gc_new_delete.h"
+#include "../GameCube/gc_new_delete.h"
 #include "Input.h"
 #include "../ControllerManager.h"
 #include "../LoadingController.h"
@@ -47,21 +47,6 @@ bool Application :: init()
 {
 	Input::create();
 
-	// this gets to stay here in init
-    //alutInit(0, 0);
-    //alGetError();
-
-	//streambuf* psbuf;
-	//filestr.open("cout.txt");
-	//psbuf = filestr.rdbuf();
-	//cout.rdbuf(psbuf);
-
-	// FIXME!!!!! BuildVAT somewhere!"!!!
-	ConfParser cp("./config/config.gfx");
-	
-	//ShaderManager::init(cp->getSection("Shader"));
-	//MemMgrRaw::init(cp->getSection("MemManager:RawData"));
-
 	LoadingController::safeInstance().load(this, &Application::load);
 
 	return true;
@@ -88,7 +73,7 @@ void Application :: destroy()
 
 void Application :: load()
 {
-	//cout << "Application :: load()" << endl;
+	OSReport("Application :: load()\n");
 
 	ConfParser cp("config/config.txt");
 	const ParserSection& ps = cp.rootSection();
@@ -115,7 +100,7 @@ void Application :: load()
 
 void Application :: unload()
 {
-	//RenderEngine::safeInstance().unloadAllRenderers();
+	RenderEngine::safeInstance().unloadAllRenderers();
 
 	WorldObjectTypeManager::destroy();
 	LaserFactory::destroy();
@@ -139,7 +124,7 @@ void Application :: unload()
 
 void Application :: render(Graphics& g) const
 {
-	//RenderEngine::instance().render(g);
+	RenderEngine::instance().render(g);
 }
 void Application :: update(float dt)
 {
@@ -150,4 +135,5 @@ void Application :: update(float dt)
 
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
+	RenderEngine::instance().update(dt);
 }

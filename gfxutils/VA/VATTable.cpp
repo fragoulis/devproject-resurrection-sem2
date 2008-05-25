@@ -98,8 +98,13 @@ void VATTable :: buildVAT()
 	GXGetVtxDescv(m_vcd[6]);
 
 	// set format 7
+	GXClearVtxDesc();
+	_setPosition(GX_VTXFMT7,GX_F32,GX_DIRECT);
+	_setTexcoord(GX_VTXFMT7,GX_U8,GX_DIRECT);
+	GXGetVtxDescv(m_vcd[7]);
 
-	// NOT AVAILABLE!
+
+	GXSetMisc( GX_MT_XF_FLUSH, GX_XF_FLUSH_SAFE );
 
 	OSReport("VAT Table initialized...\n");
 	

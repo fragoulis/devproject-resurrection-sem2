@@ -9,19 +9,10 @@
 
 #include "../rendering/RenderEngine.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
-//#include "../gfxutils/MemManager/MemMgr_RawData.h"
-//#include "../gfx/Model/ModelMgr.h"
-//#include "../gfx/Texture/TextureIO.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Shaders/VertexAttrib.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Model/Model.h"
-//#include "../gfx/Model/VBODesc.h"
-//#include "../gfx/Texture/Texture2D.h"
-//#include "../gfx/vbo/vbo.h"
 #include "../Math/Vector4.h"
 #include "../Math/Vector2.h"
 #include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
 
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
@@ -33,13 +24,23 @@
 //#include "ShipRenderer.h"
 //#include "LaserRenderer.h"
 
+#include "../control/Gamecube/gc_new_delete.h"
+#include "Terrain/TerrainLoader.h"
+#include "Terrain/TerrainStruct.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/TplPalette.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/Model/ModelMgr.h"
+#include "Lake.h"
+
 using namespace std;
 
 TerrainRenderer :: TerrainRenderer() :
 	//m_terrainModel(0),
 	//m_vbo(0),
 	//m_tformContribTex(0),
-	m_heights(0)
+	m_heights(0),
+	m_terrainStruct(0)
 	//m_shadowTexture(0),
 	//m_lakeTimer(0.0f),
 	//m_heightTexture(0),
@@ -66,6 +67,10 @@ TerrainRenderer :: TerrainRenderer() :
 	//EventManager::instance().registerEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
 	//m_craterArrowTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getCraterArrowTexture());
+
+	m_terrainTextures[0] = m_terrainTextures[1] = 0;
+	m_terrainStruct = 0;
+	m_lake = 0;
 }
 
 TerrainRenderer :: ~TerrainRenderer()
@@ -117,6 +122,21 @@ void TerrainRenderer :: _clearResources()
 		//MemMgrRaw::instance()->free(m_heights);
 		m_heights = 0;
 	}
+	if(m_terrainTextures[0])
+	{
+		TextureMgr::instance().unloadPalette(m_terrainTextures[0]->parentPalette());
+		m_terrainTextures[0] = m_terrainTextures[1] = 0;
+	}
+	if(m_terrainStruct)
+	{
+		delete m_terrainStruct;
+		m_terrainStruct = 0;
+	}
+	if(m_lake)
+	{
+		delete m_lake;
+		m_lake = 0;
+	}
 	//if(m_tformContribTex)
 	//{
 	//	delete m_tformContribTex;
@@ -151,315 +171,22 @@ void TerrainRenderer :: _clearResources()
 
 void TerrainRenderer :: render(Graphics& g) const
 {
-//	//renderShadows();
-//	//updateTerraformContribution();
-//	//drawLakeReflection(g);
-//
-//	/*
-//		fetch terrain texcoords & scaling
-//	*/
-//	Point3 pts[4];
-//	RenderEngine::instance().getWsScreenEdges(pts,0);
-//	Point3 ll(pts[0]);
-//	Point3 lr(pts[1]);
-//	Point3 tl(pts[3]);
-//	Point3 tr(pts[2]);
-//
-//	// For the lower edge ( +z ), use the val from gameplaneheight
-//	Point3 pts_gph[4];
-//	RenderEngine::instance().getWsScreenEdges(pts_gph,GameLogic::instance().getGamePlaneHeight());
-//	ll.setZ(pts_gph[0].getZ());
-//	lr.setZ(pts_gph[1].getZ());
-//
-//	Vector3 center = (pts[0].getVector() + pts[1].getVector() + pts[3].getVector() + pts[2].getVector())*0.25f;
-//	Vector2 extents;
-//	
-//	
-//	extents.setX(max(max(max(lr.getX() - center.getX(),
-//								  tr.getX() - center.getX()),
-//							  center.getX() - tl.getX()),
-//						  center.getX() - ll.getX()));
-//	extents.setY(max(max(max(lr.getZ() - center.getZ(),
-//								  ll.getZ() - center.getZ()),
-//							  center.getZ() - tr.getZ()),
-//						  center.getZ() - tl.getZ()));
-//    
-//	//extents.add(abs(center.getX()),abs(center.getZ()));
-//	//extents.add(1800,1800);
-//
-//	// compute the tex scale
-//	Vector2 terrain_tex_scale(0.5f*m_mapExtents.getX() / extents.getX(),
-//							  0.5f*m_mapExtents.getZ() / extents.getY());
-//	//compute the tex offset
-//	Vector2 terrain_tex_offset;
-//	{
-//		Vector2 mapExtents(m_mapExtents.getX(),m_mapExtents.getZ());
-//		Vector2 ll_mapEdge(-mapExtents * 0.5f);
-//		Vector2 ll_screenEdge(center.getX() - extents.getX(),
-//							  -center.getZ() - extents.getY());
-//		Vector2 offset_to_ur(ll_screenEdge - ll_mapEdge);
-//		terrain_tex_offset.setX(terrain_tex_scale.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
-//		terrain_tex_offset.setY(terrain_tex_scale.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
-//	}
-//
-//	// Do some magic to render the terrain
-//	ShaderManager::instance()->begin("TerrainShader");
-//	//m_terrainModel->matGroup(0).getTextureList()[0]->bind(14);
-//	m_terrainModel->matGroup(0).getTextureList()[0]->setParam(GL_TEXTURE_MIN_FILTER,GL_NEAREST,14);
-//	ShaderManager::instance()->setUniform1i("texmap0",14);
-//	//m_terrainModel->matGroup(0).getTextureList()[1]->bind(15);
-//	m_terrainModel->matGroup(0).getTextureList()[1]->setParam(GL_TEXTURE_MIN_FILTER,GL_NEAREST,15);
-//	ShaderManager::instance()->setUniform1i("texmap1",15);
-//	m_tformContribTex->bind(13);
-//	ShaderManager::instance()->setUniform1i("contribMap",0);
-//	m_shadowTexture->bind(12);
-//	ShaderManager::instance()->setUniform1i("shadowTex",12);
-//	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
-//	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
-//
-//	const float mapsize = float(m_terrain->getTerrainDim());
-//	ShaderManager::instance()->setUniform1fv("mapCellNum",&mapsize);
-//
-//	m_terrainModel->matGroup(0).vboDesc().call();
-//
-//	CHECK_GL_ERROR();
-//
-//	
-//	// create the reflection Surface
-////	drawLakeReflection(g);
-//
-//	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-//	glEnable(GL_BLEND);
-//
-//	// Draw the lake
-//	
-//	ShaderManager::instance()->begin("lakeShader");
-//	m_lakeTexture->bind(11);
-//	ShaderManager::instance()->setUniform1i("noiseTex",11);
-//	m_shadowTexture->bind(12);
-//	ShaderManager::instance()->setUniform1i("shadowTex",12);
-//	m_lakeReflection->bind(10);
-//	ShaderManager::instance()->setUniform1i("reflTex",10);
-//	m_heightTexture->bind(9);
-//	ShaderManager::instance()->setUniform1i("heightTex",9);
-//	m_lakeNormalTexture->bind();
-//	ShaderManager::instance()->setUniform1i("normalTex",0);
-//
-//	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
-//	
-//	const float ws = RenderEngine::instance().getConstRenderSettings().getWaveSpeed();
-//	const float wcr = RenderEngine::instance().getConstRenderSettings().getWaveChangeRate();
-//	const float wr = RenderEngine::instance().getConstRenderSettings().getWaveRepeats(m_mapExtents.getX());
-//
-//	ShaderManager::instance()->setUniform1fv("timer",&m_lakeTimer);
-//
-//	Vector3 windlvl(RenderEngine::instance().getLevelWind());
-//
-//	Vector2 winddir(windlvl.getX(),windlvl.getY());
-//
-//	ShaderManager::instance()->setUniform2fv("waveDir",winddir.cfp());
-//	ShaderManager::instance()->setUniform1f("waveChangeRate",wcr);
-//	ShaderManager::instance()->setUniform1f("waveSpeed",ws*windlvl.getZ()*0.0141421f);
-//	ShaderManager::instance()->setUniform1f("waveRepeats",wr);
-//	
-//
-//	ShaderManager::instance()->setUniform4fv("lightColor",m_lightColor.cfp());
-//	ShaderManager::instance()->setUniform4fv("waterColor",m_waterColor.cfp());
-//	Vector4 lightPos(m_lightDir.getX(),m_lightDir.getY(),m_lightDir.getZ(),0.0f);
-//	ShaderManager::instance()->setUniform4fv("lightPosition",lightPos.cfp());
-//
-//	// compute the texcoord offsets & scale, based on the ship's center, max extents etc.
-//	Vector2 rto;
-//	Vector2 rts;
-//	float proj[4];
-//	m_cameraRef->getProjSettings(proj[0],proj[1],proj[2],proj[3]);
-//	float edge_x  = (RenderEngine::instance().getCameraHeightAbovePlane() + GameLogic::instance().getGamePlaneHeight())*proj[0] / proj[2];
-//	float edge_y  = (RenderEngine::instance().getCameraHeightAbovePlane() + GameLogic::instance().getGamePlaneHeight())*proj[1] / proj[2];
-//
-//	// compute reflection texture scale
-//	rts.setX( 1.0f / (edge_x * 2.0f / m_mapExtents.getX()));
-//	rts.setY( 1.0f / (edge_y * 2.0f / m_mapExtents.getZ()));
-//
-//	float off[2] = {m_cameraRef->getEye().getX(),m_cameraRef->getEye().getZ()};
-//	
-//	// compute reflection texture offset
-//	
-//	Vector2 mapExtents(m_mapExtents.getX(),m_mapExtents.getZ());
-//	Vector2 ll_mapEdge(-mapExtents * 0.5f);
-//	Vector2 curpos(off[0],-off[1]);
-//	Vector2 ll_screenEdge(curpos - Vector2(edge_x,edge_y));
-//	Vector2 offset_to_ur(ll_screenEdge - ll_mapEdge);
-//	rto.setX(rts.getX()*(offset_to_ur.getX()  / mapExtents.getX()));
-//	rto.setY(rts.getY()*(offset_to_ur.getY()  / mapExtents.getY()));
-//
-//	ShaderManager::instance()->setUniform2fv("terrain_tex_scale", terrain_tex_scale.cfp());
-//	ShaderManager::instance()->setUniform2fv("terrain_tex_offset", terrain_tex_offset.cfp());
-//
-//	Vector3 qll(-m_mapExtents.getX()*0.5f,0.0f,m_mapExtents.getX()*0.5f);
-//	Vector3 qright(m_mapExtents.getX(),0,0);
-//	Vector3 qup(0,0,-m_mapExtents.getX());
-//	RenderEngine::drawTexturedQuad(qll,qright,qup,Vector2(0,0),Vector2(1.0f,1.0f));
-//
-//	
-//	// Draw the crater arrows
-//
-//	// use pts & pts_gph
-//	pts_gph[2].setZ(pts_gph[2].getZ() + 50.0f);
-//	pts_gph[3].setZ(pts_gph[3].getZ() + 50.0f);
-//
-//	const float cr_aty = GameLogic::instance().getGamePlaneHeight();
-//	const float crsize = 30.0f;
-//	const float crsize_rad = crsize * 1.4142135623730950488016887242097f;	// for bounding circle
-//	Vector3 arrow_up = m_cameraRef->getEye() - m_cameraRef->getLookAt();
-//	arrow_up.normalize();
-//
-//	static const Rotation arrow_rot(Vector3(0.0f,1.0f,0.0f),-90.0f*math_const<float>::DEG2RAD);
-//
-//	Point3 sum((pts[0].getVector() + pts[1].getVector() + pts[2].getVector() + pts[3].getVector())*0.25f);
-//	const Vector3 map_center(sum.getVector());
-//
-//	glDisable(GL_BLEND);
-//	glAlphaFunc(GL_GREATER,0.1f);
-//	glEnable(GL_ALPHA_TEST);
-//	ShaderManager::instance()->begin("craterArrowShader");
-//	m_craterArrowTexture->bind(0);
-//	ShaderManager::instance()->setUniform1i("tex",0);
-//
-//	for(std::vector<CraterInfo_t>::const_iterator it = m_craterList.begin();
-//		it != m_craterList.end();
-//		++it)
-//	{
-//		//check to see if it needs drawing
-//		const Point3& craterpos(it->crater->getPosition());
-//		Vector3 arrow_pos(float(0xFFFFFFFF),cr_aty,float(0xFFFFFFFF));
-//		
-//		
-//		// determine region
-//		/* Regions :
-//			1 2 3
-//			4 5 6
-//			7 8 9
-//
-//			'Points'
-//			D C
-//			A B
-//		*/
-//
-//		
-//		// first , near z test
-//		if(craterpos.getZ() < pts_gph[1].getZ())
-//		{
-//			// Reduce to regions 1 2 3 4 5 6
-//			if(craterpos.getZ() > pts_gph[2].getZ())
-//			{
-//				// Reduce to regions 4 5 6
-//				// compare w/ point on line AD
-//				float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
-//				float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
-//				if(craterpos.getX() > (neg_x + crsize_rad))
-//				{
-//					// Reduce to regions 5 6
-//					float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
-//					if(craterpos.getX() < (pos_x - crsize_rad))
-//					{
-//						// Region = 5, continue
-//						continue;
-//					}
-//					else
-//					{
-//						// Region = 6, set arrow
-//						arrow_pos.setX(pos_x - crsize);
-//						arrow_pos.setZ(craterpos.getZ());
-//					}
-//				}
-//				else
-//				{
-//					// Region = 4, set arrow
-//					arrow_pos.setX(neg_x + crsize);
-//					arrow_pos.setZ(craterpos.getZ());
-//				}
-//			}
-//			else 
-//			{
-//				// Reduce to regions 1 2 3
-//				// compare w/ point on line AD
-//				float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
-//				float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
-//				if(craterpos.getX() > (neg_x + crsize_rad))
-//				{
-//					// Reduce to regions 2 3
-//					float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
-//					if(craterpos.getX() < (pos_x - crsize_rad))
-//					{
-//						// Region = 2, set arrow
-//						arrow_pos.setX(craterpos.getX());
-//						arrow_pos.setZ(pts_gph[2].getZ() + crsize_rad);
-//					}
-//					else
-//					{
-//						// Region = 3, set arrow
-//						arrow_pos.setX(pts_gph[2].getX() - crsize_rad);
-//						arrow_pos.setZ(pts_gph[2].getZ() + crsize_rad);
-//					}
-//				}
-//				else
-//				{
-//					// Region = 1, set arrow
-//					arrow_pos.setX(pts_gph[3].getX() + crsize_rad);
-//					arrow_pos.setZ(pts_gph[3].getZ() + crsize_rad);
-//				}
-//			}
-//		}
-//		else
-//		{
-//			// Reduce to regions 7 8 9
-//			// compare w/ point on line AD
-//			float at_z = (craterpos.getZ() - pts_gph[0].getZ()) / (pts_gph[3].getZ() - pts_gph[0].getZ());
-//			float neg_x = (pts_gph[0].getX() + at_z*(pts_gph[3].getX() - pts_gph[0].getX()));
-//			if(craterpos.getX() > (neg_x + crsize_rad))
-//			{
-//				// Reduce to regions 8 9
-//				float pos_x = (pts_gph[1].getX() + at_z*(pts_gph[2].getX() - pts_gph[1].getX()));
-//				if(craterpos.getX() < (pos_x - crsize_rad))
-//				{
-//					// Region = 8, set arrow
-//					arrow_pos.setX(craterpos.getX());
-//					arrow_pos.setZ(pts_gph[1].getZ() - crsize_rad);
-//				}
-//				else
-//				{
-//					// Region = 9, set arrow
-//					arrow_pos.setX(pts_gph[1].getX() - crsize_rad);
-//					arrow_pos.setZ(pts_gph[1].getZ() - crsize_rad);
-//				}
-//			}
-//			else
-//			{
-//				// Region = 7, set arrow
-//				arrow_pos.setX(pts_gph[0].getX() + crsize_rad);
-//				arrow_pos.setZ(pts_gph[0].getZ() - crsize_rad);
-//			}
-//		}
-//
-//		// get direction from center map pos to crater & normalize it
-//		Vector3 arrow_dir(it->crater->getPosition().getVector() - map_center);
-//		arrow_dir.normalize();
-//		Point3 arrow_right(arrow_dir);
-//		arrow_rot.applyTo(arrow_right);
-//		Vector3 arrow_r(arrow_right.getVector());
-//		arrow_r.normalize();
-//
-//
-//		ShaderManager::instance()->setUniform4fv("color",it->color.cfp());
-//		Vector3 ll(arrow_pos - arrow_r*crsize - arrow_dir*crsize);
-//		
-//		RenderEngine::drawTexturedQuad(ll,
-//									   arrow_r*crsize*2.0f,
-//									   arrow_dir*crsize*2.0f,
-//									   Vector2(0.0f,0.0f),
-//									   Vector2(1.0f,1.0f));
-//	}
-//	glDisable(GL_ALPHA_TEST);
+	/* 
+		Render terrain & lake probably
+
+		Terrain is rendered from the terrain struct
+		Lake as a huge quad.
+	*/
+
+	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
+
+	m_lake->render();
+
+	// Bind terrain texture
+	m_terrainTextures[0]->bind();
+	m_terrainStruct->render();
+
+	RenderEngine::POLY_COUNT += m_terrainStruct->getPolynum() + m_lake->getPolynum();
 }
 
 
@@ -478,141 +205,56 @@ void TerrainRenderer :: onEvent(Level_Load& evt)
 void TerrainRenderer :: _loadResources(const std::string& id,
 									   const std::string& gfxlevelfile)
 {
-	//// Fetch the parser sections
+	// Fetch the parser sections
 
-	//ConfParser parser(std::string("config/levels/") + gfxlevelfile);
+	ConfParser parser(std::string("config/levels/") + gfxlevelfile);
 
-	//unsigned dimension;
-	//unsigned dataSize,indexSize;
-	//Vector4 ldir;
+	unsigned dimension;
+	Vector4 ldir;
 
-	//// Open the file
-	//string filepath = ModelMgr::instance().getModelDir() + parser.getSection("DataFiles")->getVal("TerrainData");
-	//FILE * fp = fopen(filepath.c_str(),"rb");
+	// Open the file
+	string full_terrain_path = ModelMgr::instance().getModelDir() + parser.getSection("DataFiles")->getVal("TerrainData");
+	TerrainLoader terloader((char *)(full_terrain_path.c_str()),3);
+	m_heights = new float[terloader.dim * terloader.dim];
+	memcpy(m_heights,terloader.heights,sizeof(float)*terloader.dim*terloader.dim);
+	m_terrainStruct = new TerrainStruct(m_heights,terloader.dim,1,terloader.extent);
+	
 
-	//// Read the dimension & light direction
-	//fread(&dimension,sizeof(unsigned),1,fp);
-	////dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
-	//ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
-	//RenderEngine::instance().setLevelLight(ldir);
+	// Read the dimension & light direction
+	dimension = FromString<unsigned>(parser.getSection("Misc")->getVal("MapCellDim"));
+	ldir = FromString<Vector4>(parser.getSection("Misc")->getVal("LightDir"));
+	RenderEngine::instance().setLevelLight(ldir);
 
-	//m_lightColor = FromString<Vector4>(parser.getSection("Misc")->getVal("LightAmbDiff"));
-	//RenderEngine::instance().setLevelLightColor(m_lightColor);
+	m_lightColor = FromString<Vector4>(parser.getSection("Misc")->getVal("LightAmbDiff"));
+	RenderEngine::instance().setLevelLightColor(m_lightColor);
 
-	//RenderEngine::instance().setLevelWind(FromString<Vector3>(parser.getSection("Misc")->getVal("WindLevel")));
+	RenderEngine::instance().setLevelWind(FromString<Vector3>(parser.getSection("Misc")->getVal("WindLevel")));
 
-	//// Compute the index - data sizes
-	//dataSize = dimension * dimension;
-	//indexSize = 2*(dimension + 1)*(dimension - 1);		// tristrip index formula
-
-	//// Read the rest data ( vertex - texcoord - indices )
-	//Vector4 * vertexData = MemMgrRaw::instance()->allocate<Vector4>(dataSize);
-	//Vector2 * texcoordData = MemMgrRaw::instance()->allocate<Vector2>(dataSize);
-	//unsigned * indexData = MemMgrRaw::instance()->allocate<unsigned>(indexSize);
-
-	//fread(vertexData,sizeof(Vector4),dataSize,fp);
-	//fread(texcoordData,sizeof(Vector2),dataSize,fp);
-	//fread(indexData,sizeof(unsigned),indexSize,fp);
-	//fclose(fp);
-
-	//std::vector<void *> attribData;
-	//attribData.push_back((void *)vertexData);
-	//attribData.push_back((void *)texcoordData);
-	//
-	//// - We need only "Vertex" & "Texcoord" Attributes
-	//std::vector<const VertexAttribute *> vattrs;
-	//vattrs.push_back(ShaderManager::instance()->vertexAttribute("Vertex"));
-	//vattrs.push_back(ShaderManager::instance()->vertexAttribute("Texcoord"));
-
-	//// Create the vbo
-	//m_vbo = new VBO(vattrs,				// Specify attribs
-	//				dataSize,			// now we don't need any more space for vertex data in this vbo
-	//				indexSize,		// now we don't need any more space for index data in this vbo
-	//				GL_STATIC_DRAW,		// usage hint, we won't change VBO contents
-	//				"UselessString");	// This is a crappy classification attempt & will probably be removed
-
-	//m_terrainModel = new Model(string("Terrain_")+id,m_vbo);
-
-	//std::vector<Texture *> texvector;
-	//texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("BarrenTexture")));
-	//texvector.push_back(TextureIO::instance()->loadImage(parser.getSection("DataFiles")->getVal("TerraformTexture")));
-	//m_terrainModel->addMatGroup(MaterialGroup(Material(),
-	//								 texvector,
-	//								 VBODesc(m_vbo,vattrs,attribData,dataSize,indexData,indexSize,GL_TRIANGLE_STRIP),
-	//								 -1));	
-
-	//// Get the heights & stuff for Terrain *, at the moment assume the scale is 1 & ymax = 100
-	//m_mapExtents = FromString<Vector3>(parser.getSection("Misc")->getVal("MapExtent"));
-	//RenderEngine::instance().setLevelExtents(m_mapExtents);
-	//m_heights = MemMgrRaw::instance()->allocate<float>(dimension*dimension);
-	//for(unsigned i=0;i<dataSize;++i)
-	//	m_heights[i] = vertexData[i].getY();
-	//m_terrainDimension = dimension;
-
-	//vector<MipmapLevel> mlh;
-	//mlh.push_back(MipmapLevel(m_heights,0));
-	//m_heightTexture = new Texture2D(dimension,dimension,GL_LUMINANCE16F_ARB,GL_LUMINANCE,GL_FLOAT,mlh,
-	//								GL_TEXTURE_2D,"Heights",false,false);
-	//m_heightTexture->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
-	//m_heightTexture->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
-	//
-
-	//// Free our data
-	//MemMgrRaw::instance()->free(vertexData);
-	//MemMgrRaw::instance()->free(texcoordData);
-	//MemMgrRaw::instance()->free(indexData);
+	TplPalette * pal = TextureMgr::instance().loadPalette(parser.getSection("DataFiles")->getVal("Texture"),
+														  "LevelsTPL.txt");
+	m_terrainTextures[0] = new Texture(pal,0,"barren");
+	m_terrainTextures[1] = new Texture(pal,1,"tform");
+	
 
 
-
-	//// TERRAFORM STUFF
-
-	//if(m_tformContribTex)
-	//	delete m_tformContribTex;
-	//std::vector<MipmapLevel> ml;
-	//ml.push_back(MipmapLevel(0,0));
-	//m_tformContribTex = new Texture2D(dimension,dimension,GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,
-	//								  ml,GL_TEXTURE_RECTANGLE_ARB,"Terraform contribution",false,true);
-	//m_tformFBO.Bind();
-	//m_tformFBO.UnattachAll();
-	//m_tformFBO.AttachTexture(m_tformContribTex->getTarget(),m_tformContribTex->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	//bool res = m_tformFBO.IsValid();
-	//assert(res);
-	//FramebufferObject::Disable();
+	// Get the heights & stuff for Terrain *, at the moment assume the scale is 1 & ymax = 100
+	m_mapExtents = FromString<Vector3>(parser.getSection("Misc")->getVal("MapExtent"));
+	RenderEngine::instance().setLevelExtents(m_mapExtents);
+	m_terrainDimension = dimension;
 
 
-	//// LAKE STUFF
-	//
+	// LAKE STUFF
+	
 	//m_lakeTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getNoiseTexture());
 	//m_lakeNormalTexture = TextureIO::instance()->getTexture(RenderEngine::instance().getConstRenderSettings().getLakeNormalTexture());
 
-	//// get the reflection tex size
-	//int vp[4];
-	//RenderEngine::instance().getViewport(vp);
-	//const float reflDimRatio = RenderEngine::instance().getConstRenderSettings().getReflectionTextureScreenRatio();
-	//unsigned reflTexSize[2] = {unsigned(reflDimRatio*vp[2]),
-	//						   unsigned(reflDimRatio*vp[3])};
-	//// be sure that it is a mult of 2
-	//reflTexSize[0] += reflTexSize[0]%2;
-	//reflTexSize[1] += reflTexSize[1]%2;
-
-	//m_lakeReflection = new Texture2D(reflTexSize[0],reflTexSize[1],GL_RGBA,GL_RGBA,GL_UNSIGNED_BYTE,ml,GL_TEXTURE_2D,"lake reflection",false,false);
-	//m_lakeReflection->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);
-	//m_lakeReflection->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);
-	//m_reflectionDepthBuffer.Bind();
-	//m_reflectionDepthBuffer.Set(GL_DEPTH_COMPONENT32,reflTexSize[0],reflTexSize[1]);
-	//m_reflectionFBO.Bind();
-	//m_reflectionFBO.AttachTexture(GL_TEXTURE_2D,m_lakeReflection->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	//m_reflectionFBO.AttachRenderBuffer(m_reflectionDepthBuffer.GetId(),GL_DEPTH_ATTACHMENT_EXT);
-	//m_reflectionFBO.IsValid();
-	//FramebufferObject::Disable();
-
-	//// Get water color
-	//m_waterColor = FromString<Vector4>(parser.getSection("Misc")->getVal("WaterColor"));
-
-	//// SHADOW STUFF
-	//_initShadows(ldir);
-
-
+	// Get water color
+	m_waterColor = FromString<Vector4>(parser.getSection("Misc")->getVal("WaterColor"));
+	GXColor watercolor = {u8(m_waterColor.getX()*255),
+						  u8(m_waterColor.getY()*255),
+						  u8(m_waterColor.getZ()*255),
+						  u8(m_waterColor.getW()*255)};
+	m_lake = new Lake(*(unsigned *)(&watercolor));
 }
 
 void TerrainRenderer :: onEvent(Terrain_Changed& evt)
@@ -953,6 +595,7 @@ void TerrainRenderer :: update(const float dt)
 	//_updateTerraform(dt);
 	//m_lakeTimer += dt;
 	//m_cloudPS->update(dt);
+	m_lake->update(dt);
 }
 
 //void TerrainRenderer::onEvent(Key_GoingDown &key) 

@@ -6,6 +6,8 @@
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../Gamelogic/GameLogic.h"
+#include "../gfxutils/texture/texture.h"
+#include "../gfxutils/texture/textureMgr.h"
 
 using namespace std;
 
@@ -26,6 +28,9 @@ LaserRenderer :: LaserRenderer()
 	// FIXME : editable colors?
 	m_posColor = Vector4(1.0f,0.5f,0.5f,1.0f);
 	m_negColor = Vector4(0.5f,1.0f,0.5f,1.0f);
+
+	//TplPalette * pal = TextureMgr::instance().loadPalette("flare.tpl","flareTPL.txt");
+	//m_flare = new Texture(pal,0,"flare");
 }
 
 LaserRenderer :: ~LaserRenderer()
@@ -33,6 +38,7 @@ LaserRenderer :: ~LaserRenderer()
 	EventManager::instance().unRegisterEventListener< Laser_Spawned >(this);
 	EventManager::instance().unRegisterEventListener< Laser_Despawned >(this);
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
+	//delete m_flare;
 }
 
 
@@ -43,58 +49,32 @@ void LaserRenderer :: onEvent(Level_Unload&)
 
 void LaserRenderer :: render(Graphics& g) const
 {
-	
-	//glBlendFunc(GL_SRC_ALPHA,GL_ONE);
-	//glEnable(GL_BLEND);
-	//glDepthMask(GL_FALSE);
-	//ShaderManager::instance()->begin("laserShader2");
-	//m_laserTex->bind();
-	//ShaderManager::instance()->setUniform1i("flareTex",0);
+	return;
+	for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
+		it != m_lasers.end();
+		++it)
+	{
+		const Laser * laser = it->laser;
 
-	//// New version adds the below lines , till statics
-	//m_noiseTex->bind(1);
-	//ShaderManager::instance()->setUniform1i("Noise",1);
-	//
-	//ShaderManager::instance()->setUniform1f("glowFallOff",0.024f);
-	//ShaderManager::instance()->setUniform1f("speed",1.86f);
-	//ShaderManager::instance()->setUniform1f("sampleDist",0.0076f);
-	//ShaderManager::instance()->setUniform1f("ambientGlowHeightScale",1.68f);
-	//ShaderManager::instance()->setUniform1f("vertNoise",0.78f);
-	//ShaderManager::instance()->setUniform1f("height",0.44f);
+		// New Version
 
-	//static const Vector2 lltex(0.0f,0.0f);
-	//static const Vector2 texext(1.0f,1.0f);
+		const float w = laser->getWidth();
+		Vector3 right = Vector3::cross(laser->getDirection(),Vector3(0.0f,1.0f,0.0f));
+		right *= w*LASER_SCALE;
 
-	//for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
-	//	it != m_lasers.end();
-	//	++it)
-	//{
-	//	const Laser * laser = it->laser;
+		const Vector3 up(LASER_SCALE*(laser->getFrontPoint() - laser->getBackPoint()));
+		const Vector3 ll(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) 
+						 - right*0.5f - up*0.5f);
 
-	//	ShaderManager::instance()->setUniform1f("glowStrength",144.0f*0.75f*laser->getPower());
-	//	ShaderManager::instance()->setUniform1f("ambientGlow",0.5f*0.75f*laser->getPower());
+		/*
+		if (laser->getType() == m_laserTypePos)
+			ShaderManager::instance()->setUniform4fv("color",m_posColor.cfp());
+		else
+			ShaderManager::instance()->setUniform4fv("color",m_negColor.cfp());
+			*/
 
-	//	// New Version
-
-	//	const float w = laser->getWidth();
-	//	Vector3 right = Vector3::cross(laser->getDirection(),Vector3(0.0f,1.0f,0.0f));
-	//	right *= w*LASER_SCALE;
-
-	//	const Vector3 up(LASER_SCALE*(laser->getFrontPoint() - laser->getBackPoint()));
-	//	const Vector3 ll(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) 
-	//					 - right*0.5f - up*0.5f);
-
-	//	if (laser->getType() == m_laserTypePos)
-	//		ShaderManager::instance()->setUniform4fv("color",m_posColor.cfp());
-	//	else
-	//		ShaderManager::instance()->setUniform4fv("color",m_negColor.cfp());
-
-	//	ShaderManager::instance()->setUniform1f("timeElapsed",it->timeElapsed);		
-
-	//	RenderEngine::drawTexturedQuad(ll,right,up,lltex,texext);
-	//}
-	//glDisable(GL_BLEND);
-	//glDepthMask(GL_TRUE);
+		//RenderEngine::drawTexturedQuad(ll,right,up,lltex,texext);
+	}
 }
 
 void LaserRenderer :: onEvent(Laser_Spawned& evt)

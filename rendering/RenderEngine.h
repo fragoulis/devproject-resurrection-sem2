@@ -18,6 +18,8 @@ class ParserSection;
 class Point2;
 class Point3;
 
+#include <dolphin.h>
+
 
 /**
  * Main RenderEngine
@@ -62,10 +64,12 @@ public:
 	void getViewport(int vp[4]) const;
 
 	// level light getset
-	void setLevelLight(const Vector4& llight) {m_levelLightPos = llight;}
+	void setLevelLight(const Vector4& llight);
+	void setLevelLightColor(const Vector4& llight);
 	const Vector4& getLevelLight() const {return m_levelLightPos;}
-	void setLevelLightColor(const Vector4& llight) {m_levelLightColor = llight;}
 	const Vector4& getLevelLightColor() const {return m_levelLightColor;}
+	void disableLight();
+	void setLight();
 
 	// camera constants getset
 	const float getCameraHeightAbovePlane() const {return m_camHeightAbovePlane;}
@@ -119,7 +123,9 @@ public:
 	static void drawArbTexturedQuad(const Vector3& ll,const Vector3& lr,const Vector3& ur,const Vector3& ul,
 								 const Vector2& tex_ll, const Vector2& extents);
 
-	static void drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up);
+	static void drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up,const u8 repeats = 1);
+
+	static unsigned POLY_COUNT;
 
 
 private:
@@ -135,6 +141,7 @@ private:
 	Vector4 m_levelLightPos;
 	Vector4 m_levelLightColor;
 	float m_camHeightAbovePlane;
+	GXLightObj m_gc_light;
 
 	//Point3 m_wsScreenEdges[4];		// ll, -> ccw
 

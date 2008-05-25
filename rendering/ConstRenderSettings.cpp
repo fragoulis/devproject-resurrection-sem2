@@ -1,16 +1,18 @@
 #include "ConstRenderSettings.h"
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../gfxutils/Model/ModelMgr.h"
-//#include "../gfx/Model/Model.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Model/ModelMgr.h"
-//#include "../gfx/Texture/TextureIO.h"
+#include "../gfxutils/Texture/TextureMgr.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/Misc/utils.h"
 #include "../utility/assert.h"
+#include <dolphin.h>
 
 void ConstRenderSettings :: init(const ParserSection * parsec)
 {
+	// Get the enforcer texture 
+
+	TextureMgr::instance().loadPalette("enforcer.tpl","enforcerTPL.txt");
+
 	std::vector<const ParserSection *> entities = parsec->getChildren();
 	for(size_t i=0;i<entities.size();++i)
 	{
@@ -23,7 +25,6 @@ void ConstRenderSettings :: init(const ParserSection * parsec)
 		es.entityName = entities[i]->getName();
 		es.modelName = entities[i]->getVal("ModelHook");
 		es.type = WorldObjectTypeManager::instance().getTypeFromName(es.entityName);
-		OSReport("DBG val : %d\n",es.type);
 		
 		ModelMgr::instance().getModel(es.modelName);
 
@@ -68,6 +69,7 @@ void ConstRenderSettings :: _parseMiscEntities(const ParserSection * parsec)
 	m_noiseTexture = parsec->getVal("NoiseTexture");
 	m_noiseTexture1D = parsec->getVal("NoiseTexture1D");
 	m_lakeNormalTexture = parsec->getVal("LakeNormalTexture");
+	m_lakeTexture = parsec->getVal("LakeTexture");
 	m_reflectionTextureScreenRatio = FromString<float>(parsec->getVal("ReflectionTextureSizeRatio"));
 
 	m_craterArrowTexture = parsec->getVal("CraterArrowTexture");

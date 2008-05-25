@@ -47,8 +47,7 @@ private:
 	Vector4 m_posColor,
 			m_negColor;
 
-	//Texture * m_laserTex;
-	//Texture * m_noiseTex;
+	Texture * m_flare;
 
 	std::vector<LaserInfo_t> m_lasers;
 };

@@ -3,7 +3,7 @@
 #include "../math/Matrix44.h"
 
 Mtx MatrixTransform::stateMtx[16];
-int MatrixTransform::currentMtx;
+int MatrixTransform::currentMtx(0);
 
 void MatrixTransform::MulMatrix(const Matrix44 &mat) {
 		const float *f = mat.cfp();

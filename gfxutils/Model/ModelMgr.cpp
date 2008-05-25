@@ -9,7 +9,7 @@ ModelMgr :: ModelMgr()
 
 const Model * ModelMgr :: getModel(const std::string& name)
 {
-	OSReport("Requesting model %s\n",name.c_str());
+	//OSReport("Requesting model %s\n",name.c_str());
 	for(unsigned i=0;i<m_modelList.size();++i)
 	{
 		if(name == m_modelList[i]->getName())
