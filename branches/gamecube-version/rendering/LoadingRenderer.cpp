@@ -1,14 +1,35 @@
 #include "LoadingRenderer.h"
 #include "RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Texture/TextureIO.h"
-//#include <gl/glee.h>
-//#include <gl/glu.h>
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/VA/VATTable.h"
+#include "../gfx/Camera.h"
+
+#include <iostream>
+using namespace std;
+
 
 LoadingRenderer :: LoadingRenderer()
 {
 	//m_texture = TextureIO::instance()->getTexture("loadingScreen_alt.dds");
+	TextureMgr::safeInstance().loadPalette("enforcer.tpl", "enforcerTPL.txt");
+	m_texture = TextureMgr::instance().getTexture("enforcer");
+
+	Camera::load2D();
+
+    GXSetNumChans(1);  // Enable light channel; by default = vertex color
+
+	GXSetVtxDescv(VATTable::getVDL(1));
+
+	m_texture->bind();
+
+    //  Set the Texture Environment (Tev) Mode for stage 0
+    //  GXInit sets default of 1 TexCoordGen
+    //  Default TexCoordGen is texcoord(n) from tex(n) with 2x4 identity mtx
+    //  Default number of tev stages is 1
+    //  Default stage0 uses texcoord0, texmap0, color0a0
+    //  Only need to change the tevop
+    GXSetTevOp(GX_TEVSTAGE0, GX_DECAL);
 }
 
 LoadingRenderer :: ~LoadingRenderer()
@@ -18,6 +39,33 @@ LoadingRenderer :: ~LoadingRenderer()
 
 void LoadingRenderer :: render(Graphics& g) const
 {
+	Camera::activate2D();
+
+	//GXBegin(GX_QUADS, GX_VTXFMT1, 4);
+	//{
+	//	GXPosition3s16(0, 480, 0);
+	//	//GXColor1u32(u32(0xff0000ff));
+	//	GXTexCoord2u8(0, 0);
+
+	//	GXPosition3s16(640, 480, 0);
+	//	//GXColor1u32(u32(0x00ff00ff));
+	//	GXTexCoord2u8(1, 0);
+
+	//	GXPosition3s16(640, 0, 0);
+	//	//GXColor1u32(u32(0x0000ffff));
+	//	GXTexCoord2u8(1, 1);
+
+	//	GXPosition3s16(0, 0, 0);
+	//	//GXColor1u32(u32(0x0000ffff));
+	//	GXTexCoord2u8(0, 1);
+	//}
+	//GXEnd();
+
+	RenderEngine::drawTexturedRectangle(0, 0, 640, 480);
+
+
+
+
 	//int viewPortDims[4];
 	//RenderEngine::instance().getViewport(viewPortDims);
 	//int screenWidth = viewPortDims[2];

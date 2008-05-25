@@ -88,6 +88,9 @@ void WorldRenderer :: render(Graphics& g) const
 	
 
 	// ENABLE DEPTH TEST HERE! ALSO RESET ANY STATUS HERE!
+
+	// set modelview to perspective cam. Swaps projection AND modelview (mv to 0, 2d uses 1)
+	Camera::activatePerspective();
 	
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);

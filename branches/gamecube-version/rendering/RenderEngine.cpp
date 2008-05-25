@@ -1,7 +1,7 @@
 #include "RenderEngine.h"
 #include "IRenderer.h"
 #include "WorldRenderer.h"
-//#include "LoadingRenderer.h"
+#include "LoadingRenderer.h"
 #include "HUDRenderer.h"
 //#include "MenuRenderer.h"
 //#include "PauseRenderer.h"
@@ -46,10 +46,20 @@ RenderEngine :: ~RenderEngine()
 	onApplicationUnload();
 }
 
-void RenderEngine :: onApplicationLoad(const ParserSection& ps)
+void RenderEngine :: init()
 {
 	// TODO: remove m_confParser entirely and read global data now, from ps
 	m_confParser = new ConfParser("config/config.gfx");
+	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
+	VATTable::buildVAT();
+
+	// set clear color to black
+    GXColor black = {0, 0, 0, 0};
+    GXSetCopyClear(black, 0x00ffffff);
+}
+
+void RenderEngine :: onApplicationLoad(const ParserSection& ps)
+{
 
 	//TextureMgr::init(m_confParser->getSection("Texture"));
 	//ShaderManager::init(m_confParser->getSection("Shader"));
@@ -58,10 +68,10 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	//PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
-	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
-	VATTable::buildVAT();
 
 	m_settings.init(m_confParser->getSection("EntitySettings"));
+
+	delete m_confParser;
 }
 
 void RenderEngine :: onApplicationUnload()
@@ -156,7 +166,7 @@ void RenderEngine :: update ( float dt )
 IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 {
 	if (name == "world") return new WorldRenderer();
-	//if (name == "loading") return new LoadingRenderer();
+	if (name == "loading") return new LoadingRenderer();
 	if (name == "hud") return new HUDRenderer();
 	//if (name == "menu") return new MenuRenderer();
 	//if (name == "pause") return new PauseRenderer();
@@ -165,10 +175,10 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 	return 0;
 }
 
-const ParserSection * RenderEngine :: getParserSection(const std::string& secname) const
-{
-	return m_confParser->getSection(secname);
-}
+//const ParserSection * RenderEngine :: getParserSection(const std::string& secname) const
+//{
+//	return m_confParser->getSection(secname);
+//}
 
 void RenderEngine :: setViewport(int x,int y,int width, int height)
 {
@@ -297,6 +307,29 @@ void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vecto
 		GXTexCoord2u8( repeats,repeats);
 		GXPosition3f32( ur.getX(), ur.getY(), ur.getZ() );
 		GXTexCoord2u8( repeats,0);
+	GXEnd();
+}
+
+void RenderEngine :: drawTexturedRectangle(s16 left, s16 bottom, s16 width, s16 height, u8 repeats)
+{
+	GXBegin(GX_QUADS, GX_VTXFMT1, 4);
+	{
+		GXPosition3s16(left, bottom + height, 0);
+		//GXColor1u32(u32(0xff0000ff));
+		GXTexCoord2u8(0, 0);
+
+		GXPosition3s16(left + width, bottom + height, 0);
+		//GXColor1u32(u32(0x00ff00ff));
+		GXTexCoord2u8(repeats, 0);
+
+		GXPosition3s16(left + width, bottom, 0);
+		//GXColor1u32(u32(0x0000ffff));
+		GXTexCoord2u8(repeats, repeats);
+
+		GXPosition3s16(left, bottom, 0);
+		//GXColor1u32(u32(0x0000ffff));
+		GXTexCoord2u8(0, repeats);
+	}
 	GXEnd();
 }
 

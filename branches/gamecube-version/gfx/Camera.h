@@ -33,6 +33,9 @@ public:
 	void yaw(float angle);
 	void slide(float delU, float delV, float delN);
 	void setPerspective(float vAng, float asp, float nearD, float farD);
+	static void activatePerspective();
+	static void load2D();
+	static void activate2D();
 	virtual void update(const float dt) {}
 
 	const Vector3 &getEye() const {return eye;};

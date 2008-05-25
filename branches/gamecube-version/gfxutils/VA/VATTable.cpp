@@ -58,8 +58,19 @@ void VATTable :: buildVAT()
 
 	// set format 1
 	GXClearVtxDesc();
-	_setPosition(GX_VTXFMT1,GX_F32,GX_INDEX8);
-	_setColor(GX_VTXFMT1,GX_RGBA8,GX_INDEX8);
+	// Babis idea:
+	//_setPosition(GX_VTXFMT1,GX_F32,GX_INDEX8);
+	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_INDEX8);
+
+	// for CnP from demo:
+	//_setPosition(GX_VTXFMT1,GX_S8,GX_INDEX8);
+	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_INDEX8);
+	//_setTexcoord(GX_VTXFMT1,GX_U8,GX_INDEX8);
+
+	// for my own idea:
+	_setPosition(GX_VTXFMT1,GX_S16,GX_DIRECT);
+	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_DIRECT);
+	_setTexcoord(GX_VTXFMT1,GX_U8,GX_DIRECT);
 	GXGetVtxDescv(m_vcd[1]);
 
 	// set format 2
