@@ -7,11 +7,8 @@
 #include "LaserRenderer.h"
 #include "ShipRenderer.h"
 //#include "ClampRenderer.h"
-//#include "MiscFXRenderer.h"
 #include "../Math/Vector3.h"
 #include "../GameLogic/Objects/Playership.h"
-//#include "../gfx/FBO/FramebufferObject.h"
-//#include "../gfx/FBO/Renderbuffer.h"
 
 
 
@@ -51,7 +48,7 @@ public:
 
 	const Vector3& getLightDir() const {return m_lightDir;}
 	void setLightDir(const Vector3& ld) {m_lightDir.set(ld.getX(),ld.getY(),ld.getZ());}
-	Camera * getCamera() {return m_camera;}
+	Camera * getCamera() {return m_realCam;}
 	void newCamera(Camera * cam);		// the argument must be new-d before passing
 
 
@@ -81,7 +78,6 @@ private:
 	void _updateMatrices();					// updates modelview & projection, based on cam, also updates win depth
 
 	Vector3			m_lightDir;				// the world renderer has a constant light dir per level
-	Camera		  * m_camera;				// The world renderer has our main camera
 	Camera		  * m_realCam;
 	TerrainRenderer  m_terrainRenderer;
 	ParticleSystemsRenderer  m_psRenderer;
@@ -96,18 +92,6 @@ private:
 	bool			m_boundsComputed;
 
 	float m_currentTime;
-
-	// Transparent object FBO
-	//FramebufferObject m_FBO;
-	//Texture * m_surface,
-	//		* m_depthSurface,
-	//		* m_outSurface;
-
-	//IPostProcessFX * m_grainEffect,
-	//			   * m_edgeEffect,
-	//			   * m_mbEffect,
-	//			   * m_bandingEffect,
-	//			   * m_shockwaveEffect;
 
 	bool			m_postProcOn;
 	bool			m_wireframeOn;

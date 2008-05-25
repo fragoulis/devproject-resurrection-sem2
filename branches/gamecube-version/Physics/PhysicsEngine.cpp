@@ -445,7 +445,7 @@ void PhysicsEngine :: _checkEnemyLaserCollisions()
 			{
 				Vector3 normal = circleCentre - closestPointOnLine;
 				normal.normalize();
-				CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 3);
+				//CKLOG(std::string("Collision between enemy ") + ToString<Enemyship*>(enemy) + " and laser " + ToString<Laser*>(laser), 3);
 				FIRE_EVENT_4VALS(Collision_Enemy_Laser, enemy, laser, closestPointOnLine, normal);
 			}
 		}

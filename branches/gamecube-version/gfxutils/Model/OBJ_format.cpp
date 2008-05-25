@@ -182,6 +182,8 @@ void Model :: _loadOBJ(const std::string& fname)
 	OSReport("***** Texcoords    : %u\n",vt_num);
 	OSReport("***** Triangles    : %u\n",f_num/3);
 
+	m_polynum += f_num / 3;
+
 	// allocate memory
 	float * vdata = new float[v_num*3];
 	float * vndata = new float[vn_num*3];

@@ -4,6 +4,8 @@
 #include "../VA/VertexArray.h"
 #include "../VA/VertexFormat.h"
 #include "ModelMgr.h"
+#include "../Texture/TextureMgr.h"
+#include "../Texture/Texture.h"
 #include <stdio.h>
 
 Model :: Model(const std::string& fname)	// read a model from file : ModelMgr does this
@@ -12,9 +14,15 @@ m_notexVA(0),
 m_texVA(0),
 m_name(fname),
 m_notexData(0),
-m_texData(0)
+m_texData(0),
+m_texture(0)
 {
 	_loadOBJ(ModelMgr::instance().getModelDir() + fname);
+	if(m_isTextured)
+	{
+		// HACK_YEAH! the only tex model is enforcer, so grab the tex
+		m_texture = TextureMgr::instance().getTexture("enforcer");
+	}
 }
 
 Model :: ~Model()
@@ -39,7 +47,10 @@ Model :: ~Model()
 void Model :: render() const
 {
 	if(m_isTextured)
+	{
+		m_texture->bind();
 		m_texVA->call();
+	}
 	else
 		m_notexVA->call();
 }

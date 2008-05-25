@@ -6,6 +6,7 @@
 
 #include <string>
 
+class Texture;
 class Model
 {
 	bool m_isTextured;
@@ -15,6 +16,10 @@ class Model
 
 	VFMT4 * m_notexData;
 	VFMT5 * m_texData;
+
+	Texture * m_texture;
+
+	unsigned m_polynum;
 
 	// bounding box for shadows?
 	void _loadOBJ(const std::string& fname);
@@ -28,6 +33,8 @@ public :
 
 	void setTexture();
 	bool isTextured() const {return m_isTextured;}
+
+	const unsigned getPolynum() const {return m_polynum;}
 
 	// bbox getBBox() const? 
 };

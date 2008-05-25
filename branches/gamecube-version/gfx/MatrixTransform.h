@@ -25,6 +25,20 @@ public:
 		GXLoadPosMtxImm(stateMtx[currentMtx], GX_PNMTX0);
 	};
 
+	static void ApplyNormalMatrix()
+	{
+		Mtx mvi,mv;
+		MTXInverse(stateMtx[currentMtx], mvi); 
+		MTXTranspose(mvi, mv); 
+		GXLoadNrmMtxImm(mv, GX_PNMTX0);
+	}
+
+	static void PushMatrix()
+	{
+		memcpy(stateMtx[currentMtx + 1],stateMtx[currentMtx],sizeof(Mtx));
+		currentMtx++;
+	}
+
 	static void PopMatrix() {
 		currentMtx -= currentMtx > 0 ? 1 : 0;
 		GXLoadPosMtxImm(stateMtx[currentMtx], GX_PNMTX0);
@@ -36,6 +50,11 @@ public:
 		MTXConcat(viewMtx, m, stateMtx[currentMtx]); 
 		GXLoadPosMtxImm(stateMtx[currentMtx], GX_PNMTX0);
 	};
+
+	static void LoadIdentity() {
+		MTXIdentity(stateMtx[currentMtx]);
+		GXLoadPosMtxImm(stateMtx[currentMtx], GX_PNMTX0);
+	}
 
 	static void Rotate(float degree, bool x, bool y, bool z) {
 		Mtx m;

@@ -226,7 +226,7 @@ void SoundEngine :: onEvent(Level_Complete& ev)
 void SoundEngine::play( const string &id, bool repeat )
 {
 	const int sound = m_sounds[id];
-	std::cout << "Trying to play sound[\""<< id << "\"]=" << sound << std::endl;
+	//std::cout << "Trying to play sound[\""<< id << "\"]=" << sound << std::endl;
 	if(repeat) play_looped_sfx(sound);
 	else
 		play_sfx(sound);

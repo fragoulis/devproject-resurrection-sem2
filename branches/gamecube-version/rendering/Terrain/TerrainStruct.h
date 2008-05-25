@@ -27,6 +27,8 @@ class TerrainStruct
 	const float	   m_extent;
 	VFMT0		 * m_terrainData;
 
+	unsigned	   m_polynum;
+
 
 public : 
 
@@ -51,6 +53,8 @@ public :
 
 	void render() const;
 	void update();
+
+	const unsigned getPolynum() const {return m_polynum;}
 };
 
 #endif

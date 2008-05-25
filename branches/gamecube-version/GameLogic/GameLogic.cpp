@@ -462,7 +462,7 @@ Enemyship* GameLogic :: spawnEnemy( int type, EnergyType energyType, float x, fl
 	m_enemyships.push_back(es);
 	es->setPosition(Point3(x, m_gamePlaneHeight, z));
 	es->setEnergyType(energyType);
-	CKLOG("Enemy spawned", 3); // at (" << int(x * 1000.0f) << ", " << int(z * 1000.0f) << ")" << endl;
+	//CKLOG("Enemy spawned", 3); // at (" << int(x * 1000.0f) << ", " << int(z * 1000.0f) << ")" << endl;
 	FIRE_EVENT_VAL(Enemy_Spawned, es);
 	return es;
 }

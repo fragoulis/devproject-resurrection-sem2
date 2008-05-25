@@ -1,5 +1,6 @@
 #include "TerrainStruct.h"
 #include "../../control/Gamecube/gc_new_delete.h"
+#include "../RenderEngine.h"
 
 TerrainStruct :: TerrainStruct(const float * heights,
 							   const unsigned dim,
@@ -26,6 +27,8 @@ m_terrainData(0)
 	OSReport("Total chunks            : %u\n",totalChunks);
 	OSReport("Total chunk vertex data : %u\n",totalChunkData);
 	OSReport("Total chunk indices     : %u\n\n",totalChunkIndices);
+
+	m_polynum = totalChunks*(m_chunkDatanumPerDim*m_chunkDatanumPerDim*2);
 
 	// allocate memory
 	m_terrainData = (VFMT0 *)OSAlloc(totalChunkData * sizeof(VFMT0)*totalChunks);
@@ -151,6 +154,10 @@ void TerrainStruct :: render() const
 	const unsigned totalChunks = m_chunksPerDim * m_chunksPerDim;
 	for(unsigned i=0;i<totalChunks;++i)
 		m_chunkData[i].chunkData->call();
+
+	MTXIdentity(tm1);
+	GXLoadTexMtxImm(tm1,GX_TEXMTX0,GX_MTX2x4);
+	//GXSetNumTexGens(0);
 }
 
 // update the cull status

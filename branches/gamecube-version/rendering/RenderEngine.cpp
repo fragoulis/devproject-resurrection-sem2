@@ -15,11 +15,12 @@
 #include "../gfxutils/ConfParser/ConfParser.h"
 #include "../GameLogic/GameLogic.h"
 #include "../gfxutils/Model/ModelMgr.h"
-//#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/TextureMgr.h"
 #include "../gfxutils/VA/VATTable.h"
 
 using namespace std;
 
+unsigned RenderEngine :: POLY_COUNT(0);
 
 RenderEngine :: RenderEngine() 
 : m_confParser(0),
@@ -27,19 +28,7 @@ m_playerBounds(0.0f,0.0f,0.0f,0.0f),
 m_cameraBounds(0.0f,0.0f,0.0f,0.0f),
 m_wireframe(false)
 {
-	int scrw = 1280,scrh = 1024;
-
-	ConfParser* cp = new ConfParser("config/config.txt");
-	if(cp->getSection("Screen"))
-	{
-		string hres = cp->getSection("Screen")->getVal("HorzRes"),
-				vres = cp->getSection("Screen")->getVal("VerticalRes");
-		if(hres != "")
-			scrw = atoi(hres.c_str());
-		if(vres != "")
-			scrh = atoi(vres.c_str());
-	}
-	delete cp;
+	int scrw = 640,scrh = 480;
 
 	setViewport(0,0,scrw,scrh);
 	//glShadeModel(GL_SMOOTH);
@@ -69,7 +58,7 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	//PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
-	//TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
+	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
 	VATTable::buildVAT();
 
 	m_settings.init(m_confParser->getSection("EntitySettings"));
@@ -79,13 +68,9 @@ void RenderEngine :: onApplicationUnload()
 {
 	//PS_Manager::instance().clear();
 	//PS_Manager::destroy();
-	//ModelMgr::destroy();
-	//VBOMgr::destroy();
-	//ShaderManager::destroy();
-	//TextureMgr::destroy();
 
 	ModelMgr::destroy();
-	//TextureMgr::destroy();
+	TextureMgr::destroy();
 
 	if (m_confParser != 0) delete m_confParser;
 }
@@ -297,17 +282,22 @@ void RenderEngine :: drawArbTexturedQuad(const Vector3& ll,const Vector3& lr,con
 	//glEnd();
 }
 
-void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up)
+void RenderEngine :: drawQuad(const Vector3& ll,const Vector3& right,const Vector3& up,const u8 repeats)
 {
 	const Vector3 lr(ll + right);
 	const Vector3 ul(ll + up);
 	const Vector3 ur(ul + right);
-	//glBegin(GL_QUADS);
-	//	glVertex3fv(ll.cfp());
-	//	glVertex3fv(lr.cfp());
-	//	glVertex3fv(ur.cfp());
-	//	glVertex3fv(ul.cfp());
-	//glEnd();
+	//return;
+	GXBegin(GX_QUADS,GX_VTXFMT7,4);
+		GXPosition3f32( ul.getX(), ul.getY(), ul.getZ() );
+		GXTexCoord2u8( 0,0);
+		GXPosition3f32( ll.getX(), ll.getY(), ll.getZ() );
+		GXTexCoord2u8( 0,repeats);
+		GXPosition3f32( lr.getX(), lr.getY(), lr.getZ() );
+		GXTexCoord2u8( repeats,repeats);
+		GXPosition3f32( ur.getX(), ur.getY(), ur.getZ() );
+		GXTexCoord2u8( repeats,0);
+	GXEnd();
 }
 
 //void RenderEngine :: getWsScreenEdges(Point3 pts[4])
@@ -392,5 +382,62 @@ void RenderEngine :: adjustCamera(const float amount)
 	WorldRenderer * wr = reinterpret_cast<WorldRenderer *>(_findRenderer("world"));
 	if(wr)
 		wr->adjustCameras();
+
+}
+
+void RenderEngine :: setLevelLight(const Vector4& llight)
+{
+	m_levelLightPos = llight;
+}
+
+void RenderEngine :: setLevelLightColor(const Vector4& llight)
+{
+	m_levelLightColor = llight;
+}
+
+void RenderEngine :: disableLight()
+{
+	GXSetChanCtrl(
+        GX_COLOR0A0,
+        GX_DISABLE,  // disable channel
+        GX_SRC_VTX,  // amb source
+        GX_SRC_VTX,  // mat source
+        GX_LIGHT0,   // light mask
+        GX_DF_NONE,  // diffuse function
+        GX_AF_NONE);
+}
+
+void RenderEngine :: setLight()
+{
+	static GXColor WHITE = {255,255,255,255};
+	static GXColor DARK = {0,0,0,0};
+	
+	Vector3 lightn(-m_levelLightPos.getX(),-m_levelLightPos.getY(),-m_levelLightPos.getZ());
+	lightn.normalize();
+	GXInitLightDir(&m_gc_light,lightn.getX(),lightn.getY(),lightn.getZ());
+
+	GXColor col;
+	col.a = u8(m_levelLightColor.getW()*255);
+	col.r = u8(m_levelLightColor.getX()*255);
+	col.g = u8(m_levelLightColor.getY()*255);
+	col.b = u8(m_levelLightColor.getZ()*255);
+	GXInitLightColor(&m_gc_light,col);
+
+    GXLoadLightObjImm(&m_gc_light, GX_LIGHT0);
+
+    // Lighting channel
+    GXSetNumChans(1); // number of active color channels
+    GXSetChanCtrl(
+        GX_COLOR0A0,
+        GX_ENABLE,   // enable channel
+        GX_SRC_REG,  // amb source
+        GX_SRC_REG,  // mat source
+        GX_LIGHT0,   // light mask
+        GX_DF_CLAMP, // diffuse function
+        GX_AF_NONE);
+    // set up ambient color
+    GXSetChanAmbColor(GX_COLOR0A0, DARK);
+    // set up material color
+    GXSetChanMatColor(GX_COLOR0A0, WHITE);
 
 }

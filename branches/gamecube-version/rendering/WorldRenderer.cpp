@@ -3,31 +3,19 @@
 #include "../gfx/Camera.h"
 #include "../gfxutils/Misc/Logger.h"
 #include "../gfxutils/Misc/utils.h"
-//#include "../gfx/Texture/Texture2D.h"
-//#include "../gfx/Shaders/ShaderManager.h"
 #include "RenderEngine.h"
 #include "../GameLogic/GameLogic.h"
 #include <string>
 #include <vector>
 
 #include "../Math/Matrix44.h"
-
-//#include "IPostProcessFX.h"
-//#include "GrainPostProc.h"
-//#include "EdgePostProc.h"
-//#include "MotionBlurPostProc.h"
-//#include "BandPostProc.h"
-//#include "ShockwavePostProc.h"
-
-//#include "../gfxutils/MemManager/MemMgr_RawData.h"
+#include "../gfx/MatrixTransform.h"
 
 using namespace std;
 
 WorldRenderer :: WorldRenderer()
-:m_camera(0),
+:m_realCam(0),
 m_playerActive(false),
-//m_surface(0),
-//m_depthSurface(0),
 m_boundsComputed(false),
 m_currentTime(0.0f),
 m_postProcOn(true),
@@ -39,41 +27,24 @@ m_wireframeOn(false)
 	EventManager::instance().registerEventListener< Level_Complete >(this);
 
 	const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
-	//int vp[4];
-	//RenderEngine::instance().getViewport(vp);
 
-	m_camera = new Camera();
-	m_camera->setPerspective(30, 1.0f , cam_addh - 100.0f, cam_addh + 2000.0f);
 	//m_terrainRenderer.setCamera(m_camera);
 
 	m_realCam = new Camera();
 	m_realCam->setPerspective(30, 1.0f, cam_addh - 100.0f, cam_addh + 2000.0f);
 
-	//m_miscFXRenderer.setCamera(m_realCam);
-
 	//m_terrainRenderer.setShipRendererRef(&m_shipRenderer);
 	//m_terrainRenderer.setLaserRendererRef(&m_laserRenderer);
-
-	//m_grainEffect = new GrainPostProc();
-	//m_edgeEffect = new EdgePostProc(m_depthSurface);
-	//m_mbEffect = new MotionBlurPostProc();
-	//m_bandingEffect = new BandPostProc();
-	//m_shockwaveEffect = new ShockwavePostProc();
 }
 
 void WorldRenderer :: adjustCameras()
 {
 	m_boundsComputed = false;
-	delete m_camera;
 	delete m_realCam;
 
 	const float cam_addh = RenderEngine::instance().getCameraHeightAbovePlane();
 	int vp[4];
 	RenderEngine::instance().getViewport(vp);
-
-	m_camera = new Camera();
-	m_camera->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])) , cam_addh - 100.0f, cam_addh + 2000.0f);
-	m_terrainRenderer.setCamera(m_camera);
 
 	m_realCam = new Camera();
 	m_realCam->setPerspective(30, 0.75f*float(vp[2] / float(vp[3])), cam_addh - 100.0f, cam_addh + 2000.0f);
@@ -81,28 +52,11 @@ void WorldRenderer :: adjustCameras()
 
 WorldRenderer :: ~WorldRenderer()
 {
-	if(m_camera)
+	if(m_realCam)
 	{
-		delete m_camera;
-		m_camera = 0;
+		delete m_realCam;
+		m_realCam = 0;
 	}
-	delete m_realCam;
-	//if(m_surface)
-	//{
-	//	delete m_surface;
-	//	m_surface = 0;
-	//}
-	//if(m_depthSurface)
-	//{
-	//	delete m_depthSurface;
-	//	m_depthSurface = 0;
-	//}
-
-	//delete m_grainEffect;
-	//delete m_edgeEffect;
-	//delete m_mbEffect;
-	//delete m_bandingEffect;
-	//delete m_shockwaveEffect;
 
 	EventManager::instance().unRegisterEventListener< Level_Unload >(this);
 	EventManager::instance().unRegisterEventListener< Player_Spawned >(this);
@@ -119,17 +73,13 @@ void WorldRenderer :: onEvent(Level_Unload& evt)
 
 void WorldRenderer :: onEvent(Level_Complete& evt)
 {
-	/*
-	m_playerActive = false;
-	m_boundsComputed = false;
-	m_playerCoordFrame = 0;
-	*/
 	m_playerActive = false;
 }
 
 
 void WorldRenderer :: render(Graphics& g) const
 {
+	RenderEngine::POLY_COUNT = 0;
 	// now render opaque 3D stuff
 
 	//m_terrainRenderer.renderShadows();
@@ -137,22 +87,7 @@ void WorldRenderer :: render(Graphics& g) const
 	//m_terrainRenderer.drawLakeReflection(g);
 	
 
-	//m_FBO.Bind();
-	//FramebufferObject * FBO_hacked = const_cast<FramebufferObject *>(&m_FBO);
-	//FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_surface->getId(),GL_COLOR_ATTACHMENT0_EXT);
-	//FBO_hacked->AttachTexture(GL_TEXTURE_2D,m_depthSurface->getId(),GL_DEPTH_ATTACHMENT_EXT);
-	//FBO_hacked->IsValid();
-
-	//int curdrawbuf;
-	//glGetIntegerv(GL_DRAW_BUFFER,&curdrawbuf);
-	//
-	//glDrawBuffer(GL_COLOR_ATTACHMENT0_EXT);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//glEnable(GL_DEPTH_TEST); 
-
-	//if(m_wireframeOn)
-	//	glPolygonMode(GL_FRONT,GL_LINE);
+	// ENABLE DEPTH TEST HERE! ALSO RESET ANY STATUS HERE!
 	
 	m_shipRenderer.render(g);
 	m_terrainRenderer.render(g);
@@ -162,59 +97,7 @@ void WorldRenderer :: render(Graphics& g) const
 	//m_miscFXRenderer.render(g);
 	//m_clampRenderer.render(g);
 
-	//if(m_wireframeOn)
-	//	glPolygonMode(GL_FRONT,GL_FILL);
-
-	//glDisable(GL_DEPTH_TEST); 
-
-
-	//glMatrixMode(GL_PROJECTION);
-	//glPushMatrix();
-	//glLoadIdentity();
-	//glOrtho(0,1,0,1,-1,1);
-	//glMatrixMode(GL_MODELVIEW);
-	//glPushMatrix();
-	//glLoadIdentity();
-	//
-	//FBO_hacked->UnattachAll();
-	//FBO_hacked->Unattach(GL_DEPTH_ATTACHMENT_EXT);
-
-	//Texture * output = m_surface;
-
-	//if(m_postProcOn)
-	//{
-	//	// Start post processing
-	//	m_edgeEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
-	//	//output = m_mbEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
-	//	m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
-	//	m_shockwaveEffect->process(m_surface,m_outSurface,*FBO_hacked,m_currentTime);
-	//	output = m_bandingEffect->process(m_outSurface,m_surface,*FBO_hacked,m_currentTime);
-	//}
-
-
-
-	// End post processing. output should be the final texture
-
-	//glDrawBuffer(curdrawbuf);
-
-	//FramebufferObject::Disable();
-
-	//ShaderManager::instance()->begin("blitShader");
-	//output->bind();
-	//output->setParam(GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	//output->setParam(GL_TEXTURE_WRAP_S,GL_CLAMP);
-	//output->setParam(GL_TEXTURE_WRAP_T,GL_CLAMP);
-	//ShaderManager::instance()->setUniform1i("tex",0);
-	//RenderEngine::drawTexturedQuad(Vector3(0,0,0),
-	//							   Vector3(1,0,0),
-	//							   Vector3(0,1,0),
-	//							   Vector2(0,0),
-	//							   Vector2(1,1));
-
-	//glPopMatrix();
-	//glMatrixMode(GL_PROJECTION);
-	//glPopMatrix();
-	//glMatrixMode(GL_MODELVIEW);
+	//OSReport("Triangles rendered : %u\n",RenderEngine::POLY_COUNT);
 }
 
 void WorldRenderer :: update( float dt )
@@ -236,23 +119,24 @@ void WorldRenderer :: update( float dt )
 		//RenderEngine::instance().boundCameraPosition(camera_eye);
 		//RenderEngine::instance().boundCameraPosition(camera_look);
 
-		//m_camera->setPosition(camera_eye,
-		//					  camera_look,
-		//					  Vector3(0.0f,0.0f,-1.0f));
-		//glLoadIdentity();
-		//
+		MatrixTransform::LoadIdentity();
+
 		m_realCam->setPosition(camera_eye,
 							  camera_look,
 							  Vector3(0.0f,0.0f,-1.0f));
 		m_realCam->slide(0.0f,-tanf(30.0f*PI / 180.0)*RenderEngine::instance().getCameraHeightAbovePlane(),0.0f);
 		m_realCam->pitch(30.0f);
+
+		MatrixTransform::MulMatrix(Camera::viewMatrix);
+
+
 		//
 		//_updateMatrices();
 		////RenderEngine::instance().computeWsScreenEdges();
 		
 	}
 
-	m_camera->update(dt);
+	m_realCam->update(dt);
 	m_psRenderer.update(dt);
 	m_spawnPointRenderer.update(dt);
 	m_terrainRenderer.update(dt);
@@ -265,9 +149,9 @@ void WorldRenderer :: update( float dt )
 
 void WorldRenderer :: newCamera(Camera * cam)
 {
-	if(m_camera)
-		delete m_camera;
-	m_camera = cam;
+	if(m_realCam)
+		delete m_realCam;
+	m_realCam = cam;
 }
 
 void WorldRenderer :: onEvent(Player_Spawned& evt)
