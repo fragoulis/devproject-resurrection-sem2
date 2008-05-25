@@ -23,6 +23,9 @@ Texture * TextureMgr :: getTexture(const std::string& texname)
 
 TplPalette * TextureMgr :: loadPalette(const std::string& palettefile,const std::string& namesfile)
 {
+	for(unsigned i=0;i<m_paletteList.size();++i)
+		if(m_paletteList[i]->getName() == palettefile)
+			return m_paletteList[i];
 	m_paletteList.push_back(new TplPalette(palettefile,namesfile));
 	for(unsigned i=0;i<m_paletteList.back()->getSurfaceNum();++i)
 		m_texList.push_back(new Texture(m_paletteList.back(),i,m_paletteList.back()->getTexName(i)));
