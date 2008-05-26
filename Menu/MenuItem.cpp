@@ -1,19 +1,28 @@
 #include "MenuItem.h"
-//#include "../rendering/RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Texture/TextureIO.h"
+#include "../rendering/RenderEngine.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
 using namespace std;
 
 MenuItem::~MenuItem(){
 
 }
 
-void MenuItem::init(float posX, float posY, int width, int height, const string &unselectedTexture, const string &selectedTexture, ItemState state) {
+void MenuItem::init(int posX, int posY, int width, int height, const string &unselectedTexture, const string &selectedTexture, ItemState state)
+{
 	m_posX = posX;
 	m_posY = posY;
 	m_width = width;
 	m_height = height;
+
+	//TextureMgr::safeInstance().loadPalette(unselectedTexture + ".tpl", unselectedTexture + "TPL.txt");
+	Texture* tex = TextureMgr::instance().getTexture(unselectedTexture);
+	m_textureList.push_back(tex);
+
+	//TextureMgr::safeInstance().loadPalette(selectedTexture + ".tpl", selectedTexture + "TPL.txt");
+	tex = TextureMgr::instance().getTexture(selectedTexture);
+	m_textureList.push_back(tex);
+	
 
 	//Texture *tex = TextureIO::instance()->getTexture(unselectedTexture);
 	//m_textureList.push_back(tex);
@@ -39,7 +48,23 @@ void MenuItem::update(float dt) {
 	m_currentTime += dt;
 }
 
-void MenuItem::render(Graphics &g) const {
+void MenuItem::render(Graphics &g) const
+{
+	if (m_visible) {
+		if (m_state == ITEM_STATE_UNSELECTED) {
+			m_textureList[0]->bind();
+		}
+		else {
+			m_textureList[1]->bind();
+		}
+
+		RenderEngine::drawTexturedRectangle(m_posX, m_posY, m_width, m_height);
+	}
+
+
+
+
+
 	//if (m_visible) {
 	//	glEnable(GL_BLEND);
 	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

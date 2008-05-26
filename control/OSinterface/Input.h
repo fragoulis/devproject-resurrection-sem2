@@ -39,6 +39,13 @@ public:
 	inline bool isTriggerRGoingDown(int pad) const;
 	inline bool isTriggerRDown(int pad) const;
 
+	// for navigation:
+	// when control stick is pushed left, isControlLeft is true for 1 frame
+	inline bool isControlDown(int pad) const;
+	inline bool isControlUp(int pad) const;
+	inline bool isControlLeft(int pad) const;
+	inline bool isControlRight(int pad) const;
+
 	inline int getPadCount() const;
 
 	inline bool hasError(int pad) const;

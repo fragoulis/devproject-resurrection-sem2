@@ -18,7 +18,7 @@ public:
 private:
 	ItemState m_state;
 	int m_width, m_height;
-	float m_posX, m_posY;
+	int m_posX, m_posY;
 	std::vector<Texture*> m_textureList;
 
 	bool m_selectable;
@@ -29,7 +29,7 @@ private:
 public:
 	~MenuItem(); 
 
-	void init(float m_posX, float m_posY, int width, int height, const std::string &unselectedTexture, const std::string &selectedTexture, ItemState state);
+	void init(int m_posX, int m_posY, int width, int height, const std::string &unselectedTexture, const std::string &selectedTexture, ItemState state);
 	void update(float dt);
 	void render(Graphics& g) const;
 

@@ -17,7 +17,7 @@ public:
 	virtual void update(float dt);
 
 private:
-	//Texture* m_texture;
+	Texture* m_texture;
 
 };
 

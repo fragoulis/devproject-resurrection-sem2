@@ -1,33 +1,52 @@
 #include "MenuPage.h"
-//#include "../rendering/RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
+#include "../rendering/RenderEngine.h"
 #include "../utility/deleters.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/VA/VATTable.h"
+#include "../gfx/Camera.h"
 using namespace std;
 
-MenuPage::MenuPage() {
-	//Texture *tex = TextureIO::instance()->getTexture("NoiseVolume.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("Random3D.dds");
-	//m_textureList.push_back(tex);
-
+MenuPage::MenuPage()
+{
 	m_currentTime = 0.0f;
 	m_interference = 0.2f;
 }
 
-MenuPage::~MenuPage() {
+MenuPage::~MenuPage()
+{
 	deleteVector(m_items);
-	//std::vector<MenuItem *>::iterator it = m_items.begin();
-	//while(it != m_items.end())
-	//{
-	//	MenuItem *item = *it;
-	//	it = m_items.erase(it);
-	//	delete item;
-	//}
 }
 
 void MenuPage::render(Graphics &g) const
 {
-	////glDisable(GL_LIGHTING);
+	Camera::activate2D();
+	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
+	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
+	GXSetVtxDescv(VATTable::getVDL(1));
+
+	// Set texture alpha channel to texture red channel
+	GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
+	GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+
+	if (m_hasBackground) {
+		m_backgroundImage->bind();
+		RenderEngine::drawTexturedRectangle(0, 0, 640, 480);
+	}
+
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+
+	//draw items
+	for (int i = 0; i < int(m_items.size()); i++) 
+		m_items[i]->render(g);
+
+
+	GXSetBlendMode(GX_BM_NONE, GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	GXSetZMode(TRUE, GX_LEQUAL, TRUE);
+
+
+
+
 	//glDisable(GL_DEPTH_TEST);
 	//glMatrixMode(GL_PROJECTION);
 	//glPushMatrix();
@@ -38,49 +57,7 @@ void MenuPage::render(Graphics &g) const
 	//glPushMatrix();
 	//	glLoadIdentity();
 
-	////draw background
-	///*if (m_hasBackground) {
-	//	ShaderManager::instance()->begin("blitShader");
-	//	m_backgroundImage->bind(0);
-	//	RenderEngine::drawTexturedQuad(Vector3(0.0f, 0.0f, 0.0f), Vector3((float) m_screenWidth, 0.0f, 0.0f), Vector3(0.0f, (float) m_screenHeight, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
-	//	ShaderManager::instance()->end();
-	//}*/
 	//if (m_hasBackground) {
-	//	ShaderManager::instance()->begin("disturbedShader");
-	//	m_backgroundImage->bind(0);
-	//	CHECK_GL_ERROR();
-	//	ShaderManager::instance()->setUniform1i("Image",0);
-	//	CHECK_GL_ERROR();
-	//	m_textureList[0]->bind(1);
-	//	CHECK_GL_ERROR();
-	//	ShaderManager::instance()->setUniform1i("Noise",1);
-	//	CHECK_GL_ERROR();
-	//	m_textureList[1]->bind(2);
-	//	CHECK_GL_ERROR();
-	//	ShaderManager::instance()->setUniform1i("Rand",2);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat distortionFreq = 5.7f;
-	//	ShaderManager::instance()->setUniform1fv("distortionFreq", &distortionFreq);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat distortionScale = 6.0f;
-	//	ShaderManager::instance()->setUniform1fv("distortionScale", &distortionScale);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat distortionRoll = 0.4f;
-	//	ShaderManager::instance()->setUniform1fv("distortionRoll", &distortionRoll);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat interference = m_interference;//0.2f;
-	//	ShaderManager::instance()->setUniform1fv("interference", &interference);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat granularity = 8.5f;
-	//	ShaderManager::instance()->setUniform1fv("granularity", &granularity);
-	//	CHECK_GL_ERROR();
-	//	const GLfloat distorsion = 0.0f;
-	//	ShaderManager::instance()->setUniform1fv("distorsion", &distorsion);
-	//	CHECK_GL_ERROR();
-	//	ShaderManager::instance()->setUniform1fv("time_0_X", &m_currentTime);
-	//	CHECK_GL_ERROR();
-	//	RenderEngine::drawTexturedQuad(Vector3(0.0f, 0.0f, 0.0f), Vector3((float) m_screenWidth, 0.0f, 0.0f), Vector3(0.0f, (float) m_screenHeight, 0.0f), Vector2(0.0f,0.0f), Vector2(1.0f,1.0f));
-	//	ShaderManager::instance()->end();
 	//}
 
 	////draw items
@@ -110,9 +87,6 @@ void MenuPage::setSelectedItem(int itemNumber) {
 	//prevent overflows
 	if (itemNumber > (int) m_items.size()-1)
 		return;
-
-	//if (!m_items[itemNumber]->isSelectable())
-	//	return;
 
 	//first deselect all the items
 	for (int i = 0; i < (int) m_items.size(); i++) {

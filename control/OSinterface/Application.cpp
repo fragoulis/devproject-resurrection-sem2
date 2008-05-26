@@ -70,8 +70,8 @@ void Application :: load()
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
     EnemyBuffCoupleManager::safeInstance();
 
-	//MenuController::safeInstance().load();
-	GameController::safeInstance().loadLevel("Level08");
+	MenuController::safeInstance().load();
+	//GameController::safeInstance().loadLevel("Level08");
 }
 
 

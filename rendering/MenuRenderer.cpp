@@ -1,14 +1,14 @@
 #include "MenuRenderer.h"
 #include "RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Texture/TextureIO.h"
 #include "../Menu/MainPage.h"
 #include "../Menu/InstructionPage.h"
 #include "../Menu/CreditsPage.h"
 #include "../Menu/PlanetPage.h"
-//#include "gl/glu.h"
-//#include <gl/glee.h>
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/VA/VATTable.h"
+#include "../gfx/Camera.h"
+
 
 
 
@@ -16,15 +16,10 @@
 
 MenuRenderer::MenuRenderer()
 {
-	/*Texture *tex = TextureIO::instance()->getTexture("menuBg.dds");
-	m_textureList.push_back(tex);
-
-	m_currentMenu.init(0, 0, 100, 100, "flare0.dds", "particle2.dds", MenuItem::ITEM_STATE_UNSELECTED);*/
-
-	int viewPortDims[4];
-	RenderEngine::instance().getViewport(viewPortDims);
-	int screenWidth = viewPortDims[2];
-	int screenHeight = viewPortDims[3];
+	//int viewPortDims[4];
+	//RenderEngine::instance().getViewport(viewPortDims);
+	//int screenWidth = viewPortDims[2];
+	//int screenHeight = viewPortDims[3];
 
 	m_state = MENU_STATE_MAIN;
 
@@ -32,6 +27,9 @@ MenuRenderer::MenuRenderer()
 	m_menuPool[MENU_STATE_TUTORIAL] = new InstructionPage();
 	m_menuPool[MENU_STATE_CREDITS] = new CreditsPage();
 	m_menuPool[MENU_STATE_PLANET] = new PlanetPage();
+
+	int screenWidth = 640;
+	int screenHeight = 480;
 
 	for (int i = 0; i < NUM_MENU_STATES; i++) {
 		m_menuPool[i]->init(screenWidth, screenHeight);
