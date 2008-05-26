@@ -102,28 +102,33 @@ void HUDRenderer :: render(Graphics& g) const
 			{ 0, 255, 0, 255 },
 			{ 255, 0, 255, 255 }
 		};
-		static const GXColor white = { 255, 255, 255, 255 };
+		//static const GXColor white = { 255, 255, 255, 255 };
 
 		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
 		GXSetNumTevStages(1);
 
 		// Set texture alpha channel to texture red channel
-		GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
-		GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+		RenderEngine::useColorChannelForAlpha(GX_CH_RED);
+		//GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
+		//GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
 
 		// set tev color to texture color * const color (konst)
-		GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-		GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
-		GXSetTevKColorSel(GX_TEVSTAGE0, GX_TEV_KCSEL_K0);
+		RenderEngine::enableModulateTextureColor();
+		//GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+		//GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
+		//GXSetTevKColorSel(GX_TEVSTAGE0, GX_TEV_KCSEL_K0);
 
 		// set tev alpha to texture alpha * transparency (konst alpha)
-		GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
-		GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_KONST, GX_CA_ZERO);
-		GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K1_R);
+		RenderEngine::enableModulateTextureAlpha();
+		//GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+		//GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_KONST, GX_CA_ZERO);
+		//GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K1_R);
 
 		// set const color and transparency
-		GXSetTevKColor(GX_KCOLOR0, ebombTypeColors[int(ebombType)]);
-		GXSetTevKColor(GX_KCOLOR1, white);
+		RenderEngine::setModulateTextureColor(ebombTypeColors[int(ebombType)]);
+		//GXSetTevKColor(GX_KCOLOR0, ebombTypeColors[int(ebombType)]);
+		RenderEngine::setModulateTextureAlpha(255);
+		//GXSetTevKColor(GX_KCOLOR1, white);
 
 		GXSetVtxDescv(VATTable::getVDL(1));
 		m_textureList[1]->bind();

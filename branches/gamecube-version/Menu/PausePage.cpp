@@ -1,22 +1,26 @@
 #include "PausePage.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
 
 void PausePage::init(int screenWidth, int screenHeight) 
 {
-    const float posX = screenWidth * 0.5f - 128.0f;
-    const float startPosY = 400.0f, deltaY = 65.0f;
+    const int posX = 128;
+    const int startPosY = 150, deltaY = 65;
     const int width  = 256;
     const int height = 64;
 
+	TextureMgr::safeInstance().loadPalette("pauseItems.tpl", "pauseItemsTPL.txt");
+
 	MenuItem *resumeButton = new MenuItem();
-	resumeButton->init(posX, startPosY, width, height, "menuResume.dds", "menuResumeSel.dds", MenuItem::ITEM_STATE_SELECTED);
+	resumeButton->init(posX, startPosY, width, height, "menuResume", "menuResumeSel", MenuItem::ITEM_STATE_SELECTED);
 	m_items.push_back(resumeButton);
 
-	MenuItem *controlsButton = new MenuItem();
-	controlsButton->init(posX, startPosY-deltaY, width, height, "menuControls.dds", "menuControlsSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
-	m_items.push_back(controlsButton);
+	//MenuItem *controlsButton = new MenuItem();
+	//controlsButton->init(192, startPosY-deltaY, width, height, "menuControls", "menuControlsSel", MenuItem::ITEM_STATE_UNSELECTED);
+	//m_items.push_back(controlsButton);
 
 	MenuItem *exitButton = new MenuItem();
-	exitButton->init(posX, startPosY-2*deltaY, width, height, "menuExitPause.dds", "menuExitPauseSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	exitButton->init(posX, startPosY-deltaY, width, height, "menuExitPause", "menuExitPauseSel", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(exitButton);
 
 	m_hasBackground = false;

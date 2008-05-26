@@ -40,18 +40,19 @@ void TextureMgr :: unloadPalette(const TplPalette * tpl)
 	{
 		if(m_paletteList[i] == tpl)
 		{
-			for(vector<Texture *>::iterator it = m_texList.begin();
-				it!= m_texList.end();
-				)
+			typedef vector<Texture*> TextureVector;
+			for (TextureVector::iterator it = m_texList.begin(); it!= m_texList.end(); )
+			{
+				if((*it)->parentPalette() == tpl)
 				{
-					if((*it)->parentPalette() == tpl)
-					{
-						delete (*it);
-						it = m_texList.erase(it);
-					}
-					else
-						++it;
+					delete (*it);
+					it = m_texList.erase(it);
 				}
+				else
+				{
+					++it;
+				}
+			}
 
 			TplPalette * tmp = m_paletteList[i];
 			m_paletteList[i] = m_paletteList.back();

@@ -136,6 +136,15 @@ public:
 	static unsigned POLY_COUNT;
 
 
+	// Helpers for everyone!
+
+	static void useColorChannelForAlpha(GXTevColorChan channel);
+	static void enableModulateTextureColor();
+	static void setModulateTextureColor(const GXColor& color);
+	static void enableModulateTextureAlpha();
+	static void setModulateTextureAlpha(u8 alpha);
+
+
 private:
 	typedef ObjectReferenceMap<IRenderer> RendererMap;
 	RendererMap m_renderers;
