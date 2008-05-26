@@ -1,6 +1,6 @@
 #include "MenuController.h"
-//#include "../rendering/RenderEngine.h"
-//#include "../rendering/MenuRenderer.h"
+#include "../rendering/RenderEngine.h"
+#include "../rendering/MenuRenderer.h"
 #include "ControllerManager.h"
 #include "OSinterface/Input.h"
 #include "LoadingController.h"
@@ -24,18 +24,18 @@ MenuController :: ~MenuController()
 
 void MenuController :: activate()
 {
-	//RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers();
-	//re.activateRenderer("menu");
-	//m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
+	RenderEngine& re = RenderEngine::safeInstance();
+	re.deactivateAllRenderers();
+	re.activateRenderer("menu");
+	m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
     
 	//SoundEngine::instance().play("IFaceBkg", true);
 }
 
 void MenuController :: deactivate()
 {
-	//RenderEngine& re = RenderEngine::safeInstance();
-	//re.deactivateAllRenderers();
+	RenderEngine& re = RenderEngine::safeInstance();
+	re.deactivateAllRenderers();
 
     //SoundEngine::instance().stop("IFaceBkg");
 }
@@ -150,7 +150,7 @@ void MenuController :: _exit()
 
 void MenuController :: _loadLevel()
 {
-	//RenderEngine::instance().unloadAllRenderers();
+	RenderEngine::instance().unloadAllRenderers();
     GameController::safeInstance().loadLevel(m_levelToLoad);
 }
 
@@ -159,15 +159,15 @@ void MenuController :: load()
 	//LoadingController& lc = LoadingController::instance();
 	//lc.setLoader(this, &MenuController::_loadMenu);
 	//RenderEngine::unloadAllRenderers();
-	//RenderEngine::instance().loadRenderer("menu");
+	RenderEngine::instance().loadRenderer("menu");
 	ControllerManager::instance().activateController(this);
 }
 
 void MenuController :: loadPlanetSelection()
 {
-	//RenderEngine::instance().loadRenderer("menu");
-	//m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
-	//m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);
+	RenderEngine::instance().loadRenderer("menu");
+	m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
+	m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);
 	ControllerManager::instance().activateController(this);
 }
 
@@ -177,12 +177,11 @@ void MenuController :: loadPlanetSelection()
 //	ControllerManager::instance().activateController(new MenuController());
 //}
 
-void MenuController :: onEvent(Level_Complete& level) {
-
+void MenuController :: onEvent(Level_Complete& level)
+{
 	//string levelName = level.getValue();
 
 	//TODO: get the level names and check when they're completed
-
 }
 
 

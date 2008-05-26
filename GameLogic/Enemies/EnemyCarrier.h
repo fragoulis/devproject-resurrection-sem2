@@ -19,6 +19,7 @@ class EnemyCarrier :
 {
 public:
 	EnemyCarrier(int type);
+	EnemyCarrier(const EnemyCarrier& ec);
 	virtual ~EnemyCarrier();
 
 	void restart();

@@ -19,7 +19,8 @@
 [main]
 WorldObjectTypes = <PlayerShip>, <Crater>, <Spawnpoint>, <Ebomb>, <LaserPlayerPositive>, <LaserPlayerNegative>, <EnemyFighter>, <EnemyInterceptor>, <EnemyDisrupter>, <EnemyCarrier>
 // Specifies levels. First is tutorial, next 4 is planets
-Levels = <Level11>, <Level12>, <Level05>, <Level10>, <Level08>
+//Levels = <Level11>, <Level12>, <Level05>, <Level10>, <Level08>
+Levels = <Level08>, <Level08>, <Level08>, <Level08>, <Level08>
 MaxEnemies = 20
 
 [Physics]

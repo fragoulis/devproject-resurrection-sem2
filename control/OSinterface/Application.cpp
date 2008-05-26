@@ -3,10 +3,9 @@
 #include "Input.h"
 #include "../ControllerManager.h"
 #include "../LoadingController.h"
-//#include "../MenuController.h"
+#include "../MenuController.h"
 #include "../GameController.h"
 #include "../../gfxutils/ConfParser/ConfParser.h"
-//#include "../../gfxutils/MemManager/MemMgr_RawData.h"
 #include "../../GameLogic/GameLogic.h"
 #include "../../rendering/RenderEngine.h"
 #include "../../sound/SoundEngine.h"
@@ -18,7 +17,6 @@
 #include "../../GameLogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../../gfxutils/Misc/Logger.h"
 #include "../../GameLogic/WorldObjectTypeManager.h"
-//#include <al/alut.h>
 
 // TEMP FILES
 
@@ -38,9 +36,6 @@ Application :: Application()
 Application :: ~Application()
 {
 }
-
-
-//ofstream filestr;
 
 
 bool Application :: init()
@@ -63,7 +58,7 @@ void Application :: load()
 
 	Logger::init(ps.getSection("Logger"));
 
-	//MenuController::safeInstance().onApplicationLoad(ps);
+	MenuController::safeInstance().onApplicationLoad(ps);
 	WorldObjectTypeManager::safeInstance().onApplicationLoad(ps);
 	BuffFactory::safeInstance().onApplicationLoad(ps);
 	LaserFactory::safeInstance().onApplicationLoad(ps);
@@ -73,10 +68,9 @@ void Application :: load()
 	RenderEngine::safeInstance().onApplicationLoad(ps);
 	AIEngine::safeInstance().onApplicationLoad(ps);
 	PhysicsEngine::safeInstance().onApplicationLoad(ps);
-
-	//MenuController::safeInstance().load();
     EnemyBuffCoupleManager::safeInstance();
 
+	//MenuController::safeInstance().load();
 	GameController::safeInstance().loadLevel("Level08");
 }
 
@@ -111,7 +105,7 @@ void Application :: unload()
 	AIEngine::destroy();
 	ControllerManager::destroy();
 	GameController::destroy();
-	//MenuController::destroy();
+	MenuController::destroy();
 	LoadingController::destroy();
 	SoundEngine::destroy();
 	RenderEngine::destroy();

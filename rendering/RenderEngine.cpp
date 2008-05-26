@@ -334,6 +334,29 @@ void RenderEngine :: drawTexturedRectangle(s16 left, s16 bottom, s16 width, s16 
 	GXEnd();
 }
 
+void RenderEngine :: drawTexturedColoredRectangle(u32 color, s16 left, s16 bottom, s16 width, s16 height, u8 repeats)
+{
+	GXBegin(GX_QUADS, GX_VTXFMT6, 4);
+	{
+		GXPosition3s16(left, bottom + height, 0);
+		GXTexCoord2u8(0, 0);
+		GXColor1u32(color);
+
+		GXPosition3s16(left + width, bottom + height, 0);
+		GXTexCoord2u8(repeats, 0);
+		GXColor1u32(color);
+
+		GXPosition3s16(left + width, bottom, 0);
+		GXTexCoord2u8(repeats, repeats);
+		GXColor1u32(color);
+
+		GXPosition3s16(left, bottom, 0);
+		GXTexCoord2u8(0, repeats);
+		GXColor1u32(color);
+	}
+	GXEnd();
+}
+
 //void RenderEngine :: getWsScreenEdges(Point3 pts[4])
 //{
 //	pts[0] = m_wsScreenEdges[0];

@@ -44,7 +44,7 @@ private:
 	//int m_currentLives;
 	//EbombType m_ebombType; 
 
-	//std::vector<Texture *> m_textureList;
+	std::vector<Texture *> m_textureList;
 
 	bool m_displayEbombMsg;
 	float m_startEbombMessageTime;
@@ -53,8 +53,8 @@ private:
 
 	float m_currentTime;
 
-    void displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const;
-
+    void _displayEbombMessage( float transparency, float in_factor, float in_time ) const;
+	void _addTexture(const std::string& name);
 };
 
 
