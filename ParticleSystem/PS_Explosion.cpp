@@ -38,7 +38,7 @@ PS_Explosion :: PS_Explosion(const std::string& name,
 		m_particles[i].m_position = Vector3(0,0,0);
 
 		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(10.0f, 50.0f);
+		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(50.0f, 25.0f);
 		m_particles[i].m_age      = 0.0f;
 		m_particles[i].m_lifeTime = 1.0f; // lives for 1 seconds
 	}
@@ -57,6 +57,7 @@ PS_Explosion :: PS_Explosion(const std::string& name,
 {
 	//m_quadArray = model;
 	//m_usedAttribs = status;
+	m_flarePal = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
 	for (int i = 0; i < pnum; i++) {
 		Particle particle;
 		m_particles.push_back(particle);
@@ -65,14 +66,14 @@ PS_Explosion :: PS_Explosion(const std::string& name,
 		m_particles[i].m_position = Vector3(0,0,0);
 
 		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(10.0f, 50.0f);
+		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(5.0f, 25.0f);
 		m_particles[i].m_age      = 0.0f;
 		m_particles[i].m_lifeTime = 5.0f; 
 	}
 }
 
 PS_Explosion :: ~PS_Explosion() {
-	TextureMgr::instance().unloadPalette(m_flarePal);
+	//TextureMgr::instance().unloadPalette(m_flarePal);
 
 	//delete[] m_particles;
 }
@@ -185,8 +186,8 @@ void PS_Explosion :: render() const
 	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCCLR, GX_BL_ONE, GX_LO_CLEAR);
 	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
 
-	//Texture tex_pos(m_flarePal,0,"flare_pos");
-	//tex_pos.bind();
+	Texture tex_pos(m_flarePal,0,"flare_pos");
+	tex_pos.bind();
 
 	GXSetVtxDescv(VATTable::getVDL(7));
 
