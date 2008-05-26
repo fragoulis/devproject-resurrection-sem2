@@ -115,7 +115,7 @@ Texture      = "flare0.dds"
 
 [ParticleSystem : PS_Explosion]
 Variations   = 1
-SystemLife   = 4
+SystemLife   = 1
 ParticleLife = 2
 ParticleSize = 30
 ParticleNum  = 5000
