@@ -1,5 +1,9 @@
 #include "TimerManager.h"
 #include <algorithm>
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
+#include <iostream>
+using namespace std;
 
 int TimerManager :: Timer :: m_nextID = 1;
 
@@ -20,6 +24,7 @@ int TimerManager :: schedule(Callback* cb, float time, float period)
 	Timer timer(cb, m_time + time, period);
 	timer.create();
 	m_timers.push_back(timer);
+	//cout << "Scheduled a timer at " << int(m_time * 10.0f) << " for " << int(timer.getTime() * 10.0f) << endl;
 	return timer.getID();
 }
 void TimerManager :: remove(int id)
@@ -63,6 +68,7 @@ void TimerManager :: update(float dt)
 		}
 		else
 		{
+			//cout << "At " << i0nt(m_time * 10.0f) << " timer at " << int(timer.getTime() * 10.0f) << " is not ready yet" << endl;
 			++it;
 		}
 	}

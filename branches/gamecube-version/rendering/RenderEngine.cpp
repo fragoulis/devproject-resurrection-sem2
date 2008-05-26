@@ -123,8 +123,8 @@ void RenderEngine :: unloadRenderer(const std::string& name)
 	IRenderer* r = _findRenderer(name);
 	if (r != NULL) {
 		_deactivateRenderer(r);
-		_removeRenderer(name);
-		delete r;
+		//_removeRenderer(name);
+		//delete r;
 	}
 }
 
@@ -146,8 +146,8 @@ struct RendererDeleter
 void RenderEngine::unloadAllRenderers()
 {
 	deactivateAllRenderers();
-	m_renderers.visitObjects(RendererDeleter());
-	m_renderers.clear();
+	//m_renderers.visitObjects(RendererDeleter());
+	//m_renderers.clear();
 }
 
 

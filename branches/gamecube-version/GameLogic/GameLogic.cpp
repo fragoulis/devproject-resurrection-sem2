@@ -94,6 +94,7 @@ void GameLogic :: onEvent(Player_Destroyed& evt)
 		player->setThrusterDirection(Vector3(0.0f, 0.0f, 0.0f));
 		player->setThrusterPower(0.0f);
 		m_timerManager.schedule(this, &GameLogic::_playerDestroyed1_DespawnEnemies, 2.0f);
+		CKLOG("Lost a life", 3);
 	}
 }
 
@@ -103,7 +104,7 @@ void GameLogic :: _playerDestroyed1_DespawnEnemies()
 	for (EnemyshipListIt it = m_enemyships.begin(); it != m_enemyships.end(); ++it)
 	{
 		Enemyship* es = *it;
-		if (!EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier"))
+		if (!es->isToBeDeleted() && !EnemyFactory::instance().isEnemyClass(es->getType(), "Carrier"))
 		{
 			es->setToBeDeleted();
 			FIRE_EVENT_VAL(Enemy_Destroyed, es);
