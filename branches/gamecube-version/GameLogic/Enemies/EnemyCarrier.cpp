@@ -10,6 +10,7 @@
 #include "../WorldObjectTypeManager.h"
 #include "../Objects/Playership.h"
 #include <iostream>
+#include <memory>
 using namespace std;
 
 EnemyCarrier :: EnemyCarrier(int type) :
@@ -22,10 +23,16 @@ EnemyCarrier :: EnemyCarrier(int type) :
 	m_timeBetweenSessionEndAndSessionStart(0.0f),
 	m_minimumPlayerDistance(0.0f),
 	m_maximumPlayerDistance(0.0f),
+	m_paused(false),
 	m_spawnState(WAITING_FOR_PLAYER),
 	m_spawnTimeTillNextEvent(0.0f),
 	m_enemiesLeftToSpawnThisSession(0)
 {
+}
+
+EnemyCarrier :: EnemyCarrier(const EnemyCarrier& ec) : Enemyship(ec)
+{
+	memcpy(this, &ec, sizeof(EnemyCarrier));
 	EventManager::instance().registerEventListener<Player_Destroyed>(this);
 	EventManager::instance().registerEventListener<Player_Respawned>(this);
 }
@@ -45,12 +52,18 @@ void EnemyCarrier :: restart( )
 {
 	m_spawnState = WAITING_FOR_PLAYER;
 	m_paused = false;
+	//cout << "Carrier restarted" << endl;
 }
 
 
 void EnemyCarrier :: update(float dt)
 {
 	Enemyship::update(dt);
+
+	if (m_paused) {
+		//cout << "Carrier paused" << endl;
+		return;
+	}
 
 	const Playership* player = GameLogic::instance().getPlayership();
 	const Point3& playerPosition = player->getPosition();
@@ -132,6 +145,7 @@ void EnemyCarrier :: _spawnEnemy()
 
 void EnemyCarrier :: onEvent(Player_Destroyed& evt)
 {
+	//cout << "Pausing Carrier" << endl;
 	m_paused = true;
 }
 

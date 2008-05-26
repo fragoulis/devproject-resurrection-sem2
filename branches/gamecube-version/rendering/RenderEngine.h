@@ -130,6 +130,9 @@ public:
 	// Uses VAT 1
 	static void drawTexturedRectangle(s16 left, s16 bottom, s16 width, s16 height, u8 repeats = 1);
 
+	// uses VAT 6
+	static void drawTexturedColoredRectangle(u32 color, s16 left, s16 bottom, s16 width, s16 height, u8 repeats = 1);
+
 	static unsigned POLY_COUNT;
 
 

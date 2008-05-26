@@ -116,6 +116,7 @@ void GameLogic :: _playerDestroyed2_RespawnPlayer()
 {
 	CKLOG("Respawning player", 3);
 	m_playership->respawn();
+	m_currentEbomb = EBOMB_TYPE_UNKNOWN;
 	FIRE_EVENT_VAL(Player_Respawned, m_playership);
 }
 

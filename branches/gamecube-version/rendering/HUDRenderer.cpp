@@ -1,36 +1,23 @@
 #include "HUDRenderer.h"
 #include "RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Texture/TextureIO.h"
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Objects/Playership.h"
 #include "../Math/Point2.h"
 #include "../Math/Point2.h"
 #include "../Control/OSinterface/Input.h"
-//#include "gl/glu.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/VA/VATTable.h"
+#include "../gfx/Camera.h"
 
 HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(EBOMB_TYPE_UNKNOWN)
 {
-	//Texture *tex = TextureIO::instance()->getTexture("hudLifeIcon.dds");
-	//m_textureList.push_back(tex);
-	////tex = TextureIO::instance()->getTexture("hudBar.dds");
-	//tex = TextureIO::instance()->getTexture("hudBg.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("hudEnergyBg.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("redBar.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("yellowBar.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("blueBar.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("hudBar2.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("hudBomb.dds");
-	//m_textureList.push_back(tex);
-	//tex = TextureIO::instance()->getTexture("ebombCreated.dds");
-	//m_textureList.push_back(tex);
+	_addTexture("ebombCreated");
+	_addTexture("hudBomb");
+	_addTexture("hudLifeIcon");
+	_addTexture("redBar");
+	_addTexture("yellowBar");
+	_addTexture("blueBar");
 
 	//EventManager::instance().registerEventListener<Player_Spawned>(this);
 	//EventManager::instance().registerEventListener<Player_Despawned>(this);
@@ -43,6 +30,9 @@ HUDRenderer::HUDRenderer()// : m_playership(0), m_currentLives(0), m_ebombType(E
 	m_messageDisplayTime = 1.0f;
 
 	m_currentTime = 0.0f;
+
+	// LoadingRenderer already does this
+	//Camera::load2D();
 }
 
 HUDRenderer::~HUDRenderer()
@@ -59,6 +49,111 @@ HUDRenderer::~HUDRenderer()
 
 void HUDRenderer :: render(Graphics& g) const
 {
+	Camera::activate2D();
+	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
+	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
+	
+
+	const Playership* playership = GameLogic::instance().getPlayership();
+	int currentLives = GameLogic::instance().getCurrentLives();
+	EbombType ebombType = GameLogic::instance().getCurrentEbombType();
+
+	//	glEnable(GL_BLEND);
+	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	int redEnergyAmount = playership->getEnergy(ENERGY_TYPE_RED);
+	int yellowEnergyAmount = playership->getEnergy(ENERGY_TYPE_YELLOW);
+	int blueEnergyAmount = playership->getEnergy(ENERGY_TYPE_BLUE);
+
+
+	// Draw lives icons
+	GXSetVtxDescv(VATTable::getVDL(1));
+	m_textureList[2]->bind();
+	for (int i = 0; i < currentLives; i++)
+	{
+		RenderEngine::drawTexturedRectangle(i * 32, 0, 32, 32);
+	}
+
+
+	// draw energy bars
+
+	//RED BAR
+	m_textureList[3]->bind();
+	for (int i = 0; i < redEnergyAmount; i++) {
+		RenderEngine::drawTexturedRectangle(165 + i * 9, 22, 9, 9);
+	}
+	//YELLOW BAR
+	m_textureList[4]->bind();
+	for (int i = 0; i < yellowEnergyAmount; i++) {
+		RenderEngine::drawTexturedRectangle(165 + i * 9, 11, 9, 9);
+	}
+	//BLUE BAR
+	m_textureList[5]->bind();
+	for (int i = 0; i < blueEnergyAmount; i++) {
+		RenderEngine::drawTexturedRectangle(165 + i * 9, 0, 9, 9);
+	}
+
+
+	if (ebombType != EBOMB_TYPE_UNKNOWN)
+	{
+		static const GXColor ebombTypeColors[6] =
+		{
+			{ 255, 0, 0, 255 },
+			{ 255, 255, 0, 255 },
+			{ 0, 0, 255, 255 },
+			{ 255, 127, 0, 255 },
+			{ 0, 255, 0, 255 },
+			{ 255, 0, 255, 255 }
+		};
+		static const GXColor white = { 255, 255, 255, 255 };
+
+		GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+		GXSetNumTevStages(1);
+
+		// Set texture alpha channel to texture red channel
+		GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
+		GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+
+		// set tev color to texture color * const color (konst)
+		GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+		GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
+		GXSetTevKColorSel(GX_TEVSTAGE0, GX_TEV_KCSEL_K0);
+
+		// set tev alpha to texture alpha * transparency (konst alpha)
+		GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+		GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_KONST, GX_CA_ZERO);
+		GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K1_R);
+
+		// set const color and transparency
+		GXSetTevKColor(GX_KCOLOR0, ebombTypeColors[int(ebombType)]);
+		GXSetTevKColor(GX_KCOLOR1, white);
+
+		GXSetVtxDescv(VATTable::getVDL(1));
+		m_textureList[1]->bind();
+		RenderEngine::drawTexturedRectangle(615, 0, 25, 25);
+
+		//DRAW EBOMB CREATION MESSAGE IF NEEDED
+		if (m_displayEbombMsg) 
+		{
+			const float time_ratio = m_ebombMgsTimer / m_messageDisplayTime;
+			const float time_ratio2 = time_ratio * time_ratio;
+			const float time_ratio3 = time_ratio2 * time_ratio;
+
+			m_textureList[0]->bind();
+
+			_displayEbombMessage(0.25f * (1.0f - time_ratio), 2.0f, time_ratio);
+			_displayEbombMessage(0.5f * (1.0f - time_ratio2), 1.5f, time_ratio2);
+			_displayEbombMessage(1.0f - time_ratio3, 1.0f, 0.0f);
+		}
+
+		GXSetBlendMode(GX_BM_NONE, GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	}
+
+	GXSetZMode(TRUE, GX_LEQUAL, TRUE);
+
+
+
+
 	//// draw energy bars
 	//// draw number of lives
 	//// draw type of e-bomb. You could listen to events for e-bomb created/uncreated
@@ -271,8 +366,23 @@ void HUDRenderer :: render(Graphics& g) const
 	////glEnable(GL_LIGHTING);
 }
 
-void HUDRenderer :: displayEbombMessage( int screenWidth, int screenHeight, float in_factor, float in_time ) const
+void HUDRenderer :: _displayEbombMessage( float transparency, float in_factor, float in_time ) const
 {
+	const u32 width = u32( 256.0f + 192.0f * in_factor * in_time );
+	const u32 height = u32( 64.0f +  48.0f * in_factor * in_time );
+
+	const u32 xpos = u32( 0.5f * (640.0f - width) );
+	const u32 ypos = u32( 0.5f * (480.0f - height) );
+
+	// Draw cookie-cutter quad, color = rasc * texc
+	// tev settings still active from ebomb icon
+
+	GXColor alpha = { 0, 0, 0, 0 };
+	alpha.r = u8( 256.0f * transparency );
+	GXSetTevKColor(GX_KCOLOR1, alpha);
+
+	RenderEngine::drawTexturedRectangle(xpos, ypos, width, height);
+
  //   const float width = 256.0f + 192.0f * (in_factor * in_time);
  //   const float height = 64.0f + 48.0f * (in_factor * in_time);
 
@@ -331,4 +441,11 @@ void HUDRenderer :: onEvent(Ebomb_Uncreated &ebomb)
 {
 	//if the ebomb is uncreated while the creation message is displayed do this hack to not display the message anymore
 	m_startEbombMessageTime = m_startEbombMessageTime+m_messageDisplayTime;
+}
+
+void HUDRenderer :: _addTexture(const std::string& name)
+{
+	TextureMgr::safeInstance().loadPalette(name + ".tpl", name + "TPL.txt");
+	Texture* tex = TextureMgr::instance().getTexture(name);
+	m_textureList.push_back(tex);
 }

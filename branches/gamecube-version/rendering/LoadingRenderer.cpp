@@ -29,7 +29,7 @@ LoadingRenderer :: LoadingRenderer()
     //  Default number of tev stages is 1
     //  Default stage0 uses texcoord0, texmap0, color0a0
     //  Only need to change the tevop
-    GXSetTevOp(GX_TEVSTAGE0, GX_DECAL);
+    GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
 
 
     GXColor black = {0, 0, 0, 0};

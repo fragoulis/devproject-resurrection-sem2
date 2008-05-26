@@ -8,15 +8,15 @@ void VATTable :: buildVAT()
 	/*
 		Used formats : 
 
-		0) Terrain - Spawnpoints
+		0) Terrain - Spawnpoints - in use
 			position, texcoord
 
 			F32 , U8
 
-		1) HUD elements
-			position, color
+		1) Menu, loading screen, some HUD parts - in use
+			position, texture
 
-			F32, U32
+			S16, U8
 
 		2) particles - Lasers
 			position, color, texcoord
@@ -38,12 +38,12 @@ void VATTable :: buildVAT()
 
 			F32, F32 , F32
 
-		6) Lake ? 
-			position, normal, texcoord
+		6) HUD
+			position, texcoord, color
 			
-			F32 , U8 , U8
+			S16 , U8, U32
 
-		7) One more ??
+		7) Lasers, Lake - in use
 
 	*/
 
@@ -62,14 +62,8 @@ void VATTable :: buildVAT()
 	//_setPosition(GX_VTXFMT1,GX_F32,GX_INDEX8);
 	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_INDEX8);
 
-	// for CnP from demo:
-	//_setPosition(GX_VTXFMT1,GX_S8,GX_INDEX8);
-	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_INDEX8);
-	//_setTexcoord(GX_VTXFMT1,GX_U8,GX_INDEX8);
-
 	// for my own idea:
 	_setPosition(GX_VTXFMT1,GX_S16,GX_DIRECT);
-	//_setColor(GX_VTXFMT1,GX_RGBA8,GX_DIRECT);
 	_setTexcoord(GX_VTXFMT1,GX_U8,GX_DIRECT);
 	GXGetVtxDescv(m_vcd[1]);
 
@@ -103,9 +97,15 @@ void VATTable :: buildVAT()
 
 	// set format 6
 	GXClearVtxDesc();
-	_setPosition(GX_VTXFMT6,GX_F32,GX_INDEX8);
-	_setNormal(GX_VTXFMT6,GX_U8,GX_INDEX8);
-	_setTexcoord(GX_VTXFMT6,GX_U8,GX_INDEX8);
+	// Babis idea:
+	//_setPosition(GX_VTXFMT6,GX_F32,GX_INDEX8);
+	//_setNormal(GX_VTXFMT6,GX_U8,GX_INDEX8);
+	//_setTexcoord(GX_VTXFMT6,GX_U8,GX_INDEX8);
+
+	// for my own idea:
+	_setPosition(GX_VTXFMT6,GX_S16,GX_DIRECT);
+	_setTexcoord(GX_VTXFMT6,GX_U8,GX_DIRECT);
+	_setColor(GX_VTXFMT6,GX_RGBA8,GX_DIRECT);
 	GXGetVtxDescv(m_vcd[6]);
 
 	// set format 7

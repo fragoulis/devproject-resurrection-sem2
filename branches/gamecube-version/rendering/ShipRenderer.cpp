@@ -90,6 +90,14 @@ void ShipRenderer :: render(Graphics& g) const
 				GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
 			}
 		}
+		else
+		{
+			if (changed_to_tex)
+			{
+				changed_to_tex = false;
+				GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
+			}
+		}
 		it->model->render();
 
 		RenderEngine::POLY_COUNT += it->model->getPolynum();
