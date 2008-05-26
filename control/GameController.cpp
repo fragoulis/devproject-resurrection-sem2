@@ -96,6 +96,12 @@ void GameController :: update(float dt)
 		{
 			gl.dropEbomb();
 		}
+
+		// Go to pause menu
+		if (input.isButtonGoingDown(0, PAD_BUTTON_START))
+		{
+			ControllerManager::instance().activateController(&m_pauseController);
+		}
 	}
 	else // if (!input.hasError(0))
 	{

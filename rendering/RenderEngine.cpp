@@ -4,7 +4,7 @@
 #include "LoadingRenderer.h"
 #include "HUDRenderer.h"
 #include "MenuRenderer.h"
-//#include "PauseRenderer.h"
+#include "PauseRenderer.h"
 //#include "LevelCompleteRenderer.h"
 #include "GameOverRenderer.h"
 #include "../ParticleSystem/PS_Manager.h"
@@ -53,6 +53,11 @@ void RenderEngine :: init()
 	m_confParser = new ConfParser("config/config.gfx");
 	TextureMgr::safeInstance().init(m_confParser->getSection("Texture"));
 	VATTable::buildVAT();
+
+	//TplPalette* tpl = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
+	//TextureMgr::instance().unloadPalette(tpl);
+	//tpl = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
+	//TextureMgr::instance().unloadPalette(tpl);
 
 	// set clear color to black
     GXColor black = {0, 0, 0, 0};
@@ -170,7 +175,7 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 	if (name == "loading") return new LoadingRenderer();
 	if (name == "hud") return new HUDRenderer();
 	if (name == "menu") return new MenuRenderer();
-	//if (name == "pause") return new PauseRenderer();
+	if (name == "pause") return new PauseRenderer();
 	//if (name == "LevelComplete") return new LevelCompleteRenderer();
 	if (name == "GameOver") return new GameOverRenderer();
 	return 0;
@@ -497,4 +502,37 @@ void RenderEngine :: setLight()
     // set up material color
     GXSetChanMatColor(GX_COLOR0A0, WHITE);
 
+}
+
+
+void RenderEngine :: useColorChannelForAlpha(GXTevColorChan channel)
+{
+	GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, channel);
+	GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+}
+
+void RenderEngine :: enableModulateTextureColor()
+{
+	GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+	GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_TEXC, GX_CC_KONST, GX_CC_ZERO);
+	GXSetTevKColorSel(GX_TEVSTAGE0, GX_TEV_KCSEL_K0);
+}
+
+void RenderEngine :: setModulateTextureColor(const GXColor& color)
+{
+	GXSetTevKColor(GX_KCOLOR0, color);
+}
+
+void RenderEngine :: enableModulateTextureAlpha()
+{
+	GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+	GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_TEXA, GX_CA_KONST, GX_CA_ZERO);
+	GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K1_R);
+}
+
+void RenderEngine :: setModulateTextureAlpha(u8 alpha)
+{
+	static GXColor color = { 0, 0, 0, 0 };
+	color.r = alpha;
+	GXSetTevKColor(GX_KCOLOR1, color);
 }

@@ -116,7 +116,6 @@ void MenuController :: update(float dt)
 		}
 	}
 
-	RenderEngine::instance().update(dt);
 
 
 
