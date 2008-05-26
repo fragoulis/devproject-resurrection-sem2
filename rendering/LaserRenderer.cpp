@@ -27,7 +27,8 @@ LaserRenderer :: LaserRenderer()
 	m_posColor = Vector4(1.0f,0.5f,0.5f,1.0f);
 	m_negColor = Vector4(0.5f,1.0f,0.5f,1.0f);
 
-	m_flarePal = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
+	m_flarePal = TextureMgr::instance().loadPalette("flareWhite.tpl","flareWhiteTPL.txt");
+	m_flareTexture = TextureMgr::instance().getTexture("flareWhite");
 }
 
 LaserRenderer :: ~LaserRenderer()
@@ -50,12 +51,17 @@ void LaserRenderer :: render(Graphics& g) const
 	GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_CLEAR);
 	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
 
-	Texture tex_pos(m_flarePal,0,"flare_pos"),
-			tex_neg(m_flarePal,1,"flare_neg");
+	//Texture tex_pos(m_flarePal,0,"flare_pos"),
+	//		tex_neg(m_flarePal,1,"flare_neg");
 
+	m_flareTexture->bind();
 	GXSetVtxDescv(VATTable::getVDL(7));
-	bool changed = false;
-	tex_pos.bind();
+	RenderEngine::useColorChannelForAlpha(GX_CH_RED);
+	RenderEngine::enableModulateTextureColor();
+
+	const static GXColor posColor = { 255, 127, 127, 255 };
+	const static GXColor negColor = { 127, 255, 127, 255 };
+
 	for(std::vector<LaserInfo_t>::const_iterator it = m_lasers.begin();
 		it != m_lasers.end();
 		++it)
@@ -72,12 +78,8 @@ void LaserRenderer :: render(Graphics& g) const
 		const Vector3 ll(0.5f*(laser->getBackPoint().getVector()+laser->getFrontPoint().getVector()) 
 						 - right*0.5f - up*0.5f);
 
-		if(!changed)
-			if(laser->getType() == 4)
-			{
-				changed = true;
-				tex_neg.bind();
-			}
+		if(laser->getType() == m_laserTypePos) RenderEngine::setModulateTextureColor(posColor);
+		if(laser->getType() == m_laserTypeNeg) RenderEngine::setModulateTextureColor(negColor);
 
 		RenderEngine::drawQuad(ll,right,up);
 	}
