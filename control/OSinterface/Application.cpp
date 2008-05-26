@@ -130,5 +130,5 @@ void Application :: update(float dt)
 
 	Input::instance().update();
 	ControllerManager::instance().update(dt);
-	RenderEngine::instance().update(dt);
+	//RenderEngine::instance().update(dt);
 }

@@ -183,7 +183,7 @@ void PS_Explosion :: update(const float delta)
 void PS_Explosion :: render() const
 {
 	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);	
-	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCCLR, GX_BL_ONE, GX_LO_CLEAR);
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
 	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
 
 	Texture tex_pos(m_flarePal,0,"flare_pos");
