@@ -1,14 +1,15 @@
 #include "GameOverRenderer.h"
 #include "RenderEngine.h"
-//#include "../gfx/Shaders/ShaderManager.h"
-//#include "../gfx/Texture/Texture.h"
-//#include "../gfx/Texture/TextureIO.h"
-//#include <gl/glee.h>
-//#include <gl/glu.h>
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../gfxutils/VA/VATTable.h"
+#include "../gfx/Camera.h"
 
 GameOverRenderer::GameOverRenderer()
 {
-	//m_texture = TextureIO::instance()->getTexture("gameOverScreen.dds");
+	const std::string name = "gameOverScreen";
+	TextureMgr::safeInstance().loadPalette(name + ".tpl", name + "TPL.txt");
+	m_texture = TextureMgr::instance().getTexture(name);
 }
 
 GameOverRenderer :: ~GameOverRenderer()
@@ -18,6 +19,28 @@ GameOverRenderer :: ~GameOverRenderer()
 
 void GameOverRenderer :: render(Graphics& g) const
 {
+	Camera::activate2D();
+	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
+	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
+	GXSetVtxDescv(VATTable::getVDL(1));
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+
+	// Set texture alpha channel to texture red channel
+	GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
+	GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
+
+	m_texture->bind();
+	RenderEngine::drawTexturedRectangle(192, 176, 256, 128);
+
+
+
+	GXSetBlendMode(GX_BM_NONE, GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	GXSetZMode(TRUE, GX_LEQUAL, TRUE);
+
+
+
+
+
 	//int viewPortDims[4];
 	//RenderEngine::instance().getViewport(viewPortDims);
 	//int screenWidth = viewPortDims[2];

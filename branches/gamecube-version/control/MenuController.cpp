@@ -57,10 +57,67 @@ void MenuController :: update(float dt)
 	// this design sucks!
 
 	// do updates here
-	//m_renderer->update(dt);
+	m_renderer->update(dt);
 
-	//Input& input = Input::instance();
-    
+	Input& input = Input::instance();
+
+	if (!input.hasError(0))
+	{
+
+		// items selection
+		if (input.isControlUp(0)/* || input.isControlLeft(0)*/)
+		{
+			if (m_renderer->selectPreviousItem())
+				SoundEngine::instance().play("IFaceClick");
+		}
+
+		if (input.isControlDown(0)/* || input.isControlRight(0)*/)
+		{
+			if (m_renderer->selectNextItem())
+				SoundEngine::instance().play("IFaceClick");
+		}
+
+
+		// Pressing A button
+		if (input.isButtonGoingDown(0, PAD_BUTTON_A))
+		{
+			switch (m_renderer->getState())
+			{
+				case MenuRenderer::MENU_STATE_MAIN:
+				{
+					if (m_renderer->getSelectedItem() == 0) {
+						_startLevel(m_levelNames[0]);
+						//m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);  //go to planet screen selection
+					} else if (m_renderer->getSelectedItem() == 1) {
+						m_renderer->setState(MenuRenderer::MENU_STATE_TUTORIAL);  //go to credits screen
+					} else if (m_renderer->getSelectedItem() == 2) {
+						m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
+					}
+					break;
+				}
+				case MenuRenderer::MENU_STATE_TUTORIAL:
+				{
+					_startLevel(m_levelNames[0]);  //go to new game
+					m_renderer->setSelectedItem(1); //select the first planet for the next visit
+					break;
+				}
+				case MenuRenderer::MENU_STATE_CREDITS:
+				{
+					m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu
+					break;
+				}
+				default:
+				{
+					break;
+				}
+			}
+
+			SoundEngine::instance().play("IFaceClick");
+		}
+	}
+
+
+
 	//items selection
 	//if (input.isKeyGoingDown(KEY_UP) || input.isKeyGoingDown(KEY_LEFT) ||
 	//	input.isKeyGoingDown('W') || input.isKeyGoingDown('A')) {

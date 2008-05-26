@@ -1,4 +1,5 @@
 static const int TRIGGER_TRESHOLD = 10;
+static const int CONTROL_NAVIGATION_THRESHOLD = 10;
 
 inline bool Input :: isButtonGoingDown(int pad, int button) const
 {
@@ -92,4 +93,28 @@ inline bool Input :: hasError(int pad) const
 inline bool Input :: isValid(int pad) const
 {
 	return m_currentPadz[pad].err != PAD_ERR_NO_CONTROLLER;
+}
+
+inline bool Input :: isControlDown(int pad) const
+{
+	return m_currentPadz[pad].stickY < -CONTROL_NAVIGATION_THRESHOLD &&
+		m_previousPadz[pad].stickY > -CONTROL_NAVIGATION_THRESHOLD;
+}
+
+inline bool Input :: isControlUp(int pad) const
+{
+	return m_currentPadz[pad].stickY > CONTROL_NAVIGATION_THRESHOLD &&
+		m_previousPadz[pad].stickY < CONTROL_NAVIGATION_THRESHOLD;
+}
+
+inline bool Input :: isControlLeft(int pad) const
+{
+	return m_currentPadz[pad].stickX < -CONTROL_NAVIGATION_THRESHOLD &&
+		m_previousPadz[pad].stickX > -CONTROL_NAVIGATION_THRESHOLD;
+}
+
+inline bool Input :: isControlRight(int pad) const
+{
+	return m_currentPadz[pad].stickX > CONTROL_NAVIGATION_THRESHOLD &&
+		m_previousPadz[pad].stickX < CONTROL_NAVIGATION_THRESHOLD;
 }

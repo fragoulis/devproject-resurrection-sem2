@@ -58,9 +58,6 @@ void HUDRenderer :: render(Graphics& g) const
 	int currentLives = GameLogic::instance().getCurrentLives();
 	EbombType ebombType = GameLogic::instance().getCurrentEbombType();
 
-	//	glEnable(GL_BLEND);
-	//	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 	int redEnergyAmount = playership->getEnergy(ENERGY_TYPE_RED);
 	int yellowEnergyAmount = playership->getEnergy(ENERGY_TYPE_YELLOW);
 	int blueEnergyAmount = playership->getEnergy(ENERGY_TYPE_BLUE);

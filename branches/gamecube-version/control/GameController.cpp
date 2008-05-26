@@ -7,7 +7,7 @@
 #include "../Gamelogic/Buffs/EnemyBuffCoupleManager.h"
 #include "../AI/AIEngine.h"
 #include "../physics/PhysicsEngine.h"
-//#include "../Sound/SoundEngine.h"
+#include "../Sound/SoundEngine.h"
 #include "OSinterface/Input.h"
 #include "../math/Vector3.h"
 #include "../math/maths.h"
