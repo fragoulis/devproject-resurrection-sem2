@@ -1,7 +1,8 @@
 #ifndef _RES_PARTICLE_SYSTEMS_RENDERER_H_
 #define _RES_PARTICLE_SYSTEMS_RENDERER_H_
+
 #include "IRenderer.h"
-//#include "../ParticleSystem/PS_Base.h"
+#include "../ParticleSystem/PS_Base.h"
 #include "../utility/EventManager.h"
 //#include "../control/OSinterface/Input.h"
 #include "../GameLogic/GameEvents.h"
@@ -51,9 +52,9 @@ public:
 
 private:
 	// bunch of ParticleSystems here I guess
-	//typedef std::vector<PS_Base *> PSBaseVector;
-	//typedef PSBaseVector::iterator PSBaseVectorIt;
-	//PSBaseVector m_psList;
+	typedef std::vector<PS_Base *> PSBaseVector;
+	typedef PSBaseVector::iterator PSBaseVectorIt;
+	PSBaseVector m_psList;
 
 	void _removeEnemyViz(Enemyship* es);
 };

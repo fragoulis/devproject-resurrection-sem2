@@ -814,6 +814,46 @@
 			>
 		</File>
 		<File
+			RelativePath=".\ParticleSystem\PS_Base.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_Base.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_EnemyEnergyViz.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_EnemyEnergyViz.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_Explosion.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_Explosion.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_Manager.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_Manager.h"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_RotatingFlare.cpp"
+			>
+		</File>
+		<File
+			RelativePath=".\ParticleSystem\PS_RotatingFlare.h"
+			>
+		</File>
+		<File
 			RelativePath=".\Physics\Pusher.cpp"
 			>
 		</File>

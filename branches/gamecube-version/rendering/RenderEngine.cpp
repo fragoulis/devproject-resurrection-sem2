@@ -7,6 +7,7 @@
 //#include "PauseRenderer.h"
 //#include "LevelCompleteRenderer.h"
 //#include "GameOverRenderer.h"
+#include "../ParticleSystem/PS_Manager.h"
 #include "../math/Point2.h"
 #include "../math/Point3.h"
 #include <string>
@@ -65,7 +66,7 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 	//ShaderManager::init(m_confParser->getSection("Shader"));
 	//VBOMgr::safeInstance().init(m_confParser->getSection("VBOSettings"));
 	//ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
-	//PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
+	PS_Manager::safeInstance().init(m_confParser->getSection("ParticleSystem"));
 
 	ModelMgr::safeInstance().init(m_confParser->getSection("ModelSettings"));
 
@@ -76,8 +77,8 @@ void RenderEngine :: onApplicationLoad(const ParserSection& ps)
 
 void RenderEngine :: onApplicationUnload()
 {
-	//PS_Manager::instance().clear();
-	//PS_Manager::destroy();
+	PS_Manager::instance().clear();
+	PS_Manager::destroy();
 
 	ModelMgr::destroy();
 	TextureMgr::destroy();

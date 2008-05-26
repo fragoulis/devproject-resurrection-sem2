@@ -1,6 +1,6 @@
 //#include <gl/glee.h>
 #include "ParticleSystemsRenderer.h"
-//#include "../ParticleSystem/PS_Manager.h"
+#include "../ParticleSystem/PS_Manager.h"
 #include "../GameLogic/GameLogic.h"
 #include "../GameLogic/Enemies/Enemyship.h"
 #include "../GameLogic/Objects/Playership.h"
@@ -12,6 +12,7 @@
 //#include "../ParticleSystem/PS_RotatingFlare.h"
 //#include "../ParticleSystem/PS_EnemyEnergyViz.h"
 //#include "../ParticleSystem/PS_Explosion2.h"
+#include "../ParticleSystem/PS_Explosion.h"
 #include "../utility/deleters.h"
 
 ParticleSystemsRenderer :: ParticleSystemsRenderer()
@@ -37,7 +38,7 @@ ParticleSystemsRenderer :: ParticleSystemsRenderer()
 
 ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 {
-	//deleteVector(m_psList);
+	deleteVector(m_psList);
 
 	//EventManager::instance().unRegisterEventListener<Key_GoingDown>(this); //DEBUG PURPOSES
 
@@ -58,45 +59,45 @@ ParticleSystemsRenderer :: ~ParticleSystemsRenderer()
 
 void ParticleSystemsRenderer :: onEvent(Level_Unload& e)
 {
-	//deleteVector(m_psList);
+	deleteVector(m_psList);
 }
 
 
 void ParticleSystemsRenderer :: render( Graphics& g ) const
 {
-	//// render particle systems
+	// render particle systems
 	//glBlendFunc(GL_SRC_ALPHA,GL_ONE);
 	//glEnable(GL_BLEND);
 	//glDepthMask(GL_FALSE);
-	//for(std::vector<PS_Base *>::const_iterator it = m_psList.begin();
-	//	it != m_psList.end();
-	//	++it)
-	//{
-	//	(*it)->render();
-	//}
+	for(std::vector<PS_Base *>::const_iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		(*it)->render();
+	}
 	//glDepthMask(GL_TRUE);
 	//glDisable(GL_BLEND);
 }
 
 void ParticleSystemsRenderer :: update( float dt )
 {
-	//std::vector<PS_Base *>::iterator it = m_psList.begin();
-	//// Do particle system updates
-	////for(std::vector<PS_Base *>::iterator it = m_psList.begin();
-	////	it != m_psList.end();
-	////	++it)
-	//while(it != m_psList.end())
-	//{
-	//	(*it)->update(dt);
+	std::vector<PS_Base *>::iterator it = m_psList.begin();
+	// Do particle system updates
+	//for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+	//	it != m_psList.end();
+	//	++it)
+	while(it != m_psList.end())
+	{
+		(*it)->update(dt);
 
-	//	//remove dead particle systems
-	//	if ((*it)->getCurrentTime() > (*it)->getSystemLife()) { 
-	//		PS_Base *ps = *it;
-	//		it = m_psList.erase(it);
-	//		delete ps;
-	//	} else
-	//		it++;
-	//}
+		//remove dead particle systems
+		if ((*it)->getCurrentTime() > (*it)->getSystemLife()) { 
+			PS_Base *ps = *it;
+			it = m_psList.erase(it);
+			delete ps;
+		} else
+			it++;
+	}
 }
 
 //LISTENING THE KEYBOARD FOR DEBUGGING PURPOSES ONLY
@@ -164,7 +165,7 @@ void ParticleSystemsRenderer::onEvent(Terrain_Changed &evt)
 
 void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
 {
-	//CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
+	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
 	//if(0)
 	//{
 	//	EnergyType energyType = enemy.getValue()->getEnergyType();
@@ -202,7 +203,11 @@ void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
 	//	m_psList.back()->setTransform(cf);
 	//}
 
-	//_removeEnemyViz(enemy.getValue());
+	EnergyType energyType = enemy.getValue()->getEnergyType();
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+	m_psList.back()->setTransform(cf);
+
+	_removeEnemyViz(enemy.getValue());
 }
 
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &evt)
