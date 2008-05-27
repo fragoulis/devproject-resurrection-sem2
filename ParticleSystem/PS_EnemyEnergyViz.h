@@ -17,12 +17,6 @@ class Enemyship;
 	In the ctor for the copies, the m_usedAttribs should be modified appropriately
 */
 
-static const GXColor enemyColors[6] =
-		{
-			{ 255, 0, 0, 255 },
-			{ 255, 255, 0, 255 },
-			{ 0, 0, 255, 255 }
-		};
 
 class PS_EnemyEnergyViz : public PS_Base
 {

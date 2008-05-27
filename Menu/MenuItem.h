@@ -15,7 +15,7 @@ public:
 		NUM_ITEM_STATES
 	};
 
-private:
+protected:
 	ItemState m_state;
 	int m_width, m_height;
 	int m_posX, m_posY;
@@ -27,14 +27,15 @@ private:
 	float m_currentTime;
 
 public:
-	~MenuItem(); 
+	virtual ~MenuItem(); 
 
 	void init(int m_posX, int m_posY, int width, int height, const std::string &unselectedTexture, const std::string &selectedTexture, ItemState state);
-	void update(float dt);
-	void render(Graphics& g) const;
+	virtual void update(float dt);
+	virtual void render(Graphics& g) const;
 
 	const ItemState getState() const { return m_state; };
 	void setState(ItemState state) { m_state = state; };
+	bool isSelected() const { return m_state == ITEM_STATE_SELECTED; }
 
 	void setSelectable(bool selectable) { m_selectable = selectable; };
 	const bool isSelectable() const { return m_selectable; };

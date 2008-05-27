@@ -55,6 +55,9 @@ int main ( void )
 		return 0;
 	}	
 
+	srand(timer.getCurrentTime());
+
+
 	/*
 	model = ModelMgr::instance().getModel("enforcer_proc.obj");
 	TextureMgr::instance().loadPalette("enforcer.tpl","enforcerTPL.txt");
@@ -64,7 +67,9 @@ int main ( void )
 
 	//app.load();
 
-	cout << "Application Initialized" << endl;
+	//cout << "Application Initialized" << endl;
+
+	timer.reset();
 
     while(true) //!(pad[0].button & PAD_BUTTON_MENU))
     {

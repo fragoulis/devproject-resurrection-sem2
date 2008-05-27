@@ -38,17 +38,6 @@ void GameOverController :: update(float dt)
 	}
 
 	RenderEngine::instance().update(dt);
-
-
-	// ESC or ENTER --> go back to main menu
-	//if (input.isKeyGoingDown(27) || input.isKeyGoingDown(13))
-	//{
-	//	LoadingController::instance().load(this, &GameOverController::_loadMainMenu);
-	//}
-
-
-	// We update render engine so explosions and particles continue
-	//RenderEngine::instance().update(dt);
 }
 
 

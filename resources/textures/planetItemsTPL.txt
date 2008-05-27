@@ -1,0 +1,6 @@
+menuEasy
+menuMedium
+menuHard
+menuSelectionFrame
+menuExitPause
+menuExitPauseSel

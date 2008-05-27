@@ -418,6 +418,7 @@ void TerrainRenderer :: onEvent(Enemy_Despawned& evt)
 
 void TerrainRenderer :: onEvent(Enemy_Destroyed& evt)
 {
+	//CKLOG("TerrainRenderer got Enemy_Destroyed", 3);
 	// Fetch the enemy & remove
 	//const CoordinateFrame * cf = &(evt.getValue()->getCoordinateFrame());
 	//_removeShadowCaster(cf);

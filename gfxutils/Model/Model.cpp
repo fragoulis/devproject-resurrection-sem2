@@ -17,7 +17,7 @@ m_notexData(0),
 m_texData(0),
 m_texture(0)
 {
-	_loadOBJ(ModelMgr::instance().getModelDir() + fname);
+	_loadOBJ(ModelMgr::instance().getModelDir() + fname, fname == "enforcer_proc.obj");
 	if(m_isTextured)
 	{
 		// HACK_YEAH! the only tex model is enforcer, so grab the tex

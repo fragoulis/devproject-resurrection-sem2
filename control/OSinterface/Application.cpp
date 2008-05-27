@@ -51,7 +51,7 @@ bool Application :: init()
 
 void Application :: load()
 {
-	OSReport("Application :: load()\n");
+	//OSReport("Application :: load()\n");
 
 	ConfParser cp("config/config.txt");
 	const ParserSection& ps = cp.rootSection();

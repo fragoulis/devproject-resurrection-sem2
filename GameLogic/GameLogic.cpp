@@ -130,6 +130,7 @@ void GameLogic :: _playerDestroyed2_RespawnPlayer()
  */
 void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 {
+	//CKLOG("Enemy laser collision", 3);
 	//EventManager::instance().fireEvent(Level_Complete(m_levelName));
     Enemyship* enemy = evt.getObject1();
 	Laser* laser = evt.getObject2();
@@ -144,13 +145,17 @@ void GameLogic :: onEvent( Collision_Enemy_Laser& evt )
 	enemy->reduceHitPoints(laser->getPower());
 
 	// check if enemy can sustain the damage taken
-	if (enemy->getHitPoints() <= 0) {
+	if (enemy->getHitPoints() <= 0)
+	{
 		int oldPlayerEnergy = m_playership->getEnergy(type);
 		int enemyEnergy = enemy->getEnergyPoints();
 
 		// remove enemy from game
+		//CKLOG("Gonna fire Enemy_Destroyed", 3);
+		//cout << "We got " << EventManager::instance().getEventListenerCount<Enemy_Destroyed>() << endl;
 		enemy->setToBeDeleted();
 		FIRE_EVENT_VAL(Enemy_Destroyed, enemy);
+		//CKLOG("Yep we fired Enemy_Destroyed all right", 3);
 
 		// Check laser type
 		// We don't create e-bombs here, that will be done in response to Player_EnergyGained

@@ -6,6 +6,7 @@
 #include "../gfxutils/ConfParser/ParserSection.h"
 #include "../GameLogic/WorldObjectTypeManager.h"
 #include "../gfxutils/Misc/utils.h"
+#include "../gfxutils/Misc/Logger.h"
 #include <iostream>
 
 VOICE SoundEngine::m_voices[MAX_VOICES];
@@ -38,7 +39,7 @@ SoundEngine :: ~SoundEngine()
 // Load most sounds, interface and game sounds, except the ambient background ones
 void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 {
-	cout << "Initializing sound engine ... " << endl;
+	//cout << "Initializing sound engine ... " << endl;
 
 	ARInit(m_aramMemArray, MAX_ARAM_BLOCKS);
 	//cout << "ARInit returned: " << ret << endl;
@@ -98,7 +99,7 @@ void SoundEngine :: onApplicationLoad(const ParserSection& ps)
 
 	_matchSoundIdToString();
 
-	cout << "Sound engine initialized!" << endl;
+	//cout << "Sound engine initialized!" << endl;
 }
 
 // ----------------------------------------------------------------------------
@@ -144,6 +145,7 @@ void SoundEngine :: onEvent(Player_Destroyed& pd)
 // play an explosion sound, depending on the enemy type, as loaded
 void SoundEngine :: onEvent(Enemy_Destroyed& pd)
 {
+	//CKLOG("SoundEngine got Enemy_Destroyed", 3);
     if( m_activeEplosions == m_maxExplosions ) return;
     m_activeEplosions++;
 

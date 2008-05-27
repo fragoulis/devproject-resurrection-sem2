@@ -51,7 +51,7 @@ TerrainLoader :: TerrainLoader(char * filename,const unsigned reduceFactor)
 
 	dim = ((dim - 1) / peekPoint) + 1;
 
-	OSReport("Loaded map with dim = %u, extent = %f\n",dim,extent);
+	//OSReport("Loaded map with dim = %u, extent = %f\n",dim,extent);
 }
 
 TerrainLoader :: ~TerrainLoader()

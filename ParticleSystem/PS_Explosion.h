@@ -49,6 +49,7 @@ public :
 
 	//void  _generateData(VBO * vbo,Texture * tex);			// The texture for the gen model
 
+	void setVelocity(const Vector3& v);
 	virtual void render() const;		
 	virtual void update(const float delta);		
 	virtual void reset();						

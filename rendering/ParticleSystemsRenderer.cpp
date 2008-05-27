@@ -163,9 +163,14 @@ void ParticleSystemsRenderer::onEvent(Terrain_Changed &evt)
 	//m_psList.back()->setTransform(cf);
 }
 
-void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
+#include "../gfxutils/Misc/Logger.h"
+#include "../gfxutils/Misc/utils.h"
+
+
+void ParticleSystemsRenderer::onEvent(Enemy_Destroyed& evt)
 {
-	CoordinateFrame cf = enemy.getValue()->getCoordinateFrame();
+	Enemyship* enemy = evt.getValue();
+	CoordinateFrame cf = enemy->getCoordinateFrame();
 	//if(0)
 	//{
 	//	EnergyType energyType = enemy.getValue()->getEnergyType();
@@ -203,11 +208,13 @@ void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
 	//	m_psList.back()->setTransform(cf);
 	//}
 
-	EnergyType energyType = enemy.getValue()->getEnergyType();
-	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_Explosion"));
-	m_psList.back()->setTransform(cf);
+	EnergyType energyType = enemy->getEnergyType();
+	PS_Explosion* ps = static_cast<PS_Explosion*>(PS_Manager::instance().fetchNewPS("PS_Explosion"));
+	ps->setTransform(cf);
+	m_psList.push_back(ps);
+	//ps->setVelocity(enemy->getVelocity());
 
-	_removeEnemyViz(enemy.getValue());
+	_removeEnemyViz(enemy);
 }
 
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &evt)

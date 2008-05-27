@@ -21,24 +21,26 @@ MenuRenderer::MenuRenderer()
 	//int screenWidth = viewPortDims[2];
 	//int screenHeight = viewPortDims[3];
 
-	m_state = MENU_STATE_MAIN;
 
-	m_menuPool[MENU_STATE_MAIN] = new MainPage();
-	m_menuPool[MENU_STATE_TUTORIAL] = new InstructionPage();
-	m_menuPool[MENU_STATE_CREDITS] = new CreditsPage();
-	m_menuPool[MENU_STATE_PLANET] = new PlanetPage();
+	//m_menuPool[MENU_STATE_MAIN] = new MainPage();
+	//m_menuPool[MENU_STATE_TUTORIAL] = new InstructionPage();
+	//m_menuPool[MENU_STATE_CREDITS] = new CreditsPage();
+	//m_menuPool[MENU_STATE_PLANET] = new PlanetPage();
+
+	m_menuPool[MENU_STATE_MAIN] = 0;
+	m_menuPool[MENU_STATE_TUTORIAL] = 0;
+	m_menuPool[MENU_STATE_CREDITS] = 0;
+	m_menuPool[MENU_STATE_PLANET] = 0;
+
+	setState(MENU_STATE_MAIN);
 
 	int screenWidth = 640;
 	int screenHeight = 480;
 
-	for (int i = 0; i < NUM_MENU_STATES; i++) {
-		m_menuPool[i]->init(screenWidth, screenHeight);
+	//for (int i = 0; i < NUM_MENU_STATES; i++) {
+	//	m_menuPool[i]->init(screenWidth, screenHeight);
+	//}
 
-		//if (static_cast<PlanetPage*>(m_menuPool[i]))
-		//	m_menuPool[i]->setItemsNumber(6);
-	}
-
-	m_currentMenu = m_menuPool[(int) m_state];
 }
 
 MenuRenderer::~MenuRenderer()
@@ -46,6 +48,31 @@ MenuRenderer::~MenuRenderer()
 	for (int i = 0; i < NUM_MENU_STATES; i++)
 		delete m_menuPool[i];
 }
+static MenuPage* createMenu(MenuRenderer::MenuState state)
+{
+	switch (state)
+	{
+	case MenuRenderer::MENU_STATE_MAIN : return new MainPage();
+	case MenuRenderer::MENU_STATE_TUTORIAL : return new InstructionPage();
+	case MenuRenderer::MENU_STATE_CREDITS : return new CreditsPage();
+	case MenuRenderer::MENU_STATE_PLANET : return new PlanetPage();
+	default: break;
+	}
+	return 0;
+}
+
+void MenuRenderer::setState(MenuState state)
+{
+	m_state = state;
+	if (m_menuPool[state] == 0)
+	{
+		MenuPage* menu = createMenu(state);
+		menu->init(640, 480);
+		m_menuPool[state] = menu; 
+	}
+	m_currentMenu = m_menuPool[(int) m_state];
+}
+
 
 void MenuRenderer :: render(Graphics& g) const
 {

@@ -6,6 +6,8 @@
 #include "../Enemies/Enemyship.h"
 #include "../Enemies/EnemyCarrier.h"
 #include "../GameLogic.h"
+#include "../../gfxutils/Misc/Logger.h"
+#include "../../gfxutils/Misc/utils.h"
 
 
 Crater :: Crater()
@@ -39,8 +41,10 @@ void Crater :: update(float dt)
 	}
 }
 
+
 void Crater :: onEvent(Enemy_Destroyed& evt)
 {
+	//CKLOG("Crater got Enemy_Destroyed", 3);
 	if (evt.getValue() == m_protector) m_protector = 0;
 	m_timeTillNextEvent = m_protectorRespawnDelay;
 }

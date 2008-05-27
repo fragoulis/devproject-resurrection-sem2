@@ -8,20 +8,34 @@
 #include "../gfx/MatrixTransform.h"
 #include "../gfxutils/texture/textureMgr.h"
 #include "../gfxutils/VA/VATTable.h"
-#include <math.h>
+#include "../math/maths.h"
 
 void PS_EnemyEnergyViz :: update(const float delta)
 {
+	static const float radiansPerSec = Math::PI / 3.0f;
+	static const float tailsize = Math::PI * 2.0f;
+	float radius = m_ship->getRadius() * 1.5f;
+	m_particleSize = radius * 0.4f;
+
 	m_currentTime += delta;
-	m_transform = m_ship->getCoordinateFrame();
+
+	//m_transform = m_ship->getCoordinateFrame();
 
 	for (int i = 0; i < m_particleNum; i++) {
 		//m_particles[i].m_position += m_particles[i].m_velocity;
-		float x = /*m_particles[i].m_position.getX()+*/m_ship->getRadius();
-		float z = /*m_particles[i].m_position.getZ()+*/m_ship->getRadius();
+		//float x = /*m_particles[i].m_position.getX()+*/m_ship->getRadius();
+		//float z = /*m_particles[i].m_position.getZ()+*/m_ship->getRadius();
 		//m_particles[i].m_position  
-		m_particles[i].m_position.setX(cos((m_currentTime+i)*2)*x + sin((m_currentTime+i)*2)*z);
-		m_particles[i].m_position.setZ(cos((m_currentTime+i)*2)*z - sin((m_currentTime+i)*2)*x);
+
+		float partFactor = float(i) / float(m_particleNum);
+		float factor = m_currentTime * radiansPerSec + partFactor * tailsize;
+
+		Vector3& pos = m_particles[i].m_position;
+		pos.setX(cos(factor) * radius);
+		pos.setZ(sin(factor) * radius);
+
+		//m_particles[i].m_position.setX(cos((m_currentTime+i)*2)*x + sin((m_currentTime+i)*2)*z);
+		//m_particles[i].m_position.setZ(cos((m_currentTime+i)*2)*z - sin((m_currentTime+i)*2)*x);
 	}
 }
 
@@ -42,16 +56,17 @@ PS_EnemyEnergyViz :: PS_EnemyEnergyViz(const std::string& name,
 	//m_particles = new Particle[pnum];
 	for (int i = 0; i < pnum; i++) {
 		Particle particle;
+		particle.m_position.set(0.0f, 0.0f, 0.0f);
 		m_particles.push_back(particle);
 	}
-	for (int i = 0; i < pnum; i++) {
-		m_particles[i].m_position = Vector3(0,0,0);
+	//for (int i = 0; i < pnum; i++) {
+	//	m_particles[i].m_position = Vector3(0,0,0);
 
-		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = Vector3(pnum*10, 0, pnum*10);
-		m_particles[i].m_age      = 0.0f;
-		m_particles[i].m_lifeTime = 1.0f; // lives for 1 seconds
-	}
+	//	Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
+	//	m_particles[i].m_velocity = Vector3(pnum*10, 0, pnum*10);
+	//	m_particles[i].m_age      = 0.0f;
+	//	m_particles[i].m_lifeTime = 1.0f; // lives for 1 seconds
+	//}
 }
 
 // TEMPLATE CREATION CTOR
@@ -70,16 +85,17 @@ PS_EnemyEnergyViz :: PS_EnemyEnergyViz(const std::string& name,
 	m_flarePal = TextureMgr::instance().loadPalette("flareWhite.tpl","flareWhiteTPL.txt");
 	for (int i = 0; i < pnum; i++) {
 		Particle particle;
+		particle.m_position.set(0.0f, 0.0f, 0.0f);
 		m_particles.push_back(particle);
 	}
-	for (int i = 0; i < pnum; i++) {
-		m_particles[i].m_position = Vector3(0,0,0);
+	//for (int i = 0; i < pnum; i++) {
+	//	m_particles[i].m_position = Vector3(0,0,0);
 
-		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(5.0f, 25.0f);
-		m_particles[i].m_age      = 0.0f;
-		m_particles[i].m_lifeTime = 5.0f; 
-	}
+	//	Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
+	//	m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(5.0f, 25.0f);
+	//	m_particles[i].m_age      = 0.0f;
+	//	m_particles[i].m_lifeTime = 5.0f; 
+	//}
 }
 
 PS_EnemyEnergyViz :: ~PS_EnemyEnergyViz() {
@@ -96,8 +112,11 @@ PS_Base * PS_EnemyEnergyViz :: clone() const
 
 void PS_EnemyEnergyViz :: render() const
 {
+	//RenderEngine::useColorChannelForAlpha(GX_CH_RED);
 	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);	
-	GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+	//GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_CLEAR);
+	//GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
 	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
 
 	//Texture tex_pos(m_flarePal,0,"flare_pos");
@@ -106,22 +125,41 @@ void PS_EnemyEnergyViz :: render() const
 
 	GXSetVtxDescv(VATTable::getVDL(7));
 
+	static const GXColor enemyColors[3] =
+		{
+			{ 255, 80, 80, 255 },
+			{ 235, 235, 50, 255 },
+			{ 80, 80, 255, 255 }
+		};
+
+	GXColor color = enemyColors[(int) m_ship->getEnergyType()];
 	RenderEngine::enableModulateTextureColor();
-	RenderEngine::setModulateTextureColor(enemyColors[(int) m_ship->getEnergyType()]);
+	RenderEngine::setModulateTextureColor(color);
+	//RenderEngine::enableModulateTextureAlpha();
+
+	GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+	GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_KONST, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO);
+	GXSetTevKAlphaSel(GX_TEVSTAGE0, GX_TEV_KASEL_K1_R);
 
 	const Vector3 up(0, 0, -m_particleSize);
 	const Vector3 ll(0,0,0);
 	const Vector3 right(m_particleSize, 0, 0);
+	const Vector3& originOffset = m_ship->getPosition().getVector();
 
-	for (int i = 0; i < m_particleNum; i++) {
-		//MatrixTransform::PushMatrix();
-		//MatrixTransform::MulMatrix(m_transform.getMatrix());
-		//MatrixTransform::Translate(m_particles[i].m_position.getX(), m_particles[i].m_position.getY(), m_particles[i].m_position.getZ());
+	for (int i = 0; i < m_particleNum; i++)
+	{
+		//GXColor color = enemyColors[(int) m_ship->getEnergyType()];
+		//float factor = min(1.0f, 3.0f * (1.0f - ()));
+		float factor = min(1.0f, 1.0f * float(i) / float(m_particleNum) + 0.2f);
+		//color.r = u8( color.r * factor);
+		//color.g = u8( color.g * factor);
+		//color.b = u8( color.b * factor);
+		//color.a = u8( color.a * factor);
+		//RenderEngine::setModulateTextureColor(color);
+		RenderEngine::setModulateTextureAlpha(u8( factor * 255.0f ));
 
-		Vector3 ll(m_particles[i].m_position + m_transform.getOrigin().getVector() );
-		
-		RenderEngine::drawQuad(ll,right,up);
-		//MatrixTransform::PopMatrix();
+
+		RenderEngine::drawQuad(m_particles[i].m_position + originOffset, right, up);
 	}
 
 	GXSetBlendMode(GX_BM_NONE , GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);

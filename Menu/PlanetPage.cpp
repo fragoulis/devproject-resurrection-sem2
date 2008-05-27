@@ -1,83 +1,92 @@
 #include "PlanetPage.h"
+#include "../gfxutils/Texture/TextureMgr.h"
+#include "../gfxutils/Texture/Texture.h"
+#include "../rendering/RenderEngine.h"
+class Graphics;
 
-void PlanetPage::init(int screenWidth, int screenHeight) {
+class PlanetItem : public MenuItem
+{
+public:
+	PlanetItem(PlanetPage* page, int posX, int posY, int width, int height, PlanetPage::PlanetDifficulty difficulty)
+	{
+		m_posX = posX;
+		m_posY = posY;
+		m_width = width;
+		m_height = height;
+		m_state = MenuItem::ITEM_STATE_UNSELECTED;
+		m_selectable = true;
+		m_visible = true;
+		m_difficulty = difficulty;
+		m_page = page;
+	}
+	virtual ~PlanetItem() {	}
+	virtual void update(float dt) {
+		MenuItem::update(dt);
+		if (isSelected()) m_page->setDifficultyToShow(m_difficulty); // slow but doesn't matter
+	}
+	virtual void render(Graphics& g) const
+	{
+		Texture* tex = TextureMgr::instance().getTexture("menuSelectionFrame");
+		tex->bind();
+		RenderEngine::useColorChannelForAlpha(GX_CH_ALPHA);
+		if (m_visible && m_state == ITEM_STATE_SELECTED)
+		{
+			RenderEngine::drawTexturedRectangle(m_posX, m_posY, m_width, m_height);
+		}
+		RenderEngine::useColorChannelForAlpha(GX_CH_RED);
+	}
+private:
+	PlanetPage* m_page;
+	PlanetPage::PlanetDifficulty m_difficulty;
+};
+
+
+
+void PlanetPage::init(int screenWidth, int screenHeight)
+{
+	TextureMgr::safeInstance().loadPalette("planetItems.tpl", "planetItemsTPL.txt");
 
 	MenuItem *backButton = new MenuItem();
-	backButton->init(10, 20, 256, 100, "menuExitPause.dds", "menuExitPauseSel.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	backButton->init(0, 0, 128, 50, "menuExitPause", "menuExitPauseSel", MenuItem::ITEM_STATE_UNSELECTED);
 	m_items.push_back(backButton);
 
 	MenuItem *difficultyLabelEasy = new MenuItem();
-	difficultyLabelEasy->init((float) screenWidth/2 - 128, 100, 256, 100, "menuEasy.dds", "menuEasy.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelEasy->init(192, 0, 256, 100, "menuEasy", "menuEasy", MenuItem::ITEM_STATE_UNSELECTED);
 	difficultyLabelEasy->setSelectable(false),
 	m_items.push_back(difficultyLabelEasy);
 
 	MenuItem *difficultyLabelMedium = new MenuItem();
-	difficultyLabelMedium->init((float) screenWidth/2 - 128, 100, 256, 100, "menuMedium.dds", "menuMedium.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelMedium->init(192, 0, 256, 100, "menuMedium", "menuMedium", MenuItem::ITEM_STATE_UNSELECTED);
 	difficultyLabelMedium->setSelectable(false);
 	difficultyLabelMedium->setVisible(false);
 	m_items.push_back(difficultyLabelMedium);
 
 	MenuItem *difficultyLabelHard = new MenuItem();
-	difficultyLabelHard->init((float) screenWidth/2 - 128, 100, 256, 100, "menuHard.dds", "menuHard.dds", MenuItem::ITEM_STATE_UNSELECTED);
+	difficultyLabelHard->init(192, 0, 256, 100, "menuHard", "menuHard", MenuItem::ITEM_STATE_UNSELECTED);
 	difficultyLabelHard->setSelectable(false);
 	difficultyLabelHard->setVisible(false);
 	m_items.push_back(difficultyLabelHard);
 
+	m_items.push_back(new PlanetItem(this, 130, 155, 128, 128, DIFFICULTY_EASY));
+	m_items.push_back(new PlanetItem(this, 59, 309, 64, 64, DIFFICULTY_EASY));
+	m_items.push_back(new PlanetItem(this, 390, 205, 64, 64, DIFFICULTY_MEDIUM));
+	m_items.push_back(new PlanetItem(this, 415, 70, 75, 75, DIFFICULTY_HARD));
 
-	//m_backgroundImage = TextureIO::instance()->getTexture("planetMenuBg.bmp");
+
+	const std::string texname = "planetMenuBg";
+	TextureMgr::safeInstance().loadPalette(texname + ".tpl", texname + "TPL.txt");
+	m_backgroundImage = TextureMgr::instance().getTexture(texname);
 	m_hasBackground = true;
  
 	m_screenWidth = screenWidth;
 	m_screenHeight = screenHeight;
 	m_interference = 0.1f;
-}
-
-void PlanetPage::setItemsNumber(int itemsNumber)
-{
-
-	//float width = (float) m_screenWidth;
-	//float height = (float) m_screenHeight;
-	//float startX = width/5;
-	//float startY = height/2;
-	//float incrementX = 250;
-	//float incrementY = 200;
-	//int selectedItem = 0;
-	//MenuItem *planet1Button;
-	//for (int i = 0; i < itemsNumber; i++) {
-	//	planet1Button = new MenuItem();
-	//	if (i < itemsNumber/2)
-	//		planet1Button->init(startX+i*incrementX, height - startY, 128, 128, "planetItem.dds", "planetItemSel.dds", i == selectedItem ? MenuItem::ITEM_STATE_SELECTED : MenuItem::ITEM_STATE_UNSELECTED);
-	//	else
-	//		planet1Button->init(startX+(i-itemsNumber/2)*incrementX, height - startY - incrementY, 128, 128, "planetItem.dds", "planetItemSel.dds", i == selectedItem ? MenuItem::ITEM_STATE_SELECTED : MenuItem::ITEM_STATE_UNSELECTED);
-	//	m_items.push_back(planet1Button);
-	//	planet1Button = NULL;
-	//}
-
-	MenuItem *planet2Button = new MenuItem();
-	planet2Button->init(80, 480, 64, 64, "black.bmp", "planet1_sel.bmp", MenuItem::ITEM_STATE_UNSELECTED);
-	m_items.push_back(planet2Button);
-
-	MenuItem *planet3Button = new MenuItem();
-	planet3Button->init(700, 100, 128, 128, "black.bmp", "planet2_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
-	m_items.push_back(planet3Button);
-
-	MenuItem *planet4Button = new MenuItem();
-	planet4Button->init(235, 255, 165, 165, "black.bmp", "planet3_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
-	m_items.push_back(planet4Button);
-
-	MenuItem *planet5Button = new MenuItem();
-	planet5Button->init(645, 355, 50, 50, "black.bmp", "planet4_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
-	m_items.push_back(planet5Button);
-
-	//MenuItem *planet6Button = new MenuItem();
-	//planet6Button->init(startX+2*incrementX, height - startY - incrementY, 128, 128, "planet1_uns.dds", "planet1_sel.dds", MenuItem::ITEM_STATE_UNSELECTED);
-	//m_items.push_back(planet6Button);
 
 	setSelectedItem(4);
 }
 
 
-void PlanetPage::setDifficultyToShow(int difficulty) {
+void PlanetPage::setDifficultyToShow(PlanetDifficulty difficulty) {
 	switch (difficulty) {
 	case DIFFICULTY_EASY:
 		m_items[1]->setVisible(true);

@@ -36,31 +36,61 @@ TplPalette * TextureMgr :: loadPalette(const std::string& palettefile,const std:
 
 void TextureMgr :: unloadPalette(const TplPalette * tpl)
 {
-	for(unsigned i=0;i<m_paletteList.size();++i)
+	for (int i = 0; i < int(m_paletteList.size()); )
 	{
-		if(m_paletteList[i] == tpl)
+		TplPalette * pal = m_paletteList[i];
+		if (pal == tpl)
 		{
+			// remove all textures of this palette
 			typedef vector<Texture*> TextureVector;
-			for (TextureVector::iterator it = m_texList.begin(); it!= m_texList.end(); )
+			for (int j = 0; j < int(m_texList.size()); )
 			{
-				if((*it)->parentPalette() == tpl)
+				Texture* tex = m_texList[j];
+				if (tex->parentPalette() == tpl)
 				{
-					delete (*it);
-					it = m_texList.erase(it);
+					m_texList[j] = m_texList.back();
+					m_texList.pop_back();
+					delete tex;
 				}
 				else
 				{
-					++it;
+					j++;
 				}
 			}
 
-			TplPalette * tmp = m_paletteList[i];
+			//for (TextureVector::iterator it = m_texList.begin(); it!= m_texList.end(); )
+			//{
+			//	if((*it)->parentPalette() == tpl)
+			//	{
+			//		vec[index] = vec.back();
+			//		delete (*it);
+			//		it = m_texList.erase(it);
+			//	}
+			//	else
+			//	{
+			//		++it;
+			//	}
+			//}
+
+			// remove palette
+
 			m_paletteList[i] = m_paletteList.back();
-			m_paletteList.back() = tmp;
-			delete m_paletteList.back();
 			m_paletteList.pop_back();
+			delete pal;
 			GXInvalidateTexAll();
 			return;
+
+			//TplPalette * tmp = m_paletteList[i];
+			//m_paletteList[i] = m_paletteList.back();
+			//m_paletteList.back() = tmp;
+			//delete m_paletteList.back();
+			//m_paletteList.pop_back();
+			//GXInvalidateTexAll();
+			//return;
+		}
+		else
+		{
+			i++;
 		}
 	}
 	ASSERTMSG("Palette %s not found!!\n",tpl->getName());
@@ -99,7 +129,7 @@ void TextureMgr :: unloadPalette(const std::string& tpl)
 void TextureMgr :: init(const ParserSection * parsec)
 {
 	m_texDir = parsec->getVal("TextureDir");
-	OSReport("Texture directory set to %s...\n",m_texDir.c_str());
+	//OSReport("Texture directory set to %s...\n",m_texDir.c_str());
 }
 
 

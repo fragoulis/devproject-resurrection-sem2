@@ -117,7 +117,7 @@ void VATTable :: buildVAT()
 
 	GXSetMisc( GX_MT_XF_FLUSH, GX_XF_FLUSH_SAFE );
 
-	OSReport("VAT Table initialized...\n");
+	//OSReport("VAT Table initialized...\n");
 	
 }
 

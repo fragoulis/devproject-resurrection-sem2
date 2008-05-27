@@ -91,6 +91,10 @@ public:
 	void fireEvent(EventData& eventdata) {
 		EventManagerImpl<EventData>::instance().fireEvent(eventdata);
 	}
+	template< typename EventData >
+	int getEventListenerCount() {
+		return EventManagerImpl<EventData>::instance().getListenerCount();
+	}
 
 private:
 	static EventManager s_instance;
@@ -105,6 +109,19 @@ private:
 			m_listeners.push_back(el);
 		}
 		void unRegisterEventListener(EventListener<EventData>* el) {
+			for (int i = 0; i < int(m_listeners.size()); )
+			{
+				EventListener<EventData>* evl = m_listeners[i];
+				if (evl == el)
+				{
+					m_listeners[i] = m_listeners.back();
+					m_listeners.pop_back();
+				}
+				else
+				{
+					i++;
+				}
+			}
 			std::remove(m_listeners.begin(), m_listeners.end(), el);
 			//m_listeners.remove(el);
 		}
@@ -112,6 +129,9 @@ private:
 			for (EventListenerListIt i = m_listeners.begin(); i != m_listeners.end(); i++) {
 				(*i)->onEvent(eventdata);
 			}
+		}
+		int getListenerCount() {
+			return int(m_listeners.size());
 		}
 
 	private:

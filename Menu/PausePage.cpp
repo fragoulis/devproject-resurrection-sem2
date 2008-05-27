@@ -4,8 +4,8 @@
 
 void PausePage::init(int screenWidth, int screenHeight) 
 {
-    const int posX = 128;
-    const int startPosY = 150, deltaY = 65;
+    const int posX = 192;
+    const int startPosY = 200, deltaY = 65;
     const int width  = 256;
     const int height = 64;
 

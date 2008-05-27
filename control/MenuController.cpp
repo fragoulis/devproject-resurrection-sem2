@@ -86,10 +86,10 @@ void MenuController :: update(float dt)
 				case MenuRenderer::MENU_STATE_MAIN:
 				{
 					if (m_renderer->getSelectedItem() == 0) {
-						_startLevel(m_levelNames[0]);
-						//m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);  //go to planet screen selection
+						//_startLevel(m_levelNames[0]);
+						m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);  //go to planet screen selection
 					} else if (m_renderer->getSelectedItem() == 1) {
-						m_renderer->setState(MenuRenderer::MENU_STATE_TUTORIAL);  //go to credits screen
+						m_renderer->setState(MenuRenderer::MENU_STATE_TUTORIAL);  //go to tutorial screen
 					} else if (m_renderer->getSelectedItem() == 2) {
 						m_renderer->setState(MenuRenderer::MENU_STATE_CREDITS);  //go to credits screen
 					}
@@ -98,12 +98,26 @@ void MenuController :: update(float dt)
 				case MenuRenderer::MENU_STATE_TUTORIAL:
 				{
 					_startLevel(m_levelNames[0]);  //go to new game
-					m_renderer->setSelectedItem(1); //select the first planet for the next visit
+					m_renderer->setSelectedItem(0);
+					//m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);
 					break;
 				}
 				case MenuRenderer::MENU_STATE_CREDITS:
 				{
 					m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu
+					break;
+				}
+				case MenuRenderer::MENU_STATE_PLANET:
+				{
+					if (m_renderer->getSelectedItem() == 0)
+						m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);  //go back to the main menu
+					else
+					{
+						int level = m_renderer->getSelectedItem() - 3;
+						_startLevel(m_levelNames[level]);
+					}
+
+					m_renderer->setSelectedItem(4); //select the first planet for the next visit
 					break;
 				}
 				default:
@@ -218,6 +232,9 @@ void MenuController :: load()
 	//lc.setLoader(this, &MenuController::_loadMenu);
 	//RenderEngine::unloadAllRenderers();
 	RenderEngine::instance().loadRenderer("menu");
+	m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
+	m_renderer->setState(MenuRenderer::MENU_STATE_MAIN);
+	m_renderer->setSelectedItem(0);
 	ControllerManager::instance().activateController(this);
 }
 
@@ -226,6 +243,7 @@ void MenuController :: loadPlanetSelection()
 	RenderEngine::instance().loadRenderer("menu");
 	m_renderer = static_cast<MenuRenderer*>(RenderEngine::instance().getRenderer("menu"));
 	m_renderer->setState(MenuRenderer::MENU_STATE_PLANET);
+	m_renderer->setSelectedItem(4);
 	ControllerManager::instance().activateController(this);
 }
 

@@ -25,14 +25,13 @@ void MenuPage::render(Graphics &g) const
 	GXSetTevOp(GX_TEVSTAGE0, GX_REPLACE);
 	GXSetVtxDescv(VATTable::getVDL(1));
 
-	// Set texture alpha channel to texture red channel
-	GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_RED, GX_CH_GREEN, GX_CH_BLUE, GX_CH_RED);
-	GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP1);
-
 	if (m_hasBackground) {
 		m_backgroundImage->bind();
 		RenderEngine::drawTexturedRectangle(0, 0, 640, 480);
 	}
+
+	// Set texture alpha channel to texture red channel
+	RenderEngine::useColorChannelForAlpha(GX_CH_RED);
 
 	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
 
