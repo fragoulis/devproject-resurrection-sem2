@@ -116,13 +116,15 @@ void PS_Manager :: init(const ParserSection * parsec)
 				const string texname = (*it)->getVal("Texture");
 				const float tailSize = FromString<float>((*it)->getVal("TailSize"));
 				const float speed = FromString<float>((*it)->getVal("Speed"));
+				created_ps = new PS_RotatingFlare((*it)->getName(),particleSize,systemLife,particleLife,particleNum);
 				//created_ps = new PS_RotatingFlare((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
 			else if(pstype == "PS_EnemyEnergyViz")
 			{
 				const string texname = (*it)->getVal("Texture");
 				const float tailSize = FromString<float>((*it)->getVal("TailSize"));
-				const float speed = FromString<float>((*it)->getVal("Speed"));
+				const float speed = FromString<float>((*it)->getVal("Speed")); 
+				created_ps = new PS_EnemyEnergyViz((*it)->getName(),particleSize,systemLife,particleLife,particleNum);
 				//created_ps = new PS_EnemyEnergyViz((*it)->getName(),m_vbo,particleSize,systemLife,particleLife,particleNum,shaderIndex,texname,speed,tailSize);
 			}
 			else if(pstype == "PS_EnemyExplosion2")
