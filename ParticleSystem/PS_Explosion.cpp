@@ -12,6 +12,8 @@
 #include "../gfxutils/VA/VATTable.h"
 
 
+
+
 #include <iostream>
 
 
@@ -28,7 +30,7 @@ PS_Explosion :: PS_Explosion(const std::string& name,
 {
 	// Initialize
 	//_generateData(vbo,TextureIO::instance()->getTexture(texture));
-	m_flarePal = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
+	m_flarePal = TextureMgr::instance().loadPalette("flareWhite.tpl","flareWhiteTPL.txt");
 	//m_particles = new Particle[pnum];
 	for (int i = 0; i < pnum; i++) {
 		Particle particle;
@@ -57,7 +59,7 @@ PS_Explosion :: PS_Explosion(const std::string& name,
 {
 	//m_quadArray = model;
 	//m_usedAttribs = status;
-	m_flarePal = TextureMgr::instance().loadPalette("flare2.tpl","flareTPL.txt");
+	m_flarePal = TextureMgr::instance().loadPalette("flareWhite.tpl","flareWhiteTPL.txt");
 	for (int i = 0; i < pnum; i++) {
 		Particle particle;
 		m_particles.push_back(particle);
@@ -174,8 +176,8 @@ void PS_Explosion :: update(const float delta)
 {
 	m_currentTime += delta;
 
-	for (int i = 0; i < 500; i++) {
-		m_particles[i].m_position += m_particles[i].m_velocity;;
+	for (int i = 0; i < m_particleNum; i++) {
+		m_particles[i].m_position += m_particles[i].m_velocity;
 		m_particles[i].m_age      += delta;
 	}
 }
@@ -186,16 +188,20 @@ void PS_Explosion :: render() const
 	GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
 	GXSetZMode(FALSE, GX_ALWAYS, FALSE);
 
-	Texture tex_pos(m_flarePal,0,"flare_pos");
-	tex_pos.bind();
+	//Texture tex_pos(m_flarePal,0,"flare_pos");
+	Texture *tex_pos = TextureMgr::instance().getTexture("flareWhite");
+	tex_pos->bind();
 
 	GXSetVtxDescv(VATTable::getVDL(7));
 
-	const Vector3 up(0, 0, -50);
-	const Vector3 ll(0,0,0);
-	const Vector3 right(50, 0, 0);
+	RenderEngine::enableModulateTextureColor();
+	RenderEngine::setModulateTextureColor(explosionColor[0]);
 
-	for (int i = 0; i < 500; i++) {
+	const Vector3 up(0, 0, -m_particleSize);
+	const Vector3 ll(0,0,0);
+	const Vector3 right(m_particleSize, 0, 0);
+
+	for (int i = 0; i < m_particleNum; i++) {
 		//MatrixTransform::PushMatrix();
 		//MatrixTransform::MulMatrix(m_transform.getMatrix());
 		//MatrixTransform::Translate(m_particles[i].m_position.getX(), m_particles[i].m_position.getY(), m_particles[i].m_position.getZ());

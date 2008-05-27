@@ -4,6 +4,8 @@
 #include <string>
 #include "PS_Base.h"
 
+#include <dolphin.h>
+
 class Texture;
 //struct VAttribStatus;
 
@@ -12,6 +14,11 @@ class Texture;
 	In _generateData function, these 2 should be used.
 	In the ctor for the copies, the m_usedAttribs should be modified appropriately
 */
+
+static const GXColor explosionColor[1] =
+		{
+			{ 255, 255, 0, 255 }
+		};
 
 class PS_Explosion : public PS_Base
 {

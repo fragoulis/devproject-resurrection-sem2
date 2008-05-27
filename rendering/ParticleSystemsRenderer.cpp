@@ -9,8 +9,8 @@
 //#include "../ParticleSystem/PS_Jet.h"
 //#include "../ParticleSystem/PS_EnergyLoss.h"
 //#include "../ParticleSystem/PS_Fountain.h"
-//#include "../ParticleSystem/PS_RotatingFlare.h"
-//#include "../ParticleSystem/PS_EnemyEnergyViz.h"
+#include "../ParticleSystem/PS_RotatingFlare.h"
+#include "../ParticleSystem/PS_EnemyEnergyViz.h"
 //#include "../ParticleSystem/PS_Explosion2.h"
 #include "../ParticleSystem/PS_Explosion.h"
 #include "../utility/deleters.h"
@@ -212,33 +212,33 @@ void ParticleSystemsRenderer::onEvent(Enemy_Destroyed &enemy)
 
 void ParticleSystemsRenderer::onEvent(Enemy_Despawned &evt)
 {
-	//_removeEnemyViz(evt.getValue());
+	_removeEnemyViz(evt.getValue());
 }
 
 void ParticleSystemsRenderer::_removeEnemyViz(Enemyship* enemy)
 {
-	//for(std::vector<PS_Base *>::iterator it = m_psList.begin();
-	//	it != m_psList.end();
-	//	++it)
-	//{
-	//	if((*it)->getName() == "PS_EnemyEnergyViz")
-	//	{
-	//		if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy)
-	//		{
-	//			delete *it;
-	//			m_psList.erase(it);
-	//			break;
-	//		}
-	//	}
-	//}
+	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		if((*it)->getName() == "PS_EnemyEnergyViz")
+		{
+			if(reinterpret_cast<PS_EnemyEnergyViz *>(*it)->getEnemyship() == enemy)
+			{
+				delete *it;
+				m_psList.erase(it);
+				break;
+			}
+		}
+	}
 }
 
 
 
 void ParticleSystemsRenderer::onEvent(Enemy_Spawned &enemy) 
 {
-	//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyEnergyViz"));
-	//reinterpret_cast<PS_EnemyEnergyViz *>(m_psList.back())->setEnemyship(enemy.getValue());
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_EnemyEnergyViz"));
+	reinterpret_cast<PS_EnemyEnergyViz *>(m_psList.back())->setEnemyship(enemy.getValue());
 }
 
 void ParticleSystemsRenderer::onEvent(Player_EnergyDrained& playerEnergy)
@@ -345,25 +345,25 @@ void ParticleSystemsRenderer::onEvent(Life_Restored& restoredCrater)
 	//cf.move(Vector3(0,0,0));  //?
 	//m_psList.back()->setTransform(cf);
 
-	//for(std::vector<PS_Base *>::iterator it = m_psList.begin();
-	//	it != m_psList.end();
-	//	++it)
-	//{
-	//	if((*it)->getName() == "PS_RotatingFlare")
-	//	{
-	//		if(reinterpret_cast<PS_RotatingFlare *>(*it)->getCrater() == restoredCrater.getValue())
-	//		{
-	//			m_psList.erase(it);
-	//			break;
-	//		}
-	//	}
-	//}
+	for(std::vector<PS_Base *>::iterator it = m_psList.begin();
+		it != m_psList.end();
+		++it)
+	{
+		if((*it)->getName() == "PS_RotatingFlare")
+		{
+			if(reinterpret_cast<PS_RotatingFlare *>(*it)->getCrater() == restoredCrater.getValue())
+			{
+				m_psList.erase(it);
+				break;
+			}
+		}
+	}
 }
 
 void ParticleSystemsRenderer::onEvent(Crater_Spawned &crater)
 {
-	//CoordinateFrame cf = crater.getValue()->getCoordinateFrame();
-	//m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RotatingFlare"));
-	//m_psList.back()->setTransform(cf);
-	//reinterpret_cast<PS_RotatingFlare *>(m_psList.back())->setCrater(crater.getValue());
+	CoordinateFrame cf = crater.getValue()->getCoordinateFrame();
+	m_psList.push_back(PS_Manager::instance().fetchNewPS("PS_RotatingFlare"));
+	m_psList.back()->setTransform(cf);
+	reinterpret_cast<PS_RotatingFlare *>(m_psList.back())->setCrater(crater.getValue());
 }
