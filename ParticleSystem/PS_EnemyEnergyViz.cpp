@@ -20,8 +20,8 @@ void PS_EnemyEnergyViz :: update(const float delta)
 		float x = /*m_particles[i].m_position.getX()+*/m_ship->getRadius();
 		float z = /*m_particles[i].m_position.getZ()+*/m_ship->getRadius();
 		//m_particles[i].m_position  
-		m_particles[i].m_position.setX(cos(m_currentTime+i)*x + sin(m_currentTime+i)*z);
-		m_particles[i].m_position.setZ(cos(m_currentTime+i)*z - sin(m_currentTime+i)*x);
+		m_particles[i].m_position.setX(cos((m_currentTime+i)*2)*x + sin((m_currentTime+i)*2)*z);
+		m_particles[i].m_position.setZ(cos((m_currentTime+i)*2)*z - sin((m_currentTime+i)*2)*x);
 	}
 }
 
