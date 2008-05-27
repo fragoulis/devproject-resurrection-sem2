@@ -5,7 +5,7 @@
 
 class PlanetPage: public MenuPage {
 public:
-	enum {
+	enum PlanetDifficulty {
 		DIFFICULTY_EASY,
 		DIFFICULTY_MEDIUM,
 		DIFFICULTY_HARD,
@@ -19,10 +19,7 @@ private:
 public:
 	void init(int screenWidth, int screenHeight);
 
-	//creates the planet buttons
-	void setItemsNumber(int itemsNumber);
-
-	void setDifficultyToShow(int difficulty);
+	void setDifficultyToShow(PlanetDifficulty difficulty);
 };
 
 #endif

@@ -11,7 +11,7 @@
 using namespace std;
 
 
-void Model :: _loadOBJ(const std::string& fname)
+void Model :: _loadOBJ(const std::string& fname, bool loadTex)
 {
 	// Sanity check
 	const string extension = getExtension(fname.c_str());
@@ -176,11 +176,12 @@ void Model :: _loadOBJ(const std::string& fname)
 	for(unsigned i=0;i<objm._groups.size();++i)
 		f_num += objm._groups[i]._vfaces.size();
 
-	OSReport("***** Model Report : %s\n",m_name.c_str());
-	OSReport("***** Vertices     : %u\n",v_num);
-	OSReport("***** Normals      : %u\n",vn_num);
-	OSReport("***** Texcoords    : %u\n",vt_num);
-	OSReport("***** Triangles    : %u\n",f_num/3);
+	//OSReport("Loaded model %s\n", m_name.c_str());
+	//OSReport("***** Model Report : %s\n",m_name.c_str());
+	//OSReport("***** Vertices     : %u\n",v_num);
+	//OSReport("***** Normals      : %u\n",vn_num);
+	//OSReport("***** Texcoords    : %u\n",vt_num);
+	//OSReport("***** Triangles    : %u\n",f_num/3);
 
 	m_polynum += f_num / 3;
 

@@ -28,6 +28,7 @@ public:
 	void setState(MenuState state) { m_state = state; };
 
 	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
+	void setSelectedItem(int itemNumber) { m_currentMenu->setSelectedItem(itemNumber); };
 
 	void selectNextItem() { m_currentMenu->selectNextItem(); };
 	void selectPreviousItem() { m_currentMenu->selectPreviousItem(); };

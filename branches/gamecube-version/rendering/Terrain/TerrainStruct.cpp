@@ -23,10 +23,10 @@ m_terrainData(0)
 	const unsigned totalChunks = m_chunksPerDim * m_chunksPerDim;
 	const unsigned totalChunkData = m_chunkDatanumPerDim * m_chunkDatanumPerDim;
 	const unsigned totalChunkIndices = 2 * ( m_chunkDatanumPerDim + 1 ) * ( m_chunkDatanumPerDim - 1 );
-	OSReport("**** TERRAIN STRUCT CREATION ********\n");
-	OSReport("Total chunks            : %u\n",totalChunks);
-	OSReport("Total chunk vertex data : %u\n",totalChunkData);
-	OSReport("Total chunk indices     : %u\n\n",totalChunkIndices);
+	//OSReport("**** TERRAIN STRUCT CREATION ********\n");
+	//OSReport("Total chunks            : %u\n",totalChunks);
+	//OSReport("Total chunk vertex data : %u\n",totalChunkData);
+	//OSReport("Total chunk indices     : %u\n\n",totalChunkIndices);
 
 	m_polynum = totalChunks*(m_chunkDatanumPerDim*m_chunkDatanumPerDim*2);
 
@@ -35,14 +35,14 @@ m_terrainData(0)
 	VFMT0::IndexStruct * indices = (VFMT0::IndexStruct *)OSAlloc(totalChunkIndices * sizeof(VFMT0::IndexStruct));
 	m_chunkData = new TerrainChunk[totalChunks];
 
-	OSReport("Creating vertices / indices..\n");
+	//OSReport("Creating vertices / indices..\n");
 	// create the entry data / indices
 	const float start_ll[2] = {-m_extent*0.5f,m_extent*0.5f};
 	const float chunk_extent = m_extent / m_chunksPerDim;
 	const float data_extent = chunk_extent / (m_chunkDatanumPerDim-1);
-	OSReport("Chunk extent : %f\n",chunk_extent);
-	OSReport("Data extent : %f\n",data_extent);
-	OSReport("Start : %f %f\n",start_ll[0], start_ll[1]);
+	//OSReport("Chunk extent : %f\n",chunk_extent);
+	//OSReport("Data extent : %f\n",data_extent);
+	//OSReport("Start : %f %f\n",start_ll[0], start_ll[1]);
 	for(unsigned chunk_hi=0; chunk_hi<m_chunksPerDim; ++chunk_hi)
 	{
 		for(unsigned chunk_wi=0; chunk_wi<m_chunksPerDim; ++chunk_wi)
@@ -107,7 +107,7 @@ m_terrainData(0)
 	DCFlushRange(m_terrainData,totalChunkData * sizeof(VFMT0)*totalChunks);
 	DCFlushRange(indices,totalChunkIndices * sizeof(VFMT0::IndexStruct));
 
-	OSReport("Building vertex arrays..\n");
+	//OSReport("Building vertex arrays..\n");
 	// setup the VAs - flush first
 	for(int chunki=totalChunks-1; chunki>=0; --chunki)
 	{
@@ -119,8 +119,8 @@ m_terrainData(0)
 										   indices);
 	}
 	
-	OSReport("Done!\n");
-	OSReport("*************************************\n");
+	//OSReport("Done!\n");
+	//OSReport("*************************************\n");
 
 	DCFlushRange(indices,totalChunkIndices * sizeof(VFMT0::IndexStruct)*totalChunks);
 

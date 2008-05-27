@@ -55,22 +55,37 @@ ShipRenderer :: ~ShipRenderer()
 
 void ShipRenderer :: onEvent(Level_Unload& e)
 {
+	//CKLOG("ShipRenderer got Level_Unload", 3);
 	m_ships.clear();
 }
 
 void ShipRenderer :: render(Graphics& g) const
 {
+	if (m_ships.empty()) return;
+
 	Vector4 ldir = RenderEngine::instance().getLevelLight();
 	Vector4 lcol = RenderEngine::instance().getLevelLightColor();
 
 	RenderEngine::instance().setLight();
 
-	GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
-
-
-	// SET TEXTURE UNIT 0!!
+	GXColor color = { 255, 255, 255, 255 };
+	GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+	GXSetTevKColorSel(GX_TEVSTAGE0, GX_TEV_KCSEL_K0);
+	GXSetTevKColor(GX_KCOLOR0, color);
+	//GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_C0);
+	static const GXColorS10 colorDuntextured = { 64, 64, 64, 64 };
+	static const GXColorS10 colorDtextured = { 32, 32, 32, 32 };
+	//GXSetTevColorS10(GX_TEVREG0, colorDplayer);
 	
-	bool changed_to_tex = false;
+	// HACK! Assume 1st ship is the only textured ship
+	//const CoordinateModel* model = m_ships[0];
+	//MatrixTransform::PushMatrix();
+	//MatrixTransform::MulMatrix(model->coordframe->getMatrix());
+	//MatrixTransform::ApplyNormalMatrix();
+	//model->model->render();
+	//MatrixTransform::PopMatrix();
+	//for (int i = 1; i < int( m_ships.size() ); i++)
+
 	for(vector<CoordinateModel>::const_iterator it = m_ships.begin();
 		it != m_ships.end();
 		++it)
@@ -83,20 +98,13 @@ void ShipRenderer :: render(Graphics& g) const
 
 		if(it->model->isTextured())
 		{
-			if(!changed_to_tex)
-			{
-				changed_to_tex = true;
-				// enable tex unit 0 here
-				GXSetTevOp(GX_TEVSTAGE0, GX_MODULATE);
-			}
+			GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_TEXC, GX_CC_C0);
+			GXSetTevColorS10(GX_TEVREG0, colorDtextured);
 		}
 		else
 		{
-			if (changed_to_tex)
-			{
-				changed_to_tex = false;
-				GXSetTevOp(GX_TEVSTAGE0, GX_PASSCLR);
-			}
+			GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_RASC, GX_CC_ONE, GX_CC_C0);
+			GXSetTevColorS10(GX_TEVREG0, colorDuntextured);
 		}
 		it->model->render();
 

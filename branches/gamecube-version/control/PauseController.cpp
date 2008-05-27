@@ -25,6 +25,7 @@ void PauseController :: activate()
 	RenderEngine& re = RenderEngine::safeInstance();
 	re.activateRenderer("pause");
 	m_renderer = static_cast<PauseRenderer*>(RenderEngine::instance().getRenderer("pause"));
+	m_renderer->setSelectedItem(0);
 
     //SoundEngine::instance().clearSoundPositions();
 }

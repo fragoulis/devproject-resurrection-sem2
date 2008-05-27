@@ -5,7 +5,7 @@
 #include "HUDRenderer.h"
 #include "MenuRenderer.h"
 #include "PauseRenderer.h"
-//#include "LevelCompleteRenderer.h"
+#include "LevelCompleteRenderer.h"
 #include "GameOverRenderer.h"
 #include "../ParticleSystem/PS_Manager.h"
 #include "../math/Point2.h"
@@ -176,7 +176,7 @@ IRenderer* RenderEngine :: _createRenderer(const std::string& name) const
 	if (name == "hud") return new HUDRenderer();
 	if (name == "menu") return new MenuRenderer();
 	if (name == "pause") return new PauseRenderer();
-	//if (name == "LevelComplete") return new LevelCompleteRenderer();
+	if (name == "LevelComplete") return new LevelCompleteRenderer();
 	if (name == "GameOver") return new GameOverRenderer();
 	return 0;
 }

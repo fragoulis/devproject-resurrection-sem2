@@ -22,7 +22,7 @@ class Model
 	unsigned m_polynum;
 
 	// bounding box for shadows?
-	void _loadOBJ(const std::string& fname);
+	void _loadOBJ(const std::string& fname, bool loadTex = true);
 
 public :
 

@@ -115,10 +115,10 @@ Texture      = "flare0.dds"
 
 [ParticleSystem : PS_Explosion]
 Variations   = 1
-SystemLife   = 1
-ParticleLife = 2
+SystemLife   = 0.5
+ParticleLife = 0.5
 ParticleSize = 30
-ParticleNum  = 500
+ParticleNum  = 200
 Shader       = "PS_Explosion"
 Texture      = "particle2.dds" 
 
@@ -195,8 +195,8 @@ NoiseTexture = "noiseVolume.dds"
 Variations   = 1
 SystemLife   = 15000
 ParticleLife = 15000
-ParticleSize = 50
-ParticleNum  = 5
+ParticleSize = 100
+ParticleNum  = 50
 Shader       = "PS_RotatingFlare"
 Texture      = "Flare1_32.dds"
 TailSize	 = 0.375
@@ -206,8 +206,8 @@ Speed		 = 0.5
 Variations   = 1
 SystemLife   = 15000
 ParticleLife = 15000
-ParticleSize = 10
-ParticleNum  = 30
+ParticleSize = 20
+ParticleNum  = 20
 Shader       = "PS_EnemyEnergyViz"
 Texture      = "Flare1_32.dds"
 TailSize	 = 1

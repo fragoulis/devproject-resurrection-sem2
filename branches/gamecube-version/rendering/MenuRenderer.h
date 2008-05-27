@@ -39,7 +39,7 @@ public:
 	virtual void update(float dt);
 
 	const MenuState getState() const { return m_state; };
-	void setState(MenuState state) { m_state = state; };
+	void setState(MenuState state);
 
 	const int getSelectedItem() const { return m_currentMenu->getSelectedItem(); };
 	void setSelectedItem(int itemNumber) { m_currentMenu->setSelectedItem(itemNumber); };

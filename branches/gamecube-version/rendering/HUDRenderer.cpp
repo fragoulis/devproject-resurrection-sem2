@@ -64,12 +64,17 @@ void HUDRenderer :: render(Graphics& g) const
 
 
 	// Draw lives icons
+	GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_CLEAR);
+	GXSetNumTevStages(1);
+	RenderEngine::useColorChannelForAlpha(GX_CH_ALPHA);
 	GXSetVtxDescv(VATTable::getVDL(1));
 	m_textureList[2]->bind();
 	for (int i = 0; i < currentLives; i++)
 	{
 		RenderEngine::drawTexturedRectangle(i * 32, 0, 32, 32);
 	}
+	GXSetBlendMode(GX_BM_NONE, GX_BL_SRCCLR, GX_BL_INVSRCCLR, GX_LO_CLEAR);
+	//RenderEngine::useColorChannelForAlpha(GX_CH_ALPHA);
 
 
 	// draw energy bars

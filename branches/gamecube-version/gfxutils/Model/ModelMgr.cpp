@@ -63,5 +63,5 @@ ModelMgr :: ~ModelMgr()
 void ModelMgr :: init(const ParserSection * parsec)
 {
 	m_modelDir = parsec->getVal("ModelDir");
-	OSReport("Model directory set to %s...\n",m_modelDir.c_str());
+	//OSReport("Model directory set to %s...\n",m_modelDir.c_str());
 }

@@ -8,19 +8,31 @@
 #include "../gfx/MatrixTransform.h"
 #include "../gfxutils/texture/textureMgr.h"
 #include "../gfxutils/VA/VATTable.h"
-#include <math.h>
+#include "../math/maths.h"
 
 void PS_RotatingFlare :: update(const float delta)
 {
+	static const float radiansPerSec = Math::PI / 2.0f;
+	static const float tailsize = Math::PI;
+	float radius = m_crater->getRadius();
+
 	m_currentTime += delta;
 
 	for (int i = 0; i < m_particleNum; i++) {
 		//m_particles[i].m_position += m_particles[i].m_velocity;
-		float x = /*m_particles[i].m_position.getX()+*/m_crater->getRadius();
-		float z = /*m_particles[i].m_position.getZ()+*/m_crater->getRadius();
+		//float x = /*m_particles[i].m_position.getX()+*/m_crater->getRadius();
+		//float z = /*m_particles[i].m_position.getZ()+*/m_crater->getRadius();
 		//m_particles[i].m_position  
-		m_particles[i].m_position.setX(cos(m_currentTime+i/40)*x + sin(m_currentTime+i/40)*z);
-		m_particles[i].m_position.setZ(cos(m_currentTime+i/40)*z - sin(m_currentTime+i/40)*x);
+		float partFactor = float(i) / float(m_particleNum);
+		float factor = m_currentTime * radiansPerSec + partFactor * tailsize;
+
+		Vector3& pos = m_particles[i].m_position;
+		pos.setX(cos(factor) * radius);
+		pos.setZ(sin(factor) * radius);
+
+
+		//m_particles[i].m_position.setX(cos(m_currentTime+i/40)*x + sin(m_currentTime+i/40)*z);
+		//m_particles[i].m_position.setZ(cos(m_currentTime+i/40)*z - sin(m_currentTime+i/40)*x);
 	}
 }
 
@@ -43,14 +55,14 @@ PS_RotatingFlare :: PS_RotatingFlare(const std::string& name,
 		Particle particle;
 		m_particles.push_back(particle);
 	}
-	for (int i = 0; i < pnum; i++) {
-		m_particles[i].m_position = Vector3(0,0,0);
+	//for (int i = 0; i < pnum; i++) {
+	//	m_particles[i].m_position = Vector3(0,0,0);
 
-		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = Vector3(pnum*10, 0, pnum*10);
-		m_particles[i].m_age      = 0.0f;
-		m_particles[i].m_lifeTime = 1.0f; // lives for 1 seconds
-	}
+	//	Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
+	//	m_particles[i].m_velocity = Vector3(pnum*10, 0, pnum*10);
+	//	m_particles[i].m_age      = 0.0f;
+	//	m_particles[i].m_lifeTime = 1.0f; // lives for 1 seconds
+	//}
 }
 
 // TEMPLATE CREATION CTOR
@@ -71,14 +83,14 @@ PS_RotatingFlare :: PS_RotatingFlare(const std::string& name,
 		Particle particle;
 		m_particles.push_back(particle);
 	}
-	for (int i = 0; i < pnum; i++) {
-		m_particles[i].m_position = Vector3(0,0,0);
+	//for (int i = 0; i < pnum; i++) {
+	//	m_particles[i].m_position = Vector3(0,0,0);
 
-		Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
-		m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(5.0f, 25.0f);
-		m_particles[i].m_age      = 0.0f;
-		m_particles[i].m_lifeTime = 5.0f; 
-	}
+	//	Vector3 vel = Vector3(RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1), RandomGenerator::GET_RANDOM_FLOAT(-1,1));
+	//	m_particles[i].m_velocity = vel*RandomGenerator::GET_RANDOM_FLOAT(5.0f, 25.0f);
+	//	m_particles[i].m_age      = 0.0f;
+	//	m_particles[i].m_lifeTime = 5.0f; 
+	//}
 }
 
 PS_RotatingFlare :: ~PS_RotatingFlare() {
@@ -109,16 +121,22 @@ void PS_RotatingFlare :: render() const
 	RenderEngine::setModulateTextureColor(ebombTypeColors[(int) m_crater->getEbombType()]);
 
 
-	const Vector3 up(0, 0, -m_particleSize);
-	const Vector3 ll(0,0,0);
-	const Vector3 right(m_particleSize, 0, 0);
+	Vector3 up(0, 0, -m_particleSize);
+	Vector3 ll(0,0,0);
+	Vector3 right(m_particleSize, 0, 0);
+	const Vector3& originOffset = m_transform.getOrigin().getVector();
 
 	for (int i = 0; i < m_particleNum; i++) {
 		//MatrixTransform::PushMatrix();
 		//MatrixTransform::MulMatrix(m_transform.getMatrix());
 		//MatrixTransform::Translate(m_particles[i].m_position.getX(), m_particles[i].m_position.getY(), m_particles[i].m_position.getZ());
 
-		Vector3 ll(m_particles[i].m_position + m_transform.getOrigin().getVector() );
+		Vector3 ll(m_particles[i].m_position + originOffset );
+
+		float partFactor = float(i) / float(m_particleNum);
+
+		right.setX(m_particleSize * partFactor * partFactor);
+		up.setZ(-m_particleSize * partFactor * partFactor);
 		
 		RenderEngine::drawQuad(ll,right,up);
 		//MatrixTransform::PopMatrix();

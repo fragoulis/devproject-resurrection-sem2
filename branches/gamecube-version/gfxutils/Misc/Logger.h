@@ -5,7 +5,11 @@
 #include <fstream>
 #include <iostream>
 
-#define CKLOG(a,b) Logger::log((a),(b),__FILE__,__LINE__)
+#ifdef DEBUG
+	#define CKLOG(a,b) Logger::log((a),(b),__FILE__,__LINE__)
+#else
+	#define CKLOG(a,b)
+#endif
 
 /*
 	Logger class 

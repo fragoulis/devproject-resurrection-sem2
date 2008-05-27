@@ -156,10 +156,8 @@ void AIEngine::onEvent(Enemy_Despawned& es)
 {
 	Enemyship* enemyship = es.getValue();
     const int type = enemyship->getType();
-    const int carrierType = WorldObjectTypeManager::instance().getTypeFromName("EnemyCarrier");
+	if (EnemyFactory::instance().isEnemyClass(type, "Carrier")) return;
     
-    if( type == carrierType ) return;
-
     for( EnemyListIt i = m_enemyList.begin(); i != m_enemyList.end(); ++i )
     {
         const AIEnemy& couple = *i;

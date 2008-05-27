@@ -14,7 +14,7 @@ TplPalette :: TplPalette(const std::string& imgfile,const std::string& namefile)
 :m_palettePtr(0),
 m_name(imgfile)
 {
-	OSReport("Attempting to load %s --- %s..\n",imgfile.c_str(),namefile.c_str());
+	//OSReport("Attempting to load %s --- %s..\n",imgfile.c_str(),namefile.c_str());
 	string full = TextureMgr::instance().getTextureDir() + imgfile;
 	// open img file
 	TEXGetPalette(&m_palettePtr, (char *)(full.c_str()));
@@ -39,15 +39,15 @@ m_name(imgfile)
 				continue;
 			else
 			{
-				for(unsigned j=0;j<line.size();++j)
-					OSReport("%d ",(int)(line[j]));
-				OSReport("\n");
+				//for(unsigned j=0;j<line.size();++j)
+				//	OSReport("%d ",(int)(line[j]));
+				//OSReport("\n");
 				m_nameList.push_back(line);
 			}
 		}
-		OSReport("(%u bytes, %u names)Found under %s : \n",names.length,m_nameList.size(),namefile.c_str());
-		for(unsigned i=0;i<m_nameList.size();++i)
-			OSReport(" -- %s\n",m_nameList[i].c_str());
+		//OSReport("(%u bytes, %u names)Found under %s : \n",names.length,m_nameList.size(),namefile.c_str());
+		//for(unsigned i=0;i<m_nameList.size();++i)
+		//	OSReport(" -- %s\n",m_nameList[i].c_str());
 		ASSERTMSG(m_palettePtr->numDescriptors == m_nameList.size(),
 					"Not equal number of names! tex has %u, while namefile has %u!\n",
 					m_palettePtr->numDescriptors,
